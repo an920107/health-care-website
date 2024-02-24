@@ -1,6 +1,3 @@
-from flask import jsonify
-
-
 class Response:
     @staticmethod
     def sever_error(msg, rsp=None):
