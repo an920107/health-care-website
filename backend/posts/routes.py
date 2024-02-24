@@ -18,6 +18,11 @@ posts_blueprints = Blueprint('posts', __name__)
 ALLOW_IMAGE_ENDSWITH = ['.png', '.jpg', '.jpeg']
 ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xlsx', '.csv']
 
+if not os.path.exists('posts/uploads'):
+    os.mkdir('posts/uploads')
+    os.mkdir('posts/uploads/images')
+    os.mkdir('posts/uploads/attachments')
+
 
 @posts_blueprints.route("/get_post", methods=['GET'])
 def get_post():
@@ -107,7 +112,8 @@ def get_post():
             'id': str(post.id),
             'title': post.title,
             'column': post.column,
-            'update_time': post.update_time,
+            'create_time': str(post.create_time),
+            'update_time': str(post.update_time),
         })
 
     return Response.response('get post success', posts_payload)
@@ -332,6 +338,7 @@ def upload_attachment():
 
     elif endswith_check(file_name, ALLOW_IMAGE_ENDSWITH):
         file_path = Path('posts/uploads/images') / Path(new_file_name)
+
     else:
         return Response.response('extension not allow')
 

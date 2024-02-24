@@ -6,8 +6,8 @@ db = SQLAlchemy()
 
 class SchemaMixin:
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    create_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    update_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    create_time = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    update_time = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     def as_dict(self):
         return {
