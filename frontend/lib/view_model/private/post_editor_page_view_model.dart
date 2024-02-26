@@ -65,6 +65,7 @@ class PostEditorPageViewModel with ChangeNotifier {
       _attachments.add(attachmentSet[str]!);
     }
 
+    notifyListeners();
     return _post;
   }
 
