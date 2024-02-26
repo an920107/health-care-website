@@ -6,6 +6,7 @@ class Post {
   // String author;
   PostColumn column;
   String content;
+  String attachments;
   bool visible;
   DateTime createTime;
   DateTime updateTime;
@@ -15,6 +16,7 @@ class Post {
     required this.title,
     required this.column,
     required this.content,
+    required this.attachments,
     required this.visible,
     required this.createTime,
     required this.updateTime,
@@ -25,7 +27,8 @@ class Post {
         title: json["title"],
         column: PostColumn.values.where((e) => e.name == json["column"]).first,
         content: json["content"] ?? "",
-        visible: json["visible"] == "1" ? true : false,
+        attachments: json["attachments"] ?? "",
+        visible: json["visible"] == "1",
         createTime: DateTime.parse(json["create_time"]),
         updateTime: DateTime.parse(json["update_time"]),
       );
@@ -35,7 +38,8 @@ class Post {
         "title": title,
         "column": column.name,
         "content": content,
-        "visible": visible.toZeroOne(),
+        "attachments": attachments,
+        "visible": visible.toZeroOne().toString(),
         "create_time": createTime.toIso8601String(),
         "update_time": updateTime.toIso8601String(),
       };

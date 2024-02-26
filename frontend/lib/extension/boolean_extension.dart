@@ -1,5 +1,5 @@
 extension BooleanExtension on bool {
-  String toZeroOne() {
-    return this ? "1" : "0";
+  int toZeroOne() {
+    return this ? 1 : 0;
   }
 }
