@@ -33,3 +33,4 @@ class DatabaseOperator:
     @staticmethod
     def delete(model, kwargs):
         db.session.query(model).filter_by(**kwargs).delete()
+        db.session.commit()

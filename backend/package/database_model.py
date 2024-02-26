@@ -19,11 +19,13 @@ class SchemaMixin:
 
 
 class Post(db.Model, SchemaMixin):
-    title = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(40), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    column = db.Column(db.String(20), nullable=False)
+    column = db.Column(db.String(10), nullable=False)
+    attachments = db.Column(db.String(100), nullable=False)
+    visible = db.Column(db.String(1), nullable=False, default='0')
 
 
 class File(db.Model, SchemaMixin):
-    name = db.Column(db.String(100), nullable=False)
-    file_path = db.Column(db.String(255), nullable=False, unique=True)
+    name = db.Column(db.String(40), nullable=False)
+    file_path = db.Column(db.String(100), nullable=False, unique=True)

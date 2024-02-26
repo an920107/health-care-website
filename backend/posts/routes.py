@@ -72,6 +72,8 @@ def get_post():
                         type: string
                       title:
                         type: string
+                      visible:
+                        type: string
                       update_time:
                         type: string
                 total_page:
@@ -112,6 +114,7 @@ def get_post():
             'id': str(post.id),
             'title': post.title,
             'column': post.column,
+            'visible': post.visible,
             'create_time': str(post.create_time),
             'update_time': str(post.update_time),
         })
@@ -143,6 +146,11 @@ def upload_post():
         required: true
         description: The column to upload the post to
         enum: ['activity', 'health', 'restaurant', 'nutrition']
+      - name: attachments
+        in: formData
+        type: string
+        required: true
+        description: The attachments of the posts
     responses:
       200:
         description: Return a success message
@@ -175,15 +183,18 @@ def upload_post():
         description: Return a sever error message
     """
 
-    if not api_input_check(['title', 'content', 'column'], request.form):
+    if not api_input_check(['title', 'content', 'column', 'attachments'], request.form):
         Response.client_error('no title or content in form')
 
-    title, content, column = api_input_get(['title', 'content', 'column'], request.form)
+    title, content, column, attachments = api_input_get(
+        ['title', 'content', 'column', 'attachments'], request.form
+    )
 
     if column not in ['activity', 'health', 'restaurant', 'nutrition']:
         Response.not_found('column not found')
 
-    post = DatabaseOperator.insert(Post, {'title': title, 'content': content, 'column': column})
+    post = DatabaseOperator.insert(Post,
+                                   {'title': title, 'content': content, 'column': column, 'attachments': attachments})
     return Response.response('upload post success', post.as_dict())
 
 
@@ -210,12 +221,22 @@ def update_post():
         type: string
         required: true
         description: The content of the post
+      - name: visible
+        in: formData
+        type: string
+        required: true
+        description: The content of the post
       - name: column
         in: formData
         type: string
         required: true
         description: The column to upload the post to
         enum: ['activity', 'health', 'restaurant', 'nutrition']
+      - name: attachments
+        in: formData
+        type: string
+        required: true
+        description: The attachments of the posts
     responses:
       200:
         description: Return a success message
@@ -237,6 +258,8 @@ def update_post():
                   type: string
                 title:
                   type: string
+                visible:
+                  type: string
                 update_time:
                   type: string
                   description: Return datetime in iso format.
@@ -248,16 +271,18 @@ def update_post():
         description: Return a sever error message
     """
 
-    if not api_input_check(['id', 'title', 'content', 'column'], request.form):
+    if not api_input_check(['id', 'title', 'content', 'column', 'visible', 'attachments'], request.form):
         Response.client_error('no title or content in form')
 
-    id_, title, content, column = api_input_get(['id', 'title', 'content', 'column'], request.form)
+    id_, title, content, column, visible, attachments = api_input_get(
+        ['id', 'title', 'content', 'column', 'visible', 'attachments'], request.form
+    )
 
     if column not in ['activity', 'health', 'restaurant', 'nutrition']:
         Response.not_found('column not found')
 
     post = DatabaseOperator.update(Post, {'id': int(id_)}, {
-        'title': title, 'content': content, 'column': column
+        'title': title, 'content': content, 'column': column, 'visible': visible, 'attachments': attachments
     })
 
     if post is None:
@@ -323,7 +348,13 @@ def upload_attachment():
             response:
               type: object
               properties:
-                photo_url:
+                attachment_url:
+                  type: string
+                attachment_url:
+                  type: string
+                attachment_url:
+                  type: string
+                attachment_url:
                   type: string
     """
     if 'blob_attachment' not in request.files:
@@ -350,7 +381,10 @@ def upload_attachment():
 
     return Response.response(
         'upload images success', {
-            'photo_url': f'http://{request.host}/api/posts/get_attachment?attachment_id={file.id}'
+            'attachment_id': file.id,
+            'attachment_name': file.name,
+            'attachment_url': f'http://{request.host}/api/posts/get_attachment?attachment_id={file.id}',
+            'attachment_info': f'http://{request.host}/api/posts/get_attachment_info?attachment_id={file.id}',
         })
 
 
@@ -374,7 +408,35 @@ def get_attachment():
         description: File not found
     """
     file_id = request.args.get('attachment_id')
-    attachment = DatabaseOperator.select_one(File, {'id': file_id})
+    attachment = DatabaseOperator.select_one(File, {'id': int(file_id)})
     if not (attachment and os.path.exists(attachment.file_path)):
         return Response.not_found('attachments not found')
     return send_file(attachment.file_path)
+
+
+@posts_blueprints.route("/get_attachment_info", methods=['GET'])
+def get_attachment_info():
+    """
+    Get the attachment info by attachment_id
+    ---
+    tags:
+      - POST
+    parameters:
+      - name: attachment_id
+        in: query
+        type: string
+        required: true
+        description: The ID of the images to get INFO
+    responses:
+      200:
+        description: Return the images file
+      404:
+        description: File not found
+    """
+    file_id = request.args.get('attachment_id')
+    attachment = DatabaseOperator.select_one(File, {'id': int(file_id)})
+    if not (attachment and os.path.exists(attachment.file_path)):
+        return Response.not_found('attachments not found')
+    attachment = attachment.as_dict()
+    attachment.pop("file_path", None)
+    return Response.response("get attachment info success", attachment)
