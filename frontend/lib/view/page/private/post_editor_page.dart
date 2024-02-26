@@ -9,8 +9,8 @@ import 'package:flutter_quill_extensions/services/image_picker/s_image_picker.da
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/model/post.dart';
 import 'package:health_care_website/router/routes.dart';
-import 'package:health_care_website/view/base/base_scaffold.dart';
-import 'package:health_care_website/view/dialog/post_delete_dialog.dart';
+import 'package:health_care_website/view/widget/base/base_scaffold.dart';
+import 'package:health_care_website/view/widget/dialog/post_delete_dialog.dart';
 import 'package:health_care_website/view_model/private/post_editor_page_view_model.dart';
 import 'package:provider/provider.dart';
 

@@ -1,8 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/router/routes.dart';
-import 'package:health_care_website/view/home_page.dart';
-import 'package:health_care_website/view/private/post_editor_page.dart';
-import 'package:health_care_website/view/private/post_list_page.dart';
+import 'package:health_care_website/view/page/public/home_page.dart';
+import 'package:health_care_website/view/page/private/post_editor_page.dart';
+import 'package:health_care_website/view/page/private/post_list_page.dart';
 
 class Router {
   static GoRouter get router => GoRouter(
