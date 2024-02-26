@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:health_care_website/model/post.dart';
+import 'package:health_care_website/model/post/post.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
@@ -131,8 +133,8 @@ class _HomePageState extends State<HomePage> {
                     }),
 
                     /**
-                       * 以下為假資料
-                       */
+                     * 以下為假資料
+                     */
 
                     // 公告
                     const SizedBox(height: 20),
@@ -204,27 +206,41 @@ class _HomePageState extends State<HomePage> {
                               rows: [
                                 DataRow(cells: [
                                   const DataCell(Text("健康焦點")),
-                                  const DataCell(
-                                      Text("學生團體保險休學加\n保自 2024.2.24 截止")),
+                                  const DataCell(Text(
+                                    "學生團體保險休學加保自 2024.2.24 截止",
+                                    overflow: TextOverflow.fade,
+                                    softWrap: false,
+                                  )),
                                   if (platform != Platform.mobile)
                                     const DataCell(Text("2024-01-01")),
                                 ]),
                                 DataRow(cells: [
                                   const DataCell(Text("活動消息")),
-                                  const DataCell(Text("教職員體重控制班報\n名額滿")),
+                                  const DataCell(Text(
+                                    "教職員體重控制班報名額滿",
+                                    overflow: TextOverflow.fade,
+                                    softWrap: false,
+                                  )),
                                   if (platform != Platform.mobile)
                                     const DataCell(Text("2024-03-01")),
                                 ]),
                                 DataRow(cells: [
                                   const DataCell(Text("健康焦點")),
-                                  const DataCell(
-                                      Text("學生團體保險休學加\n保自 2024.2.24 截止")),
+                                  const DataCell(Text(
+                                    "學生團體保險休學加保自 2024.2.24 截止",
+                                    overflow: TextOverflow.fade,
+                                    softWrap: false,
+                                  )),
                                   if (platform != Platform.mobile)
                                     const DataCell(Text("2024-01-01")),
                                 ]),
                                 DataRow(cells: [
                                   const DataCell(Text("活動消息")),
-                                  const DataCell(Text("教職員體重控制班報\n名額滿")),
+                                  const DataCell(Text(
+                                    "教職員體重控制班報名額滿",
+                                    overflow: TextOverflow.fade,
+                                    softWrap: false,
+                                  )),
                                   if (platform != Platform.mobile)
                                     const DataCell(Text("2024-03-01")),
                                 ]),

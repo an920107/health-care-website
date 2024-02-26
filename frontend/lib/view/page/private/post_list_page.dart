@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/router/routes.dart';
+import 'package:health_care_website/view/theme/button_style.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
+import 'package:health_care_website/view/widget/icon_text.dart';
 import 'package:health_care_website/view_model/private/post_list_page_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +32,7 @@ class _PostListPageState extends State<PostListPage> {
             Row(
               children: [
                 ElevatedButton.icon(
+                  style: ElevatedButtonStyle.rRectStyle(),
                   onPressed: () async {
                     final post = await value.createNewPost();
                     if (post == null) return;
@@ -54,6 +57,7 @@ class _PostListPageState extends State<PostListPage> {
                       DataColumn(label: Text("標題")),
                       DataColumn(label: Text("類別")),
                       DataColumn(label: Text("上次更新日期")),
+                      DataColumn(label: Text("狀態")),
                       DataColumn(label: Text("編輯")),
                     ],
                     rows: [
@@ -63,6 +67,13 @@ class _PostListPageState extends State<PostListPage> {
                           DataCell(Text(post.column.label)),
                           DataCell(Text(DateFormat("yyyy-MM-dd")
                               .format(post.updateTime))),
+                          DataCell(IconText(
+                            mainAxisSize: MainAxisSize.min,
+                            icon: Icon(post.visible
+                                ? Icons.domain_verification_rounded
+                                : Icons.edit_document),
+                            child: Text(post.visible ? "已發佈" : "草稿"),
+                          )),
                           DataCell(IconButton(
                             onPressed: () {
                               context.push("${Routes.edit.path}/${post.id}");
