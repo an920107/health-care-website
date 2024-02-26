@@ -1,4 +1,4 @@
-import 'package:health_care_website/model/post.dart';
+import 'package:health_care_website/model/post/post.dart';
 
 class PostResponse {
   List<Post> posts;

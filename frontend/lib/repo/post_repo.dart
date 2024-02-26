@@ -2,15 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:health_care_website/config.dart';
-import 'package:health_care_website/model/post.dart';
-import 'package:health_care_website/model/post_response.dart';
+import 'package:health_care_website/model/post/attachment_info.dart';
+import 'package:health_care_website/model/post/attachment_response.dart';
+import 'package:health_care_website/model/post/post.dart';
+import 'package:health_care_website/model/post/post_response.dart';
 import 'package:http/http.dart' as http;
 
-class PostRepo {
+abstract class PostRepo {
   static Future<Post?> getPost(String id) async {
-    final url = Uri.http(Config.backend, "api/posts/get_post", {
-      "id": id,
-    });
+    final url = Uri.http(Config.backend, "api/posts/get_post", {"id": id});
     try {
       final response = await http.get(url);
       return Post.fromJson(json.decode(response.body)["response"]);
@@ -45,6 +45,7 @@ class PostRepo {
             content: json.encode([
               {"insert": "\n"}
             ]),
+            attachments: json.encode([]),
             visible: false,
             createTime: DateTime.now(),
             updateTime: DateTime.now(),
@@ -67,18 +68,36 @@ class PostRepo {
     }
   }
 
-  static Future<String> uploadAttachment(
+  static Future<AttachmentResponse?> uploadAttachment(
       Uint8List file, String filename) async {
     final url = Uri.http(Config.backend, "api/posts/upload_attachment");
-    final request = http.MultipartRequest("POST", url);
-    request.files.add(http.MultipartFile.fromBytes(
-      "blob_attachment",
-      file,
-      filename: filename,
-    ));
-    final streamResponse = await request.send();
-    final response = (await http.Response.fromStream(streamResponse));
-    return json.decode(response.body)["response"]["attachment_url"];
+    try {
+      final request = http.MultipartRequest("POST", url);
+      request.files.add(http.MultipartFile.fromBytes(
+        "blob_attachment",
+        file,
+        filename: filename,
+      ));
+      final streamResponse = await request.send();
+      final response = (await http.Response.fromStream(streamResponse));
+      return AttachmentResponse.fromJson(
+          json.decode(response.body)["response"]);
+    } on Exception catch (e) {
+      if (kDebugMode) print(e);
+      return null;
+    }
+  }
+
+  static Future<AttachmentInfo?> getAttachmentInfo(String id) async {
+    final url = Uri.http(
+        Config.backend, "api/posts/get_attachment_info", {"attachment_id": id});
+    try {
+      final response = await http.get(url);
+      return AttachmentInfo.fromJson(json.decode(response.body)["response"]);
+    } on Exception catch (e) {
+      if (kDebugMode) print(e);
+      return null;
+    }
   }
 
   static Future<void> delete(String id) async {

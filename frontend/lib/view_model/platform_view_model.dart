@@ -7,7 +7,7 @@ enum Platform {
   mobile(0),
 
   /// 平板
-  tablet(720),
+  tablet(820),
 
   /// 電腦
   computer(1280);

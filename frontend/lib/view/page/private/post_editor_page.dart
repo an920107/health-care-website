@@ -1,16 +1,22 @@
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:flutter_quill_extensions/services/image_picker/image_picker.dart';
 import 'package:flutter_quill_extensions/services/image_picker/s_image_picker.dart';
 import 'package:go_router/go_router.dart';
-import 'package:health_care_website/model/post.dart';
+import 'package:health_care_website/model/post/attachment_info.dart';
+import 'package:health_care_website/view/theme/button_style.dart';
+import 'package:health_care_website/model/post/post.dart';
 import 'package:health_care_website/router/routes.dart';
-import 'package:health_care_website/view/base/base_scaffold.dart';
-import 'package:health_care_website/view/dialog/post_delete_dialog.dart';
+import 'package:health_care_website/view/widget/base/base_scaffold.dart';
+import 'package:health_care_website/view/widget/clean_button.dart';
+import 'package:health_care_website/view/widget/dialog/post_delete_dialog.dart';
 import 'package:health_care_website/view_model/private/post_editor_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +39,6 @@ class _PostEditorPageState extends State<PostEditorPage> {
     keepStyleOnNewLine: false,
   );
   final _titleTextController = TextEditingController();
-  var _selectedPostColumn = PostColumn.activity;
 
   @override
   void initState() {
@@ -44,22 +49,24 @@ class _PostEditorPageState extends State<PostEditorPage> {
           .fetchFromServer(widget.id)
           .then((value) {
         _titleTextController.text = value!.title;
-        _quillController.document =
-            Document.fromJson(json.decode(value.content));
-        setState(() => _selectedPostColumn = value.column);
+        _quillController.document = Document.fromJson(
+          json.decode(value.content),
+        );
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constrain) => BaseScaffold(
-        body: Consumer<PostEditorPageViewModel>(
+    return BaseScaffold(
+      body: LayoutBuilder(builder: (context, constrain) {
+        return Consumer<PostEditorPageViewModel>(
           builder: (context, value, child) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
+                  // 標題輸入框
                   Expanded(
                     flex: 2,
                     child: TextField(
@@ -72,7 +79,9 @@ class _PostEditorPageState extends State<PostEditorPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 50),
+                  const SizedBox(width: 40),
+
+                  // 類別選取框
                   Expanded(
                     flex: 1,
                     child: DropdownButtonFormField<PostColumn>(
@@ -90,25 +99,68 @@ class _PostEditorPageState extends State<PostEditorPage> {
                       onChanged: (selected) {
                         FocusScope.of(context).requestFocus(FocusNode());
                         if (selected == null) return;
-                        setState(() => _selectedPostColumn = selected);
+                        value.selectedPostColumn = selected;
                       },
-                      value: _selectedPostColumn,
+                      value: value.selectedPostColumn,
                     ),
-                  )
+                  ),
+
+                  // 發布/轉為草稿
+                  const SizedBox(width: 40),
+                  CleanButton(
+                    onPressed: () => value.visible = !value.visible,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Column(
+                          children: [
+                            Switch(
+                              value: value.visible,
+                              onChanged: (result) => value.visible = result,
+                              thumbIcon: MaterialStateProperty.resolveWith(
+                                (states) => Icon(
+                                    states.contains(MaterialState.selected)
+                                        ? Icons.star
+                                        : Icons.edit),
+                              ),
+                            ),
+                            Text(
+                              value.visible ? "發佈" : "草稿",
+                              style: const TextStyle(color: Colors.black54),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
+
+              // 編輯器本體
               const SizedBox(height: 20),
               _buildTextEditor(),
+
+              // 附件預覽
+              if (value.attachments.isNotEmpty) const SizedBox(height: 20),
+              GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 5,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 20,
+                childAspectRatio: 3,
+                children: value.attachments
+                    .map((e) => _buildAttachmentPreview(e))
+                    .toList(),
+              ),
+
+              // 功能按鈕們
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  OutlinedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
-                      padding: const EdgeInsets.all(20),
-                    ),
+                  // 刪除按鈕
+                  TextButton.icon(
+                    style: TextButtonStyle.rRectStyle(),
                     onPressed: () async {
                       await showDialog(
                         context: context,
@@ -118,32 +170,56 @@ class _PostEditorPageState extends State<PostEditorPage> {
                     icon: const Icon(Icons.delete),
                     label: const Text("刪除", style: TextStyle(fontSize: 16)),
                   ),
+
+                  // 取消按鈕
                   const SizedBox(width: 20),
                   OutlinedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
-                      padding: const EdgeInsets.all(20),
-                    ),
+                    style: OutlinedButtonStyle.rRectStyle(),
                     onPressed: () =>
                         context.pushReplacement(Routes.postList.path),
                     icon: const Icon(Icons.cancel),
                     label: const Text("取消", style: TextStyle(fontSize: 16)),
                   ),
+
+                  // 上傳附件按鈕
                   const SizedBox(width: 20),
                   OutlinedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
-                      padding: const EdgeInsets.all(20),
-                    ),
+                    style: OutlinedButtonStyle.rRectStyle(),
+                    onPressed: () async {
+                      final result = await FilePicker.platform.pickFiles();
+                      if (result == null) return;
+                      final blob = result.files.single.bytes;
+                      final name = result.files.single.name;
+                      if (blob == null) return;
+                      await value.uploadAttachment(blob, name);
+                    },
+                    icon: const Icon(Icons.upload_file_rounded),
+                    label: const Text("上傳附件", style: TextStyle(fontSize: 16)),
+                  ),
+
+                  // 發布/轉為草稿
+                  // const SizedBox(width: 20),
+                  // OutlinedButton.icon(
+                  //   style: OutlinedButtonStyle.rRectStyle(),
+                  //   onPressed: () => value.toggleVisible(),
+                  //   icon: Icon(
+                  //       value.visible ? Icons.edit_document : Icons.visibility),
+                  //   label: Text(
+                  //     value.visible ? "轉為草稿" : "公開發佈",
+                  //     style: const TextStyle(fontSize: 16),
+                  //   ),
+                  // ),
+
+                  // 儲存按鈕
+                  const SizedBox(width: 20),
+                  OutlinedButton.icon(
+                    style: OutlinedButtonStyle.rRectStyle(),
                     onPressed: () async {
                       value.uploadPost(
-                          title: _titleTextController.text,
-                          column: _selectedPostColumn,
-                          content: json.encode(
-                              _quillController.document.toDelta().toJson()),
-                          visible: false);
+                        title: _titleTextController.text,
+                        content: json.encode(
+                            _quillController.document.toDelta().toJson()),
+                      );
                       if (context.mounted) {
                         context.pushReplacement(Routes.postList.path);
                       }
@@ -155,8 +231,8 @@ class _PostEditorPageState extends State<PostEditorPage> {
               ),
             ],
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -175,6 +251,8 @@ class _PostEditorPageState extends State<PostEditorPage> {
               toolbarIconAlignment: WrapAlignment.start,
               showUndo: false,
               showRedo: false,
+              showSubscript: false,
+              showSuperscript: false,
               showSearchButton: false,
               showInlineCode: false,
               showFontSize: false,
@@ -192,7 +270,7 @@ class _PostEditorPageState extends State<PostEditorPage> {
           const Divider(height: 4),
           ConstrainedBox(
             constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height / 1.8),
+                maxHeight: MediaQuery.of(context).size.height / 2),
             child: QuillEditor.basic(
               configurations: QuillEditorConfigurations(
                 controller: _quillController,
@@ -204,6 +282,38 @@ class _PostEditorPageState extends State<PostEditorPage> {
                     ? FlutterQuillEmbeds.editorWebBuilders()
                     : FlutterQuillEmbeds.editorBuilders(),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAttachmentPreview(AttachmentInfo info) {
+    return Card(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Expanded(
+            flex: 1,
+            child: Icon(Icons.file_present_rounded),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              info.name,
+              overflow: TextOverflow.fade,
+              softWrap: false,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: IconButton(
+              onPressed: () => context
+                  .read<PostEditorPageViewModel>()
+                  .removeAttachment(info.id),
+              icon: const Icon(Icons.cancel_outlined),
             ),
           ),
         ],
@@ -230,7 +340,7 @@ class _PostEditorPageState extends State<PostEditorPage> {
     if (context.mounted) {
       url = await context
           .read<PostEditorPageViewModel>()
-          .uploadAttachment(await file.readAsBytes(), file.name);
+          .uploadImage(await file.readAsBytes(), file.name);
     } else {
       url = "";
     }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:health_care_website/model/post.dart';
-import 'package:health_care_website/model/post_response.dart';
+import 'package:health_care_website/model/post/post.dart';
+import 'package:health_care_website/model/post/post_response.dart';
 import 'package:health_care_website/repo/post_repo.dart';
 
 class PostListPageViewModel with ChangeNotifier {

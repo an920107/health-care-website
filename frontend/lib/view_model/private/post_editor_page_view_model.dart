@@ -1,7 +1,10 @@
+import 'dart:collection';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:health_care_website/model/post.dart';
+import 'package:health_care_website/model/post/attachment_info.dart';
+import 'package:health_care_website/model/post/post.dart';
 import 'package:health_care_website/repo/post_repo.dart';
 
 class PostEditorPageViewModel with ChangeNotifier {
@@ -25,29 +28,76 @@ class PostEditorPageViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  List<AttachmentInfo> _attachments = [];
+  List<AttachmentInfo> get attachments => UnmodifiableListView(_attachments);
+
+  bool _visible = false;
+  bool get visible => _visible;
+  set visible (bool value) {
+    _visible = value;
+    notifyListeners();
+  }
+
+  PostColumn _selectedPostColumn = PostColumn.activity;
+  PostColumn get selectedPostColumn => _selectedPostColumn;
+  set selectedPostColumn (PostColumn value) {
+    _selectedPostColumn = value;
+    notifyListeners();
+  }
+
   Future<Post?> fetchFromServer(String id) async {
+    // TODO: 顯示錯誤原因
     _id = id;
     _post = await PostRepo.getPost(_id);
+    _visible = _post!.visible;
+
+    // 附件傳輸
+    final attachmentIds = json.decode(_post!.attachments) as List;
+    final attachmentSet = <String, AttachmentInfo>{};
+    await Future.wait(
+      attachmentIds.map(
+        (e) => PostRepo.getAttachmentInfo(e)
+            .then((value) => attachmentSet[e.toString()] = value!),
+      ),
+    );
+    _attachments = [];
+    for (var str in attachmentIds) {
+      _attachments.add(attachmentSet[str]!);
+    }
+
     return _post;
   }
 
   Future<void> uploadPost({
     required String title,
-    required PostColumn column,
     required String content,
-    required bool visible,
   }) async {
     if (_post == null) return;
     _post!
       ..title = title
-      ..column = column
       ..content = content
-      ..visible = visible;
+      ..column = _selectedPostColumn
+      ..attachments = json.encode(_attachments.map((e) => e.id).toList())
+      ..visible = _visible;
     await PostRepo.updatePost(_post!);
   }
 
-  Future<String> uploadAttachment(Uint8List file, filename) async {
-    return await PostRepo.uploadAttachment(file, filename);
+  Future<String> uploadImage(Uint8List file, String filename) async {
+    // TODO: 顯示錯誤原因
+    final response = await PostRepo.uploadAttachment(file, filename);
+    return response!.blobUrl;
+  }
+
+  Future<void> uploadAttachment(Uint8List file, String filename) async {
+    // TODO: 顯示錯誤原因
+    final response = await PostRepo.uploadAttachment(file, filename);
+    _attachments.add((await PostRepo.getAttachmentInfo(response!.id))!);
+    notifyListeners();
+  }
+
+  void removeAttachment(String id) {
+    _attachments.removeWhere((e) => e.id == id);
+    notifyListeners();
   }
 
   Future<void> delete() async {
