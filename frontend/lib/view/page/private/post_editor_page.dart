@@ -53,108 +53,106 @@ class _PostEditorPageState extends State<PostEditorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constrain) => BaseScaffold(
-        body: Consumer<PostEditorPageViewModel>(
-          builder: (context, value, child) => Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: TextField(
-                      maxLines: 1,
-                      controller: _titleTextController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        icon: Icon(Icons.title),
-                        label: Text("標題"),
-                      ),
+    return BaseScaffold(
+      body: Consumer<PostEditorPageViewModel>(
+        builder: (context, value, child) => Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: TextField(
+                    maxLines: 1,
+                    controller: _titleTextController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      icon: Icon(Icons.title),
+                      label: Text("標題"),
                     ),
                   ),
-                  const SizedBox(width: 50),
-                  Expanded(
-                    flex: 1,
-                    child: DropdownButtonFormField<PostColumn>(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        icon: Icon(Icons.type_specimen),
-                        label: Text("類別"),
-                      ),
-                      items: PostColumn.values
-                          .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e.label),
-                              ))
-                          .toList(),
-                      onChanged: (selected) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        if (selected == null) return;
-                        setState(() => _selectedPostColumn = selected);
-                      },
-                      value: _selectedPostColumn,
+                ),
+                const SizedBox(width: 50),
+                Expanded(
+                  flex: 1,
+                  child: DropdownButtonFormField<PostColumn>(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      icon: Icon(Icons.type_specimen),
+                      label: Text("類別"),
                     ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 20),
-              _buildTextEditor(),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  OutlinedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
-                      padding: const EdgeInsets.all(20),
-                    ),
-                    onPressed: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (context) => const PostDeleteDialog(),
-                      );
+                    items: PostColumn.values
+                        .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e.label),
+                            ))
+                        .toList(),
+                    onChanged: (selected) {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      if (selected == null) return;
+                      setState(() => _selectedPostColumn = selected);
                     },
-                    icon: const Icon(Icons.delete),
-                    label: const Text("刪除", style: TextStyle(fontSize: 16)),
+                    value: _selectedPostColumn,
                   ),
-                  const SizedBox(width: 20),
-                  OutlinedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
-                      padding: const EdgeInsets.all(20),
-                    ),
-                    onPressed: () =>
-                        context.pushReplacement(Routes.postList.path),
-                    icon: const Icon(Icons.cancel),
-                    label: const Text("取消", style: TextStyle(fontSize: 16)),
+                )
+              ],
+            ),
+            const SizedBox(height: 20),
+            _buildTextEditor(),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                OutlinedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    padding: const EdgeInsets.all(20),
                   ),
-                  const SizedBox(width: 20),
-                  OutlinedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
-                      padding: const EdgeInsets.all(20),
-                    ),
-                    onPressed: () async {
-                      value.uploadPost(
-                          title: _titleTextController.text,
-                          column: _selectedPostColumn,
-                          content: json.encode(
-                              _quillController.document.toDelta().toJson()),
-                          visible: false);
-                      if (context.mounted) {
-                        context.pushReplacement(Routes.postList.path);
-                      }
-                    },
-                    icon: const Icon(Icons.save),
-                    label: const Text("保存變更", style: TextStyle(fontSize: 16)),
+                  onPressed: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => const PostDeleteDialog(),
+                    );
+                  },
+                  icon: const Icon(Icons.delete),
+                  label: const Text("刪除", style: TextStyle(fontSize: 16)),
+                ),
+                const SizedBox(width: 20),
+                OutlinedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    padding: const EdgeInsets.all(20),
                   ),
-                ],
-              ),
-            ],
-          ),
+                  onPressed: () =>
+                      context.pushReplacement(Routes.postList.path),
+                  icon: const Icon(Icons.cancel),
+                  label: const Text("取消", style: TextStyle(fontSize: 16)),
+                ),
+                const SizedBox(width: 20),
+                OutlinedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    padding: const EdgeInsets.all(20),
+                  ),
+                  onPressed: () async {
+                    value.uploadPost(
+                        title: _titleTextController.text,
+                        column: _selectedPostColumn,
+                        content: json.encode(
+                            _quillController.document.toDelta().toJson()),
+                        visible: false);
+                    if (context.mounted) {
+                      context.pushReplacement(Routes.postList.path);
+                    }
+                  },
+                  icon: const Icon(Icons.save),
+                  label: const Text("保存變更", style: TextStyle(fontSize: 16)),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

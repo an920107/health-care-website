@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_care_website/view/widget/base/base_drawer.dart';
 import 'package:health_care_website/view/widget/base/base_footer.dart';
 import 'package:health_care_website/view/widget/base/base_navbar.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
@@ -20,28 +21,26 @@ class BaseScaffold extends StatelessWidget {
     final sidePadding = context.read<PlatformViewModel>().sidePadding;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ConstrainedBox(
-              constraints: BoxConstraints(minHeight: size.height),
-              child: Column(
-                children: [
-                  const BaseNavbar(),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: sidePadding),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 100),
-                      child: body ?? Container(),
-                    ),
+      drawer: const BaseDrawer(),
+      body: ListView(
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(minHeight: size.height),
+            child: Column(
+              children: [
+                const BaseNavbar(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: sidePadding),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 100),
+                    child: body ?? Container(),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const BaseFooter(),
-          ],
-        ),
+          ),
+          const BaseFooter(),
+        ],
       ),
     );
   }
