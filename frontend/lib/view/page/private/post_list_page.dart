@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/router/routes.dart';
-import 'package:health_care_website/view/base/base_scaffold.dart';
+import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view_model/private/post_list_page_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

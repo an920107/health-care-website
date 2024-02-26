@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:provider/provider.dart';
@@ -73,26 +74,41 @@ class BaseNavbar extends StatelessWidget {
                 constraints: const BoxConstraints(maxHeight: 120),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset("assets/logo.jpg"),
-                    const Column(
+                    Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          "衛生保健組",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Image.asset("assets/logo.jpg"),
+                        const Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "衛生保健組",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Health Center",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "Health Center",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextButton(onPressed: () {}, child: const Text("關於我們")),
+                        TextButton(onPressed: () {}, child: const Text("校園 AED")),
+                        TextButton(onPressed: () {}, child: const Text("登革熱填報")),
+                        TextButton(onPressed: () {}, child: const Text("相關法規")),
+                        TextButton(onPressed: () {}, child: const Text("下載專區")),
                       ],
                     ),
                   ],
