@@ -22,62 +22,60 @@ class _PostListPageState extends State<PostListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constrain) => BaseScaffold(
-        body: Consumer<PostListPageViewModel>(
-          builder: (context, value, child) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      final post = await value.createNewPost();
-                      if (post == null) return;
-                      await value.updatePostList();
-                      if (context.mounted) {
-                        context.push("${Routes.edit.path}/${post.id}");
-                      }
-                    },
-                    icon: const Icon(Icons.add),
-                    label: const Text("新增文章"),
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: DataTable(
-                      headingTextStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      columns: const [
-                        DataColumn(label: Text("標題")),
-                        DataColumn(label: Text("類別")),
-                        DataColumn(label: Text("上次更新日期")),
-                        DataColumn(label: Text("編輯")),
-                      ],
-                      rows: [
-                        for (var post in value.posts)
-                          DataRow(cells: [
-                            DataCell(Text(post.title)),
-                            DataCell(Text(post.column.label)),
-                            DataCell(Text(DateFormat("yyyy-MM-dd")
-                                .format(post.updateTime))),
-                            DataCell(IconButton(
-                              onPressed: () {
-                                context.push("${Routes.edit.path}/${post.id}");
-                              },
-                              icon: const Icon(Icons.edit),
-                            )),
-                          ])
-                      ],
+    return BaseScaffold(
+      body: Consumer<PostListPageViewModel>(
+        builder: (context, value, child) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    final post = await value.createNewPost();
+                    if (post == null) return;
+                    await value.updatePostList();
+                    if (context.mounted) {
+                      context.push("${Routes.edit.path}/${post.id}");
+                    }
+                  },
+                  icon: const Icon(Icons.add),
+                  label: const Text("新增文章"),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: DataTable(
+                    headingTextStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
+                    columns: const [
+                      DataColumn(label: Text("標題")),
+                      DataColumn(label: Text("類別")),
+                      DataColumn(label: Text("上次更新日期")),
+                      DataColumn(label: Text("編輯")),
+                    ],
+                    rows: [
+                      for (var post in value.posts)
+                        DataRow(cells: [
+                          DataCell(Text(post.title)),
+                          DataCell(Text(post.column.label)),
+                          DataCell(Text(DateFormat("yyyy-MM-dd")
+                              .format(post.updateTime))),
+                          DataCell(IconButton(
+                            onPressed: () {
+                              context.push("${Routes.edit.path}/${post.id}");
+                            },
+                            icon: const Icon(Icons.edit),
+                          )),
+                        ])
+                    ],
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
