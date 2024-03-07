@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 abstract class PostRepo {
   static Future<Post?> getPost(String id) async {
-    final url = Uri.http(Config.backend, "api/posts/get_post", {"id": id});
+    final url = Uri.https(Config.backend, "/api/posts/get_post", {"id": id});
     try {
       final response = await http.get(url);
       return Post.fromJson(json.decode(response.body)["response"]);
@@ -21,7 +21,7 @@ abstract class PostRepo {
   }
 
   static Future<PostResponse?> getPosts({PostColumn? column, int? page}) async {
-    final url = Uri.http(Config.backend, "api/posts/get_post", {
+    final url = Uri.https(Config.backend, "/api/posts/get_post", {
       if (column != null) "column": column,
       if (page != null) "page": page,
     });
@@ -35,7 +35,7 @@ abstract class PostRepo {
   }
 
   static Future<Post?> createPost() async {
-    final url = Uri.http(Config.backend, "api/posts/upload_post");
+    final url = Uri.https(Config.backend, "/api/posts/upload_post");
     try {
       final response = await http.post(url,
           body: Post(
@@ -58,7 +58,7 @@ abstract class PostRepo {
   }
 
   static Future<Post?> updatePost(Post post) async {
-    final url = Uri.http(Config.backend, "api/posts/update_post");
+    final url = Uri.https(Config.backend, "/api/posts/update_post");
     try {
       final response = await http.put(url, body: post.toJson());
       return Post.fromJson(json.decode(response.body)["response"]);
@@ -70,7 +70,7 @@ abstract class PostRepo {
 
   static Future<AttachmentResponse?> uploadAttachment(
       Uint8List file, String filename) async {
-    final url = Uri.http(Config.backend, "api/posts/upload_attachment");
+    final url = Uri.https(Config.backend, "/api/posts/upload_attachment");
     try {
       final request = http.MultipartRequest("POST", url);
       request.files.add(http.MultipartFile.fromBytes(
@@ -89,8 +89,11 @@ abstract class PostRepo {
   }
 
   static Future<AttachmentInfo?> getAttachmentInfo(String id) async {
-    final url = Uri.http(
-        Config.backend, "api/posts/get_attachment_info", {"attachment_id": id});
+    final url = Uri.https(
+      Config.backend,
+      "/api/posts/get_attachment_info",
+      {"attachment_id": id},
+    );
     try {
       final response = await http.get(url);
       return AttachmentInfo.fromJson(json.decode(response.body)["response"]);
@@ -101,7 +104,7 @@ abstract class PostRepo {
   }
 
   static Future<void> delete(String id) async {
-    final url = Uri.http(Config.backend, "api/posts/delete_post", {
+    final url = Uri.https(Config.backend, "/api/posts/delete_post", {
       "id": id,
     });
     try {

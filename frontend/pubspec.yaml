@@ -48,6 +48,9 @@ dependencies:
   intl: ^0.18.1
   carousel_slider: ^4.2.1
   file_picker: ^6.1.1
+  flutter_dotenv: ^5.1.0
+  uuid: ^4.3.3
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
@@ -76,9 +79,9 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
+    - .env
     - assets/
     - assets/carousel/
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
