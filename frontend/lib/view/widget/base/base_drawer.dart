@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:health_care_website/view/widget/icon_text.dart';
 
 class BaseDrawer extends StatefulWidget {
   const BaseDrawer({super.key});
@@ -10,59 +9,101 @@ class BaseDrawer extends StatefulWidget {
 }
 
 class _BaseDrawerState extends State<BaseDrawer> {
-  final _routes = [
-    "新生健檢報告",
-    "教職員體格檢查",
-    "身體組成分析儀",
-    "手指消毒器 SDS\n安全資料表",
-    "登革熱防疫專區",
-    "母性健康保護",
-    "紅火蟻防治",
-    "學生團體保險",
-    "醫療及防疫器材",
-    "醫療新知",
-    "特約醫院",
-    "我的健康餐盤",
-    "餐飲衛生",
-    "相關網站",
-    "關於我們",
-    "聯絡我們",
-    "檔案下載",
-    ""
-  ];
+  final Map<String, List<String>> _menu = {
+    "關於我們": ["工作團隊", "服務時間", "交通地圖"],
+    "健康檢查": ["新生健康檢查", "新進人員體格檢查", "定期健康檢查"],
+    "緊急醫療": ["緊急通報專線", "校園傷病處理", "校園AED"],
+    "健康服務 1": ["學生團體保險", "醫療器材借用", "健康管理設施"],
+    "健康服務 2": ["職業醫師臨校服務", "職場健康服務計畫"],
+    "健康服務 3": ["大一 CPR", "校園菸害防制教育", "校園愛滋防治教育", "校園傳染病防治"],
+  };
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: SafeArea(
-          child: ListView.separated(
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return const Padding(
-              padding: EdgeInsets.only(
-                top: 50,
-                bottom: 25,
-              ),
-              child: IconText(
-                icon: Icon(FontAwesomeIcons.solidCompass),
-                child: Text(
-                  "MENU",
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 60),
+              child: ListTile(
+                title: Text(
+                  "選單",
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 36,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            );
-          } else {
-            return ListTile(
-              title: Text(_routes[index - 1]),
-            );
-          }
-        },
-        separatorBuilder: (_, __) => const Divider(),
-        itemCount: _routes.length + 1,
-      )),
+            ),
+            const Divider(),
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  for (var group in _menu.entries)
+                    Theme(
+                      data: Theme.of(context)
+                          .copyWith(dividerColor: Colors.transparent),
+                      child: ExpansionTile(
+                        title: Text(
+                          group.key,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        children: [
+                          for (var link in group.value)
+                            ListTile(
+                              onTap: () {},
+                              title: Text(link),
+                            ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const Divider(),
+            Column(
+              children: [
+                ListTile(
+                  onTap: () {},
+                  leading: const Icon(Icons.home),
+                  title: const Text(
+                    "中大首頁",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  onTap: () {},
+                  leading: const Icon(FontAwesomeIcons.instagram),
+                  title: const Text(
+                    "Instagram",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  onTap: () {},
+                  leading: const Icon(FontAwesomeIcons.facebook),
+                  title: const Text(
+                    "Facebook",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

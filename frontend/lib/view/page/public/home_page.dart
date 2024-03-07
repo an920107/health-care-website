@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/model/post/post.dart';
@@ -23,25 +24,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _routes = [
-    "新生健檢報告",
-    "教職員體格檢查",
-    "身體組成分析儀",
-    "手指消毒器 SDS\n安全資料表",
-    "登革熱防疫專區",
-    "母性健康保護",
-    "紅火蟻防治",
-    "學生團體保險",
-    "醫療及防疫器材",
-    "醫療新知",
-    "特約醫院",
-    "我的健康餐盤",
-    "餐飲衛生",
-    "相關網站",
-    "關於我們",
-    "聯絡我們",
-    "檔案下載",
-  ];
+  final Map<String, List<String>> _menu = {
+    "關於我們": ["工作團隊", "服務時間", "交通地圖"],
+    "健康檢查": ["新生健康檢查", "新進人員體格檢查", "定期健康檢查"],
+    "緊急醫療": ["緊急通報專線", "校園傷病處理", "校園AED"],
+    "健康服務 1": ["學生團體保險", "醫療器材借用", "健康管理設施"],
+    "健康服務 2": ["職業醫師臨校服務", "職場健康服務計畫"],
+    "健康服務 3": ["大一 CPR", "校園菸害防制教育", "校園愛滋防治教育", "校園傳染病防治"],
+  };
 
   PostColumn? _selectedPostColumn;
 
@@ -73,51 +63,90 @@ class _HomePageState extends State<HomePage> {
               // 側邊索引欄
               if (platform != Platform.mobile)
                 Expanded(
-                  flex: 5,
+                  flex: platform == Platform.computer ? 5 : 6,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Card(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: IconText(
-                            icon: Icon(FontAwesomeIcons.solidCompass),
-                            child: Text(
-                              "MENU",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                      for (var group in _menu.entries)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: Text(
+                                      group.key,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  platform == Platform.computer
+                                      ? const Divider(
+                                          indent: 50,
+                                          endIndent: 50,
+                                        )
+                                      : const Divider(
+                                          indent: 30,
+                                          endIndent: 30,
+                                        ),
+                                  for (var link in group.value)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5),
+                                      child: TextButton(
+                                        onPressed: () {},
+                                        child: Text(
+                                          link,
+                                          softWrap: false,
+                                          overflow: TextOverflow.fade,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 5),
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              for (var str in _routes)
-                                Column(
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {},
-                                      child: Text(str,
-                                          textAlign: TextAlign.center),
-                                    ),
-                                    if (str != _routes.last)
-                                      const Divider(
-                                        indent: 20,
-                                        endIndent: 20,
-                                      ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // for (var group in _menu.entries)
+                      //   Padding(
+                      //     padding: const EdgeInsets.only(bottom: 5),
+                      //     child: Card(
+                      //       child: Theme(
+                      //         data: Theme.of(context)
+                      //             .copyWith(dividerColor: Colors.transparent),
+                      //         child: ExpansionTile(
+                      //           initiallyExpanded: true,
+                      //           leading: const SizedBox.shrink(),
+                      //           trailing: const SizedBox.shrink(),
+                      //           title: Text(
+                      //             group.key,
+                      //             softWrap: false,
+                      //             textAlign: TextAlign.center,
+                      //             style: const TextStyle(
+                      //               fontWeight: FontWeight.bold,
+                      //             ),
+                      //           ),
+                      //           children: [
+                      //             for (var link in group.value)
+                      //               TextButton(
+                      //                 onPressed: () {},
+                      //                 child: Text(
+                      //                   link,
+                      //                   textAlign: TextAlign.center,
+                      //                 ),
+                      //               ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
                     ],
                   ),
                 ),
