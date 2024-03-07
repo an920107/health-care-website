@@ -57,7 +57,8 @@ class _PostListPageState extends State<PostListPage> {
                       DataColumn(label: Text("標題")),
                       DataColumn(label: Text("類別")),
                       DataColumn(label: Text("上次更新日期")),
-                      DataColumn(label: Text("狀態")),
+                      DataColumn(label: Text("設為重要")),
+                      DataColumn(label: Text("發布狀態")),
                       DataColumn(label: Text("編輯")),
                     ],
                     rows: [
@@ -67,6 +68,10 @@ class _PostListPageState extends State<PostListPage> {
                           DataCell(Text(post.column.label)),
                           DataCell(Text(DateFormat("yyyy-MM-dd")
                               .format(post.updateTime))),
+                          DataCell(Checkbox(
+                            value: post.important,
+                            onChanged: (checked) => value.togglePostImportant(post),
+                          )),
                           DataCell(IconText(
                             mainAxisSize: MainAxisSize.min,
                             icon: Icon(post.visible

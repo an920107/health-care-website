@@ -38,7 +38,7 @@ class PostEditorPageViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  PostColumn _selectedPostColumn = PostColumn.activity;
+  PostColumn _selectedPostColumn = PostColumn.values.first;
   PostColumn get selectedPostColumn => _selectedPostColumn;
   set selectedPostColumn (PostColumn value) {
     _selectedPostColumn = value;

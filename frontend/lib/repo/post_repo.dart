@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:health_care_website/config.dart';
+import 'package:health_care_website/extension/boolean_extension.dart';
 import 'package:health_care_website/model/post/attachment_info.dart';
 import 'package:health_care_website/model/post/attachment_response.dart';
 import 'package:health_care_website/model/post/post.dart';
@@ -22,7 +23,7 @@ abstract class PostRepo {
 
   static Future<PostResponse?> getPosts({PostColumn? column, int? page}) async {
     final url = Uri.https(Config.backend, "/api/posts/get_post", {
-      if (column != null) "column": column,
+      if (column != null) "column": column.name,
       if (page != null) "page": page,
     });
     try {
@@ -47,6 +48,7 @@ abstract class PostRepo {
             ]),
             attachments: json.encode([]),
             visible: false,
+            important: false,
             createTime: DateTime.now(),
             updateTime: DateTime.now(),
           ).toJson());
@@ -65,6 +67,20 @@ abstract class PostRepo {
     } on Exception catch (e) {
       if (kDebugMode) print(e);
       return null;
+    }
+  }
+
+  static Future<bool> togglePostImportant(String id, bool value) async {
+    final url = Uri.https(Config.backend, "/api/posts/toggle_important", {
+      "id": id,
+      "value": value.toZeroOne().toString(),
+    });
+    try {
+      final response = await http.put(url);
+      return json.decode(response.body)["response"]["value"];
+    } on Exception catch (e) {
+      if (kDebugMode) print(e);
+      return value;
     }
   }
 

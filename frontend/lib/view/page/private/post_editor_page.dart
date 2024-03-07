@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -60,7 +61,8 @@ class _PostEditorPageState extends State<PostEditorPage> {
             // Loading 圈圈
             if (snapshot.connectionState != ConnectionState.done) {
               return Padding(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 3),
                 child: const Center(child: CircularProgressIndicator()),
               );
             }
@@ -191,7 +193,23 @@ class _PostEditorPageState extends State<PostEditorPage> {
                       OutlinedButton.icon(
                         style: OutlinedButtonStyle.rRectStyle(),
                         onPressed: () async {
-                          final result = await FilePicker.platform.pickFiles();
+                          final result = await FilePickerWeb.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: [
+                              "pdf",
+                              "jpg",
+                              "jpeg",
+                              "png",
+                              "doc",
+                              "docx",
+                              "xls",
+                              "xlsx",
+                              "ppt",
+                              "pptx",
+                              "odt",
+                              "csv",
+                            ],
+                          );
                           if (result == null) return;
                           final blob = result.files.single.bytes;
                           final name = result.files.single.name;

@@ -99,7 +99,7 @@ class BaseNavbar extends StatelessWidget {
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Image.asset("assets/logo.jpg"),
+                                Image.asset("assets/logo.png"),
                                 const Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [

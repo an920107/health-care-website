@@ -35,13 +35,13 @@ abstract class AuthRepo {
       "state": state,
     });
 
-    const int maxRetry = 10;
+    const int maxRetry = 20;
     int retried = 0;
     bool retryLock = false;
     final retryCompleter = Completer();
 
     String? token;
-    Timer.periodic(const Duration(milliseconds: 500), (timer) async {
+    Timer.periodic(const Duration(milliseconds: 200), (timer) async {
       if (retryLock) return;
       retryLock = true;
       try {

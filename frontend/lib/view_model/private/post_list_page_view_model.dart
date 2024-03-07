@@ -29,4 +29,10 @@ class PostListPageViewModel with ChangeNotifier {
     );
     notifyListeners();
   }
+
+  Future<void> togglePostImportant(Post post) async {
+    final newValue = await PostRepo.togglePostImportant(post.id, !post.important);
+    post.important = newValue;
+    notifyListeners();
+  }
 }
