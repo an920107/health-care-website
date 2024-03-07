@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart' hide Router;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/router/router.dart';
+import 'package:health_care_website/view_model/auth_view_model.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/private/post_editor_page_view_model.dart';
 import 'package:health_care_website/view_model/private/post_list_page_view_model.dart';
@@ -18,6 +20,9 @@ Future<void> main() async {
   // Go_Router 8.0.0 migration
   GoRouter.optionURLReflectsImperativeAPIs = true;
 
+  // Load .env vars
+  await dotenv.load(fileName: ".env");
+
   runApp(const App());
 }
 
@@ -29,6 +34,7 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(create: (_) => PlatformViewModel()),
+        ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => PostEditorPageViewModel()),
         ChangeNotifierProvider(create: (_) => PostListPageViewModel()),
       ],

@@ -1,14 +1,22 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_care_website/model/post/post.dart';
+import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
+import 'package:health_care_website/view/widget/dialog/login_dialog.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+    this.toLogin = false,
+  });
+
+  final bool toLogin;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -36,6 +44,21 @@ class _HomePageState extends State<HomePage> {
   ];
 
   PostColumn? _selectedPostColumn;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget.toLogin) {
+        showDialog(
+          context: context,
+          builder: (context) => const LoginDialog(),
+        ).then((value) {
+          if (value == null) context.go(Routes.root.path);
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

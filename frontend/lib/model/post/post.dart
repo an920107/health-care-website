@@ -46,9 +46,9 @@ class Post {
 }
 
 enum PostColumn {
-  activity("活動消息"),
+  latest("最新消息"),
+  activity("活動快訊"),
   health("健康焦點"),
-  restaurant("餐廳報告"),
   nutrition("營養報報");
 
   final String label;
