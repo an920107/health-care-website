@@ -24,8 +24,20 @@ class Post(db.Model, SchemaMixin):
     column = db.Column(db.String(10), nullable=False)
     attachments = db.Column(db.String(100), nullable=False)
     visible = db.Column(db.String(1), nullable=False, default='0')
+    importance = db.Column(db.String(1), nullable=False, default='0')
 
 
 class File(db.Model, SchemaMixin):
     name = db.Column(db.String(40), nullable=False)
     file_path = db.Column(db.String(100), nullable=False, unique=True)
+
+
+class User(db.Model, SchemaMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    chinese_name = db.Column(db.String(40), nullable=False, unique=False)
+    authorization = db.Column(db.Integer, nullable=False, unique=False, default=-1)
+
+
+class OauthTmpInfo(db.Model, SchemaMixin):
+    state = db.Column(db.String(100), nullable=False, unique=False)
+    access_token = db.Column(db.String(40), nullable=False, unique=False)

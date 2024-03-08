@@ -16,15 +16,37 @@ from script.utils import *
 posts_blueprints = Blueprint('posts', __name__)
 
 ALLOW_IMAGE_ENDSWITH = ['.png', '.jpg', '.jpeg']
-ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xlsx', '.csv']
-
-if not os.path.exists('posts/uploads'):
-    os.mkdir('posts/uploads')
-    os.mkdir('posts/uploads/images')
-    os.mkdir('posts/uploads/attachments')
+ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xls', '.xlsx', '.csv', '.odt']
+GET_POST_PER_PAGE = 10
 
 
-@posts_blueprints.route("/get_post", methods=['GET'])
+@posts_blueprints.route("/post_importance", methods=['PUT'])
+def put_post_importance():
+    """
+    Toggle the importance of a post
+    ---
+    tags:
+      - POST
+    parameters:
+      - name: id
+        in: formData
+        type: string
+        required: true
+        description: The id of the post
+      - name: importance
+        in: formData
+        type: string
+        required: true
+        description: The importance of the post
+    """
+    if not api_input_check(['id', 'importance'], request.form):
+        Response.client_error('no id or importance in form')
+    id_, importance = api_input_get(['id', 'importance'], request.form)
+    DatabaseOperator.update(Post, {'id': int(id_)}, {'importance': importance})
+    return Response.response('update importance success', {'id': id_, 'importance': importance})
+
+
+@posts_blueprints.route("/post", methods=['GET'])
 def get_post():
     """
     Get posts in three ways.
@@ -85,47 +107,45 @@ def get_post():
       500:
         description: Return a sever error message
     """
+    # get post by id
     if api_input_check(['id'], request.args):
         id_ = request.args['id']
         post = DatabaseOperator.select_one(Post, {'id': int(id_)})
-        if post is None:
-            return Response.not_found('post not found')
-        return Response.response('get post success', post.as_dict())
+        return Response.response('get post success', post.as_dict()) \
+            if post is not None \
+            else Response.not_found('post not found')
 
-    elif api_input_check(['column'], request.args):
-        column = request.args['column']
-        posts = DatabaseOperator.select_all(Post, {'column': column})
-
+    # filter posts by column
+    elif (api_input_check(['column'], request.args)
+          and request.args['column'] in ['activity', 'health', 'restaurant', 'nutrition']):
+        posts = DatabaseOperator.select_all(Post, {'column': request.args['column']})
+    # get all posts
     else:
         posts = DatabaseOperator.select_all(Post)
 
-    page = int(request.args['page']) \
-        if api_input_check(['page'], request.args) and int(request.args['page']) > 0 \
-        else 1
+    # filter posts by page default is one
+    if api_input_check(['page'], request.args) and int(request.args['page']) > 0:
+        page = int(request.args['page'])
+    else:
+        page = 1
 
     posts_payload = {
-        'total_page': str(len(posts) // 20 + 1),
+        'total_page': str(len(posts) // GET_POST_PER_PAGE + 1),
         'page': str(page),
         'posts': []
     }
 
-    for post in posts[(page - 1) * 20: page * 20]:
-        posts_payload['posts'].append({
-            'id': str(post.id),
-            'title': post.title,
-            'column': post.column,
-            'visible': post.visible,
-            'create_time': str(post.create_time),
-            'update_time': str(post.update_time),
-        })
+    sorted_posts = sorted(posts, key=lambda x: (x.importance, x.create_time), reverse=True)
+    for post in sorted_posts[(page - 1) * GET_POST_PER_PAGE: page * GET_POST_PER_PAGE]:
+        posts_payload['posts'].append(post.as_dict())
 
     return Response.response('get post success', posts_payload)
 
 
-@posts_blueprints.route("/upload_post", methods=['POST'])
+@posts_blueprints.route("/post", methods=['POST'])
 def upload_post():
     """
-    Upload a post.
+    Upload a post
     ---
     tags:
       - POST
@@ -182,7 +202,6 @@ def upload_post():
       500:
         description: Return a sever error message
     """
-
     if not api_input_check(['title', 'content', 'column', 'attachments'], request.form):
         Response.client_error('no title or content in form')
 
@@ -193,15 +212,16 @@ def upload_post():
     if column not in ['activity', 'health', 'restaurant', 'nutrition']:
         Response.not_found('column not found')
 
-    post = DatabaseOperator.insert(Post,
-                                   {'title': title, 'content': content, 'column': column, 'attachments': attachments})
-    return Response.response('upload post success', post.as_dict())
+    post = DatabaseOperator.insert(Post, {
+        'title': title, 'content': content, 'column': column, 'attachments': attachments
+    })
+    return Response.response('post post success', post.as_dict())
 
 
-@posts_blueprints.route("/update_post", methods=['PUT'])
+@posts_blueprints.route("/post", methods=['PUT'])
 def update_post():
     """
-    Upload a post
+    Update a post
     ---
     tags:
       - POST
@@ -291,7 +311,7 @@ def update_post():
     return Response.response('update post success', post.as_dict())
 
 
-@posts_blueprints.route("/delete_post", methods=['DELETE'])
+@posts_blueprints.route("/post", methods=['DELETE'])
 def delete_post():
     """
     Upload a post
@@ -302,7 +322,7 @@ def delete_post():
       - name: id
         in: query
         type: integer
-        required: true
+        required: false
         description: The title of the post
     responses:
       200:
@@ -316,18 +336,46 @@ def delete_post():
     """
 
     if 'id' not in request.args:
-        Response.client_error('no id in form')
+        DatabaseOperator.delete(Post, {})
+        return Response.response('delete all post success')
 
     id_ = request.args['id']
-
     DatabaseOperator.delete(Post, {'id': int(id_)})
     return Response.response('delete post success')
 
 
-@posts_blueprints.route("/upload_attachment", methods=['POST'])
-def upload_attachment():
+@posts_blueprints.route("/allow_endswith", methods=['GET'])
+def get_allow_endswith():
     """
-    Upload Post Image.
+    Get allow endswith.
+    > ['.png', '.jpg', '.jpeg', '.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xls', '.xlsx', '.csv', '.odt']
+    ---
+    tags:
+      - POST
+    responses:
+      200:
+        description: Return a success message
+        schema:
+          type: object
+          properties:
+            description:
+              type: string
+            response:
+              type: array
+              items:
+                type: string
+    """
+    return Response.response('get allow success', ALLOW_IMAGE_ENDSWITH + ALLOW_FILE_ENDSWITH)
+
+
+@posts_blueprints.route("/attachment", methods=['POST'])
+def post_attachment():
+    """
+    Upload Post Image or File.
+
+    * ALLOW_IMAGE_ENDSWITH = ['.png', '.jpg', '.jpeg']
+    * ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xlsx', '.csv', '.odt']
+
     ---
     tags:
       - POST
@@ -348,16 +396,16 @@ def upload_attachment():
             response:
               type: object
               properties:
-                attachment_url:
+                attachment_id:
+                  type: string
+                attachment_name:
                   type: string
                 attachment_url:
                   type: string
-                attachment_url:
-                  type: string
-                attachment_url:
+                attachment_info:
                   type: string
     """
-    if 'blob_attachment' not in request.files:
+    if not api_input_check(['blob_attachment'], request.files):
         return Response.client_error('no blob attachments')
 
     blob_attachment = request.files['blob_attachment']
@@ -366,12 +414,10 @@ def upload_attachment():
 
     if endswith_check(file_name, ALLOW_FILE_ENDSWITH):
         file_path = Path('posts/uploads/attachments') / Path(new_file_name)
-
     elif endswith_check(file_name, ALLOW_IMAGE_ENDSWITH):
         file_path = Path('posts/uploads/images') / Path(new_file_name)
-
     else:
-        return Response.response('extension not allow')
+        return Response.client_error('extension not allow')
 
     blob_attachment.save(file_path)
     file = DatabaseOperator.insert(File, {
@@ -380,15 +426,15 @@ def upload_attachment():
     })
 
     return Response.response(
-        'upload images success', {
-            'attachment_id': file.id,
+        'post attachment success', {
+            'attachment_id': str(file.id),
             'attachment_name': file.name,
             'attachment_url': f'http://{request.host}/api/posts/get_attachment?attachment_id={file.id}',
             'attachment_info': f'http://{request.host}/api/posts/get_attachment_info?attachment_id={file.id}',
         })
 
 
-@posts_blueprints.route("/get_attachment", methods=['GET'])
+@posts_blueprints.route("/attachment", methods=['GET'])
 def get_attachment():
     """
     Download an attachment by attachment_id
@@ -414,7 +460,7 @@ def get_attachment():
     return send_file(attachment.file_path)
 
 
-@posts_blueprints.route("/get_attachment_info", methods=['GET'])
+@posts_blueprints.route("/attachment_info", methods=['GET'])
 def get_attachment_info():
     """
     Get the attachment info by attachment_id
@@ -440,3 +486,32 @@ def get_attachment_info():
     attachment = attachment.as_dict()
     attachment.pop("file_path", None)
     return Response.response("get attachment info success", attachment)
+
+
+@posts_blueprints.route("/attachment", methods=['DELETE'])
+def delete_attachment():
+    """
+    Delete an attachment by attachment_id
+    ---
+    tags:
+      - POST
+    parameters:
+      - name: attachment_id
+        in: query
+        type: string
+        required: true
+        description: The ID of the images to download
+    responses:
+      200:
+        description: Return the images file
+      404:
+        description: File not found
+    """
+    attachment_id = request.args.get('attachment_id')
+    try:
+        file = DatabaseOperator.select_one(File, {'id': int(attachment_id)})
+        os.remove(file.file_path)
+    except Exception:
+        pass
+    DatabaseOperator.delete(File, {'id': int(attachment_id)})
+    return Response.response('delete attachment success')

@@ -12,5 +12,10 @@ class Response:
         return {'description': msg, 'response': rsp}, 404
 
     @staticmethod
+    def forbidden(msg, rsp=None):
+        return {'description': msg, 'response': rsp}, 403
+
+
+    @staticmethod
     def response(msg, rsp=None):
         return {'description': msg, 'response': rsp}, 200
