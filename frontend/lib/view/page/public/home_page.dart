@@ -285,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                                     fontWeight: FontWeight.bold),
                                 columns: [
                                   const DataColumn(label: Text("餐廳名稱")),
-                                  const DataColumn(label: Text("檢核結果")),
+                                  const DataColumn(label: Text("檢驗結果")),
                                   if (platform != Platform.mobile)
                                     const DataColumn(label: Text("日期")),
                                 ],

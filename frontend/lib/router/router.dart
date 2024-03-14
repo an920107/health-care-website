@@ -4,7 +4,7 @@ import 'package:health_care_website/view/page/private/admin_page.dart';
 import 'package:health_care_website/view/page/private/page_edit_page.dart';
 import 'package:health_care_website/view/page/private/page_list_page.dart';
 import 'package:health_care_website/view/page/private/restaurant_edit_page.dart';
-import 'package:health_care_website/view/page/private/restaurant_list_page%20copy.dart';
+import 'package:health_care_website/view/page/private/restaurant_list_page.dart';
 import 'package:health_care_website/view/page/public/home_page.dart';
 import 'package:health_care_website/view/page/private/post_edit_page.dart';
 import 'package:health_care_website/view/page/private/post_list_page.dart';

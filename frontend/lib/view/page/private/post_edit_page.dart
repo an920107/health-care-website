@@ -183,8 +183,7 @@ class _PostEditPageState extends State<PostEditPage> {
                       const SizedBox(width: 20),
                       OutlinedButton.icon(
                         style: OutlinedButtonStyle.rRectStyle(),
-                        onPressed: () =>
-                            context.pushReplacement(Routes.postList.path),
+                        onPressed: () => context.go(Routes.postList.path),
                         icon: const Icon(Icons.cancel),
                         label: const Text("取消", style: TextStyle(fontSize: 16)),
                       ),

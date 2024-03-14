@@ -63,8 +63,6 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                     FocusScope.of(context).requestFocus(FocusNode());
                     DateTime? date = await showOmniDateTimePicker(
                       context: context,
-                      firstDate:
-                          DateTime.now().subtract(const Duration(days: 365)),
                       lastDate: DateTime.now(),
                       type: OmniDateTimePickerType.date,
                       initialDate: DateTime.tryParse(_dateTextController.text),
@@ -196,7 +194,7 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
               const SizedBox(width: 20),
               OutlinedButton.icon(
                 style: OutlinedButtonStyle.rRectStyle(),
-                onPressed: () => context.pushReplacement(Routes.postList.path),
+                onPressed: () => context.go(Routes.restaurantList.path),
                 icon: const Icon(Icons.cancel),
                 label: const Text("取消", style: TextStyle(fontSize: 16)),
               ),

@@ -43,7 +43,7 @@ class _PostListPageState extends State<PostListPage> {
                   },
                   icon: const Icon(Icons.add),
                   label: const Text("新增文章"),
-                )
+                ),
               ],
             ),
             Row(
@@ -70,7 +70,8 @@ class _PostListPageState extends State<PostListPage> {
                               .format(post.updateTime))),
                           DataCell(Checkbox(
                             value: post.important,
-                            onChanged: (checked) => value.togglePostImportant(post),
+                            onChanged: (checked) =>
+                                value.togglePostImportant(post),
                           )),
                           DataCell(IconText(
                             mainAxisSize: MainAxisSize.min,
@@ -81,7 +82,8 @@ class _PostListPageState extends State<PostListPage> {
                           )),
                           DataCell(IconButton(
                             onPressed: () {
-                              context.push("${Routes.postEdit.path}/${post.id}");
+                              context
+                                  .push("${Routes.postEdit.path}/${post.id}");
                             },
                             icon: const Icon(Icons.edit),
                           )),
