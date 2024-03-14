@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/page/private/admin_page.dart';
+import 'package:health_care_website/view/page/private/carousel_page.dart';
 import 'package:health_care_website/view/page/private/page_edit_page.dart';
 import 'package:health_care_website/view/page/private/page_list_page.dart';
 import 'package:health_care_website/view/page/private/restaurant_edit_page.dart';
@@ -24,6 +25,10 @@ class Router {
           GoRoute(
             path: Routes.admin.path,
             builder: (context, state) => const AdminPage(),
+          ),
+          GoRoute(
+            path: Routes.carousel.path,
+            builder: (context, state) => const CarouselPage(),
           ),
           GoRoute(
             path: Routes.postList.path,

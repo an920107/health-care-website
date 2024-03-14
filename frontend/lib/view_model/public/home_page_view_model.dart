@@ -2,7 +2,9 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:health_care_website/enum/post_column.dart';
+import 'package:health_care_website/model/carousel/caroousel_info.dart';
 import 'package:health_care_website/model/post/post.dart';
+import 'package:health_care_website/repo/carousel_repo.dart';
 import 'package:health_care_website/repo/post_repo.dart';
 
 class HomePageViewModel with ChangeNotifier {
@@ -16,8 +18,12 @@ class HomePageViewModel with ChangeNotifier {
   List<Post> _posts = [];
   List<Post> get posts => UnmodifiableListView(_posts);
 
-  Future<void> getPost() async {
+  List<CarouselInfo> _images = [];
+  List<CarouselInfo> get images => UnmodifiableListView(_images);
+
+  Future<void> fetchFromServer() async {
     _posts = (await PostRepo.getPosts(column: _column))!.posts;
+    _images = await CarouselRepo.getImages();
     notifyListeners();
   }
 }

@@ -8,7 +8,7 @@ import 'package:health_care_website/model/post/attachment_info.dart';
 import 'package:health_care_website/model/post/post.dart';
 import 'package:health_care_website/repo/post_repo.dart';
 
-class PostEditorPageViewModel with ChangeNotifier {
+class PostEditPageViewModel with ChangeNotifier {
   Post? _post;
   Post? get post => _post;
 

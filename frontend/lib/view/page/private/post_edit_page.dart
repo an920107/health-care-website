@@ -17,7 +17,7 @@ import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/clean_button.dart';
 import 'package:health_care_website/view/widget/dialog/post_delete_dialog.dart';
-import 'package:health_care_website/view_model/private/post_editor_page_view_model.dart';
+import 'package:health_care_website/view_model/private/post_edit_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 class PostEditPage extends StatefulWidget {
@@ -45,7 +45,7 @@ class _PostEditPageState extends State<PostEditPage> {
   @override
   void initState() {
     super.initState();
-    _future = context.read<PostEditorPageViewModel>().fetchFromServer;
+    _future = context.read<PostEditPageViewModel>().fetchFromServer;
   }
 
   @override
@@ -68,7 +68,7 @@ class _PostEditPageState extends State<PostEditPage> {
               );
             }
 
-            return Consumer<PostEditorPageViewModel>(
+            return Consumer<PostEditPageViewModel>(
               builder: (context, value, child) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -170,10 +170,18 @@ class _PostEditPageState extends State<PostEditPage> {
                       TextButton.icon(
                         style: TextButtonStyle.rRectStyle(),
                         onPressed: () async {
-                          await showDialog(
+                          final reply = await showDialog(
                             context: context,
-                            builder: (context) => const PostDeleteDialog(),
+                            builder: (context) => const DeleteDialog(),
                           );
+                          if (context.mounted && reply == true) {
+                            await context
+                                .read<PostEditPageViewModel>()
+                                .delete();
+                            if (context.mounted) {
+                              context.pushReplacement(Routes.postList.path);
+                            }
+                          }
                         },
                         icon: const Icon(Icons.delete),
                         label: const Text("刪除", style: TextStyle(fontSize: 16)),
@@ -323,7 +331,7 @@ class _PostEditPageState extends State<PostEditPage> {
             flex: 1,
             child: IconButton(
               onPressed: () => context
-                  .read<PostEditorPageViewModel>()
+                  .read<PostEditPageViewModel>()
                   .removeAttachment(info.id),
               icon: const Icon(Icons.cancel_outlined),
             ),
@@ -351,7 +359,7 @@ class _PostEditPageState extends State<PostEditPage> {
     String url;
     if (context.mounted) {
       url = await context
-          .read<PostEditorPageViewModel>()
+          .read<PostEditPageViewModel>()
           .uploadImage(await file.readAsBytes(), file.name);
     } else {
       url = "";

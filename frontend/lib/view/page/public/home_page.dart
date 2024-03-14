@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_care_website/config.dart';
 import 'package:health_care_website/enum/page_topic.dart';
 import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/router/routes.dart';
@@ -26,7 +28,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-    final _menu = PageTopic.asMap();
+  final _menu = PageTopic.asMap();
 
   @override
   void initState() {
@@ -40,7 +42,7 @@ class _HomePageState extends State<HomePage> {
           if (value == null) context.go(Routes.root.path);
         });
       }
-      context.read<HomePageViewModel>().getPost();
+      context.read<HomePageViewModel>().fetchFromServer();
     });
   }
 
@@ -121,6 +123,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // 圖片輪播
                       LayoutBuilder(builder: (context, constrain) {
                         return SizedBox(
                           width: constrain.maxWidth,
@@ -129,17 +132,24 @@ class _HomePageState extends State<HomePage> {
                               autoPlay: true,
                               enlargeCenterPage: true,
                             ),
-                            items: List.generate(
-                              4,
-                              (index) => ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(
-                                  // TODO: getting image from the server.
-                                  "assets/carousel/$index.jpg",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
+                            items: value.images
+                                .map(
+                                  (e) => ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: CachedNetworkImage(
+                                      imageUrl: Uri.decodeComponent(
+                                        Uri.https(Config.backend, e.endpoint)
+                                            .toString(),
+                                      ),
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                              child:
+                                                  CircularProgressIndicator()),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
                           ),
                         );
                       }),
@@ -195,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                               selectedIcon: const Icon(Icons.view_agenda),
                               onSelectionChanged: (selected) {
                                 value.column = selected.first;
-                                value.getPost();
+                                value.fetchFromServer();
                               },
                               selected: {value.column},
                             ),

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:health_care_website/router/routes.dart';
-import 'package:health_care_website/view_model/private/post_editor_page_view_model.dart';
-import 'package:provider/provider.dart';
 
-class PostDeleteDialog extends StatelessWidget {
-  const PostDeleteDialog({super.key});
+class DeleteDialog extends StatelessWidget {
+  const DeleteDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +15,11 @@ class PostDeleteDialog extends StatelessWidget {
       actionsAlignment: MainAxisAlignment.center,
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context).pop(null),
           child: const Text("取消"),
         ),
         TextButton(
-          onPressed: () async {
-            await context.read<PostEditorPageViewModel>().delete();
-            if (context.mounted) {
-              context.pushReplacement(Routes.postList.path);
-            }
-          },
+          onPressed: () => Navigator.of(context).pop(true),
           child: Text(
             "刪除",
             style: TextStyle(color: Theme.of(context).colorScheme.error),

@@ -13,7 +13,7 @@ class PostResponse {
 
   factory PostResponse.fromJson(Map<String, dynamic> json) => PostResponse(
         posts: (json["posts"] as List).map((e) => Post.fromJson(e)).toList(),
-        page: int.parse(json["page"]),
+        page: int.parse(json["pages"]),
         totalPage: int.parse(json["total_page"]),
       );
 }

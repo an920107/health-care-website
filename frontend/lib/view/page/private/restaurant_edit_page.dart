@@ -1,8 +1,6 @@
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/enum/restaurant_option.dart';
@@ -183,7 +181,7 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                 onPressed: () async {
                   await showDialog(
                     context: context,
-                    builder: (context) => const PostDeleteDialog(),
+                    builder: (context) => const DeleteDialog(),
                   );
                 },
                 icon: const Icon(Icons.delete),
