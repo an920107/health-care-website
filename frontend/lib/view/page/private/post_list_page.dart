@@ -38,7 +38,7 @@ class _PostListPageState extends State<PostListPage> {
                     if (post == null) return;
                     await value.updatePostList();
                     if (context.mounted) {
-                      context.push("${Routes.edit.path}/${post.id}");
+                      context.push("${Routes.postEdit.path}/${post.id}");
                     }
                   },
                   icon: const Icon(Icons.add),
@@ -81,7 +81,7 @@ class _PostListPageState extends State<PostListPage> {
                           )),
                           DataCell(IconButton(
                             onPressed: () {
-                              context.push("${Routes.edit.path}/${post.id}");
+                              context.push("${Routes.postEdit.path}/${post.id}");
                             },
                             icon: const Icon(Icons.edit),
                           )),

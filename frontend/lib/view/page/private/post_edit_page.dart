@@ -19,8 +19,8 @@ import 'package:health_care_website/view/widget/dialog/post_delete_dialog.dart';
 import 'package:health_care_website/view_model/private/post_editor_page_view_model.dart';
 import 'package:provider/provider.dart';
 
-class PostEditorPage extends StatefulWidget {
-  const PostEditorPage(
+class PostEditPage extends StatefulWidget {
+  const PostEditPage(
     this.id, {
     super.key,
   });
@@ -28,10 +28,10 @@ class PostEditorPage extends StatefulWidget {
   final String id;
 
   @override
-  State<PostEditorPage> createState() => _PostEditorPageState();
+  State<PostEditPage> createState() => _PostEditPageState();
 }
 
-class _PostEditorPageState extends State<PostEditorPage> {
+class _PostEditPageState extends State<PostEditPage> {
   late Future<Post?> Function(String) _future;
 
   final _titleTextController = TextEditingController();
