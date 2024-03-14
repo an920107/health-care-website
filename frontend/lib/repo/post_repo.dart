@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:health_care_website/config.dart';
+import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/extension/boolean_extension.dart';
 import 'package:health_care_website/model/post/attachment_info.dart';
 import 'package:health_care_website/model/post/attachment_response.dart';

@@ -11,6 +11,6 @@ class PageEditPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BaseScaffold(body: Placeholder());
+    return const BaseScaffold(body: Column());
   }
 }

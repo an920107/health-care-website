@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/model/post/post.dart';
 import 'package:health_care_website/repo/post_repo.dart';
 

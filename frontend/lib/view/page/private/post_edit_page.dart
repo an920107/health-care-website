@@ -9,6 +9,7 @@ import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:flutter_quill_extensions/services/image_picker/image_picker.dart';
 import 'package:flutter_quill_extensions/services/image_picker/s_image_picker.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/model/post/attachment_info.dart';
 import 'package:health_care_website/view/theme/button_style.dart';
 import 'package:health_care_website/model/post/post.dart';

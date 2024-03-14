@@ -52,6 +52,7 @@ dependencies:
   uuid: ^4.3.3
   shared_preferences: ^2.2.2
   google_fonts: ^6.2.1
+  omni_datetime_picker: ^1.0.9
 
 dev_dependencies:
   flutter_test:
