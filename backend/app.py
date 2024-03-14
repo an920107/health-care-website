@@ -3,12 +3,16 @@ import logging
 import os.path
 from logging.handlers import TimedRotatingFileHandler
 
-from posts.routes import *
-from auth.routes import *
-
 from package.response import Response
 
+import posts.routes
+import auth.routes
+import carousel.routes
+import static_pages.routes
+
 from script.oauth_scripts import *
+
+from package.database_operator import *
 
 from flask_jwt_extended import JWTManager
 from flask import Flask, request, send_file, redirect
@@ -33,8 +37,11 @@ def create_app():
     swagger = Swagger(app)
 
     # blueprint
-    app.register_blueprint(posts_blueprints, url_prefix='/api/posts')
-    app.register_blueprint(auth_blueprints, url_prefix='/api/auth')
+
+    app.register_blueprint(posts.routes.posts_blueprints, url_prefix='/api/posts')
+    app.register_blueprint(auth.routes.auth_blueprints, url_prefix='/api/auth')
+    app.register_blueprint(static_pages.routes.static_pages_blueprints, url_prefix='/api/static_pages')
+    app.register_blueprint(carousel.routes.carousels_blueprints, url_prefix='/api/carousels')
 
     handler = TimedRotatingFileHandler('logging/flask-error.log', when='midnight', interval=1, backupCount=7)
     handler.setLevel(logging.INFO)
@@ -44,16 +51,15 @@ def create_app():
 
     # db and jwt
     with app.app_context():
-        db.session.remove()
-        db.drop_all()
+        # db.session.remove()
+        # db.drop_all()
         db.create_all()
-        jwt = JWTManager(current_app)
+        jwt = auth.routes.JWTManager(app)
 
     # CORS
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     return app
-
 
 
 app = create_app()
@@ -90,4 +96,4 @@ if __name__ == '__main__':
         os.mkdir('posts/uploads/images')
         os.mkdir('posts/uploads/attachments')
 
-    app.run(debug=True, host="0.0.0.0", port=5001)
+    app.run(debug=False, host="0.0.0.0", port=5001)

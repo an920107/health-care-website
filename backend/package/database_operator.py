@@ -23,12 +23,12 @@ class DatabaseOperator:
     @staticmethod
     def select_one(model, kwargs=None):
         kwargs = kwargs or {}
-        return db.session.query(model).filter_by(**kwargs).first()
+        return db.session.query(model).filter_by(**kwargs).limit(1000).first()
 
     @staticmethod
     def select_all(model, kwargs=None):
         kwargs = kwargs or {}
-        return db.session.query(model).filter_by(**kwargs).all()
+        return db.session.query(model).filter_by(**kwargs).limit(1000).all()
 
     @staticmethod
     def delete(model, kwargs):

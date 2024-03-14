@@ -65,11 +65,11 @@ def get_post():
         required: false
         description: The column of the posts
         enum: ['activity', 'health', 'restaurant', 'nutrition']
-      - name: page
+      - name: pages
         in: query
         type: string
         required: false
-        description: The page of the posts
+        description: The pages of the posts
     responses:
       200:
         description: Return a success message
@@ -81,7 +81,7 @@ def get_post():
             response:
               type: object
               properties:
-                page:
+                pages:
                   type: string
                 posts:
                   type: array
@@ -123,15 +123,15 @@ def get_post():
     else:
         posts = DatabaseOperator.select_all(Post)
 
-    # filter posts by page default is one
-    if api_input_check(['page'], request.args) and int(request.args['page']) > 0:
-        page = int(request.args['page'])
+    # filter posts by pages default is one
+    if api_input_check(['pages'], request.args) and int(request.args['pages']) > 0:
+        page = int(request.args['pages'])
     else:
         page = 1
 
     posts_payload = {
         'total_page': str(len(posts) // GET_POST_PER_PAGE + 1),
-        'page': str(page),
+        'pages': str(page),
         'posts': []
     }
 
@@ -460,34 +460,6 @@ def get_attachment():
     return send_file(attachment.file_path)
 
 
-@posts_blueprints.route("/attachment_info", methods=['GET'])
-def get_attachment_info():
-    """
-    Get the attachment info by attachment_id
-    ---
-    tags:
-      - POST
-    parameters:
-      - name: attachment_id
-        in: query
-        type: string
-        required: true
-        description: The ID of the images to get INFO
-    responses:
-      200:
-        description: Return the images file
-      404:
-        description: File not found
-    """
-    file_id = request.args.get('attachment_id')
-    attachment = DatabaseOperator.select_one(File, {'id': int(file_id)})
-    if not (attachment and os.path.exists(attachment.file_path)):
-        return Response.not_found('attachments not found')
-    attachment = attachment.as_dict()
-    attachment.pop("file_path", None)
-    return Response.response("get attachment info success", attachment)
-
-
 @posts_blueprints.route("/attachment", methods=['DELETE'])
 def delete_attachment():
     """
@@ -515,3 +487,31 @@ def delete_attachment():
         pass
     DatabaseOperator.delete(File, {'id': int(attachment_id)})
     return Response.response('delete attachment success')
+
+
+@posts_blueprints.route("/attachment_info", methods=['GET'])
+def get_attachment_info():
+    """
+    Get the attachment info by attachment_id
+    ---
+    tags:
+      - POST
+    parameters:
+      - name: attachment_id
+        in: query
+        type: string
+        required: true
+        description: The ID of the images to get INFO
+    responses:
+      200:
+        description: Return the images file
+      404:
+        description: File not found
+    """
+    file_id = request.args.get('attachment_id')
+    attachment = DatabaseOperator.select_one(File, {'id': int(file_id)})
+    if not (attachment and os.path.exists(attachment.file_path)):
+        return Response.not_found('attachments not found')
+    attachment = attachment.as_dict()
+    attachment.pop("file_path", None)
+    return Response.response("get attachment info success", attachment)

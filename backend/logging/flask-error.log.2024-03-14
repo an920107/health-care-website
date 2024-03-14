@@ -1,0 +1,72 @@
+2024-03-14 15:51:25,073 - ERROR - IP: 140.115.54.46 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 15:51:25,284 - ERROR - IP: 140.115.54.46 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 17:31:43,780 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 17:33:27,800 - ERROR - IP: 127.0.0.1 - Route: /apispec_1.json - Message: An exception occurred: while parsing a block collection
+  in "<unicode string>", line 1, column 1:
+    - tags:
+    ^
+expected <block end>, but found '?'
+  in "<unicode string>", line 3, column 1:
+    parameters:
+    ^
+2024-03-14 17:35:16,289 - ERROR - IP: 127.0.0.1 - Route: /apispec_1.json - Message: An exception occurred: while parsing a block collection
+  in "<unicode string>", line 1, column 1:
+    - tags:
+    ^
+expected <block end>, but found '?'
+  in "<unicode string>", line 3, column 1:
+    parameters:
+    ^
+2024-03-14 22:31:10,102 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:33:22,001 - ERROR - IP: 66.220.149.13 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:35:06,199 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:35:27,114 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:35:32,687 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:35:35,955 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:36:11,354 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:36:12,772 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:36:21,163 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:36:29,935 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:39:41,017 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:40:11,297 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:40:13,618 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:40:17,674 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:41:28,869 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:41:58,908 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:43:48,637 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 22:43:48,653 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:02:59,018 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:03:01,055 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:13:47,130 - ERROR - IP: 140.115.54.46 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:13:47,318 - ERROR - IP: 140.115.54.46 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:16:26,712 - ERROR - IP: 140.115.54.46 - Route: /apispec_1.json - Message: An exception occurred: 'str' object has no attribute 'get'
+2024-03-14 23:18:25,278 - ERROR - IP: 127.0.0.1 - Route: /apispec_1.json - Message: An exception occurred: 'str' object has no attribute 'get'
+2024-03-14 23:19:22,547 - ERROR - IP: 127.0.0.1 - Route: /apispec_1.json - Message: An exception occurred: 'str' object has no attribute 'get'
+2024-03-14 23:20:35,798 - ERROR - IP: 127.0.0.1 - Route: /apispec_1.json - Message: An exception occurred: 'str' object has no attribute 'get'
+2024-03-14 23:20:55,597 - ERROR - IP: 127.0.0.1 - Route: /apispec_1.json - Message: An exception occurred: 'str' object has no attribute 'get'
+2024-03-14 23:22:26,294 - ERROR - IP: 140.115.54.46 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:22:26,471 - ERROR - IP: 140.115.54.46 - Route: /apispec_1.json - Message: An exception occurred: 'str' object has no attribute 'get'
+2024-03-14 23:24:42,991 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:25:40,973 - ERROR - IP: 127.0.0.1 - Route: /apispec_1.json - Message: An exception occurred: 'str' object has no attribute 'get'
+2024-03-14 23:26:14,144 - ERROR - IP: 127.0.0.1 - Route: /apispec_1.json - Message: An exception occurred: 'str' object has no attribute 'get'
+2024-03-14 23:31:15,713 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:31:15,721 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:32:06,650 - ERROR - IP: 127.0.0.1 - Route: /api/carousels/carousel - Message: An exception occurred: 'IMAGE_DIR'
+2024-03-14 23:32:41,163 - ERROR - IP: 127.0.0.1 - Route: /api/carousels/carousel - Message: An exception occurred: 'url' is an invalid keyword argument for Carousel
+2024-03-14 23:33:18,233 - ERROR - IP: 127.0.0.1 - Route: /api/carousels/carousel - Message: An exception occurred: (sqlite3.InterfaceError) Error binding parameter 0 - probably unsupported type.
+[SQL: INSERT INTO carousel (id, name, file_path, create_time, update_time) VALUES (?, ?, ?, ?, ?)]
+[parameters: (UUID('36fe9931-307a-4418-841f-f80771132d55'), 'blob_carousel', 'carousel\\images\\36fe9931-307a-4418-841f-f80771132d55.jpg', '2024-03-14 23:33:18.232442', '2024-03-14 23:33:18.232442')]
+(Background on this error at: https://sqlalche.me/e/20/rvf5)
+2024-03-14 23:47:22,675 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:48:43,014 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:55:43,858 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:55:43,882 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:56:13,600 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:56:53,890 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:57:02,331 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:57:07,411 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:58:01,499 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:58:03,560 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:58:35,499 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:58:37,187 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2024-03-14 23:58:39,187 - ERROR - IP: 127.0.0.1 - Route: unknown - Message: An exception occurred: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.

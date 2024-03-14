@@ -41,3 +41,9 @@ class User(db.Model, SchemaMixin):
 class OauthTmpInfo(db.Model, SchemaMixin):
     state = db.Column(db.String(100), nullable=False, unique=False)
     access_token = db.Column(db.String(40), nullable=False, unique=False)
+
+
+class Carousel(db.Model, SchemaMixin):
+    id = db.Column(db.String(40), primary_key=True)
+    name = db.Column(db.String(40), nullable=False)
+    file_path = db.Column(db.String(100), nullable=False, unique=True)
