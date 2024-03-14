@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:health_care_website/config.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class BaseDrawer extends StatefulWidget {
   const BaseDrawer({super.key});
@@ -70,7 +73,7 @@ class _BaseDrawerState extends State<BaseDrawer> {
             Column(
               children: [
                 ListTile(
-                  onTap: () {},
+                  onTap: () => launchUrlString(Config.ncuHome),
                   leading: const Icon(Icons.home),
                   title: const Text(
                     "中大首頁",
@@ -80,23 +83,49 @@ class _BaseDrawerState extends State<BaseDrawer> {
                   ),
                 ),
                 ListTile(
-                  onTap: () {},
-                  leading: const Icon(FontAwesomeIcons.instagram),
+                  onTap: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => const AlertDialog(
+                        title: Text("Sorry!"),
+                        content: Text("This feature is not available yet."),
+                      ),
+                    );
+                  },
+                  leading: const Icon(Icons.language),
                   title: const Text(
-                    "Instagram",
+                    "English",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 ListTile(
-                  onTap: () {},
-                  leading: const Icon(FontAwesomeIcons.facebook),
-                  title: const Text(
-                    "Facebook",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  title: Row(
+                    children: [
+                      IconButton.outlined(
+                        onPressed: () async {
+                          await Clipboard.setData(
+                            ClipboardData(text: Config.email),
+                          );
+                          if (context.mounted) {
+                            Scaffold.of(context).closeDrawer();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("電子郵件已複製到剪貼簿")),
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.email),
+                      ),
+                      IconButton.outlined(
+                        onPressed: () => launchUrlString(Config.instagram),
+                        icon: const Icon(FontAwesomeIcons.instagram),
+                      ),
+                      IconButton.outlined(
+                        onPressed: () => launchUrlString(Config.facebook),
+                        icon: const Icon(FontAwesomeIcons.facebook),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 10),
