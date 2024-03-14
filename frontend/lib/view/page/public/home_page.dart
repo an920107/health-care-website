@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_care_website/enum/page_topic.dart';
 import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
@@ -25,14 +26,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final Map<String, List<String>> _menu = {
-    "關於我們": ["工作團隊", "服務時間", "交通地圖"],
-    "健康檢查": ["新生健康檢查", "新進人員體格檢查", "定期健康檢查"],
-    "緊急醫療": ["緊急通報專線", "校園傷病處理", "校園AED"],
-    "健康服務": ["學生團體保險", "醫療器材借用", "健康管理設施"],
-    "健康職場": ["職業醫師臨校服務", "職場健康服務計畫"],
-    "教育訓練": ["大一 CPR", "校園菸害防制教育", "校園愛滋防治教育", "校園傳染病防治"],
-  };
+    final _menu = PageTopic.asMap();
 
   @override
   void initState() {
@@ -80,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 5),
                                       child: Text(
-                                        group.key,
+                                        group.key.label,
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -103,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                                         child: TextButton(
                                           onPressed: () {},
                                           child: Text(
-                                            link,
+                                            link.label,
                                             softWrap: false,
                                             overflow: TextOverflow.fade,
                                             textAlign: TextAlign.center,
