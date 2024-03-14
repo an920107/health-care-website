@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:flutter_quill_extensions/services/image_picker/image_picker.dart';
 import 'package:flutter_quill_extensions/services/image_picker/s_image_picker.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/model/post/attachment_info.dart';
 import 'package:health_care_website/view/theme/button_style.dart';
 import 'package:health_care_website/model/post/post.dart';
@@ -15,11 +17,11 @@ import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/clean_button.dart';
 import 'package:health_care_website/view/widget/dialog/post_delete_dialog.dart';
-import 'package:health_care_website/view_model/private/post_editor_page_view_model.dart';
+import 'package:health_care_website/view_model/private/post_edit_page_view_model.dart';
 import 'package:provider/provider.dart';
 
-class PostEditorPage extends StatefulWidget {
-  const PostEditorPage(
+class PostEditPage extends StatefulWidget {
+  const PostEditPage(
     this.id, {
     super.key,
   });
@@ -27,10 +29,10 @@ class PostEditorPage extends StatefulWidget {
   final String id;
 
   @override
-  State<PostEditorPage> createState() => _PostEditorPageState();
+  State<PostEditPage> createState() => _PostEditPageState();
 }
 
-class _PostEditorPageState extends State<PostEditorPage> {
+class _PostEditPageState extends State<PostEditPage> {
   late Future<Post?> Function(String) _future;
 
   final _titleTextController = TextEditingController();
@@ -43,7 +45,7 @@ class _PostEditorPageState extends State<PostEditorPage> {
   @override
   void initState() {
     super.initState();
-    _future = context.read<PostEditorPageViewModel>().fetchFromServer;
+    _future = context.read<PostEditPageViewModel>().fetchFromServer;
   }
 
   @override
@@ -60,12 +62,13 @@ class _PostEditorPageState extends State<PostEditorPage> {
             // Loading 圈圈
             if (snapshot.connectionState != ConnectionState.done) {
               return Padding(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 3),
                 child: const Center(child: CircularProgressIndicator()),
               );
             }
 
-            return Consumer<PostEditorPageViewModel>(
+            return Consumer<PostEditPageViewModel>(
               builder: (context, value, child) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -167,10 +170,18 @@ class _PostEditorPageState extends State<PostEditorPage> {
                       TextButton.icon(
                         style: TextButtonStyle.rRectStyle(),
                         onPressed: () async {
-                          await showDialog(
+                          final reply = await showDialog(
                             context: context,
-                            builder: (context) => const PostDeleteDialog(),
+                            builder: (context) => const DeleteDialog(),
                           );
+                          if (context.mounted && reply == true) {
+                            await context
+                                .read<PostEditPageViewModel>()
+                                .delete();
+                            if (context.mounted) {
+                              context.pushReplacement(Routes.postList.path);
+                            }
+                          }
                         },
                         icon: const Icon(Icons.delete),
                         label: const Text("刪除", style: TextStyle(fontSize: 16)),
@@ -180,8 +191,7 @@ class _PostEditorPageState extends State<PostEditorPage> {
                       const SizedBox(width: 20),
                       OutlinedButton.icon(
                         style: OutlinedButtonStyle.rRectStyle(),
-                        onPressed: () =>
-                            context.pushReplacement(Routes.postList.path),
+                        onPressed: () => context.go(Routes.postList.path),
                         icon: const Icon(Icons.cancel),
                         label: const Text("取消", style: TextStyle(fontSize: 16)),
                       ),
@@ -191,7 +201,23 @@ class _PostEditorPageState extends State<PostEditorPage> {
                       OutlinedButton.icon(
                         style: OutlinedButtonStyle.rRectStyle(),
                         onPressed: () async {
-                          final result = await FilePicker.platform.pickFiles();
+                          final result = await FilePickerWeb.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: [
+                              "pdf",
+                              "jpg",
+                              "jpeg",
+                              "png",
+                              "doc",
+                              "docx",
+                              "xls",
+                              "xlsx",
+                              "ppt",
+                              "pptx",
+                              "odt",
+                              "csv",
+                            ],
+                          );
                           if (result == null) return;
                           final blob = result.files.single.bytes;
                           final name = result.files.single.name;
@@ -305,7 +331,7 @@ class _PostEditorPageState extends State<PostEditorPage> {
             flex: 1,
             child: IconButton(
               onPressed: () => context
-                  .read<PostEditorPageViewModel>()
+                  .read<PostEditPageViewModel>()
                   .removeAttachment(info.id),
               icon: const Icon(Icons.cancel_outlined),
             ),
@@ -333,7 +359,7 @@ class _PostEditorPageState extends State<PostEditorPage> {
     String url;
     if (context.mounted) {
       url = await context
-          .read<PostEditorPageViewModel>()
+          .read<PostEditPageViewModel>()
           .uploadImage(await file.readAsBytes(), file.name);
     } else {
       url = "";

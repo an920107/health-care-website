@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/model/post/attachment_info.dart';
 import 'package:health_care_website/model/post/post.dart';
 import 'package:health_care_website/repo/post_repo.dart';
 
-class PostEditorPageViewModel with ChangeNotifier {
+class PostEditPageViewModel with ChangeNotifier {
   Post? _post;
   Post? get post => _post;
 
@@ -38,7 +39,7 @@ class PostEditorPageViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  PostColumn _selectedPostColumn = PostColumn.activity;
+  PostColumn _selectedPostColumn = PostColumn.values.first;
   PostColumn get selectedPostColumn => _selectedPostColumn;
   set selectedPostColumn (PostColumn value) {
     _selectedPostColumn = value;

@@ -3,11 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:health_care_website/router/router.dart';
 import 'package:health_care_website/view_model/auth_view_model.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
-import 'package:health_care_website/view_model/private/post_editor_page_view_model.dart';
+import 'package:health_care_website/view_model/private/carousel_page_view_model.dart';
+import 'package:health_care_website/view_model/private/post_edit_page_view_model.dart';
 import 'package:health_care_website/view_model/private/post_list_page_view_model.dart';
+import 'package:health_care_website/view_model/public/home_page_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -35,13 +38,17 @@ class App extends StatelessWidget {
       providers: [
         Provider(create: (_) => PlatformViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
-        ChangeNotifierProvider(create: (_) => PostEditorPageViewModel()),
+        ChangeNotifierProvider(create: (_) => CarouselPageViewModel()),
+        ChangeNotifierProvider(create: (_) => PostEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => PostListPageViewModel()),
+        ChangeNotifierProvider(create: (_) => HomePageViewModel()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: "Health Care Website",
         theme: ThemeData(
+          textTheme:
+              GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
           useMaterial3: true,
         ),

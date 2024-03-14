@@ -23,7 +23,7 @@ class BaseFooter extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("電話：03-4227151#57270"),
+                        Text("電話：03-4227151#57270、03-2804814"),
                         Text("傳真：03-4272405"),
                         Text("Email：ncu7270@ncu.edu.tw"),
                         Text("地址：320 桃園市中壢區中大路 300 號 中正圖書館 1 樓"),
@@ -33,6 +33,8 @@ class BaseFooter extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // TODO
+                        Text("【瀏覽人次 0 人】"),
                         Text("【隱私權政策聲明】"),
                         Text("版權所有 © 國立中央大學衛生保健組"),
                         Text("National Central University - Health Center"),
@@ -45,13 +47,16 @@ class BaseFooter extends StatelessWidget {
                   children: [
                     Column(
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("電話：03-4227151#57270"),
+                        Text("電話：03-4227151#57270、03-2804814"),
                         Text("傳真：03-4272405"),
                         Text("Email：ncu7270@ncu.edu.tw"),
                         Text("地址：320 桃園市中壢區中大路 300 號 中正圖書館 1 樓"),
+                        Text(""),
+                        Text("【瀏覽人次 0 人】"),
                         Text("【隱私權政策聲明】"),
+                        Text(""),
                         Text("版權所有 © 國立中央大學衛生保健組"),
                         Text("National Central University - Health Center"),
                       ],

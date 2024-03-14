@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:health_care_website/view/widget/icon_text.dart';
+import 'package:health_care_website/config.dart';
+import 'package:health_care_website/enum/page_topic.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class BaseDrawer extends StatefulWidget {
   const BaseDrawer({super.key});
@@ -10,59 +13,121 @@ class BaseDrawer extends StatefulWidget {
 }
 
 class _BaseDrawerState extends State<BaseDrawer> {
-  final _routes = [
-    "新生健檢報告",
-    "教職員體格檢查",
-    "身體組成分析儀",
-    "手指消毒器 SDS\n安全資料表",
-    "登革熱防疫專區",
-    "母性健康保護",
-    "紅火蟻防治",
-    "學生團體保險",
-    "醫療及防疫器材",
-    "醫療新知",
-    "特約醫院",
-    "我的健康餐盤",
-    "餐飲衛生",
-    "相關網站",
-    "關於我們",
-    "聯絡我們",
-    "檔案下載",
-    ""
-  ];
+  final _menu = PageTopic.asMap();
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: SafeArea(
-          child: ListView.separated(
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return const Padding(
-              padding: EdgeInsets.only(
-                top: 50,
-                bottom: 25,
-              ),
-              child: IconText(
-                icon: Icon(FontAwesomeIcons.solidCompass),
-                child: Text(
-                  "MENU",
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 60),
+              child: ListTile(
+                title: Text(
+                  "選單",
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 36,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            );
-          } else {
-            return ListTile(
-              title: Text(_routes[index - 1]),
-            );
-          }
-        },
-        separatorBuilder: (_, __) => const Divider(),
-        itemCount: _routes.length + 1,
-      )),
+            ),
+            const Divider(),
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  for (var group in _menu.entries)
+                    Theme(
+                      data: Theme.of(context)
+                          .copyWith(dividerColor: Colors.transparent),
+                      child: ExpansionTile(
+                        title: Text(
+                          group.key.label,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        children: [
+                          for (var link in group.value)
+                            ListTile(
+                              onTap: () {},
+                              title: Text(link.label),
+                            ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const Divider(),
+            Column(
+              children: [
+                ListTile(
+                  onTap: () => launchUrlString(Config.ncuHome),
+                  leading: const Icon(Icons.home),
+                  title: const Text(
+                    "中大首頁",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  onTap: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => const AlertDialog(
+                        title: Text("Sorry!"),
+                        content: Text("This feature is not available yet."),
+                      ),
+                    );
+                  },
+                  leading: const Icon(Icons.language),
+                  title: const Text(
+                    "English",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Row(
+                    children: [
+                      IconButton.outlined(
+                        onPressed: () async {
+                          await Clipboard.setData(
+                            ClipboardData(text: Config.email),
+                          );
+                          if (context.mounted) {
+                            Scaffold.of(context).closeDrawer();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("電子郵件已複製到剪貼簿")),
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.email),
+                      ),
+                      IconButton.outlined(
+                        onPressed: () => launchUrlString(Config.instagram),
+                        icon: const Icon(FontAwesomeIcons.instagram),
+                      ),
+                      IconButton.outlined(
+                        onPressed: () => launchUrlString(Config.facebook),
+                        icon: const Icon(FontAwesomeIcons.facebook),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
