@@ -9,7 +9,7 @@ class Post {
   String content;
   String attachments;
   bool visible;
-  bool important;
+  bool importance;
   DateTime createTime;
   DateTime updateTime;
 
@@ -20,7 +20,7 @@ class Post {
     required this.content,
     required this.attachments,
     required this.visible,
-    required this.important,
+    required this.importance,
     required this.createTime,
     required this.updateTime,
   });
@@ -32,7 +32,7 @@ class Post {
         content: json["content"] ?? "",
         attachments: json["attachments"] ?? "",
         visible: json["visible"] == "1",
-        important: json["important"] == "1",
+        importance: json["importance"] == "1",
         createTime: DateTime.parse(json["create_time"]),
         updateTime: DateTime.parse(json["update_time"]),
       );
@@ -44,7 +44,7 @@ class Post {
         "content": content,
         "attachments": attachments,
         "visible": visible.toZeroOne().toString(),
-        "important": important.toZeroOne().toString(),
+        "importance": importance.toZeroOne().toString(),
         "create_time": createTime.toIso8601String(),
         "update_time": updateTime.toIso8601String(),
       };

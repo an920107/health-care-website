@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                                         DataCell(Text(post.column.label)),
                                         DataCell(Row(
                                           children: [
-                                            if (!post.important)
+                                            if (post.importance)
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                   right: 5,
