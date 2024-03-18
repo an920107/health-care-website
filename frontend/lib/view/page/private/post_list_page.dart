@@ -69,9 +69,10 @@ class _PostListPageState extends State<PostListPage> {
                           DataCell(Text(DateFormat("yyyy-MM-dd")
                               .format(post.updateTime))),
                           DataCell(Checkbox(
-                            value: post.important,
-                            onChanged: (checked) =>
-                                value.togglePostImportant(post),
+                            value: post.importance,
+                            onChanged: value.importanceLock.contains(post)
+                                ? null
+                                : (checked) => value.togglePostImportant(post),
                           )),
                           DataCell(IconText(
                             mainAxisSize: MainAxisSize.min,

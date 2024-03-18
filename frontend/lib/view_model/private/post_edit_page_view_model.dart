@@ -14,20 +14,6 @@ class PostEditPageViewModel with ChangeNotifier {
 
   String _id = "";
   String get id => _id;
-  set id(String value) {
-    _id = value;
-    _post = null;
-    if (_id.isEmpty) {
-    } else {
-      PostRepo.getPost(_id)
-        ..onError((error, stackTrace) => null)
-        ..then((value) {
-          _post = value;
-          notifyListeners();
-        });
-    }
-    notifyListeners();
-  }
 
   List<AttachmentInfo> _attachments = [];
   List<AttachmentInfo> get attachments => UnmodifiableListView(_attachments);
@@ -87,7 +73,12 @@ class PostEditPageViewModel with ChangeNotifier {
   Future<String> uploadImage(Uint8List file, String filename) async {
     // TODO: 顯示錯誤原因
     final response = await PostRepo.uploadAttachment(file, filename);
-    return response!.blobUrl;
+
+    // TODO: 用正常的方式回傳圖片 uri
+    var url = response!.blobUrl;
+    url = url.replaceFirst("get_attachment", "attachment");
+    url = url.replaceFirst("http", "https");
+    return url;
   }
 
   Future<void> uploadAttachment(Uint8List file, String filename) async {

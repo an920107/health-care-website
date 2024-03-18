@@ -49,7 +49,7 @@ abstract class PostRepo {
             ]),
             attachments: json.encode([]),
             visible: false,
-            important: false,
+            importance: false,
             createTime: DateTime.now(),
             updateTime: DateTime.now(),
           ).toJson());
@@ -72,13 +72,14 @@ abstract class PostRepo {
   }
 
   static Future<bool> togglePostImportant(String id, bool value) async {
-    final url = Uri.https(Config.backend, "/api/posts/post_importance", {
-      "id": id,
-      "value": value.toZeroOne().toString(),
-    });
+    final url = Uri.https(Config.backend, "/api/posts/post_importance");
     try {
-      final response = await http.put(url);
-      return json.decode(response.body)["response"]["value"];
+      final response = await http.put(url, body: {
+        "id": id,
+        "importance": (!value).toZeroOne().toString(),
+      });
+      if (response.statusCode != 200) throw Exception(response.body);
+      return !value;
     } on Exception catch (e) {
       if (kDebugMode) print(e);
       return value;

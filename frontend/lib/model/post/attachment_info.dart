@@ -1,3 +1,5 @@
+import 'package:health_care_website/config.dart';
+
 class AttachmentInfo {
   String id;
   String name;
@@ -24,4 +26,8 @@ class AttachmentInfo {
         "create_time": createTime.toIso8601String(),
         "update_time": updateTime.toIso8601String(),
       };
+
+  Uri get url => Uri.https(Config.backend, "/api/posts/attachment", {
+        "attachment_id": id,
+      });
 }

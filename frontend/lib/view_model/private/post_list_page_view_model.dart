@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/model/post/post.dart';
@@ -31,9 +33,16 @@ class PostListPageViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  final List<Post> _importanceLock = [];
+  List<Post> get importanceLock => UnmodifiableListView(_importanceLock);
+
   Future<void> togglePostImportant(Post post) async {
-    final newValue = await PostRepo.togglePostImportant(post.id, !post.important);
-    post.important = newValue;
+    _importanceLock.add(post);
+    post.importance = !post.importance;
+    notifyListeners();
+    final newValue = await PostRepo.togglePostImportant(post.id, !post.importance);
+    post.importance = newValue;
+    _importanceLock.removeWhere((e) => e == post);
     notifyListeners();
   }
 }
