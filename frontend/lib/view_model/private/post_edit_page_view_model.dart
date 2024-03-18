@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:health_care_website/config.dart';
 import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/model/post/attachment_info.dart';
 import 'package:health_care_website/model/post/post.dart';
@@ -87,7 +88,12 @@ class PostEditPageViewModel with ChangeNotifier {
   Future<String> uploadImage(Uint8List file, String filename) async {
     // TODO: 顯示錯誤原因
     final response = await PostRepo.uploadAttachment(file, filename);
-    return response!.blobUrl;
+
+    // TODO: 用正常的方式回傳圖片 uri
+    var url = response!.blobUrl;
+    url = url.replaceFirst("get_attachment", "attachment");
+    url = url.replaceFirst("http", "https");
+    return url;
   }
 
   Future<void> uploadAttachment(Uint8List file, String filename) async {
