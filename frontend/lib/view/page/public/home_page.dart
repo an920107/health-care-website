@@ -10,6 +10,7 @@ import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/dialog/login_dialog.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
+import 'package:health_care_website/view/widget/link_text.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/public/home_page_view_model.dart';
 import 'package:intl/intl.dart';
@@ -149,6 +150,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// 輪播圖片
   Widget _buildCarousel(HomePageViewModel value) {
     return LayoutBuilder(builder: (context, constrain) {
       return SizedBox(
@@ -265,10 +267,9 @@ class _HomePageState extends State<HomePage> {
                                     color: Colors.red.shade700,
                                   ),
                                 ),
-                              Text(
-                                post.title,
-                                overflow: TextOverflow.fade,
-                                softWrap: false,
+                              LinkText(
+                                path: "${Routes.post.path}/${post.id}",
+                                label: post.title,
                               ),
                             ],
                           )),

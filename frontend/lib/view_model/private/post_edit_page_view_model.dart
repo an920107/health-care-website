@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:health_care_website/config.dart';
 import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/model/post/attachment_info.dart';
 import 'package:health_care_website/model/post/post.dart';
@@ -15,20 +14,6 @@ class PostEditPageViewModel with ChangeNotifier {
 
   String _id = "";
   String get id => _id;
-  set id(String value) {
-    _id = value;
-    _post = null;
-    if (_id.isEmpty) {
-    } else {
-      PostRepo.getPost(_id)
-        ..onError((error, stackTrace) => null)
-        ..then((value) {
-          _post = value;
-          notifyListeners();
-        });
-    }
-    notifyListeners();
-  }
 
   List<AttachmentInfo> _attachments = [];
   List<AttachmentInfo> get attachments => UnmodifiableListView(_attachments);

@@ -10,13 +10,14 @@ import 'package:flutter_quill_extensions/services/image_picker/image_picker.dart
 import 'package:flutter_quill_extensions/services/image_picker/s_image_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/enum/post_column.dart';
-import 'package:health_care_website/model/post/attachment_info.dart';
 import 'package:health_care_website/view/theme/button_style.dart';
 import 'package:health_care_website/model/post/post.dart';
 import 'package:health_care_website/router/routes.dart';
+import 'package:health_care_website/view/widget/attachment_preview.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/clean_button.dart';
 import 'package:health_care_website/view/widget/dialog/post_delete_dialog.dart';
+import 'package:health_care_website/view/widget/loading_circle.dart';
 import 'package:health_care_website/view_model/private/post_edit_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -61,11 +62,7 @@ class _PostEditPageState extends State<PostEditPage> {
           builder: (context, snapshot) {
             // Loading 圈圈
             if (snapshot.connectionState != ConnectionState.done) {
-              return Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / 3),
-                child: const Center(child: CircularProgressIndicator()),
-              );
+              return const LoadingCircle();
             }
 
             return Consumer<PostEditPageViewModel>(
@@ -152,12 +149,17 @@ class _PostEditPageState extends State<PostEditPage> {
                   if (value.attachments.isNotEmpty) const SizedBox(height: 20),
                   GridView.count(
                     shrinkWrap: true,
-                    crossAxisCount: 5,
+                    crossAxisCount: 4,
                     mainAxisSpacing: 20,
                     crossAxisSpacing: 20,
-                    childAspectRatio: 3,
+                    childAspectRatio: 4,
                     children: value.attachments
-                        .map((e) => _buildAttachmentPreview(e))
+                        .map((e) => AttachmentPreview(
+                              info: e,
+                              removeCallback: () => context
+                                  .read<PostEditPageViewModel>()
+                                  .removeAttachment(e.id),
+                            ))
                         .toList(),
                   ),
 
@@ -302,38 +304,6 @@ class _PostEditPageState extends State<PostEditPage> {
                     ? FlutterQuillEmbeds.editorWebBuilders()
                     : FlutterQuillEmbeds.editorBuilders(),
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAttachmentPreview(AttachmentInfo info) {
-    return Card(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Expanded(
-            flex: 1,
-            child: Icon(Icons.file_present_rounded),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              info.name,
-              overflow: TextOverflow.fade,
-              softWrap: false,
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: IconButton(
-              onPressed: () => context
-                  .read<PostEditPageViewModel>()
-                  .removeAttachment(info.id),
-              icon: const Icon(Icons.cancel_outlined),
             ),
           ),
         ],
