@@ -11,6 +11,7 @@ import 'package:health_care_website/view_model/private/carousel_page_view_model.
 import 'package:health_care_website/view_model/private/post_edit_page_view_model.dart';
 import 'package:health_care_website/view_model/private/post_list_page_view_model.dart';
 import 'package:health_care_website/view_model/public/home_page_view_model.dart';
+import 'package:health_care_website/view_model/public/post_page_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -42,6 +43,7 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PostEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => PostListPageViewModel()),
         ChangeNotifierProvider(create: (_) => HomePageViewModel()),
+        ChangeNotifierProvider(create: (_) => PostPageViewModel()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
