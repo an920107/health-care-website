@@ -290,6 +290,7 @@ class _HomePageState extends State<HomePage> {
   /// 餐廳檢查報告
   Widget _buildRestaurant(Platform platform, HomePageViewModel value) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         const IconText(
