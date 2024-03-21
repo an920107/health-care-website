@@ -1,0 +1,8 @@
+version: '1.0'
+
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "5001:5001"
