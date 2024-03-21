@@ -116,4 +116,11 @@ abstract class RestaurantRepo {
       if (kDebugMode) print(e);
     }
   }
+
+  static Uri getStatsUrl(DateTime start, DateTime end) {
+    return Uri.https(Config.backend, "/api/restaurant_post/stats", {
+      "start_date": start.toIso8601String(),
+      "end_date": start.toIso8601String(),
+    });
+  }
 }

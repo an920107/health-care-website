@@ -24,4 +24,8 @@ class RestaurantListPageViewModel with ChangeNotifier {
     );
     notifyListeners();
   }
+
+  Uri getStatsUrl(DateTime start, DateTime end) {
+    return RestaurantRepo.getStatsUrl(start, end);
+  }
 }

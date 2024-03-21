@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/router/routes.dart';
@@ -10,6 +9,7 @@ import 'package:health_care_website/view_model/private/restaurant_list_page_view
 import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantListPage extends StatefulWidget {
   const RestaurantListPage({super.key});
@@ -51,7 +51,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                 ),
                 const SizedBox(width: 20),
 
-                // TODO: 下載報表
+                // 下載報表
                 ElevatedButton.icon(
                   style: ElevatedButtonStyle.rRectStyle(),
                   onPressed: () async {
@@ -81,9 +81,8 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                           ),
                         ),
                       );
-                      if (kDebugMode) {
-                        print(startDate);
-                        print(endDate);
+                      if (context.mounted && endDate != null) {
+                        launchUrl(value.getStatsUrl(startDate, endDate));
                       }
                     } else {
                       return;
