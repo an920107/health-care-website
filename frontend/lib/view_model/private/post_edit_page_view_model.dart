@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:health_care_website/config.dart';
 import 'package:health_care_website/enum/post_column.dart';
-import 'package:health_care_website/model/post/attachment_info.dart';
+import 'package:health_care_website/model/blob/attachment_info.dart';
 import 'package:health_care_website/model/post/post.dart';
 import 'package:health_care_website/repo/post_repo.dart';
 

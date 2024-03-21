@@ -156,9 +156,8 @@ class _PostEditPageState extends State<PostEditPage> {
                     children: value.attachments
                         .map((e) => AttachmentPreview(
                               info: e,
-                              removeCallback: () async => await context
-                                  .read<PostEditPageViewModel>()
-                                  .removeAttachment(e.id),
+                              removeCallback: () async =>
+                                  value.removeAttachment(e.id),
                             ))
                         .toList(),
                   ),

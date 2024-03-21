@@ -1,11 +1,11 @@
 enum Routes {
   root("/"),
   post("/post"),
+  page("/page"),
   login("/login"),
   redirect("/redirect"),
   admin("/admin"),
   carousel("/admin/carousel"),
-  pageList("/admin/page"),
   pageEdit("/admin/page/edit"),
   restaurantList("/admin/restaurant"),
   restaurantEdit("/admin/restaurant/edit"),

@@ -131,7 +131,8 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () =>
+                                context.push("${Routes.page.path}/${link.id}"),
                             child: Text(
                               link.label,
                               softWrap: false,
