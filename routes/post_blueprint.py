@@ -36,7 +36,7 @@ def get_post(post_id):
     return Response.response('get post successful', post.as_dict())
 
 
-@post_blueprint.route('/', methods=['GET'])
+@post_blueprint.route('', methods=['GET'])
 def get_posts():
     """
     Get posts
@@ -72,18 +72,29 @@ def get_posts():
     if request.args.get('column'):
         query_conditions['column'] = request.args.get('column')
     if request.args.get('visible'):
-        query_conditions['column'] = request.args.get('column')
+        query_conditions['visible'] = request.args.get('visible')
+    if request.args.get('importance'):
+        query_conditions['importance'] = request.args.get('importance')
 
     posts = Post.query.filter_by(**query_conditions).order_by(Post.create_time).all()
     posts.sort(key=lambda x: x.importance, reverse=True)
+
     if request.args.get('page') and int(request.args['page']) >= 1:
         page = int(request.args['page'])
-        posts = posts[(page - 1) * Config.PAGE_SIZE:page * Config.PAGE_SIZE]
+    else:
+        page = 1
 
-    return Response.response('get posts successful', [post.as_dict() for post in posts])
+    posts = posts[(page - 1) * Config.PAGE_SIZE:page * Config.PAGE_SIZE]
+
+    payload = {
+        'total_page': str(len(posts) // Config.PAGE_SIZE + 1),
+        'posts': [post.as_dict() for post in posts],
+        'page': str(page)
+    }
+    return Response.response('get posts successful', payload)
 
 
-@post_blueprint.route('/', methods=['POST'])
+@post_blueprint.route('', methods=['POST'])
 def upload_posts():
     """
     Upload post
@@ -188,7 +199,7 @@ def update_post(post_id):
         Response.client_error(
             "no ['title', 'content', 'column', 'attachments', 'visible', 'importance'] or content in form")
 
-    title, content, column, attachments, visible = api_input_get(
+    title, content, column, attachments, visible, importance = api_input_get(
         ['title', 'content', 'column', 'attachments', 'visible', 'importance'], request.form
     )
 
@@ -270,7 +281,7 @@ def update_post_visible(post_id):
     return Response.response('update post visible successful', post.as_dict())
 
 
-@post_blueprint.route('/<int:post_id>/images', methods=['POST'])
+@post_blueprint.route('/<int:post_id>/image', methods=['POST'])
 def add_images(post_id):
     """
     Add images to post by post_id
@@ -304,7 +315,7 @@ def add_images(post_id):
     new_file_path = Path(Config.POST_CONFIG['IMAGE_DIR']) / Path(new_file_name)
 
     blob_attachment.save(new_file_path)
-    image = Image(name=file_name, file_path=new_file_path, post_id=post_id)
+    image = Image(name=file_name, file_path=str(new_file_path), post_id=post_id)
     db.session.add(image)
     db.session.commit()
 
@@ -312,11 +323,11 @@ def add_images(post_id):
         'add images successful',
         {
             'image_id': str(image.id),
-            'image_url': f'http://{request.host}/api/image/{image.id}'
+            'image_uri': f'/api/image/{image.id}'
         })
 
 
-@post_blueprint.route('/<int:post_id>/attachments', methods=['POST'])
+@post_blueprint.route('/<int:post_id>/attachment', methods=['POST'])
 def add_attachments(post_id):
     """
     Add attachments to post by post_id
@@ -350,7 +361,7 @@ def add_attachments(post_id):
     new_file_path = Path(Config.POST_CONFIG['ATTACHMENT_DIR']) / Path(new_file_name)
 
     blob_attachment.save(new_file_path)
-    attachment = Attachment(name=file_name, file_path=new_file_path, post_id=post_id)
+    attachment = Attachment(name=file_name, file_path=str(new_file_path), post_id=post_id)
     db.session.add(attachment)
     db.session.commit()
 
@@ -359,8 +370,8 @@ def add_attachments(post_id):
         {
             'attachment_id': str(attachment.id),
             'attachment_name': attachment.name,
-            'attachment_url': f'http://{request.host}/api/attachment/{attachment.id}',
-            'attachment_info': f'http://{request.host}/api/attachment/{attachment.id}/info'
+            'attachment_uri': f'/api/attachment/{attachment.id}',
+            'attachment_info': f'/api/attachment/{attachment.id}/info'
         }
     )
 
@@ -388,13 +399,12 @@ def delete_post(post_id):
     if not post:
         return Response.not_found('post not found', None)
 
-    images = Image.query.filter_by(post_id=post_id).delete()
-
+    images = Image.query.filter_by(post_id=post_id).all()
     for image in images:
         os.remove(image.file_path)
         db.session.delete(image)
 
-    attachments = Attachment.query.filter_by(post_id=post_id).delete()
+    attachments = Attachment.query.filter_by(post_id=post_id).all()
     for attachment in attachments:
         os.remove(attachment.file_path)
         db.session.delete(attachment)

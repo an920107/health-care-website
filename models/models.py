@@ -60,12 +60,9 @@ class Carousel(db.Model, SchemaMixin):
 
 class StaticPost(db.Model, SchemaMixin):
     __tablename__ = 'static_post'
-    title = db.Column(db.String(40), nullable=False)
+    static_post_name = db.Column(db.String(20), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    column = db.Column(db.String(10), nullable=False)
     attachments = db.Column(db.String(100), nullable=False)
-    visible = db.Column(db.String(1), nullable=False, default='0')
-    importance = db.Column(db.String(1), nullable=False, default='0')
     viewer = db.Column(db.Integer, nullable=False, default=0)
 
 
@@ -91,7 +88,6 @@ class RestaurantPost(db.Model, SchemaMixin):
     time = db.Column(db.DateTime, nullable=False)
     valid = db.Column(db.String(1), nullable=False)
     visible = db.Column(db.String(1), nullable=False, default='0')
-    importance = db.Column(db.String(1), nullable=False, default='0')
     viewer = db.Column(db.Integer, nullable=False, default=0)
 
 

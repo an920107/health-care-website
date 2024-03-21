@@ -3,35 +3,35 @@ class Config:
     ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xls', '.xlsx', '.csv', '.odt']
     PAGE_SIZE = 10
 
-    POST_COLUMN = ['activity', 'health', 'restaurant', 'nutrition']
+    POST_COLUMN = ['activity', 'health', 'restaurant_post', 'nutrition']
     STATIC_POST_COLUMN = [
         # about us
-        'workTeam', 'serviceHours', 'trafficMap',
+        'work_team', 'service_hours', 'traffic_map',
 
         # health care
-        'freshmanHealthCheck', 'newEmployeePhysicalExam', 'regularHealthCheck',
+        'freshman_health_check', 'new_employee_physical_exam', 'regular_health_check',
 
         # emergency response
-        'emergencyHotline', 'campusInjuryTreatment', 'campusAED',
+        'emergency_hotline', 'campus_injury_treatment', 'campus_aed',
 
         # health service
-        'studentGroupInsurance', 'medicalEquipmentLoan', 'healthManagementFacilities',
+        'student_group_insurance', 'medical_equipmentLoan', 'health_management_facilities',
 
         # health promotion
-        'onSiteOccupationalHealthService', 'workplaceHealthServicePlan',
+        'on_site_occupational_health_service', 'workplace_health_service_plan',
 
         # health education
-        'freshmanCPR', 'campusTobaccoControlEducation', 'campusAIDSPreventionEducation',
-        'campusInfectiousDiseasePrevention',
+        'freshman_cpr', 'campus_tobacco_control_education', 'campus_aids_prevention_education',
+        'campus_infectious_disease_prevention',
     ]
 
     STATIC_POST_CONFIG = {
-        'ATTACHMENT_DIR': './statics/static_pages/attachments',
-        'IMAGE_DIR': './statics/static_pages/images',
+        'ATTACHMENT_DIR': './statics/static_post/attachments',
+        'IMAGE_DIR': './statics/static_post/images',
     }
 
     RESTAURANT_CONFIG = {
-        'ATTACHMENT_DIR': './statics/restaurant/attachments',
+        'ATTACHMENT_DIR': './statics/restaurant_post/attachments',
     }
 
     POST_CONFIG = {
@@ -40,6 +40,5 @@ class Config:
     }
 
     CAROUSEL_CONFIG = {
-        'ATTACHMENT_DIR': './statics/post/attachments',
-        'IMAGE_DIR': './statics/post/images',
+        'IMAGE_DIR': './statics/carousel/images',
     }

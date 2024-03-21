@@ -37,7 +37,7 @@ def get_carousel(carousel_id):
     return send_file(carousel.file_path)
 
 
-@carousel_blueprint.route('/', methods=['GET'])
+@carousel_blueprint.route('', methods=['GET'])
 def get_carousels():
     """
     Get all carousels
@@ -47,25 +47,21 @@ def get_carousels():
     responses:
       200:
         description: get carousels successful
-      404:
-        description: carousels not found
     """
     carousels = Carousel.query.all()
-    if not carousels:
-        return Response.not_found('carousels not found')
 
     payload = []
     for carousel in carousels:
         payload.append({
-            'id': carousel.id,
+            'id': str(carousel.id),
             'name': carousel.name,
-            'carousel_url': f'/api/carousels/{carousel.id}'
+            'carousel_uri': f'/api/carousel/{carousel.id}'
         })
 
     return Response.response('get carousels successful', payload)
 
 
-@carousel_blueprint.route('/', methods=['POST'])
+@carousel_blueprint.route('', methods=['POST'])
 def upload_carousel():
     """
     Upload carousel
@@ -73,7 +69,7 @@ def upload_carousel():
     tags:
       - Carousel
     parameters:
-      - name: carousel
+      - name: blob_attachment
         in: formData
         type: file
         required: true
@@ -82,14 +78,14 @@ def upload_carousel():
       200:
         description: upload carousel successful
     """
-    file = request.files['carousel']
+    file = request.files['blob_attachment']
     if file is None:
         return Response.client_error('no file part')
 
     file_path = Path(Config.CAROUSEL_CONFIG['IMAGE_DIR']) / Path(file.filename)
     file.save(file_path)
 
-    carousel = Carousel(name=file.filename, file_path=file_path)
+    carousel = Carousel(name=file.filename, file_path=str(file_path))
     db.session.add(carousel)
     db.session.commit()
 
