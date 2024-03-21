@@ -40,7 +40,7 @@ class PostListPageViewModel with ChangeNotifier {
     _importanceLock.add(post);
     post.importance = !post.importance;
     notifyListeners();
-    final newValue = await PostRepo.togglePostImportant(post.id, !post.importance);
+    final newValue = await PostRepo.togglePostImportance(post.id, !post.importance);
     post.importance = newValue;
     _importanceLock.removeWhere((e) => e == post);
     notifyListeners();

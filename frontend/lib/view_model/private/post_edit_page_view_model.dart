@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:health_care_website/config.dart';
 import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/model/post/attachment_info.dart';
 import 'package:health_care_website/model/post/post.dart';
@@ -20,14 +21,14 @@ class PostEditPageViewModel with ChangeNotifier {
 
   bool _visible = false;
   bool get visible => _visible;
-  set visible (bool value) {
+  set visible(bool value) {
     _visible = value;
     notifyListeners();
   }
 
   PostColumn _selectedPostColumn = PostColumn.values.first;
   PostColumn get selectedPostColumn => _selectedPostColumn;
-  set selectedPostColumn (PostColumn value) {
+  set selectedPostColumn(PostColumn value) {
     _selectedPostColumn = value;
     notifyListeners();
   }
@@ -72,23 +73,20 @@ class PostEditPageViewModel with ChangeNotifier {
 
   Future<String> uploadImage(Uint8List file, String filename) async {
     // TODO: 顯示錯誤原因
-    final response = await PostRepo.uploadAttachment(file, filename);
-
-    // TODO: 用正常的方式回傳圖片 uri
-    var url = response!.blobUrl;
-    url = url.replaceFirst("get_attachment", "attachment");
-    url = url.replaceFirst("http", "https");
+    final response = await PostRepo.uploadImage(_id, file, filename);
+    var url = Uri.https(Config.backend, response!.uri).toString();
     return url;
   }
 
   Future<void> uploadAttachment(Uint8List file, String filename) async {
     // TODO: 顯示錯誤原因
-    final response = await PostRepo.uploadAttachment(file, filename);
+    final response = await PostRepo.uploadAttachment(_id, file, filename);
     _attachments.add((await PostRepo.getAttachmentInfo(response!.id))!);
     notifyListeners();
   }
 
-  void removeAttachment(String id) {
+  Future<void> removeAttachment(String id) async {
+    // await PostRepo.deleteAttachment(id);
     _attachments.removeWhere((e) => e.id == id);
     notifyListeners();
   }

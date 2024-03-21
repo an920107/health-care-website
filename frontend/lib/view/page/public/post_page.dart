@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -76,12 +77,25 @@ class _PostPageState extends State<PostPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          IconText(
+                          Row(
                             mainAxisSize: MainAxisSize.min,
-                            icon: const Icon(Icons.access_time),
-                            child: Text(
-                              DateFormat("yyyy-MM-dd").format(post.updateTime),
-                            ),
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconText(
+                                mainAxisSize: MainAxisSize.min,
+                                icon: const Icon(Icons.access_time),
+                                child: Text(
+                                  DateFormat("yyyy-MM-dd")
+                                      .format(post.updateTime),
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              IconText(
+                                mainAxisSize: MainAxisSize.min,
+                                icon: const Icon(Icons.visibility),
+                                child: Text(post.viewer.toString()),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -97,12 +111,18 @@ class _PostPageState extends State<PostPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          const SizedBox(height: 10),
                           IconText(
                             mainAxisSize: MainAxisSize.min,
                             icon: const Icon(Icons.access_time),
                             child: Text(
                               DateFormat("yyyy-MM-dd").format(post.updateTime),
                             ),
+                          ),
+                          IconText(
+                            mainAxisSize: MainAxisSize.min,
+                            icon: const Icon(Icons.visibility),
+                            child: Text(post.viewer.toString()),
                           ),
                         ],
                       ),

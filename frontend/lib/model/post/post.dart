@@ -8,6 +8,7 @@ class Post {
   PostColumn column;
   String content;
   String attachments;
+  int viewer;
   bool visible;
   bool importance;
   DateTime createTime;
@@ -19,6 +20,7 @@ class Post {
     required this.column,
     required this.content,
     required this.attachments,
+    required this.viewer,
     required this.visible,
     required this.importance,
     required this.createTime,
@@ -31,6 +33,7 @@ class Post {
         column: PostColumn.values.where((e) => e.name == json["column"]).first,
         content: json["content"] ?? "",
         attachments: json["attachments"] ?? "",
+        viewer: int.parse(json["viewer"]),
         visible: json["visible"] == "1",
         importance: json["importance"] == "1",
         createTime: DateTime.parse(json["create_time"]),
@@ -43,6 +46,7 @@ class Post {
         "column": column.name,
         "content": content,
         "attachments": attachments,
+        "viewer": viewer.toString(),
         "visible": visible.toZeroOne().toString(),
         "importance": importance.toZeroOne().toString(),
         "create_time": createTime.toIso8601String(),

@@ -100,7 +100,7 @@ class _CarouselPageState extends State<CarouselPage> {
                       ),
                       child: CachedNetworkImage(
                         imageUrl: Uri.decodeComponent(
-                          Uri.https(Config.backend, image.endpoint).toString(),
+                          Uri.https(Config.backend, image.uri).toString(),
                         ),
                         fit: BoxFit.cover,
                         placeholder: (context, url) =>

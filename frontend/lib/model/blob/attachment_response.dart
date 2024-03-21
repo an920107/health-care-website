@@ -14,8 +14,8 @@ class AttachmentResponse {
   factory AttachmentResponse.fromJson(Map<String, dynamic> json) =>
       AttachmentResponse(
         id: json["attachment_id"],
-        name: json["attachment_info"],
-        infoUrl: json["attachment_name"],
-        blobUrl: json["attachment_url"],
+        name: json["attachment_name"],
+        infoUrl: json["attachment_info"],
+        blobUrl: json["attachment_uri"],
       );
 }

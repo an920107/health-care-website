@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(20),
                     child: CachedNetworkImage(
                       imageUrl: Uri.decodeComponent(
-                          Uri.https(Config.backend, e.endpoint).toString()),
+                          Uri.https(Config.backend, e.uri).toString()),
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
                           const Center(child: CircularProgressIndicator()),
