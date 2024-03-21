@@ -10,6 +10,7 @@ import 'package:health_care_website/view/page/private/post_edit_page.dart';
 import 'package:health_care_website/view/page/private/post_list_page.dart';
 import 'package:health_care_website/view/page/public/post_page.dart';
 import 'package:health_care_website/view/page/public/redirect_page.dart';
+import 'package:health_care_website/view/page/public/restaurant_page.dart';
 import 'package:health_care_website/view/page/public/static_page_page.dart';
 
 class Router {
@@ -24,6 +25,10 @@ class Router {
           GoRoute(
             path: "${Routes.post.path}/:id",
             builder: (context, state) => PostPage(state.pathParameters["id"]!),
+          ),
+          GoRoute(
+            path: "${Routes.restaurant.path}/:id",
+            builder: (context, state) => RestaurantPage(state.pathParameters["id"]!),
           ),
           GoRoute(
             path: "${Routes.page.path}/:id",

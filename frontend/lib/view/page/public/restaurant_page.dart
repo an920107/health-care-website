@@ -1,52 +1,41 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
-import 'package:flutter_quill_extensions/flutter_quill_embeds.dart';
-import 'package:health_care_website/model/post/post.dart';
+import 'package:health_care_website/model/restaurant/restaurant.dart';
 import 'package:health_care_website/view/widget/attachment_preview.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
 import 'package:health_care_website/view/widget/loading_circle.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
-import 'package:health_care_website/view_model/public/post_page_view_model.dart';
+import 'package:health_care_website/view_model/public/restaurant_page_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class PostPage extends StatefulWidget {
-  const PostPage(this.id, {super.key});
+class RestaurantPage extends StatefulWidget {
+  const RestaurantPage(
+    this.id, {
+    super.key,
+  });
 
   final String id;
 
   @override
-  State<PostPage> createState() => _PostPageState();
+  State<RestaurantPage> createState() => _RestaurantPageState();
 }
 
-class _PostPageState extends State<PostPage> {
-  late Future<Post?> Function(String) _fetchFutureCallback;
-
-  final _quillController = QuillController(
-    document: Document(),
-    selection: const TextSelection.collapsed(offset: 0),
-    keepStyleOnNewLine: false,
-  );
+class _RestaurantPageState extends State<RestaurantPage> {
+  late Future<Restaurant?> Function(String) _fetchFutureCallback;
 
   @override
   void initState() {
     super.initState();
-    _fetchFutureCallback = context.read<PostPageViewModel>().fetchFromServer;
+    _fetchFutureCallback =
+        context.read<RestaurantPageViewModel>().fetchFromServer;
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
       body: FutureBuilder(
-        future: _fetchFutureCallback(widget.id).then((value) {
-          _quillController.document = Document.fromJson(
-            json.decode(value!.content),
-          );
-        }),
+        future: _fetchFutureCallback(widget.id),
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return const LoadingCircle();
@@ -55,9 +44,9 @@ class _PostPageState extends State<PostPage> {
           return LayoutBuilder(builder: (context, constraints) {
             final platform = context.read<PlatformViewModel>().platform;
 
-            return Consumer<PostPageViewModel>(
+            return Consumer<RestaurantPageViewModel>(
               builder: (context, value, child) {
-                final post = value.post!;
+                final restaurant = value.restaurant!;
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +58,7 @@ class _PostPageState extends State<PostPage> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            post.title,
+                            restaurant.title,
                             style: const TextStyle(
                               fontSize: 36,
                               fontWeight: FontWeight.bold,
@@ -84,14 +73,14 @@ class _PostPageState extends State<PostPage> {
                                 icon: const Icon(Icons.access_time),
                                 child: Text(
                                   DateFormat("yyyy-MM-dd")
-                                      .format(post.updateTime),
+                                      .format(restaurant.inspectTime),
                                 ),
                               ),
                               const SizedBox(width: 20),
                               IconText(
                                 mainAxisSize: MainAxisSize.min,
                                 icon: const Icon(Icons.visibility),
-                                child: Text(post.viewer.toString()),
+                                child: Text(restaurant.viewer.toString()),
                               ),
                             ],
                           ),
@@ -103,7 +92,7 @@ class _PostPageState extends State<PostPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            post.title,
+                            restaurant.title,
                             style: const TextStyle(
                               fontSize: 36,
                               fontWeight: FontWeight.bold,
@@ -114,51 +103,46 @@ class _PostPageState extends State<PostPage> {
                             mainAxisSize: MainAxisSize.min,
                             icon: const Icon(Icons.access_time),
                             child: Text(
-                              DateFormat("yyyy-MM-dd").format(post.updateTime),
+                              DateFormat("yyyy-MM-dd")
+                                  .format(restaurant.inspectTime),
                             ),
                           ),
                           IconText(
                             mainAxisSize: MainAxisSize.min,
                             icon: const Icon(Icons.visibility),
-                            child: Text(post.viewer.toString()),
+                            child: Text(restaurant.viewer.toString()),
                           ),
                         ],
                       ),
                     const Divider(),
-                    QuillEditor.basic(
-                      configurations: QuillEditorConfigurations(
-                        controller: _quillController,
-                        readOnly: true,
-                        scrollable: false,
-                        expands: false,
-                        showCursor: false,
-                        embedBuilders: kIsWeb
-                            ? FlutterQuillEmbeds.editorWebBuilders()
-                            : FlutterQuillEmbeds.editorBuilders(),
-                      ),
-                    ),
+
+                    // 內容
+                    Text("檢驗項目：${restaurant.item.label}"),
+                    Text("通過：${restaurant.valid ? "是" : "否"}"),
 
                     // 附件
                     if (value.attachments.isNotEmpty)
                       const SizedBox(height: 50),
                     if (value.attachments.isNotEmpty) const Divider(height: 20),
-                    LayoutBuilder(builder: (context, constraints) {
-                      final crossAxisCount = platform == Platform.computer
-                          ? 4
-                          : (platform == Platform.tablet ? 3 : 1);
-                      return GridView.count(
-                        shrinkWrap: true,
-                        crossAxisCount: crossAxisCount,
-                        mainAxisSpacing: 20,
-                        crossAxisSpacing: 20,
-                        childAspectRatio:
-                            (constraints.maxWidth - (crossAxisCount - 1) * 20) /
-                                (crossAxisCount * 60),
-                        children: value.attachments
-                            .map((e) => AttachmentPreview(info: e))
-                            .toList(),
-                      );
-                    }),
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        final crossAxisCount = platform == Platform.computer
+                            ? 4
+                            : (platform == Platform.tablet ? 3 : 1);
+                        return GridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: crossAxisCount,
+                          mainAxisSpacing: 20,
+                          crossAxisSpacing: 20,
+                          childAspectRatio: (constraints.maxWidth -
+                                  (crossAxisCount - 1) * 20) /
+                              (crossAxisCount * 60),
+                          children: value.attachments
+                              .map((e) => AttachmentPreview(info: e))
+                              .toList(),
+                        );
+                      },
+                    ),
                   ],
                 );
               },

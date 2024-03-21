@@ -1,6 +1,7 @@
 enum Routes {
   root("/"),
   post("/post"),
+  restaurant("/restaurant"),
   page("/page"),
   login("/login"),
   redirect("/redirect"),

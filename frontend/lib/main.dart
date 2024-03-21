@@ -10,9 +10,12 @@ import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/private/carousel_page_view_model.dart';
 import 'package:health_care_website/view_model/private/post_edit_page_view_model.dart';
 import 'package:health_care_website/view_model/private/post_list_page_view_model.dart';
+import 'package:health_care_website/view_model/private/restaurant_edit_page_view_model.dart';
+import 'package:health_care_website/view_model/private/restaurant_list_page_view_model.dart';
 import 'package:health_care_website/view_model/private/static_page_edit_page_view_model.dart';
 import 'package:health_care_website/view_model/public/home_page_view_model.dart';
 import 'package:health_care_website/view_model/public/post_page_view_model.dart';
+import 'package:health_care_website/view_model/public/restaurant_page_view_model.dart';
 import 'package:health_care_website/view_model/public/static_page_page_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -44,17 +47,20 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CarouselPageViewModel()),
         ChangeNotifierProvider(create: (_) => PostEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => PostListPageViewModel()),
+        ChangeNotifierProvider(create: (_) => StaticPageEditPageViewModel()),
+        ChangeNotifierProvider(create: (_) => RestaurantListPageViewModel()),
+        ChangeNotifierProvider(create: (_) => RestaurantEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => HomePageViewModel()),
         ChangeNotifierProvider(create: (_) => PostPageViewModel()),
-        ChangeNotifierProvider(create: (_) => StaticPageEditPageViewModel()),
+        ChangeNotifierProvider(create: (_) => RestaurantPageViewModel()),
         ChangeNotifierProvider(create: (_) => StaticPagePageViewModel()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: "Health Care Website",
         theme: ThemeData(
-          // textTheme:
-          //     GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),
+          textTheme:
+              GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
           useMaterial3: true,
         ),
