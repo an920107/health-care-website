@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:health_care_website/config.dart';
 import 'package:health_care_website/view/theme/button_style.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
@@ -100,7 +99,7 @@ class _CarouselPageState extends State<CarouselPage> {
                       ),
                       child: CachedNetworkImage(
                         imageUrl: Uri.decodeComponent(
-                          Uri.https(Config.backend, image.endpoint).toString(),
+                          Uri.https(Config.backend, image.uri).toString(),
                         ),
                         fit: BoxFit.cover,
                         placeholder: (context, url) =>

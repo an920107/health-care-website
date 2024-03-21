@@ -2,8 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/page/private/admin_page.dart';
 import 'package:health_care_website/view/page/private/carousel_page.dart';
-import 'package:health_care_website/view/page/private/page_edit_page.dart';
-import 'package:health_care_website/view/page/private/page_list_page.dart';
+import 'package:health_care_website/view/page/private/static_page_edit_page.dart';
 import 'package:health_care_website/view/page/private/restaurant_edit_page.dart';
 import 'package:health_care_website/view/page/private/restaurant_list_page.dart';
 import 'package:health_care_website/view/page/public/home_page.dart';
@@ -11,6 +10,8 @@ import 'package:health_care_website/view/page/private/post_edit_page.dart';
 import 'package:health_care_website/view/page/private/post_list_page.dart';
 import 'package:health_care_website/view/page/public/post_page.dart';
 import 'package:health_care_website/view/page/public/redirect_page.dart';
+import 'package:health_care_website/view/page/public/restaurant_page.dart';
+import 'package:health_care_website/view/page/public/static_page_page.dart';
 
 class Router {
   static GoRouter get router => GoRouter(
@@ -24,6 +25,14 @@ class Router {
           GoRoute(
             path: "${Routes.post.path}/:id",
             builder: (context, state) => PostPage(state.pathParameters["id"]!),
+          ),
+          GoRoute(
+            path: "${Routes.restaurant.path}/:id",
+            builder: (context, state) => RestaurantPage(state.pathParameters["id"]!),
+          ),
+          GoRoute(
+            path: "${Routes.page.path}/:id",
+            builder: (context, state) => StaticPagePage(state.pathParameters["id"]!),
           ),
 
           // 後台
@@ -54,13 +63,8 @@ class Router {
                 RestaurantEditPage(state.pathParameters["id"]!),
           ),
           GoRoute(
-            path: Routes.pageList.path,
-            builder: (context, state) => const PageListPage(),
-          ),
-          GoRoute(
-            path: "${Routes.pageEdit.path}/:id",
-            builder: (context, state) =>
-                PageEditPage(state.pathParameters["id"]!),
+            path: Routes.pageEdit.path,
+            builder: (context, state) => const StaticPageEditPage(),
           ),
 
           // 登入相關

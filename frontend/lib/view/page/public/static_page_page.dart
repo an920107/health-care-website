@@ -4,27 +4,27 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_embeds.dart';
-import 'package:health_care_website/model/post/post.dart';
+import 'package:health_care_website/model/static_page/static_page.dart';
 import 'package:health_care_website/view/widget/attachment_preview.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
 import 'package:health_care_website/view/widget/loading_circle.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
-import 'package:health_care_website/view_model/public/post_page_view_model.dart';
+import 'package:health_care_website/view_model/public/static_page_page_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class PostPage extends StatefulWidget {
-  const PostPage(this.id, {super.key});
+class StaticPagePage extends StatefulWidget {
+  const StaticPagePage(this.id, {super.key});
 
   final String id;
 
   @override
-  State<PostPage> createState() => _PostPageState();
+  State<StaticPagePage> createState() => _StaticPagePageState();
 }
 
-class _PostPageState extends State<PostPage> {
-  late Future<Post?> Function(String) _fetchFutureCallback;
+class _StaticPagePageState extends State<StaticPagePage> {
+  late Future<StaticPage?> Function(String) _fetchFutureCallback;
 
   final _quillController = QuillController(
     document: Document(),
@@ -35,7 +35,7 @@ class _PostPageState extends State<PostPage> {
   @override
   void initState() {
     super.initState();
-    _fetchFutureCallback = context.read<PostPageViewModel>().fetchFromServer;
+    _fetchFutureCallback = context.read<StaticPagePageViewModel>().fetchFromServer;
   }
 
   @override
@@ -55,9 +55,9 @@ class _PostPageState extends State<PostPage> {
           return LayoutBuilder(builder: (context, constraints) {
             final platform = context.read<PlatformViewModel>().platform;
 
-            return Consumer<PostPageViewModel>(
+            return Consumer<StaticPagePageViewModel>(
               builder: (context, value, child) {
-                final post = value.post!;
+                final page = value.page!;
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +69,7 @@ class _PostPageState extends State<PostPage> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            post.title,
+                            value.topic.label,
                             style: const TextStyle(
                               fontSize: 36,
                               fontWeight: FontWeight.bold,
@@ -84,14 +84,14 @@ class _PostPageState extends State<PostPage> {
                                 icon: const Icon(Icons.access_time),
                                 child: Text(
                                   DateFormat("yyyy-MM-dd")
-                                      .format(post.updateTime),
+                                      .format(page.updateTime),
                                 ),
                               ),
                               const SizedBox(width: 20),
                               IconText(
                                 mainAxisSize: MainAxisSize.min,
                                 icon: const Icon(Icons.visibility),
-                                child: Text(post.viewer.toString()),
+                                child: Text(page.viewer.toString()),
                               ),
                             ],
                           ),
@@ -103,7 +103,7 @@ class _PostPageState extends State<PostPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            post.title,
+                            value.topic.label,
                             style: const TextStyle(
                               fontSize: 36,
                               fontWeight: FontWeight.bold,
@@ -114,13 +114,13 @@ class _PostPageState extends State<PostPage> {
                             mainAxisSize: MainAxisSize.min,
                             icon: const Icon(Icons.access_time),
                             child: Text(
-                              DateFormat("yyyy-MM-dd").format(post.updateTime),
+                              DateFormat("yyyy-MM-dd").format(page.updateTime),
                             ),
                           ),
                           IconText(
                             mainAxisSize: MainAxisSize.min,
                             icon: const Icon(Icons.visibility),
-                            child: Text(post.viewer.toString()),
+                            child: Text(page.viewer.toString()),
                           ),
                         ],
                       ),
@@ -138,7 +138,6 @@ class _PostPageState extends State<PostPage> {
                       ),
                     ),
 
-                    // 附件
                     if (value.attachments.isNotEmpty)
                       const SizedBox(height: 50),
                     if (value.attachments.isNotEmpty) const Divider(height: 20),

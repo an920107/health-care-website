@@ -2,41 +2,30 @@ import 'dart:convert';
 
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:flutter_quill_extensions/services/image_picker/image_picker.dart';
+import 'package:flutter_quill_extensions/embeds/image/editor/image_embed_types.dart';
+import 'package:flutter_quill_extensions/flutter_quill_embeds.dart';
+import 'package:flutter_quill_extensions/models/config/image/toolbar/image_configurations.dart';
+import 'package:flutter_quill_extensions/services/image_picker/image_options.dart';
 import 'package:flutter_quill_extensions/services/image_picker/s_image_picker.dart';
-import 'package:go_router/go_router.dart';
-import 'package:health_care_website/enum/post_column.dart';
+import 'package:health_care_website/enum/page_topic.dart';
 import 'package:health_care_website/view/theme/button_style.dart';
-import 'package:health_care_website/model/post/post.dart';
-import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/attachment_preview.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
-import 'package:health_care_website/view/widget/clean_button.dart';
-import 'package:health_care_website/view/widget/dialog/post_delete_dialog.dart';
 import 'package:health_care_website/view/widget/loading_circle.dart';
-import 'package:health_care_website/view_model/private/post_edit_page_view_model.dart';
+import 'package:health_care_website/view_model/private/static_page_edit_page_view_model.dart';
 import 'package:provider/provider.dart';
 
-class PostEditPage extends StatefulWidget {
-  const PostEditPage(
-    this.id, {
-    super.key,
-  });
-
-  final String id;
+class StaticPageEditPage extends StatefulWidget {
+  const StaticPageEditPage({super.key});
 
   @override
-  State<PostEditPage> createState() => _PostEditPageState();
+  State<StaticPageEditPage> createState() => _StaticPageEditPageState();
 }
 
-class _PostEditPageState extends State<PostEditPage> {
-  late Future<Post?> Function(String) _future;
-
-  final _titleTextController = TextEditingController();
+class _StaticPageEditPageState extends State<StaticPageEditPage> {
   final _quillController = QuillController(
     document: Document(),
     selection: const TextSelection.collapsed(offset: 0),
@@ -46,99 +35,51 @@ class _PostEditPageState extends State<PostEditPage> {
   @override
   void initState() {
     super.initState();
-    _future = context.read<PostEditPageViewModel>().fetchFromServer;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<StaticPageEditPageViewModel>().fetchFromServer();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      body: FutureBuilder(
-        future: _future(widget.id).then((value) {
-          _titleTextController.text = value!.title;
-          _quillController.document = Document.fromJson(
-            json.decode(value.content),
-          );
-        }),
-        builder: (context, snapshot) {
-          // Loading 圈圈
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const LoadingCircle();
-          }
+      body: Consumer<StaticPageEditPageViewModel>(
+        builder: (context, value, child) => FutureBuilder(
+          future: value.fetchCompleter.future.then((value) {
+            if (value != null) {
+              _quillController.document = Document.fromJson(
+                json.decode(value.content),
+              );
+            }
+          }),
+          builder: (context, snapshot) {
+            // Loading 圈圈
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const LoadingCircle();
+            }
 
-          return Consumer<PostEditPageViewModel>(
-            builder: (context, value, child) => Column(
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    // 標題輸入框
-                    Expanded(
-                      flex: 2,
-                      child: TextField(
-                        maxLines: 1,
-                        controller: _titleTextController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          icon: Icon(Icons.title),
-                          label: Text("標題"),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 40),
-
-                    // 類別選取框
-                    Expanded(
-                      flex: 1,
-                      child: DropdownButtonFormField<PostColumn>(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          icon: Icon(Icons.type_specimen),
-                          label: Text("類別"),
-                        ),
-                        items: PostColumn.values
-                            .map((e) => DropdownMenuItem(
-                                  value: e,
-                                  child: Text(e.label),
-                                ))
-                            .toList(),
-                        onChanged: (selected) {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          if (selected == null) return;
-                          value.selectedPostColumn = selected;
-                        },
-                        value: value.selectedPostColumn,
-                      ),
-                    ),
-
-                    // 發布/轉為草稿
-                    const SizedBox(width: 40),
-                    CleanButton(
-                      onPressed: () => value.visible = !value.visible,
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Column(
-                            children: [
-                              Switch(
-                                value: value.visible,
-                                onChanged: (result) => value.visible = result,
-                                thumbIcon: MaterialStateProperty.resolveWith(
-                                  (states) => Icon(
-                                      states.contains(MaterialState.selected)
-                                          ? Icons.star
-                                          : Icons.edit),
-                                ),
-                              ),
-                              Text(
-                                value.visible ? "發佈" : "草稿",
-                                style: const TextStyle(color: Colors.black54),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                // 選取類別
+                DropdownButtonFormField<PageTopic>(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    icon: Icon(Icons.type_specimen),
+                    label: Text("類別"),
+                  ),
+                  items: PageTopic.values
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e.label),
+                          ))
+                      .toList(),
+                  onChanged: (selected) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    if (selected == null) return;
+                    value.selectedPageTopic = selected;
+                  },
+                  value: value.selectedPageTopic,
                 ),
 
                 // 編輯器本體
@@ -167,30 +108,11 @@ class _PostEditPageState extends State<PostEditPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // 刪除按鈕
-                    TextButton.icon(
-                      style: TextButtonStyle.rRectStyle(),
-                      onPressed: () async {
-                        final reply = await showDialog(
-                          context: context,
-                          builder: (context) => const DeleteDialog(),
-                        );
-                        if (context.mounted && reply == true) {
-                          await context.read<PostEditPageViewModel>().delete();
-                          if (context.mounted) {
-                            context.pushReplacement(Routes.postList.path);
-                          }
-                        }
-                      },
-                      icon: const Icon(Icons.delete),
-                      label: const Text("刪除", style: TextStyle(fontSize: 16)),
-                    ),
-
                     // 取消按鈕
                     const SizedBox(width: 20),
                     OutlinedButton.icon(
                       style: OutlinedButtonStyle.rRectStyle(),
-                      onPressed: () => context.go(Routes.postList.path),
+                      onPressed: () {},
                       icon: const Icon(Icons.cancel),
                       label: const Text("取消", style: TextStyle(fontSize: 16)),
                     ),
@@ -232,14 +154,8 @@ class _PostEditPageState extends State<PostEditPage> {
                     OutlinedButton.icon(
                       style: OutlinedButtonStyle.rRectStyle(),
                       onPressed: () async {
-                        value.uploadPost(
-                          title: _titleTextController.text,
-                          content: json.encode(
-                              _quillController.document.toDelta().toJson()),
-                        );
-                        if (context.mounted) {
-                          context.pushReplacement(Routes.postList.path);
-                        }
+                        value.uploadPage(json.encode(
+                            _quillController.document.toDelta().toJson()));
                       },
                       icon: const Icon(Icons.save),
                       label: const Text("保存變更", style: TextStyle(fontSize: 16)),
@@ -247,9 +163,9 @@ class _PostEditPageState extends State<PostEditPage> {
                   ],
                 ),
               ],
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -325,7 +241,7 @@ class _PostEditPageState extends State<PostEditPage> {
     String url;
     if (context.mounted) {
       url = await context
-          .read<PostEditPageViewModel>()
+          .read<StaticPageEditPageViewModel>()
           .uploadImage(await file.readAsBytes(), file.name);
     } else {
       url = "";

@@ -1,17 +1,17 @@
 class CarouselInfo {
   String id;
-  String endpoint;
+  String uri;
   String filename;
 
   CarouselInfo({
     required this.id,
-    required this.endpoint,
+    required this.uri,
     required this.filename,
   });
 
   factory CarouselInfo.fromJson(Map<String, dynamic> json) => CarouselInfo(
         id: json["id"],
-        endpoint: json["endpoint"],
+        uri: json["carousel_uri"],
         filename: json["name"],
       );
 }

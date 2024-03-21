@@ -10,6 +10,7 @@ import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/dialog/login_dialog.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
+import 'package:health_care_website/view/widget/inspect_result_card.dart';
 import 'package:health_care_website/view/widget/link_text.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/public/home_page_view_model.dart';
@@ -75,10 +76,6 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 20),
                       _buildNews(platform, value),
 
-                      /**
-                       * 以下為假資料
-                       */
-
                       // 餐廳檢查報告
                       const SizedBox(height: 20),
                       _buildRestaurant(platform, value),
@@ -131,7 +128,8 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () =>
+                                context.push("${Routes.page.path}/${link.id}"),
                             child: Text(
                               link.label,
                               softWrap: false,
@@ -165,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(20),
                     child: CachedNetworkImage(
                       imageUrl: Uri.decodeComponent(
-                          Uri.https(Config.backend, e.endpoint).toString()),
+                          Uri.https(Config.backend, e.uri).toString()),
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
                           const Center(child: CircularProgressIndicator()),
@@ -290,6 +288,7 @@ class _HomePageState extends State<HomePage> {
   /// 餐廳檢查報告
   Widget _buildRestaurant(Platform platform, HomePageViewModel value) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         const IconText(
@@ -320,51 +319,18 @@ class _HomePageState extends State<HomePage> {
                       const DataColumn(label: Text("日期")),
                   ],
                   rows: [
-                    DataRow(cells: [
-                      const DataCell(Text("拉拉小廚冰塊")),
-                      DataCell(Card(
-                        color: Colors.lightGreen.shade100,
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 4,
-                            horizontal: 12,
-                          ),
-                          child: Text("合　格"),
-                        ),
-                      )),
-                      if (platform != Platform.mobile)
-                        const DataCell(Text("2024-02-08")),
-                    ]),
-                    DataRow(cells: [
-                      const DataCell(Text("漢堡王冰塊")),
-                      DataCell(Card(
-                        color: Colors.lightGreen.shade100,
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 4,
-                            horizontal: 12,
-                          ),
-                          child: Text("合　格"),
-                        ),
-                      )),
-                      if (platform != Platform.mobile)
-                        const DataCell(Text("2024-02-08")),
-                    ]),
-                    DataRow(cells: [
-                      const DataCell(Text("星巴克冰塊")),
-                      DataCell(Card(
-                        color: Theme.of(context).colorScheme.errorContainer,
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 4,
-                            horizontal: 12,
-                          ),
-                          child: Text("不合格"),
-                        ),
-                      )),
-                      if (platform != Platform.mobile)
-                        const DataCell(Text("2024-02-08")),
-                    ]),
+                    for (var restaurant in value.restaurantas)
+                      if (restaurant.visible)
+                        DataRow(cells: [
+                          DataCell(LinkText(
+                            path: "${Routes.restaurant.path}/${restaurant.id}",
+                            label: restaurant.title,
+                          )),
+                          DataCell(InspectResultCard(restaurant.valid)),
+                          if (platform != Platform.mobile)
+                            DataCell(Text(DateFormat("yyyy-MM-dd")
+                                .format(restaurant.inspectTime))),
+                        ]),
                   ],
                 ),
               ),
