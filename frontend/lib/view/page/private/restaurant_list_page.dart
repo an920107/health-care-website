@@ -34,7 +34,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
           children: [
             Row(
               children: [
-                // 新增餐廳
+                // 新增商家
                 ElevatedButton.icon(
                   style: ElevatedButtonStyle.rRectStyle(),
                   onPressed: () async {
@@ -47,7 +47,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                     }
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text("新增餐廳檢驗"),
+                  label: const Text("新增商家檢驗"),
                 ),
                 const SizedBox(width: 20),
 
@@ -71,6 +71,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                     if (context.mounted && startDate != null) {
                       endDate = await showOmniDateTimePicker(
                         context: context,
+                        firstDate: startDate,
                         lastDate: DateTime.now(),
                         type: OmniDateTimePickerType.date,
                         title: const Padding(
@@ -101,7 +102,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                       fontWeight: FontWeight.bold,
                     ),
                     columns: const [
-                      DataColumn(label: Text("餐廳名稱")),
+                      DataColumn(label: Text("商家名稱")),
                       DataColumn(label: Text("日期")),
                       DataColumn(label: Text("檢驗項目")),
                       DataColumn(label: Text("檢驗結果")),

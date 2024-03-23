@@ -22,8 +22,8 @@ class LinkText extends StatelessWidget {
       onPressed: () => context.go(path),
       child: Text(
         label,
-        overflow: TextOverflow.fade,
-        softWrap: false,
+        // overflow: TextOverflow.fade,
+        // softWrap: false,
         style: style?.copyWith(decoration: TextDecoration.underline) ??
             const TextStyle(decoration: TextDecoration.underline),
       ),

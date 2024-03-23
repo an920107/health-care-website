@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:health_care_website/model/restaurant/restaurant.dart';
 import 'package:health_care_website/view/widget/attachment_preview.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
@@ -57,13 +58,17 @@ class _RestaurantPageState extends State<RestaurantPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
-                            restaurant.title,
-                            style: const TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Text(
+                              restaurant.title,
+                              softWrap: true,
+                              style: const TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
+                          const SizedBox(width: 20),
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.end,

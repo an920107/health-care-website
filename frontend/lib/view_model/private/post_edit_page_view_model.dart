@@ -8,8 +8,9 @@ import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/model/blob/attachment_info.dart';
 import 'package:health_care_website/model/post/post.dart';
 import 'package:health_care_website/repo/post_repo.dart';
+import 'package:health_care_website/view_model/mixin/title_validator.dart';
 
-class PostEditPageViewModel with ChangeNotifier {
+class PostEditPageViewModel with ChangeNotifier, TitleValidator {
   Post? _post;
   Post? get post => _post;
 

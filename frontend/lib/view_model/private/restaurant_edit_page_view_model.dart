@@ -7,8 +7,9 @@ import 'package:health_care_website/enum/restaurant_inspection_item.dart';
 import 'package:health_care_website/model/blob/attachment_info.dart';
 import 'package:health_care_website/model/restaurant/restaurant.dart';
 import 'package:health_care_website/repo/restaurant_repo.dart';
+import 'package:health_care_website/view_model/mixin/title_validator.dart';
 
-class RestaurantEditPageViewModel with ChangeNotifier {
+class RestaurantEditPageViewModel with ChangeNotifier, TitleValidator {
   Restaurant? _restaurant;
   Restaurant? get restaurant => _restaurant;
 

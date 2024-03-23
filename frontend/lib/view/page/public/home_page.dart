@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/config.dart';
@@ -76,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 20),
                       _buildNews(platform, value),
 
-                      // 餐廳檢查報告
+                      // 商家檢查報告
                       const SizedBox(height: 20),
                       _buildRestaurant(platform, value),
                     ],
@@ -236,56 +240,55 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 20),
         // 公告內容
-        Row(
-          children: [
-            Expanded(
-              child: Card(
-                child: DataTable(
-                  headingTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold),
-                  columns: [
-                    const DataColumn(label: Text("訊息類別")),
-                    const DataColumn(label: Text("主題")),
+        SizedBox(
+          height: 64 + value.posts.where((e) => e.visible).length * 50,
+          child: Card(
+            child: DataTable2(
+              headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+              dataRowHeight: 50,
+              columnSpacing: 10,
+              columns: [
+                const DataColumn2(label: Text("訊息類別"), fixedWidth: 80),
+                const DataColumn2(label: Text("主題")),
+                if (platform != Platform.mobile)
+                  const DataColumn2(label: Text("發布日期"), fixedWidth: 80),
+              ],
+              rows: [
+                for (var post in value.posts.where((e) => e.visible))
+                  DataRow(cells: [
+                    DataCell(Text(post.column.label)),
+                    DataCell(Row(
+                      children: [
+                        if (post.importance)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Icon(
+                              FontAwesomeIcons.fireFlameCurved,
+                              size: 12,
+                              color: Colors.red.shade700,
+                            ),
+                          ),
+                        Expanded(
+                          child: LinkText(
+                            path: "${Routes.post.path}/${post.id}",
+                            label: post.title,
+                          ),
+                        ),
+                      ],
+                    )),
                     if (platform != Platform.mobile)
-                      const DataColumn(label: Text("發布日期")),
-                  ],
-                  rows: [
-                    for (var post in value.posts)
-                      if (post.visible)
-                        DataRow(cells: [
-                          DataCell(Text(post.column.label)),
-                          DataCell(Row(
-                            children: [
-                              if (post.importance)
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5),
-                                  child: Icon(
-                                    FontAwesomeIcons.fireFlameCurved,
-                                    size: 12,
-                                    color: Colors.red.shade700,
-                                  ),
-                                ),
-                              LinkText(
-                                path: "${Routes.post.path}/${post.id}",
-                                label: post.title,
-                              ),
-                            ],
-                          )),
-                          if (platform != Platform.mobile)
-                            DataCell(Text(DateFormat("yyyy-MM-dd")
-                                .format(post.createTime))),
-                        ]),
-                  ],
-                ),
-              ),
+                      DataCell(Text(
+                          DateFormat("yyyy-MM-dd").format(post.createTime))),
+                  ]),
+              ],
             ),
-          ],
+          ),
         ),
       ],
     );
   }
 
-  /// 餐廳檢查報告
+  /// 商家檢查報告
   Widget _buildRestaurant(Platform platform, HomePageViewModel value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,7 +298,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.min,
           icon: Icon(FontAwesomeIcons.solidFileLines),
           child: Text(
-            "餐廳檢查報告",
+            "商家檢查報告",
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -304,38 +307,38 @@ class _HomePageState extends State<HomePage> {
         ),
         const Divider(thickness: 3),
         const SizedBox(height: 10),
-        // 餐廳檢查報告內容
-        Row(
-          children: [
-            Expanded(
-              child: Card(
-                child: DataTable(
-                  headingTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold),
-                  columns: [
-                    const DataColumn(label: Text("餐廳名稱")),
-                    const DataColumn(label: Text("檢驗結果")),
+        // 商家檢查報告內容
+        SizedBox(
+          height: 64 + value.restaurantas.where((e) => e.visible).length * 50,
+          child: Card(
+            child: DataTable2(
+              headingTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+              dataRowHeight: 50,
+              columnSpacing: 10,
+              columns: [
+                const DataColumn2(label: Text("商家名稱")),
+                const DataColumn2(label: Text("檢驗結果"), fixedWidth: 80),
+                if (platform != Platform.mobile)
+                  const DataColumn2(label: Text("日期"), fixedWidth: 80),
+              ],
+              rows: [
+                for (var restaurant
+                    in value.restaurantas.where((e) => e.visible))
+                  DataRow(cells: [
+                    DataCell(Expanded(
+                      child: LinkText(
+                        path: "${Routes.restaurant.path}/${restaurant.id}",
+                        label: restaurant.title,
+                      ),
+                    )),
+                    DataCell(InspectResultCard(restaurant.valid)),
                     if (platform != Platform.mobile)
-                      const DataColumn(label: Text("日期")),
-                  ],
-                  rows: [
-                    for (var restaurant in value.restaurantas)
-                      if (restaurant.visible)
-                        DataRow(cells: [
-                          DataCell(LinkText(
-                            path: "${Routes.restaurant.path}/${restaurant.id}",
-                            label: restaurant.title,
-                          )),
-                          DataCell(InspectResultCard(restaurant.valid)),
-                          if (platform != Platform.mobile)
-                            DataCell(Text(DateFormat("yyyy-MM-dd")
-                                .format(restaurant.inspectTime))),
-                        ]),
-                  ],
-                ),
-              ),
+                      DataCell(Text(DateFormat("yyyy-MM-dd")
+                          .format(restaurant.inspectTime))),
+                  ]),
+              ],
             ),
-          ],
+          ),
         ),
       ],
     );
