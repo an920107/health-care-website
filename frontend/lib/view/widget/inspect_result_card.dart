@@ -11,22 +11,28 @@ class InspectResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return value
-        ? Card(
-            color: Colors.lightGreen.shade100,
+        ? Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.lightGreen.shade100,
+            ),
             child: const Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 4,
-                horizontal: 12,
+                horizontal: 8,
               ),
               child: Text("合　格"),
             ),
           )
-        : Card(
-            color: Theme.of(context).colorScheme.errorContainer,
+        : Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Theme.of(context).colorScheme.errorContainer,
+            ),
             child: const Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 4,
-                horizontal: 12,
+                horizontal: 8,
               ),
               child: Text("不合格"),
             ),

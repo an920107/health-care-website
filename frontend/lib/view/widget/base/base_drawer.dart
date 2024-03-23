@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health_care_website/config.dart';
 import 'package:health_care_website/enum/page_topic.dart';
@@ -97,20 +96,20 @@ class _BaseDrawerState extends State<BaseDrawer> {
                 ListTile(
                   title: Row(
                     children: [
-                      IconButton.outlined(
-                        onPressed: () async {
-                          await Clipboard.setData(
-                            ClipboardData(text: Config.email),
-                          );
-                          if (context.mounted) {
-                            Scaffold.of(context).closeDrawer();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("電子郵件已複製到剪貼簿")),
-                            );
-                          }
-                        },
-                        icon: const Icon(Icons.email),
-                      ),
+                      // IconButton.outlined(
+                      //   onPressed: () async {
+                      //     await Clipboard.setData(
+                      //       ClipboardData(text: Config.email),
+                      //     );
+                      //     if (context.mounted) {
+                      //       Scaffold.of(context).closeDrawer();
+                      //       ScaffoldMessenger.of(context).showSnackBar(
+                      //         const SnackBar(content: Text("電子郵件已複製到剪貼簿")),
+                      //       );
+                      //     }
+                      //   },
+                      //   icon: const Icon(Icons.email),
+                      // ),
                       IconButton.outlined(
                         onPressed: () => launchUrlString(Config.instagram),
                         icon: const Icon(FontAwesomeIcons.instagram),

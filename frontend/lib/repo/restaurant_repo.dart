@@ -8,6 +8,7 @@ import 'package:health_care_website/model/blob/attachment_response.dart';
 import 'package:health_care_website/model/restaurant/restaurant.dart';
 import 'package:health_care_website/model/restaurant/restaurant_response.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 abstract class RestaurantRepo {
   static Future<Restaurant?> getRestaurant(String id) async {
@@ -119,8 +120,8 @@ abstract class RestaurantRepo {
 
   static Uri getStatsUrl(DateTime start, DateTime end) {
     return Uri.https(Config.backend, "/api/restaurant_post/stats", {
-      "start_date": start.toIso8601String(),
-      "end_date": start.toIso8601String(),
+      "start_date": DateFormat("yyyy-MM-dd").format(start),
+      "end_date": DateFormat("yyyy-MM-dd").format(end),
     });
   }
 }

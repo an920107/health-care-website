@@ -33,6 +33,7 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
 
   final _nameTextController = TextEditingController();
   final _dateTextController = TextEditingController();
+  final _nameFormFieldKey = GlobalKey<FormFieldState>();
 
   @override
   void initState() {
@@ -63,15 +64,17 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                   // 表單內容
                   Row(
                     children: [
-                      // 餐廳名稱
+                      // 商家名稱
                       Expanded(
                         child: TextFormField(
+                          key: _nameFormFieldKey,
                           controller: _nameTextController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             icon: Icon(Icons.restaurant),
-                            label: Text("餐廳名稱"),
+                            label: Text("商家名稱"),
                           ),
+                          validator: value.titleValidator,
                         ),
                       ),
                       const SizedBox(width: 40),
@@ -278,6 +281,9 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                       OutlinedButton.icon(
                         style: OutlinedButtonStyle.rRectStyle(),
                         onPressed: () async {
+                          if (!_nameFormFieldKey.currentState!.validate()) {
+                            return;
+                          }
                           await value.uploadRestaurant(
                             title: _nameTextController.text,
                             inspectTime:

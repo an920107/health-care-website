@@ -42,6 +42,7 @@ class _PostEditPageState extends State<PostEditPage> {
     selection: const TextSelection.collapsed(offset: 0),
     keepStyleOnNewLine: false,
   );
+  final _titleFormFieldKey = GlobalKey<FormFieldState>();
 
   @override
   void initState() {
@@ -74,7 +75,8 @@ class _PostEditPageState extends State<PostEditPage> {
                     // 標題輸入框
                     Expanded(
                       flex: 2,
-                      child: TextField(
+                      child: TextFormField(
+                        key: _titleFormFieldKey,
                         maxLines: 1,
                         controller: _titleTextController,
                         decoration: const InputDecoration(
@@ -82,6 +84,7 @@ class _PostEditPageState extends State<PostEditPage> {
                           icon: Icon(Icons.title),
                           label: Text("標題"),
                         ),
+                        validator: value.titleValidator,
                       ),
                     ),
                     const SizedBox(width: 40),
@@ -232,6 +235,9 @@ class _PostEditPageState extends State<PostEditPage> {
                     OutlinedButton.icon(
                       style: OutlinedButtonStyle.rRectStyle(),
                       onPressed: () async {
+                        if (!_titleFormFieldKey.currentState!.validate()) {
+                          return;
+                        }
                         value.uploadPost(
                           title: _titleTextController.text,
                           content: json.encode(

@@ -47,30 +47,30 @@ class BaseNavbar extends StatelessWidget {
                       icon: const Icon(Icons.home_outlined),
                       label: const Text("中大首頁"),
                     ),
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.grey.shade800,
-                      ),
-                      onPressed: () async {
-                        await Clipboard.setData(
-                            ClipboardData(text: Config.email));
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              margin: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width - 400,
-                                bottom: 20,
-                                right: 20,
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                              content: const Text("電子郵件已複製到剪貼簿"),
-                            ),
-                          );
-                        }
-                      },
-                      icon: const Icon(Icons.email),
-                      label: const Text("聯絡我們"),
-                    ),
+                    // TextButton.icon(
+                    //   style: TextButton.styleFrom(
+                    //     foregroundColor: Colors.grey.shade800,
+                    //   ),
+                    //   onPressed: () async {
+                    //     await Clipboard.setData(
+                    //         ClipboardData(text: Config.email));
+                    //     if (context.mounted) {
+                    //       ScaffoldMessenger.of(context).showSnackBar(
+                    //         SnackBar(
+                    //           margin: EdgeInsets.only(
+                    //             left: MediaQuery.of(context).size.width - 400,
+                    //             bottom: 20,
+                    //             right: 20,
+                    //           ),
+                    //           behavior: SnackBarBehavior.floating,
+                    //           content: const Text("電子郵件已複製到剪貼簿"),
+                    //         ),
+                    //       );
+                    //     }
+                    //   },
+                    //   icon: const Icon(Icons.email),
+                    //   label: const Text("聯絡我們"),
+                    // ),
                     TextButton.icon(
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.grey.shade800,

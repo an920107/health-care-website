@@ -121,6 +121,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.3.1"
+  data_table_2:
+    dependency: "direct main"
+    description:
+      name: data_table_2
+      sha256: fdb0551f103f1daf837bddfde14619fd9e683408833a618c9afabeb533fce88c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.11"
   desktop_drop:
     dependency: "direct main"
     description:
