@@ -342,7 +342,7 @@ def get_restaurant_stats():
     start_date = datetime.strptime(start_date, "%Y-%m-%d")
     end_date = datetime.strptime(end_date, "%Y-%m-%d")
     posts = RestaurantPost.query.filter(
-        RestaurantPost.time >= start_date, RestaurantPost.time < end_date
+        RestaurantPost.time >= start_date, RestaurantPost.time <= end_date
     ).all()
 
     category_validation_count = {
@@ -350,11 +350,15 @@ def get_restaurant_stats():
         'food': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0},
         'drink': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0},
         'ice': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0},
+        'others': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0},
+        'total': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0}
     }
 
     for post in posts:
         category_validation_count[post.category][post.valid] += 1
         category_validation_count[post.category]['total'] += 1
+        category_validation_count['total'][post.valid] += 1
+        category_validation_count['total']['total'] += 1
 
     for category, count in category_validation_count.items():
         if count['total'] != 0:
@@ -362,7 +366,7 @@ def get_restaurant_stats():
 
     df = pd.DataFrame(category_validation_count).T
     df.columns = ['總件數', '合格幾件', '不合格幾件', '合格率']
-    df['類別'] = ['飲用水', '熟食', '飲料', '冰塊']
+    df['類別'] = ['飲用水', '熟食', '飲料', '冰塊', '其他', '總和']
     df = df[['類別', '總件數', '合格幾件', '不合格幾件', '合格率']]
 
     wb = Workbook()
@@ -375,11 +379,11 @@ def get_restaurant_stats():
         for col_idx, col_name in column_map.items():
             ws[col_name + str(row_idx + 2)] = df.iloc[row_idx, col_idx]
 
-    ws['A6'] = '開始日期'
-    ws['B6'] = start_date.strftime('%Y-%m-%d')
-    ws['C6'] = '結束日期'
-    ws['D6'] = end_date.strftime('%Y-%m-%d')
-    ws['A7'] = '餐廳檢查報告統計表'
+    ws['A8'] = '開始日期'
+    ws['B8'] = start_date.strftime('%Y-%m-%d')
+    ws['C8'] = '結束日期'
+    ws['D8'] = end_date.strftime('%Y-%m-%d')
+    ws['A9'] = '餐廳檢查報告統計表'
 
     excel_data = BytesIO()
     wb.save(excel_data)

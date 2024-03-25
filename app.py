@@ -41,7 +41,6 @@ def create_app():
     swagger = Swagger(app)
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-
     return app
 
 
@@ -50,6 +49,12 @@ with app.app_context():
     # db.session.remove()
     # db.drop_all()
     db.create_all()
+
+
+@app.errorhandler(Exception)
+def error_handler(error: Exception):
+    print(error)
+    return Response.sever_error(str(error))
 
 
 @app.route("/", methods=['GET'])
@@ -64,7 +69,6 @@ def test_connection():
         description: connect success
     """
     return Response.response('connect success')
-
 
 
 @app.route("/api/allow_endswith", methods=['GET'])
