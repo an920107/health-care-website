@@ -1,0 +1,11 @@
+version: '1.0'
+
+services:
+  web:
+    build:
+      context: .
+    volumes:
+      - ./instance:/app/instance
+      - ./statics:/app/statics
+    ports:
+      - "5001:5001"
