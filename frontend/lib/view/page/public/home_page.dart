@@ -325,11 +325,15 @@ class _HomePageState extends State<HomePage> {
                 for (var restaurant
                     in value.restaurantas.where((e) => e.visible))
                   DataRow(cells: [
-                    DataCell(Expanded(
-                      child: LinkText(
-                        path: "${Routes.restaurant.path}/${restaurant.id}",
-                        label: restaurant.title,
-                      ),
+                    DataCell(Row(
+                      children: [
+                        Expanded(
+                          child: LinkText(
+                            path: "${Routes.restaurant.path}/${restaurant.id}",
+                            label: restaurant.title,
+                          ),
+                        ),
+                      ],
                     )),
                     DataCell(InspectResultCard(restaurant.valid)),
                     if (platform != Platform.mobile)

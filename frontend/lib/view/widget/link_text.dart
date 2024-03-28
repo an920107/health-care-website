@@ -23,7 +23,7 @@ class LinkText extends StatelessWidget {
       child: Text(
         label,
         // overflow: TextOverflow.fade,
-        // softWrap: false,
+        softWrap: true,
         style: style?.copyWith(decoration: TextDecoration.underline) ??
             const TextStyle(decoration: TextDecoration.underline),
       ),
