@@ -35,6 +35,14 @@ class BaseNavbar extends StatelessWidget {
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.grey.shade800,
                       ),
+                      onPressed: () => Scaffold.of(context).openEndDrawer(),
+                      icon: const Icon(Icons.admin_panel_settings),
+                      label: const Text("網站管理"),
+                    ),
+                    TextButton.icon(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.grey.shade800,
+                      ),
                       onPressed: () => context.go(Routes.root.path),
                       icon: const Icon(Icons.home),
                       label: const Text("首頁"),
