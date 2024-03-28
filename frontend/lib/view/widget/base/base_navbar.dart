@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/config.dart';
+import 'package:health_care_website/enum/page_topic.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/clean_button.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
@@ -160,10 +160,12 @@ class BaseNavbar extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   TextButton(
-                                      onPressed: () {},
+                                      onPressed: () => context.push(
+                                          "${Routes.page.path}/${PageTopic.workteam.id}"),
                                       child: const Text("關於我們")),
                                   TextButton(
-                                      onPressed: () {},
+                                      onPressed: () => context.push(
+                                          "${Routes.page.path}/${PageTopic.aed.id}"),
                                       child: const Text("校園 AED")),
                                   TextButton(
                                       onPressed: () {},
