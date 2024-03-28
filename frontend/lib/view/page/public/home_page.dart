@@ -16,6 +16,7 @@ import 'package:health_care_website/view/widget/dialog/login_dialog.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
 import 'package:health_care_website/view/widget/inspect_result_card.dart';
 import 'package:health_care_website/view/widget/link_text.dart';
+import 'package:health_care_website/view/widget/page_number_indicator.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/public/home_page_view_model.dart';
 import 'package:intl/intl.dart';
@@ -235,7 +236,6 @@ class _HomePageState extends State<HomePage> {
                 selectedIcon: const Icon(Icons.view_agenda),
                 onSelectionChanged: (selected) {
                   value.column = selected.first;
-                  value.fetchFromServer();
                 },
                 selected: {value.column},
               ),
@@ -287,6 +287,15 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+        ),
+
+        // 頁數
+        const SizedBox(height: 10),
+        PageNumberIndicator(
+          currentPage: value.postCurrentPage,
+          totalPage: value.postTotalPage,
+          onAdjust: (increment) async =>
+              await value.postAdjustPageNumber(increment),
         ),
       ],
     );
@@ -347,6 +356,15 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+        ),
+
+        // 頁數
+        const SizedBox(height: 10),
+        PageNumberIndicator(
+          currentPage: value.restaurantCurrentPage,
+          totalPage: value.restaurantTotalPage,
+          onAdjust: (increment) async =>
+              await value.restaurantAdjustPageNumber(increment),
         ),
       ],
     );
