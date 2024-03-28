@@ -159,18 +159,22 @@ class _HomePageState extends State<HomePage> {
         width: constrain.maxWidth,
         child: CarouselSlider(
           options: CarouselOptions(
+            aspectRatio: 16 / 9,
             autoPlay: true,
             enlargeCenterPage: true,
           ),
           items: value.images
               .map((e) => ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: CachedNetworkImage(
-                      imageUrl: Uri.decodeComponent(
-                          Uri.https(Config.backend, e.uri).toString()),
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: CachedNetworkImage(
+                        imageUrl: Uri.decodeComponent(
+                            Uri.https(Config.backend, e.uri).toString()),
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                      ),
                     ),
                   ))
               .toList(),
