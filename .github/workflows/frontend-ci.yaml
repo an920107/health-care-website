@@ -22,8 +22,8 @@ jobs:
           channel: stable
       - name: Resolve Flutter dependency
         run: cd frontend && flutter pub get
-      - name: Create `.env` file
-        run: cd frontend && echo "${{ secrets.NCU_PORTAL_CLIENT_ID }}" > .env
+      - name: Create .env file
+        run: cd frontend && echo "NCU_PORTAL_CLIENT_ID=${{ secrets.NCU_PORTAL_CLIENT_ID }}" > .env
       - name: Build web
         run: cd frontend && flutter build web --web-renderer=canvaskit
       - name: Upload artifact
