@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - frontend
+      - action
 jobs:
   build:
     runs-on: ubuntu-latest
