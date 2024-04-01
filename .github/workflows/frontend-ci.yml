@@ -4,6 +4,12 @@ on:
     branches:
       - main
       - frontend
+      - action
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,11 +21,13 @@ jobs:
         with:
           channel: stable
       - name: Resolve Flutter dependency
-        run: flutter pub get
+        run: cd frontend && flutter pub get
+      - name: Create .env file
+        run: cd frontend && echo "NCU_PORTAL_CLIENT_ID=${{ secrets.NCU_PORTAL_CLIENT_ID }}" > .env
       - name: Build web
-        run: flutter build web --web-renderer=canvaskit
+        run: cd frontend && flutter build web --web-renderer=canvaskit
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: frontend-artifact
-          path: build/web/
+          path: frontend/build/web/

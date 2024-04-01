@@ -1,0 +1,8 @@
+version: "1.0"
+services:
+  frontend:
+    build: frontend/docker
+    image: health-care-website-frontend
+    container_name: health-care-website-frontend
+    ports:
+      - "127.0.0.1:8080:80"
