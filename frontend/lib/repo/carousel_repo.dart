@@ -37,9 +37,7 @@ abstract class CarouselRepo {
   }
 
   static Future<void> deleteImage(String id) async {
-    final url = Uri.https(Config.backend, "/api/carousel", {
-      "carousel_id": id,
-    });
+    final url = Uri.https(Config.backend, "/api/carousel/$id");
     try {
       final response = await http.delete(url);
       if (response.statusCode != 200) throw Exception();

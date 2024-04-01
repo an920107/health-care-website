@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_care_website/view/widget/base/base_drawer.dart';
+import 'package:health_care_website/view/widget/base/base_end_drawer.dart';
 import 'package:health_care_website/view/widget/base/base_footer.dart';
 import 'package:health_care_website/view/widget/base/base_navbar.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
@@ -22,6 +23,7 @@ class BaseScaffold extends StatelessWidget {
 
     return Scaffold(
       drawer: const BaseDrawer(),
+      endDrawer: const BaseEndDrawer(),
       body: ListView(
         children: [
           ConstrainedBox(

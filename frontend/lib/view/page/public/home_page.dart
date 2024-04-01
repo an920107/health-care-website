@@ -16,6 +16,7 @@ import 'package:health_care_website/view/widget/dialog/login_dialog.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
 import 'package:health_care_website/view/widget/inspect_result_card.dart';
 import 'package:health_care_website/view/widget/link_text.dart';
+import 'package:health_care_website/view/widget/page_number_indicator.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/public/home_page_view_model.dart';
 import 'package:intl/intl.dart';
@@ -159,18 +160,22 @@ class _HomePageState extends State<HomePage> {
         width: constrain.maxWidth,
         child: CarouselSlider(
           options: CarouselOptions(
+            aspectRatio: 16 / 9,
             autoPlay: true,
             enlargeCenterPage: true,
           ),
           items: value.images
               .map((e) => ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: CachedNetworkImage(
-                      imageUrl: Uri.decodeComponent(
-                          Uri.https(Config.backend, e.uri).toString()),
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: CachedNetworkImage(
+                        imageUrl: Uri.decodeComponent(
+                            Uri.https(Config.backend, e.uri).toString()),
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                      ),
                     ),
                   ))
               .toList(),
@@ -231,7 +236,6 @@ class _HomePageState extends State<HomePage> {
                 selectedIcon: const Icon(Icons.view_agenda),
                 onSelectionChanged: (selected) {
                   value.column = selected.first;
-                  value.fetchFromServer();
                 },
                 selected: {value.column},
               ),
@@ -284,6 +288,15 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+
+        // 頁數
+        const SizedBox(height: 10),
+        PageNumberIndicator(
+          currentPage: value.postCurrentPage,
+          totalPage: value.postTotalPage,
+          onAdjust: (increment) async =>
+              await value.postAdjustPageNumber(increment),
+        ),
       ],
     );
   }
@@ -325,11 +338,15 @@ class _HomePageState extends State<HomePage> {
                 for (var restaurant
                     in value.restaurantas.where((e) => e.visible))
                   DataRow(cells: [
-                    DataCell(Expanded(
-                      child: LinkText(
-                        path: "${Routes.restaurant.path}/${restaurant.id}",
-                        label: restaurant.title,
-                      ),
+                    DataCell(Row(
+                      children: [
+                        Expanded(
+                          child: LinkText(
+                            path: "${Routes.restaurant.path}/${restaurant.id}",
+                            label: restaurant.title,
+                          ),
+                        ),
+                      ],
                     )),
                     DataCell(InspectResultCard(restaurant.valid)),
                     if (platform != Platform.mobile)
@@ -339,6 +356,15 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+        ),
+
+        // 頁數
+        const SizedBox(height: 10),
+        PageNumberIndicator(
+          currentPage: value.restaurantCurrentPage,
+          totalPage: value.restaurantTotalPage,
+          onAdjust: (increment) async =>
+              await value.restaurantAdjustPageNumber(increment),
         ),
       ],
     );

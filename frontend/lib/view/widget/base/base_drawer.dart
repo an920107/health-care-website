@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_care_website/config.dart';
 import 'package:health_care_website/enum/page_topic.dart';
+import 'package:health_care_website/router/routes.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class BaseDrawer extends StatefulWidget {
@@ -53,7 +55,8 @@ class _BaseDrawerState extends State<BaseDrawer> {
                         children: [
                           for (var link in group.value)
                             ListTile(
-                              onTap: () {},
+                              onTap: () => context
+                                  .push("${Routes.page.path}/${link.id}"),
                               title: Text(link.label),
                             ),
                         ],

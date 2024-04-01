@@ -24,7 +24,7 @@ abstract class RestaurantRepo {
 
   static Future<RestaurantResponse?> getRestaurants({int? page}) async {
     final url = Uri.https(Config.backend, "/api/restaurant_post", {
-      if (page != null) "page": page,
+      if (page != null) "page": page.toString(),
     });
     try {
       final response = await http.get(url);
