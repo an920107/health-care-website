@@ -6,3 +6,10 @@ services:
     container_name: health-care-website-frontend
     ports:
       - "127.0.0.1:18080:80"
+  backend:
+    build: backend
+    volumes:
+      - backend/instance:/app/instance
+      - backend/statics:/app/statics
+    ports:
+      - "5001:5001"
