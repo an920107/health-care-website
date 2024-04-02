@@ -14,6 +14,7 @@ services:
     volumes:
       - ./backend/instance:/app/instance
       - ./backend/statics:/app/statics
+    user: ${UID}:${GID}
     networks:
       - internal-network
   proxy:
