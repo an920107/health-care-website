@@ -39,8 +39,10 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            rm -rf repo
-            git clone https://github.com/${{ github.repository }} repo --depth=1
+            git clone https://github.com/${{ github.repository }} repo-tmp --depth=1
+            mkdir -p repo
+            cp -r repo-tmp/* repo
+            rm -rf repo-tmp
             cp -r frontend-artifact repo/frontend/docker
             cd repo
             docker compose down
