@@ -44,5 +44,4 @@ jobs:
             git clone https://github.com/${{ github.repository }} repo --depth=1
             cp -r frontend-artifact repo/frontend/docker
             cd repo
-            docker-compose down --rmi local
-            docker-compose up -d
+            docker-compose up --build -d
