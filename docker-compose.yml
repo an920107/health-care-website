@@ -1,15 +1,35 @@
-version: "2.0"
+version: "3.0"
+
 services:
   frontend:
     build: frontend/docker
     image: health-care-website-frontend
     container_name: health-care-website-frontend
-    ports:
-      - "127.0.0.1:18080:80"
+    networks:
+      - internal-network
   backend:
     build: backend
+    image: health-care-website-backend
+    container_name: health-care-website-backend
     volumes:
-      - ./instance:/app/instance
-      - ./statics:/app/statics
+      - ./backend/instance:/app/instance
+      - ./backend/statics:/app/statics
+    networks:
+      - internal-network
+  proxy:
+    image: nginx:latest
+    container_name: health-care-website-proxy
+    volumes:
+      - ./proxy/reverse_proxy.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - "5001:5001"
+      - 8080:80
+    networks:
+      - internal-network
+      - external-network
+
+networks:
+  internal-network:
+    name: health-care-website-internal
+    internal: true
+  external-network:
+    name: health-care-website-external
