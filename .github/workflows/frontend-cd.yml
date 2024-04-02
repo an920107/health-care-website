@@ -1,0 +1,42 @@
+name: frontend-cd
+on:
+  workflow_run:
+    workflows:
+      - frontend-ci
+    types:
+      - completed
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-artifact
+      - name: Copy file to host
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: frontend-artifact
+          target: /home/${{ secrets.SSH_USERNAME }}/frontend-artifact
+          rm: true
+      - name: Deployment
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            rm -rf repo
+            git clone https://github.com/${{ github.repository }} repo --depth=1
+            cp -r frontend-artifact repo/frontend/docker
