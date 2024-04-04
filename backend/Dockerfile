@@ -1,4 +1,4 @@
-FROM python:3.10 AS install-base
+FROM docker.io/library/python:3.10 AS install-base
 
 RUN apt-get update -y
 

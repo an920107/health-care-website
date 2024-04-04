@@ -17,7 +17,7 @@ services:
     networks:
       - internal-network
   proxy:
-    image: nginx:latest
+    image: docker.io/library/nginx:latest
     container_name: health-care-website-proxy
     volumes:
       - ./proxy/reverse_proxy.conf:/etc/nginx/conf.d/default.conf
@@ -31,5 +31,9 @@ networks:
   internal-network:
     name: health-care-website-internal
     internal: true
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.1
   external-network:
     name: health-care-website-external
