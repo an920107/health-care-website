@@ -8,6 +8,8 @@ from models.responses import Response
 
 from flask import Blueprint, request, send_file
 
+from script.oauth_scripts import authorization_required
+
 carousel_blueprint = Blueprint('carousel', __name__)
 
 
@@ -62,12 +64,15 @@ def get_carousels():
 
 
 @carousel_blueprint.route('', methods=['POST'])
+@authorization_required(2)
 def upload_carousel():
     """
     Upload carousel
     ---
     tags:
       - Carousel
+    security:
+    - BearerAuth: []
     parameters:
       - name: blob_attachment
         in: formData
@@ -93,12 +98,15 @@ def upload_carousel():
 
 
 @carousel_blueprint.route('/<int:carousel_id>', methods=['DELETE'])
+@authorization_required(2)
 def delete_carousel(carousel_id):
     """
     Delete carousel
     ---
     tags:
       - Carousel
+    security:
+    - BearerAuth: []
     parameters:
       - name: carousel_id
         in: path

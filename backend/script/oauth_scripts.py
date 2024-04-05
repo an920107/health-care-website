@@ -1,4 +1,23 @@
 import requests
+from functools import wraps
+from flask_jwt_extended import verify_jwt_in_request, get_jwt
+from models.responses import Response
+
+
+def authorization_required(required_role):
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            verify_jwt_in_request()
+            claims = get_jwt()
+            if 'authorization' in claims and -1 < claims['authorization'] <= required_role:
+                return fn(*args, **kwargs)
+            else:
+                return Response.unauthorized('Unauthorized')
+
+        return wrapper
+
+    return decorator
 
 
 def get_oauth_access_token(code, state):

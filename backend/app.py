@@ -3,6 +3,7 @@
 from config import Config
 
 from models.models import db
+from models.extensions import jwt
 from models.responses import Response
 
 from routes.post_blueprint import post_blueprint
@@ -12,6 +13,7 @@ from routes.static_post_blueprint import static_post_blueprint
 from routes.carousel_blueprint import carousel_blueprint
 from routes.auth_blueprint import auth_blueprint
 from routes.restaurant_post_blueprint import restaurant_post_blueprint
+from routes.user_blueprint import user_blueprint
 
 from flask import Flask, request, send_file, redirect
 from flask_cors import CORS
@@ -27,6 +29,7 @@ def create_app():
     app.register_blueprint(carousel_blueprint, url_prefix='/api/carousel')
     app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
     app.register_blueprint(restaurant_post_blueprint, url_prefix='/api/restaurant_post')
+    app.register_blueprint(user_blueprint, url_prefix='/api/user')
 
     app.config.from_mapping({
         'SQLALCHEMY_DATABASE_URI': 'sqlite:///health-care-website.db',
@@ -34,21 +37,36 @@ def create_app():
             "title": "health-care-backend",
             "description": "Nation Central University Health Care Backend Development",
             "version": "2.0.0",
-        }
+        },
+        'JWT_SECRET_KEY': Config.JWT_SECRET_KEY
     })
 
     db.init_app(app)
-    swagger = Swagger(app)
-    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+    swagger = Swagger(
+        app,
+        template={
+            "securityDefinitions": {
+                "BearerAuth": {
+                    "type": "apiKey",
+                    "name": "Authorization",
+                    "in": "header"
+                }
+            }
+        }
+    )
+    CORS(app)
+    jwt.init_app(app)
 
     return app
 
 
 app = create_app()
-with app.app_context():
-    # db.session.remove()
-    # db.drop_all()
-    db.create_all()
+
+
+# with app.app_context():
+#     db.session.remove()
+#     db.drop_all()
+#     db.create_all()
 
 
 # @app.errorhandler(Exception)

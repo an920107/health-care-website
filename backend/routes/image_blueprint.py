@@ -1,6 +1,8 @@
 from models.models import Image, StaticImage
 from models.responses import Response
 
+from script.oauth_scripts import authorization_required
+
 from flask import Blueprint, send_file
 
 image_blueprint = Blueprint('image', __name__)

@@ -3,6 +3,8 @@ import os
 from models.models import db, Attachment, StaticAttachment, RestaurantAttachment
 from models.responses import Response
 
+from script.oauth_scripts import authorization_required
+
 from flask import Blueprint, send_file
 
 attachment_blueprint = Blueprint('attachment', __name__)
@@ -64,6 +66,7 @@ def get_attachment_info(attachment_id):
 
 
 @attachment_blueprint.route('/post/<int:attachment_id>', methods=['DELETE'])
+@authorization_required(2)
 def delete_attachment(attachment_id):
     """
     Delete attachment by id
@@ -76,6 +79,8 @@ def delete_attachment(attachment_id):
         type: integer
         required: true
         description: attachment id
+    security:
+    - BearerAuth: []
     responses:
       200:
         description: delete attachment successful
@@ -151,6 +156,7 @@ def get_static_attachment_info(attachment_id):
 
 
 @attachment_blueprint.route('/static_post/<int:attachment_id>', methods=['DELETE'])
+@authorization_required(2)
 def delete_static_attachment(attachment_id):
     """
     Delete static attachment by id
@@ -163,6 +169,8 @@ def delete_static_attachment(attachment_id):
         type: integer
         required: true
         description: attachment id
+    security:
+    - BearerAuth: []
     responses:
       200:
         description: delete attachment successful
@@ -238,12 +246,15 @@ def get_restaurant_attachment_info(attachment_id):
 
 
 @attachment_blueprint.route('/restaurant_post/<int:attachment_id>', methods=['DELETE'])
+@authorization_required(2)
 def delete_restaurant_attachment(attachment_id):
     """
     Delete restaurant_post attachment by id
     ---
     tags:
       - Attachment
+    security:
+    - BearerAuth: []
     parameters:
       - name: attachment_id
         in: path

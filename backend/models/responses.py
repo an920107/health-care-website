@@ -18,3 +18,7 @@ class Response:
     @staticmethod
     def response(msg, rsp=None):
         return {'description': msg, 'response': rsp}, 200
+
+    @staticmethod
+    def unauthorized(msg, rsp=None):
+        return {'description': msg, 'response': rsp}, 401
