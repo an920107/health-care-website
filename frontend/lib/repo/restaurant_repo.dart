@@ -7,112 +7,140 @@ import 'package:health_care_website/model/blob/attachment_info.dart';
 import 'package:health_care_website/model/blob/attachment_response.dart';
 import 'package:health_care_website/model/restaurant/restaurant.dart';
 import 'package:health_care_website/model/restaurant/restaurant_response.dart';
-import 'package:http/http.dart' as http;
+import 'package:health_care_website/util/http_util.dart';
 import 'package:intl/intl.dart';
 
 abstract class RestaurantRepo {
   static Future<Restaurant?> getRestaurant(String id) async {
-    final url = Uri.https(Config.backend, "/api/restaurant_post/$id");
     try {
-      final response = await http.get(url);
+      final response = await HttpUtil.request(
+        method: HttpMethod.get,
+        uri: "/api/restaurant_post/$id",
+      );
+      response.check();
       return Restaurant.fromJson(json.decode(response.body)["response"]);
     } on Exception catch (e) {
       if (kDebugMode) print(e);
-      return null;
     }
+    return null;
   }
 
   static Future<RestaurantResponse?> getRestaurants({int? page}) async {
-    final url = Uri.https(Config.backend, "/api/restaurant_post", {
-      if (page != null) "page": page.toString(),
-    });
     try {
-      final response = await http.get(url);
-      return RestaurantResponse.fromJson(json.decode(response.body)["response"]);
+      final response = await HttpUtil.request(
+        method: HttpMethod.get,
+        uri: "/api/restaurant_post",
+        query: {if (page != null) "page": page.toString()},
+      );
+      response.check();
+      return RestaurantResponse.fromJson(
+          json.decode(response.body)["response"]);
     } on Exception catch (e) {
       if (kDebugMode) print(e);
-      return null;
     }
+    return null;
   }
 
   static Future<Restaurant?> createRestaurant() async {
-    final url = Uri.https(Config.backend, "/api/restaurant_post");
     try {
-      final response = await http.post(url,
-          body: Restaurant(
-            id: "",
-            title: "New Restaurant",
-            attachments: json.encode([]),
-            item: RestaurantInspectionItem.values.first,
-            viewer: 0,
-            visible: false,
-            valid: false,
-            inspectTime: DateTime.now(),
-            createTime: DateTime.now(),
-            updateTime: DateTime.now(),
-          ).toJson());
+      final response = await HttpUtil.request(
+        method: HttpMethod.post,
+        uri: "/api/restaurant_post",
+        authRequired: true,
+        body: Restaurant(
+          id: "",
+          title: "New Restaurant",
+          attachments: json.encode([]),
+          item: RestaurantInspectionItem.values.first,
+          viewer: 0,
+          visible: false,
+          valid: false,
+          inspectTime: DateTime.now(),
+          createTime: DateTime.now(),
+          updateTime: DateTime.now(),
+        ).toJson(),
+      );
+      response.check();
       return Restaurant.fromJson(json.decode(response.body)["response"]);
     } on Exception catch (e) {
       if (kDebugMode) print(e);
-      return null;
     }
+    return null;
   }
 
   static Future<Restaurant?> updateRestaurant(Restaurant restaurant) async {
-    final url = Uri.https(Config.backend, "/api/restaurant_post/${restaurant.id}");
     try {
-      final response = await http.put(url, body: restaurant.toJson());
+      final response = await HttpUtil.request(
+        method: HttpMethod.put,
+        uri: "/api/restaurant_post/${restaurant.id}",
+        authRequired: true,
+        body: restaurant.toJson(),
+      );
+      response.check();
       return Restaurant.fromJson(json.decode(response.body)["response"]);
     } on Exception catch (e) {
       if (kDebugMode) print(e);
-      return null;
     }
+    return null;
   }
 
   static Future<AttachmentResponse?> uploadAttachment(
-      String id, Uint8List file, String filename) async {
-    final url = Uri.https(Config.backend, "/api/restaurant_post/$id/attachment");
+    String id,
+    Uint8List blob,
+    String filename,
+  ) async {
     try {
-      final request = http.MultipartRequest("POST", url);
-      request.files.add(http.MultipartFile.fromBytes(
-        "blob_attachment",
-        file,
+      final response = await HttpUtil.upload(
+        uri: "/api/restaurant_post/$id/attachment",
+        field: "blob_attachment",
         filename: filename,
-      ));
-      final streamResponse = await request.send();
-      final response = (await http.Response.fromStream(streamResponse));
+        blob: blob,
+        authRequired: true,
+      );
+      response.check();
       return AttachmentResponse.fromJson(
           json.decode(response.body)["response"]);
     } on Exception catch (e) {
       if (kDebugMode) print(e);
-      return null;
     }
+    return null;
   }
 
   static Future<AttachmentInfo?> getAttachmentInfo(String id) async {
-    final url = Uri.https(Config.backend, "/api/attachment/restaurant_post/$id/info");
     try {
-      final response = await http.get(url);
+      final response = await HttpUtil.request(
+        method: HttpMethod.get,
+        uri: "/api/attachment/restaurant_post/$id/info",
+      );
+      response.check();
       return AttachmentInfo.fromJson(json.decode(response.body)["response"]);
     } on Exception catch (e) {
       if (kDebugMode) print(e);
-      return null;
     }
+    return null;
   }
 
   static Future<void> delete(String id) async {
-    final url = Uri.https(Config.backend, "/api/restaurant_post/$id");
     try {
-      await http.delete(url);
+      final response = await HttpUtil.request(
+        method: HttpMethod.delete,
+        uri: "/api/restaurant_post/$id",
+        authRequired: true,
+      );
+      response.check();
     } on Exception catch (e) {
       if (kDebugMode) print(e);
     }
   }
 
   static Future<void> deleteAttachment(String id) async {
-    final url = Uri.https(Config.backend, "/api/attachment/restaurant_post/$id");
     try {
-      await http.delete(url);
+      final response = await HttpUtil.request(
+        method: HttpMethod.delete,
+        uri: "/api/attachment/restaurant_post/$id",
+        authRequired: true,
+      );
+      response.check();
     } on Exception catch (e) {
       if (kDebugMode) print(e);
     }

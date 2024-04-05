@@ -9,8 +9,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:health_care_website/config.dart';
 import 'package:health_care_website/model/user/user.dart';
 import 'package:health_care_website/util/cookie_manager.dart';
+import 'package:health_care_website/util/http_util.dart';
 import 'package:uuid/uuid.dart';
-import 'package:http/http.dart' as http;
 
 abstract class AuthRepo {
   static set state(String value) => window.localStorage["state"] = value;
@@ -34,10 +34,6 @@ abstract class AuthRepo {
     if (cookieOnly == true) return token;
 
     // get token from oauth state
-    final url = Uri.https(Config.backend, "/api/auth/token", {
-      "state": state,
-    });
-
     const int maxRetry = 20;
     int retried = 0;
     bool retryLock = false;
@@ -47,8 +43,12 @@ abstract class AuthRepo {
       if (retryLock) return;
       retryLock = true;
       try {
-        final response = await http.get(url);
-        if (response.statusCode != 200) throw Exception(response.body);
+        final response = await HttpUtil.request(
+          method: HttpMethod.get,
+          uri: "/api/auth/token",
+          query: {"state": state},
+        );
+        response.check();
         token = json.decode(response.body)["response"]["access_token"];
         timer.cancel();
         retryCompleter.complete();
@@ -71,19 +71,20 @@ abstract class AuthRepo {
     return token;
   }
 
-  static void forgetAccessToken() {
+  static void dropAccessToken() {
     CookieManager.clear("token");
   }
 
   static Future<User?> getUser() async {
-    final url = Uri.https(Config.backend, "/api/auth");
     final token = await getAccessToken(cookieOnly: true);
     if (token == null) return null;
     try {
-      final response = await http.get(url, headers: {
-        "Authorization": "Bearer $token",
-      });
-      if (response.statusCode != 200) return null;
+      final response = await HttpUtil.request(
+        method: HttpMethod.get,
+        uri: "/api/auth",
+        authRequired: true,
+      );
+      response.check();
       return User.fromJson(json.decode(response.body)["response"]);
     } on Exception catch (e) {
       if (kDebugMode) print(e);

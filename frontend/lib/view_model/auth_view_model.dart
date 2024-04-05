@@ -27,7 +27,7 @@ class AuthViewModel with ChangeNotifier {
   }
 
   void logout() async {
-    AuthRepo.forgetAccessToken();
+    AuthRepo.dropAccessToken();
     _user = null;
     notifyListeners();
   }
