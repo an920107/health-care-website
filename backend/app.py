@@ -51,10 +51,10 @@ with app.app_context():
     db.create_all()
 
 
-@app.errorhandler(Exception)
-def error_handler(error: Exception):
-    print(error)
-    return Response.sever_error(str(error))
+# @app.errorhandler(Exception)
+# def error_handler(error: Exception):
+#     print(error)
+#     return Response.sever_error(str(error))
 
 
 @app.route("/", methods=['GET'])
