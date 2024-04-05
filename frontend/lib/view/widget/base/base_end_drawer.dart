@@ -47,7 +47,10 @@ class BaseEndDrawer extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
-              onTap: () => context.push(Routes.logout.path),
+              onTap: () {
+                Scaffold.of(context).closeEndDrawer();
+                context.push(Routes.logout.path);
+              },
               title: const Text("登出"),
             ),
           ],
