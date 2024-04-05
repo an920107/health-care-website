@@ -70,7 +70,11 @@ class Router {
           // 登入相關
           GoRoute(
             path: Routes.login.path,
-            builder: (context, state) => const HomePage(toLogin: true),
+            builder: (context, state) => const HomePage(loginOrLogout: true),
+          ),
+          GoRoute(
+            path: Routes.logout.path,
+            builder: (context, state) => const HomePage(loginOrLogout: false),
           ),
           GoRoute(
             path: Routes.redirect.path,

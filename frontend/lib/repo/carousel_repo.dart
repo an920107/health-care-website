@@ -1,46 +1,48 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:health_care_website/config.dart';
 import 'package:health_care_website/model/carousel/caroousel_info.dart';
-import 'package:http/http.dart' as http;
+import 'package:health_care_website/util/http_util.dart';
 
 abstract class CarouselRepo {
-  static Future<void> uploadImage(Uint8List file, String filename) async {
-    final url = Uri.https(Config.backend, "/api/carousel");
+  static Future<void> uploadImage(Uint8List blob, String filename) async {
     try {
-      final request = http.MultipartRequest("POST", url);
-      request.files.add(http.MultipartFile.fromBytes(
-        "blob_attachment",
-        file,
+      final response = await HttpUtil.upload(
+        uri: "/api/carousel",
+        field: "blob_attachment",
         filename: filename,
-      ));
-      final streamResponse = await request.send();
-      final response = (await http.Response.fromStream(streamResponse));
-      if (response.statusCode != 200) throw Exception(response.body);
+        blob: blob,
+        authRequired: true,
+      );
+      response.check();
     } on Exception catch (e) {
       if (kDebugMode) print(e);
     }
   }
 
   static Future<List<CarouselInfo>> getImages() async {
-    final url = Uri.https(Config.backend, "/api/carousel");
     try {
-      final response = await http.get(url);
+      final response = await HttpUtil.request(
+        method: HttpMethod.get,
+        uri: "/api/carousel",
+      );
+      response.check();
       return (json.decode(response.body)["response"] as List)
           .map((e) => CarouselInfo.fromJson(e))
           .toList();
     } on Exception catch (e) {
       if (kDebugMode) print(e);
-      return [];
     }
+    return [];
   }
 
   static Future<void> deleteImage(String id) async {
-    final url = Uri.https(Config.backend, "/api/carousel/$id");
     try {
-      final response = await http.delete(url);
-      if (response.statusCode != 200) throw Exception();
+      final response = await HttpUtil.request(
+        method: HttpMethod.delete,
+        uri: "/api/carousel/$id",
+      );
+      response.check();
     } on Exception catch (e) {
       if (kDebugMode) print(e);
     }

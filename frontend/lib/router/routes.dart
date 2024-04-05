@@ -4,6 +4,7 @@ enum Routes {
   restaurant("/restaurant"),
   page("/page"),
   login("/login"),
+  logout("/logout"),
   redirect("/redirect"),
   admin("/admin"),
   carousel("/admin/carousel"),
