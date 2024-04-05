@@ -23,8 +23,11 @@ jobs:
         run: cd frontend && flutter pub get
       - name: Create .env file
         run: cd frontend && echo "NCU_PORTAL_CLIENT_ID=${{ secrets.NCU_PORTAL_CLIENT_ID }}" > .env
-      - name: Build web
-        run: cd frontend && flutter build web --web-renderer=canvaskit
+      - name: Analyze and build web
+        run: |
+          cd frontend
+          flutter analyze
+          flutter build web --web-renderer=canvaskit
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
