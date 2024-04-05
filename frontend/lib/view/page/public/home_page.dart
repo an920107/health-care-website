@@ -1,10 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:data_table_2/data_table_2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/config.dart';
@@ -17,6 +14,7 @@ import 'package:health_care_website/view/widget/icon_text.dart';
 import 'package:health_care_website/view/widget/inspect_result_card.dart';
 import 'package:health_care_website/view/widget/link_text.dart';
 import 'package:health_care_website/view/widget/page_number_indicator.dart';
+import 'package:health_care_website/view_model/auth_view_model.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/public/home_page_view_model.dart';
 import 'package:intl/intl.dart';
@@ -25,10 +23,13 @@ import 'package:provider/provider.dart';
 class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
-    this.toLogin = false,
+    this.loginOrLogout,
   });
 
-  final bool toLogin;
+  /// null: nothing to do
+  /// true: to login
+  /// false: to logout
+  final bool? loginOrLogout;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -41,13 +42,16 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (widget.toLogin) {
+      if (widget.loginOrLogout == true) {
         showDialog(
           context: context,
           builder: (context) => const LoginDialog(),
         ).then((value) {
           if (value == null) context.go(Routes.root.path);
         });
+      } else if (widget.loginOrLogout == false) {
+        context.read<AuthViewModel>().logout();
+        context.go(Routes.root.path);
       }
       context.read<HomePageViewModel>().fetchFromServer();
     });

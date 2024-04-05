@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/router/routes.dart';
+import 'package:health_care_website/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class BaseEndDrawer extends StatelessWidget {
   const BaseEndDrawer({super.key});
@@ -11,13 +13,19 @@ class BaseEndDrawer extends StatelessWidget {
       child: SafeArea(
         child: ListView(
           children: [
-            UserAccountsDrawerHeader(
-              accountName: const Text("User Name"),
-              accountEmail: const Text("User ID"),
-              currentAccountPicture: ClipOval(
-                child: Container(
-                  color: Colors.amber,
-                  child: Icon(Icons.person, size: 48, color: Colors.grey.shade800,),
+            Consumer<AuthViewModel>(
+              builder: (context, value, child) => UserAccountsDrawerHeader(
+                accountName: Text(value.name),
+                accountEmail: Text(value.id),
+                currentAccountPicture: ClipOval(
+                  child: Container(
+                    color: Colors.amber,
+                    child: Icon(
+                      Icons.person,
+                      size: 48,
+                      color: Colors.grey.shade800,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -36,6 +44,11 @@ class BaseEndDrawer extends StatelessWidget {
             ListTile(
               onTap: () => context.push(Routes.restaurantList.path),
               title: const Text("商家檢查"),
+            ),
+            const Divider(),
+            ListTile(
+              onTap: () => context.push(Routes.logout.path),
+              title: const Text("登出"),
             ),
           ],
         ),

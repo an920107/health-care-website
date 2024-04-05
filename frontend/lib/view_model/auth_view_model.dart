@@ -1,16 +1,34 @@
 import 'package:flutter/foundation.dart';
+import 'package:health_care_website/enum/user_role.dart';
+import 'package:health_care_website/model/user/user.dart';
 import 'package:health_care_website/repo/auth_repo.dart';
 
 class AuthViewModel with ChangeNotifier {
-  String? _token;
+  User? _user;
 
-  // TODO: call api to check if the user is authenticated
-  bool get isLoggedIn => _token != null;
+  String get id => _user?.id ?? "";
+  String get name => _user?.name ?? "";
+  UserRole get role => _user?.role ?? UserRole.normal;
+
+  AuthViewModel() {
+    AuthRepo.getAccessToken(cookieOnly: true).then((value) {
+      notifyListeners();
+    });
+  }
+
+  Future<bool> get isLoggedIn => AuthRepo.isAuthorized();
 
   Uri get ncuPortalOAuthUrl => AuthRepo.ncuPortalOAuthUrl;
 
-  Future<void> getAccessToken() async {
-    _token = await AuthRepo.getAccessToken();
+  Future<void> login() async {
+    await AuthRepo.getAccessToken();
+    _user = await AuthRepo.getUser();
+    notifyListeners();
+  }
+
+  void logout() async {
+    AuthRepo.forgetAccessToken();
+    _user = null;
     notifyListeners();
   }
 }

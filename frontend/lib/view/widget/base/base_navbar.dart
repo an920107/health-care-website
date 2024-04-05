@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/config.dart';
 import 'package:health_care_website/enum/page_topic.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/clean_button.dart';
+import 'package:health_care_website/view_model/auth_view_model.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -31,13 +33,21 @@ class BaseNavbar extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.grey.shade800,
-                      ),
-                      onPressed: () => Scaffold.of(context).openEndDrawer(),
-                      icon: const Icon(Icons.admin_panel_settings),
-                      label: const Text("網站管理"),
+                    FutureBuilder(
+                      future: context.watch<AuthViewModel>().isLoggedIn,
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData || !snapshot.data!) {
+                          return const SizedBox();
+                        }
+                        return TextButton.icon(
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.grey.shade800,
+                          ),
+                          onPressed: () => Scaffold.of(context).openEndDrawer(),
+                          icon: const Icon(Icons.admin_panel_settings),
+                          label: const Text("網站管理"),
+                        );
+                      },
                     ),
                     TextButton.icon(
                       style: TextButton.styleFrom(
