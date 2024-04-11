@@ -76,10 +76,12 @@ def get_posts():
         query_conditions['visible'] = request.args.get('visible')
     if request.args.get('importance'):
         query_conditions['importance'] = request.args.get('importance')
+    if request.args.get('visible'):
+        query_conditions['visible'] = request.args.get('visible')
 
     posts = Post.query.filter_by(**query_conditions).order_by(Post.create_time).all()
     posts.sort(key=lambda x: x.importance, reverse=True)
-    total_page = len(posts) // Config.PAGE_SIZE + 1
+    total_page = max(1, len(posts) // Config.PAGE_SIZE + bool(len(posts) % Config.PAGE_SIZE))
 
     if request.args.get('page') and int(request.args['page']) >= 1:
         page = int(request.args['page'])

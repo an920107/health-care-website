@@ -34,7 +34,7 @@ def get_attachment(attachment_id):
     if attachment is None:
         return Response.not_found('attachment not found', 404)
 
-    return send_file(attachment.file_path)
+    return send_file(attachment.file_path, download_name=attachment.name)
 
 
 @attachment_blueprint.route('/post/<int:attachment_id>/info', methods=['GET'])
@@ -123,7 +123,7 @@ def get_static_attachment(attachment_id):
     if attachment is None:
         return Response.not_found('attachment not found', 404)
 
-    return send_file(attachment.file_path)
+    return send_file(attachment.file_path, download_name=attachment.name)
 
 
 @attachment_blueprint.route('/static_post/<int:attachment_id>/info', methods=['GET'])
@@ -213,7 +213,7 @@ def get_restaurant_attachment(attachment_id):
     if attachment is None:
         return Response.not_found('attachment not found', 404)
 
-    return send_file(attachment.file_path)
+    return send_file(attachment.file_path, download_name=attachment.name)
 
 
 @attachment_blueprint.route('/restaurant_post/<int:attachment_id>/info', methods=['GET'])
