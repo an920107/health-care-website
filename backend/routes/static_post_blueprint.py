@@ -4,6 +4,7 @@ from pathlib import Path
 from config import Config
 
 from script.utils import api_input_check, api_input_get
+from script.oauth_scripts import authorization_required
 
 from models.models import StaticPost, db, StaticImage, StaticAttachment
 from models.responses import Response
@@ -56,12 +57,15 @@ def get_static_posts():
 
 
 @static_post_blueprint.route('', methods=['POST'])
+@authorization_required(2)
 def upload_static_posts():
     """
     Upload static_post
     ---
     tags:
         - Static Post
+    security:
+    - BearerAuth: []
     parameters:
       - in: formData
         name: content
@@ -101,12 +105,15 @@ def upload_static_posts():
 
 
 @static_post_blueprint.route('/<static_post_name>', methods=['PUT'])
+@authorization_required(2)
 def update_static_post(static_post_name):
     """
     Update static_post by static_post_name
     ---
     tags:
         - Static Post
+    security:
+    - BearerAuth: []
     parameters:
       - in: path
         name: static_post_name
@@ -156,12 +163,15 @@ def update_static_post(static_post_name):
 
 
 @static_post_blueprint.route('/<static_post_name>/image', methods=['POST'])
+@authorization_required(2)
 def add_static_images(static_post_name):
     """
     Add static_post images
     ---
     tags:
       - Static Post
+    security:
+    - BearerAuth: []
     parameters:
       - in: path
         name: static_post_name
@@ -203,12 +213,15 @@ def add_static_images(static_post_name):
 
 
 @static_post_blueprint.route('/<static_post_name>/attachment', methods=['POST'])
+@authorization_required(2)
 def add_static_attachments(static_post_name):
     """
     Add static_post attachments
     ---
     tags:
       - Static Post
+    security:
+    - BearerAuth: []
     parameters:
       - in: path
         name: static_post_name
@@ -252,12 +265,15 @@ def add_static_attachments(static_post_name):
 
 
 @static_post_blueprint.route('/<static_post_name>', methods=['DELETE'])
+@authorization_required(2)
 def delete_static_post(static_post_name):
     """
     Delete static_post by static_post_name
     ---
     tags:
       - Static Post
+    security:
+    - BearerAuth: []
     parameters:
       - in: path
         name: static_post_name

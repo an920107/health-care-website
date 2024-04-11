@@ -11,6 +11,8 @@ from script.utils import api_input_check, api_input_get
 from models.models import RestaurantPost, db, RestaurantAttachment
 from models.responses import Response
 
+from script.oauth_scripts import authorization_required
+
 import pandas as pd
 from openpyxl import Workbook
 from flask import Blueprint, request, send_file
@@ -25,6 +27,8 @@ def get_restaurant_post(post_id):
     ---
     tags:
       - Restaurant Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
@@ -50,6 +54,8 @@ def get_restaurant_posts():
     ---
     tags:
       - Restaurant Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: page
         in: query
@@ -80,12 +86,15 @@ def get_restaurant_posts():
 
 
 @restaurant_post_blueprint.route('', methods=['POST'])
+@authorization_required(2)
 def post_restaurant_post():
     """
     Post restaurant_post post
     ---
     tags:
       - Restaurant Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: title
         in: formData
@@ -133,12 +142,15 @@ def post_restaurant_post():
 
 
 @restaurant_post_blueprint.route('/<int:post_id>', methods=['PUT'])
+@authorization_required(2)
 def put_restaurant_post(post_id):
     """
     Put restaurant_post post by id
     ---
     tags:
       - Restaurant Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
@@ -200,12 +212,15 @@ def put_restaurant_post(post_id):
 
 
 @restaurant_post_blueprint.route('/<int:post_id>', methods=['DELETE'])
+@authorization_required(2)
 def delete_restaurant_post(post_id):
     """
     Delete restaurant_post post by id
     ---
     tags:
       - Restaurant Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
@@ -233,12 +248,15 @@ def delete_restaurant_post(post_id):
 
 
 @restaurant_post_blueprint.route('/<int:post_id>/visible', methods=['PATCH'])
+@authorization_required(2)
 def patch_restaurant_post_visible(post_id):
     """
     Patch restaurant_post post visible
     ---
     tags:
       - Restaurant Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
@@ -267,12 +285,15 @@ def patch_restaurant_post_visible(post_id):
 
 
 @restaurant_post_blueprint.route('/<int:post_id>/attachment', methods=['POST'])
+@authorization_required(2)
 def post_restaurant_attachment(post_id):
     """
     Post restaurant_post attachment
     ---
     tags:
       - Restaurant Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
@@ -312,12 +333,15 @@ def post_restaurant_attachment(post_id):
 
 
 @restaurant_post_blueprint.route('stats', methods=['GET'])
+@authorization_required(2)
 def get_restaurant_stats():
     """
     Get restaurant_post stats
     ---
     tags:
       - Restaurant Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: start_date
         in: query

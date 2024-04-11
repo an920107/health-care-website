@@ -1,4 +1,5 @@
 import os
+import uuid
 
 from pathlib import Path
 from config import Config
@@ -7,6 +8,8 @@ from models.models import db, Carousel
 from models.responses import Response
 
 from flask import Blueprint, request, send_file
+
+from script.oauth_scripts import authorization_required
 
 carousel_blueprint = Blueprint('carousel', __name__)
 
@@ -62,12 +65,15 @@ def get_carousels():
 
 
 @carousel_blueprint.route('', methods=['POST'])
+@authorization_required(2)
 def upload_carousel():
     """
     Upload carousel
     ---
     tags:
       - Carousel
+    security:
+    - BearerAuth: []
     parameters:
       - name: blob_attachment
         in: formData
@@ -82,7 +88,8 @@ def upload_carousel():
     if file is None:
         return Response.client_error('no file part')
 
-    file_path = Path(Config.CAROUSEL_CONFIG['IMAGE_DIR']) / Path(file.filename)
+
+    file_path = Path(Config.CAROUSEL_CONFIG['IMAGE_DIR']) / Path(str(uuid.uuid4()) + file.filename.split('.')[-1])
     file.save(file_path)
 
     carousel = Carousel(name=file.filename, file_path=str(file_path))
@@ -93,12 +100,15 @@ def upload_carousel():
 
 
 @carousel_blueprint.route('/<int:carousel_id>', methods=['DELETE'])
+@authorization_required(2)
 def delete_carousel(carousel_id):
     """
     Delete carousel
     ---
     tags:
       - Carousel
+    security:
+    - BearerAuth: []
     parameters:
       - name: carousel_id
         in: path

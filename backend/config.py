@@ -1,4 +1,5 @@
 class Config:
+    FRONTEND_URL = 'https://0e9c-140-115-205-70.ngrok-free.app'
     ALLOW_IMAGE_ENDSWITH = ['.png', '.jpg', '.jpeg']
     ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xls', '.xlsx', '.csv', '.odt']
     PAGE_SIZE = 10
@@ -42,3 +43,5 @@ class Config:
     CAROUSEL_CONFIG = {
         'IMAGE_DIR': './statics/carousel/images',
     }
+
+    JWT_SECRET_KEY = 'health-care-backend'
