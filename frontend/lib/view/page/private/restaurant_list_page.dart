@@ -6,6 +6,7 @@ import 'package:health_care_website/view/theme/button_style.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
 import 'package:health_care_website/view/widget/inspect_result_card.dart';
+import 'package:health_care_website/view/widget/page_number_indicator.dart';
 import 'package:health_care_website/view_model/private/restaurant_list_page_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +66,8 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                       ),
                     );
                     if (range != null && context.mounted) {
-                      if (range.length != 2 || range[0] == null ||
+                      if (range.length != 2 ||
+                          range[0] == null ||
                           range[1] == null) {
                         await showDialog(
                           context: context,
@@ -134,6 +136,13 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 10),
+            PageNumberIndicator(
+              currentPage: value.page,
+              totalPage: value.totalPage,
+              onAdjust: (increment) async =>
+                  await value.restaurantAdjustPageNumber(increment),
             ),
           ],
         ),
