@@ -4,6 +4,7 @@ import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/theme/button_style.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
+import 'package:health_care_website/view/widget/page_number_indicator.dart';
 import 'package:health_care_website/view_model/private/post_list_page_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -94,6 +95,13 @@ class _PostListPageState extends State<PostListPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
+            PageNumberIndicator(
+              currentPage: value.postCurrentPage,
+              totalPage: value.postTotalPage,
+              onAdjust: (increment) async =>
+                  await value.postAdjustPageNumber(increment),
+            )
           ],
         ),
       ),

@@ -16,6 +16,26 @@ class PostListPageViewModel with ChangeNotifier {
   int get totalPage => _postResponse?.totalPage ?? 1;
   PostColumn? get column => _column;
 
+  int get postTotalPage => _postResponse?.totalPage ?? 1;
+  int _postCurrentPage = 1;
+  int get postCurrentPage => _postCurrentPage;
+  Future<void> postAdjustPageNumber(int increment) async {
+    if (_postCurrentPage + increment > postTotalPage) {
+      if (_postCurrentPage == postTotalPage) return;
+      _postCurrentPage = postTotalPage;
+    } else if (_postCurrentPage + increment < 1) {
+      if (_postCurrentPage == 1) return;
+      _postCurrentPage = 1;
+    } else {
+      _postCurrentPage += increment;
+    }
+    _postResponse = await PostRepo.getPosts(
+      column: _column,
+      page: _postCurrentPage,
+    );
+    notifyListeners();
+  }
+
   Future<Post?> createNewPost() async {
     return await PostRepo.createPost();
   }

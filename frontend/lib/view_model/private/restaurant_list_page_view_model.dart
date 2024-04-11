@@ -11,6 +11,25 @@ class RestaurantListPageViewModel with ChangeNotifier {
   int get page => _page ?? 1;
   int get totalPage => _restaurantResponse?.totalPage ?? 1;
 
+  int get restaurantTotalPage => _restaurantResponse?.totalPage ?? 1;
+  int _restaurantCurrentPage = 1;
+  int get restaurantCurrentPage => _restaurantCurrentPage;
+  Future<void> restaurantAdjustPageNumber(int increment) async {
+    if (_restaurantCurrentPage + increment > restaurantTotalPage) {
+      if (_restaurantCurrentPage == restaurantTotalPage) return;
+      _restaurantCurrentPage = restaurantTotalPage;
+    } else if (_restaurantCurrentPage + increment < 1) {
+      if (_restaurantCurrentPage == 1) return;
+      _restaurantCurrentPage = 1;
+    } else {
+      _restaurantCurrentPage += increment;
+    }
+    _restaurantResponse = await RestaurantRepo.getRestaurants(
+      page: _restaurantCurrentPage,
+    );
+    notifyListeners();
+  }
+
   Future<Restaurant?> createNewRestaurant() async {
     return await RestaurantRepo.createRestaurant();
   }
