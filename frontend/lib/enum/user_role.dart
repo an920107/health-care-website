@@ -1,5 +1,5 @@
 enum UserRole {
-  normal(-1),
+  normal(9),
   student(2),
   teacher(1),
   admin(0);
@@ -8,8 +8,8 @@ enum UserRole {
 
   const UserRole(this.code);
 
-  bool operator >(UserRole other) => code > other.code;
-  bool operator <(UserRole other) => code < other.code;
-  bool operator >=(UserRole other) => code >= other.code;
+  bool operator >(UserRole other) => code < other.code;
+  bool operator <(UserRole other) => code > other.code;
+  bool operator >=(UserRole other) => code <= other.code;
   bool operator <=(UserRole other) => code >= other.code;
 }

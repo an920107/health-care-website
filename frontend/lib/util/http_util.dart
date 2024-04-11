@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:health_care_website/config.dart';
+import 'package:health_care_website/repo/auth_repo.dart';
 import 'package:health_care_website/util/cookie_manager.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,6 +21,7 @@ abstract class HttpUtil {
     if (authRequired) {
       headers ??= {};
       headers["Authorization"] = "Bearer ${CookieManager.get("token")}";
+      await AuthRepo.refreshToken();
     }
 
     switch (method) {
@@ -49,6 +51,7 @@ abstract class HttpUtil {
     if (authRequired) {
       headers ??= {};
       headers["Authorization"] = "Bearer ${CookieManager.get("token")}";
+      await AuthRepo.refreshToken();
     }
 
     final request = http.MultipartRequest("POST", url);

@@ -41,6 +41,7 @@ abstract class CarouselRepo {
       final response = await HttpUtil.request(
         method: HttpMethod.delete,
         uri: "/api/carousel/$id",
+        authRequired: true,
       );
       response.check();
     } on Exception catch (e) {

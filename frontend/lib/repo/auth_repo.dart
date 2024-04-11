@@ -97,10 +97,10 @@ abstract class AuthRepo {
 
   static Future<String?> refreshToken() async {
     // To avoid circular dependency, we have to use the original http request method
-    final url = Uri.https("/api/auth/refresh");
+    final url = Uri.https(Config.backend, "/api/auth/refresh");
     try {
       final response = await post(url, headers: {
-        "Authorization": "Bearer ${getAccessToken(cookieOnly: true)}"
+        "Authorization": "Bearer ${CookieManager.get("token")}"
       });
       if (response.statusCode != 200) return null;
       final token = (json.decode(response.body))["response"]["access_token"];

@@ -3,6 +3,7 @@ import 'package:health_care_website/enum/page_topic.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/page/private/admin_page.dart';
 import 'package:health_care_website/view/page/private/carousel_page.dart';
+import 'package:health_care_website/view/page/private/permission_page.dart';
 import 'package:health_care_website/view/page/private/static_page_edit_page.dart';
 import 'package:health_care_website/view/page/private/restaurant_edit_page.dart';
 import 'package:health_care_website/view/page/private/restaurant_list_page.dart';
@@ -79,6 +80,10 @@ class Router {
               );
               return StaticPageEditPage(topic);
             },
+          ),
+          GoRoute(
+            path: Routes.permission.path,
+            builder: (context, state) => const PermissionPage(),
           ),
 
           // 登入相關

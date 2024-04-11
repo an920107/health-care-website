@@ -12,7 +12,10 @@ class AuthViewModel with ChangeNotifier {
 
   AuthViewModel() {
     AuthRepo.getAccessToken(cookieOnly: true).then((value) {
-      notifyListeners();
+      AuthRepo.getUser().then((value) {
+        _user = value;
+        notifyListeners();
+      });
     });
   }
 
