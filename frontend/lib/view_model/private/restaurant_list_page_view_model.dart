@@ -22,10 +22,7 @@ class RestaurantListPageViewModel with ChangeNotifier {
     } else {
       _page += increment;
     }
-    _restaurantResponse = await RestaurantRepo.getRestaurants(
-      page: _page,
-    );
-    notifyListeners();
+    await updateRestaurantList();
   }
 
   Future<Restaurant?> createNewRestaurant() async {
@@ -38,6 +35,7 @@ class RestaurantListPageViewModel with ChangeNotifier {
     if (page != null) _page = page;
     _restaurantResponse = await RestaurantRepo.getRestaurants(
       page: _page,
+      hideVisible: false,
     );
     notifyListeners();
   }

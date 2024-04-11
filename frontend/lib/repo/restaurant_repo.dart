@@ -26,7 +26,7 @@ abstract class RestaurantRepo {
   }
 
   static Future<RestaurantResponse?> getRestaurants(
-      {int? page, bool hideVisible = false}) async {
+      {int? page, bool hideVisible = true}) async {
     try {
       final response = await HttpUtil.request(
         method: HttpMethod.get,

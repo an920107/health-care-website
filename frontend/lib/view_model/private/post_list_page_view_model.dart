@@ -27,11 +27,7 @@ class PostListPageViewModel with ChangeNotifier {
     } else {
       _page += increment;
     }
-    _postResponse = await PostRepo.getPosts(
-      column: _column,
-      page: _page,
-    );
-    notifyListeners();
+    await updatePostList();
   }
 
   Future<Post?> createNewPost() async {
@@ -47,6 +43,7 @@ class PostListPageViewModel with ChangeNotifier {
     _postResponse = await PostRepo.getPosts(
       column: _column,
       page: _page,
+      hideVisible: false,
     );
     notifyListeners();
   }

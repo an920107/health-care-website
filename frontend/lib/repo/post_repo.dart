@@ -26,7 +26,7 @@ abstract class PostRepo {
   }
 
   static Future<PostResponse?> getPosts(
-      {PostColumn? column, int? page, bool hideVisible = false}) async {
+      {PostColumn? column, int? page, bool hideVisible = true}) async {
     try {
       final response = await HttpUtil.request(
         method: HttpMethod.get,
