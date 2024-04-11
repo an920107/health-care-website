@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_care_website/enum/user_role.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
@@ -11,10 +12,10 @@ class BaseEndDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: SafeArea(
-        child: ListView(
-          children: [
-            Consumer<AuthViewModel>(
-              builder: (context, value, child) => UserAccountsDrawerHeader(
+        child: Consumer<AuthViewModel>(
+          builder: (context, value, child) => ListView(
+            children: [
+              UserAccountsDrawerHeader(
                 accountName: Text(value.name),
                 accountEmail: Text(value.id),
                 currentAccountPicture: ClipOval(
@@ -28,32 +29,37 @@ class BaseEndDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-            ListTile(
-              onTap: () => context.push(Routes.carousel.path),
-              title: const Text("首頁橫幅圖片"),
-            ),
-            ListTile(
-              onTap: () => context.push(Routes.pageEdit.path),
-              title: const Text("靜態頁面"),
-            ),
-            ListTile(
-              onTap: () => context.push(Routes.postList.path),
-              title: const Text("文章公告"),
-            ),
-            ListTile(
-              onTap: () => context.push(Routes.restaurantList.path),
-              title: const Text("商家檢查"),
-            ),
-            const Divider(),
-            ListTile(
-              onTap: () {
-                Scaffold.of(context).closeEndDrawer();
-                context.push(Routes.logout.path);
-              },
-              title: const Text("登出"),
-            ),
-          ],
+              ListTile(
+                onTap: () => context.push(Routes.carousel.path),
+                title: const Text("首頁橫幅圖片"),
+              ),
+              ListTile(
+                onTap: () => context.push(Routes.pageEdit.path),
+                title: const Text("靜態頁面"),
+              ),
+              ListTile(
+                onTap: () => context.push(Routes.postList.path),
+                title: const Text("文章公告"),
+              ),
+              ListTile(
+                onTap: () => context.push(Routes.restaurantList.path),
+                title: const Text("商家檢查"),
+              ),
+              if (value.role >= UserRole.admin)
+                ListTile(
+                  onTap: () => context.push(Routes.permission.path),
+                  title: const Text("人員管理"),
+                ),
+              const Divider(),
+              ListTile(
+                onTap: () {
+                  Scaffold.of(context).closeEndDrawer();
+                  context.push(Routes.logout.path);
+                },
+                title: const Text("登出"),
+              ),
+            ],
+          ),
         ),
       ),
     );

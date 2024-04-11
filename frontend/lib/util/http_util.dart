@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:health_care_website/config.dart';
+import 'package:health_care_website/repo/auth_repo.dart';
 import 'package:health_care_website/util/cookie_manager.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,13 +14,14 @@ abstract class HttpUtil {
     Map<String, String>? query,
     Map<String, dynamic>? body,
   }) async {
-    assert([HttpMethod.get, HttpMethod.delete].contains(method) && body != null,
+    assert(![HttpMethod.get, HttpMethod.delete].contains(method) || body == null,
         "When using HTTP GET and DELETE, `data` cannot be set.");
 
     final url = Uri.https(Config.backend, uri, query);
     if (authRequired) {
       headers ??= {};
       headers["Authorization"] = "Bearer ${CookieManager.get("token")}";
+      await AuthRepo.refreshToken();
     }
 
     switch (method) {
@@ -49,9 +51,11 @@ abstract class HttpUtil {
     if (authRequired) {
       headers ??= {};
       headers["Authorization"] = "Bearer ${CookieManager.get("token")}";
+      await AuthRepo.refreshToken();
     }
 
     final request = http.MultipartRequest("POST", url);
+    if (headers != null) request.headers.addAll(headers);
     request.files
         .add(http.MultipartFile.fromBytes(field, blob, filename: filename));
     final streamResponse = await request.send();

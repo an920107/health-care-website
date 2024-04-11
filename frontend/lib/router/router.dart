@@ -1,7 +1,9 @@
 import 'package:go_router/go_router.dart';
+import 'package:health_care_website/enum/page_topic.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/page/private/admin_page.dart';
 import 'package:health_care_website/view/page/private/carousel_page.dart';
+import 'package:health_care_website/view/page/private/permission_page.dart';
 import 'package:health_care_website/view/page/private/static_page_edit_page.dart';
 import 'package:health_care_website/view/page/private/restaurant_edit_page.dart';
 import 'package:health_care_website/view/page/private/restaurant_list_page.dart';
@@ -28,11 +30,13 @@ class Router {
           ),
           GoRoute(
             path: "${Routes.restaurant.path}/:id",
-            builder: (context, state) => RestaurantPage(state.pathParameters["id"]!),
+            builder: (context, state) =>
+                RestaurantPage(state.pathParameters["id"]!),
           ),
           GoRoute(
             path: "${Routes.page.path}/:id",
-            builder: (context, state) => StaticPagePage(state.pathParameters["id"]!),
+            builder: (context, state) =>
+                StaticPagePage(state.pathParameters["id"]!),
           ),
 
           // 後台
@@ -64,7 +68,22 @@ class Router {
           ),
           GoRoute(
             path: Routes.pageEdit.path,
-            builder: (context, state) => const StaticPageEditPage(),
+            redirect: (context, state) =>
+                "${Routes.pageEdit.path}/${PageTopic.values.first.id}",
+          ),
+          GoRoute(
+            path: "${Routes.pageEdit.path}/:id",
+            builder: (context, state) {
+              final topic = PageTopic.values.firstWhere(
+                (e) => e.id == state.pathParameters["id"]!,
+                orElse: () => PageTopic.values.first,
+              );
+              return StaticPageEditPage(topic);
+            },
+          ),
+          GoRoute(
+            path: Routes.permission.path,
+            builder: (context, state) => const PermissionPage(),
           ),
 
           // 登入相關

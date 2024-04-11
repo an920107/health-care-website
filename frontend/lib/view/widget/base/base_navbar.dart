@@ -144,7 +144,7 @@ class BaseNavbar extends StatelessWidget {
                           children: [
                             // Logo & 網站名稱
                             CleanButton(
-                              onPressed: () => context.go(Routes.root.path),
+                              onPressed: () => context.pushReplacement(Routes.root.path),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [

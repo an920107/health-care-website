@@ -10,6 +10,7 @@ import 'package:health_care_website/config.dart';
 import 'package:health_care_website/model/user/user.dart';
 import 'package:health_care_website/util/cookie_manager.dart';
 import 'package:health_care_website/util/http_util.dart';
+import 'package:http/http.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class AuthRepo {
@@ -67,7 +68,7 @@ abstract class AuthRepo {
     });
     await retryCompleter.future;
     CookieManager.set("token", token.toString(),
-        DateTime.now().add(const Duration(days: 30)));
+        DateTime.now().add(const Duration(minutes: 30)));
     return token;
   }
 
@@ -93,4 +94,22 @@ abstract class AuthRepo {
   }
 
   static Future<bool> isAuthorized() async => await getUser() != null;
+
+  static Future<String?> refreshToken() async {
+    // To avoid circular dependency, we have to use the original http request method
+    final url = Uri.https(Config.backend, "/api/auth/refresh");
+    try {
+      final response = await post(url, headers: {
+        "Authorization": "Bearer ${CookieManager.get("token")}"
+      });
+      if (response.statusCode != 200) return null;
+      final token = (json.decode(response.body))["response"]["access_token"];
+      CookieManager.set("token", token.toString(),
+          DateTime.now().add(const Duration(minutes: 30)));
+      return token;
+    } on Exception catch (e) {
+      if (kDebugMode) print(e);
+    }
+    return null;
+  }
 }

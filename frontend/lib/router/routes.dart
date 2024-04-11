@@ -12,7 +12,8 @@ enum Routes {
   restaurantList("/admin/restaurant"),
   restaurantEdit("/admin/restaurant/edit"),
   postList("/admin/post"),
-  postEdit("/admin/post/edit");
+  postEdit("/admin/post/edit"),
+  permission("/admin/permission");
 
   final String path;
 
