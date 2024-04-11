@@ -5,27 +5,25 @@ import 'package:health_care_website/repo/restaurant_repo.dart';
 
 class RestaurantListPageViewModel with ChangeNotifier {
   RestaurantResponse? _restaurantResponse;
-  int? _page;
 
   List<Restaurant> get restaurants => _restaurantResponse?.restaurants ?? [];
-  int get page => _page ?? 1;
+  
+  int _page = 1;
+  int get page => _page;
   int get totalPage => _restaurantResponse?.totalPage ?? 1;
 
-  int get restaurantTotalPage => _restaurantResponse?.totalPage ?? 1;
-  int _restaurantCurrentPage = 1;
-  int get restaurantCurrentPage => _restaurantCurrentPage;
   Future<void> restaurantAdjustPageNumber(int increment) async {
-    if (_restaurantCurrentPage + increment > restaurantTotalPage) {
-      if (_restaurantCurrentPage == restaurantTotalPage) return;
-      _restaurantCurrentPage = restaurantTotalPage;
-    } else if (_restaurantCurrentPage + increment < 1) {
-      if (_restaurantCurrentPage == 1) return;
-      _restaurantCurrentPage = 1;
+    if (_page + increment > totalPage) {
+      if (_page == totalPage) return;
+      _page = totalPage;
+    } else if (_page + increment < 1) {
+      if (_page == 1) return;
+      _page = 1;
     } else {
-      _restaurantCurrentPage += increment;
+      _page += increment;
     }
     _restaurantResponse = await RestaurantRepo.getRestaurants(
-      page: _restaurantCurrentPage,
+      page: _page,
     );
     notifyListeners();
   }

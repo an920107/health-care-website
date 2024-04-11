@@ -9,29 +9,27 @@ import 'package:health_care_website/repo/post_repo.dart';
 class PostListPageViewModel with ChangeNotifier {
   PostResponse? _postResponse;
   PostColumn? _column;
-  int? _page;
 
   List<Post> get posts => _postResponse?.posts ?? [];
-  int get page => _page ?? 1;
+
+  int _page = 1;
+  int get page => _page;
   int get totalPage => _postResponse?.totalPage ?? 1;
   PostColumn? get column => _column;
 
-  int get postTotalPage => _postResponse?.totalPage ?? 1;
-  int _postCurrentPage = 1;
-  int get postCurrentPage => _postCurrentPage;
   Future<void> postAdjustPageNumber(int increment) async {
-    if (_postCurrentPage + increment > postTotalPage) {
-      if (_postCurrentPage == postTotalPage) return;
-      _postCurrentPage = postTotalPage;
-    } else if (_postCurrentPage + increment < 1) {
-      if (_postCurrentPage == 1) return;
-      _postCurrentPage = 1;
+    if (_page + increment > totalPage) {
+      if (_page == totalPage) return;
+      _page = totalPage;
+    } else if (_page + increment < 1) {
+      if (_page == 1) return;
+      _page = 1;
     } else {
-      _postCurrentPage += increment;
+      _page += increment;
     }
     _postResponse = await PostRepo.getPosts(
       column: _column,
-      page: _postCurrentPage,
+      page: _page,
     );
     notifyListeners();
   }

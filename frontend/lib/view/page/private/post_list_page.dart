@@ -97,8 +97,8 @@ class _PostListPageState extends State<PostListPage> {
             ),
             const SizedBox(height: 10),
             PageNumberIndicator(
-              currentPage: value.postCurrentPage,
-              totalPage: value.postTotalPage,
+              currentPage: value.page,
+              totalPage: value.totalPage,
               onAdjust: (increment) async =>
                   await value.postAdjustPageNumber(increment),
             )

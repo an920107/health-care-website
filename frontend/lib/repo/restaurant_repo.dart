@@ -25,12 +25,16 @@ abstract class RestaurantRepo {
     return null;
   }
 
-  static Future<RestaurantResponse?> getRestaurants({int? page}) async {
+  static Future<RestaurantResponse?> getRestaurants(
+      {int? page, bool hideVisible = false}) async {
     try {
       final response = await HttpUtil.request(
         method: HttpMethod.get,
         uri: "/api/restaurant_post",
-        query: {if (page != null) "page": page.toString()},
+        query: {
+          if (page != null) "page": page.toString(),
+          if (hideVisible) "visible": "1",
+        },
       );
       response.check();
       return RestaurantResponse.fromJson(

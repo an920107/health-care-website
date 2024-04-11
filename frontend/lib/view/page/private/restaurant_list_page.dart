@@ -139,8 +139,8 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
             ),
             const SizedBox(height: 10),
             PageNumberIndicator(
-              currentPage: value.restaurantCurrentPage,
-              totalPage: value.restaurantTotalPage,
+              currentPage: value.page,
+              totalPage: value.totalPage,
               onAdjust: (increment) async =>
                   await value.restaurantAdjustPageNumber(increment),
             ),
