@@ -8,33 +8,6 @@ from flask import Blueprint, request
 
 user_blueprint = Blueprint('user', __name__)
 
-@user_blueprint.route("/<string:user_id>", methods=['GET'])
-@authorization_required(1)
-def get_user(user_id):
-    """
-    Get User
-    ---
-    tags:
-      - User
-    security:
-    - BearerAuth: []
-    parameters:
-      - name: user_id
-        in: path
-        type: integer
-        required: true
-        description: user id
-    responses:
-      200:
-        description: Return a success message
-      404:
-        description: Return a client column not found message
-    """
-    user = User.query.get(user_id)
-    if user is None:
-        return Response.not_found('user not found')
-    return Response.response('get user success', user.as_dict())
-
 
 @user_blueprint.route("", methods=['GET'])
 @authorization_required(1)
@@ -52,8 +25,9 @@ def get_users():
       404:
         description: Return a client column not found message
     """
-    user = User.query.all()
-    return Response.response('get user success', [u.as_dict() for u in user])
+    users = User.query.all()
+    users.sort(key=lambda x: x.authorization)
+    return Response.response('get user success', [u.as_dict() for u in users])
 
 
 @user_blueprint.route("/<string:user_id>/authorization", methods=['PATCH'])

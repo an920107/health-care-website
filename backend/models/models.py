@@ -92,6 +92,6 @@ class User(db.Model, SchemaMixin):
     id = db.Column(db.String(40), primary_key=True)
     chinese_name = db.Column(db.String(40), nullable=False, unique=False)
     state = db.Column(db.String(40), nullable=False, unique=False)
-    # -1: default 0: admin, 1: teacher, 2: student
-    authorization = db.Column(db.Integer, nullable=False, unique=False, default=-1)
+    # 0: admin, 1: teacher, 2: student, 9: normal
+    authorization = db.Column(db.Integer, nullable=False, unique=False, default=9)
 

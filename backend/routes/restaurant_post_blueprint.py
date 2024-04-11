@@ -21,7 +21,6 @@ restaurant_post_blueprint = Blueprint('restaurant_post', __name__)
 
 
 @restaurant_post_blueprint.route('/<int:post_id>', methods=['GET'])
-@authorization_required(2)
 def get_restaurant_post(post_id):
     """
     Get restaurant_post post by id
@@ -49,7 +48,6 @@ def get_restaurant_post(post_id):
 
 
 @restaurant_post_blueprint.route('', methods=['GET'])
-@authorization_required(2)
 def get_restaurant_posts():
     """
     Get restaurant_post posts

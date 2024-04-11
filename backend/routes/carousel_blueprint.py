@@ -1,4 +1,5 @@
 import os
+import uuid
 
 from pathlib import Path
 from config import Config
@@ -87,7 +88,8 @@ def upload_carousel():
     if file is None:
         return Response.client_error('no file part')
 
-    file_path = Path(Config.CAROUSEL_CONFIG['IMAGE_DIR']) / Path(file.filename)
+
+    file_path = Path(Config.CAROUSEL_CONFIG['IMAGE_DIR']) / Path(str(uuid.uuid4()) + file.filename.split('.')[-1])
     file.save(file_path)
 
     carousel = Carousel(name=file.filename, file_path=str(file_path))

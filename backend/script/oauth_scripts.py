@@ -10,10 +10,20 @@ def authorization_required(required_role):
         def wrapper(*args, **kwargs):
             verify_jwt_in_request()
             claims = get_jwt()
-            if 'authorization' in claims and -1 < claims['authorization'] <= required_role:
+            if 'sub' not in claims:
+                return Response.client_error('authorization not found')
+
+            if required_role == -1:
                 return fn(*args, **kwargs)
+
+            if claims['sub']['authorization'] > required_role:
+                return Response.unauthorized('authorization not enough', f"authorization at least {required_role}")
+
+            if required_role != -1 and claims['sub']['authorization'] == -1:
+                return Response.unauthorized('authorization not enough', f"authorization at least {required_role}")
+
             else:
-                return Response.unauthorized('Unauthorized')
+                return fn(*args, **kwargs)
 
         return wrapper
 
