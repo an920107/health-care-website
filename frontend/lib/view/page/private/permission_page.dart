@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:health_care_website/enum/user_role.dart';
 import 'package:health_care_website/model/user/user.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
