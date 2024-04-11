@@ -59,8 +59,8 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: "Health Care Website",
         theme: ThemeData(
-          textTheme:
-              GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),
+          // textTheme:
+          //     GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
           useMaterial3: true,
         ),

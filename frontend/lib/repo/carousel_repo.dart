@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:health_care_website/model/carousel/caroousel_info.dart';
+import 'package:health_care_website/model/carousel/carousel_info.dart';
 import 'package:health_care_website/util/http_util.dart';
 
 abstract class CarouselRepo {

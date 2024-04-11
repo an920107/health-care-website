@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
-import 'package:health_care_website/model/carousel/caroousel_info.dart';
+import 'package:health_care_website/model/carousel/carousel_info.dart';
 import 'package:health_care_website/repo/carousel_repo.dart';
 
 class CarouselPageViewModel with ChangeNotifier {

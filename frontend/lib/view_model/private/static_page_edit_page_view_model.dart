@@ -28,25 +28,15 @@ class StaticPageEditPageViewModel with ChangeNotifier {
   PageTopic get selectedPageTopic => _selectedPageTopic;
   set selectedPageTopic(PageTopic value) {
     _selectedPageTopic = value;
-    _hasFetched = false;
     notifyListeners();
     fetchFromServer();
   }
 
-  bool _hasFetched = false;
-
-  Completer<StaticPage?> _fetchCompleter = Completer();
-  Completer<StaticPage?> get fetchCompleter => _fetchCompleter;
-
   Future<StaticPage?> fetchFromServer([PageTopic? topic]) async {
-    _fetchCompleter = Completer();
-    notifyListeners();
 
     // TODO: 顯示錯誤原因
     if (topic != null) _selectedPageTopic = topic;
-    if (!_hasFetched) {
-      _page = (await StaticPageRepo.getPage(_selectedPageTopic));
-    }
+    _page = (await StaticPageRepo.getPage(_selectedPageTopic));
 
     // 附件傳輸
     final attachmentIds = json.decode(_page!.attachments) as List;
@@ -62,16 +52,8 @@ class StaticPageEditPageViewModel with ChangeNotifier {
       _attachments.add(attachmentSet[str]!);
     }
 
-    _fetchCompleter.complete((() async {
-      return _hasFetched ? null : _page;
-    })());
     notifyListeners();
-
-    if (!_hasFetched) {
-      _hasFetched = true;
-      return _page;
-    }
-    return null;
+    return _page;
   }
 
   Future<void> uploadPage(String content) async {
@@ -84,15 +66,16 @@ class StaticPageEditPageViewModel with ChangeNotifier {
 
   Future<String> uploadImage(Uint8List file, String filename) async {
     // TODO: 顯示錯誤原因
-    final response = await StaticPageRepo.uploadImage(_selectedPageTopic, file, filename);
+    final response =
+        await StaticPageRepo.uploadImage(_selectedPageTopic, file, filename);
     var url = Uri.https(Config.backend, response!.uri).toString();
     return url;
   }
 
   Future<void> uploadAttachment(Uint8List file, String filename) async {
     // TODO: 顯示錯誤原因
-    final response =
-        await StaticPageRepo.uploadAttachment(_selectedPageTopic, file, filename);
+    final response = await StaticPageRepo.uploadAttachment(
+        _selectedPageTopic, file, filename);
     _attachments.add((await StaticPageRepo.getAttachmentInfo(response!.id))!);
     notifyListeners();
   }

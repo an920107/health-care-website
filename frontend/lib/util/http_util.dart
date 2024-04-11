@@ -13,7 +13,7 @@ abstract class HttpUtil {
     Map<String, String>? query,
     Map<String, dynamic>? body,
   }) async {
-    assert([HttpMethod.get, HttpMethod.delete].contains(method) && body != null,
+    assert(![HttpMethod.get, HttpMethod.delete].contains(method) || body == null,
         "When using HTTP GET and DELETE, `data` cannot be set.");
 
     final url = Uri.https(Config.backend, uri, query);
@@ -52,6 +52,7 @@ abstract class HttpUtil {
     }
 
     final request = http.MultipartRequest("POST", url);
+    if (headers != null) request.headers.addAll(headers);
     request.files
         .add(http.MultipartFile.fromBytes(field, blob, filename: filename));
     final streamResponse = await request.send();
