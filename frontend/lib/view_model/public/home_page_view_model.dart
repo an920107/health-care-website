@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:health_care_website/enum/post_column.dart';
-import 'package:health_care_website/model/carousel/caroousel_info.dart';
+import 'package:health_care_website/model/carousel/carousel_info.dart';
 import 'package:health_care_website/model/post/post.dart';
 import 'package:health_care_website/model/post/post_response.dart';
 import 'package:health_care_website/model/restaurant/restaurant.dart';

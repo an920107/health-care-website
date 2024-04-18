@@ -25,7 +25,8 @@ abstract class PostRepo {
     return null;
   }
 
-  static Future<PostResponse?> getPosts({PostColumn? column, int? page}) async {
+  static Future<PostResponse?> getPosts(
+      {PostColumn? column, int? page, bool hideVisible = true}) async {
     try {
       final response = await HttpUtil.request(
         method: HttpMethod.get,
@@ -33,6 +34,7 @@ abstract class PostRepo {
         query: {
           if (column != null) "column": column.name,
           if (page != null) "page": page.toString(),
+          if (hideVisible) "visible": "1",
         },
       );
       response.check();

@@ -8,6 +8,7 @@ import 'package:health_care_website/router/router.dart';
 import 'package:health_care_website/view_model/auth_view_model.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/private/carousel_page_view_model.dart';
+import 'package:health_care_website/view_model/private/permission_page_view_model.dart';
 import 'package:health_care_website/view_model/private/post_edit_page_view_model.dart';
 import 'package:health_care_website/view_model/private/post_list_page_view_model.dart';
 import 'package:health_care_website/view_model/private/restaurant_edit_page_view_model.dart';
@@ -54,6 +55,7 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PostPageViewModel()),
         ChangeNotifierProvider(create: (_) => RestaurantPageViewModel()),
         ChangeNotifierProvider(create: (_) => StaticPagePageViewModel()),
+        ChangeNotifierProvider(create: (_) => PermissionPageViewModel()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

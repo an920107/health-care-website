@@ -10,7 +10,10 @@ import 'package:flutter_quill_extensions/flutter_quill_embeds.dart';
 import 'package:flutter_quill_extensions/models/config/image/toolbar/image_configurations.dart';
 import 'package:flutter_quill_extensions/services/image_picker/image_options.dart';
 import 'package:flutter_quill_extensions/services/image_picker/s_image_picker.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_care_website/enum/page_topic.dart';
+import 'package:health_care_website/model/static_page/static_page.dart';
+import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/theme/button_style.dart';
 import 'package:health_care_website/view/widget/attachment_preview.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
@@ -19,13 +22,20 @@ import 'package:health_care_website/view_model/private/static_page_edit_page_vie
 import 'package:provider/provider.dart';
 
 class StaticPageEditPage extends StatefulWidget {
-  const StaticPageEditPage({super.key});
+  const StaticPageEditPage(
+    this.topic, {
+    super.key,
+  });
+
+  final PageTopic topic;
 
   @override
   State<StaticPageEditPage> createState() => _StaticPageEditPageState();
 }
 
 class _StaticPageEditPageState extends State<StaticPageEditPage> {
+  late Future<StaticPage?> Function(PageTopic) _future;
+
   final _quillController = QuillController(
     document: Document(),
     selection: const TextSelection.collapsed(offset: 0),
@@ -35,30 +45,28 @@ class _StaticPageEditPageState extends State<StaticPageEditPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<StaticPageEditPageViewModel>().fetchFromServer();
-    });
+    _future = context.read<StaticPageEditPageViewModel>().fetchFromServer;
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      body: Consumer<StaticPageEditPageViewModel>(
-        builder: (context, value, child) => FutureBuilder(
-          future: value.fetchCompleter.future.then((value) {
-            if (value != null) {
-              _quillController.document = Document.fromJson(
-                json.decode(value.content),
-              );
-            }
-          }),
-          builder: (context, snapshot) {
-            // Loading 圈圈
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const LoadingCircle();
-            }
+      body: FutureBuilder(
+        future: _future(widget.topic).then((value) {
+          if (value != null) {
+            _quillController.document = Document.fromJson(
+              json.decode(value.content),
+            );
+          }
+        }),
+        builder: (context, snapshot) {
+          // Loading 圈圈
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const LoadingCircle();
+          }
 
-            return Column(
+          return Consumer<StaticPageEditPageViewModel>(
+            builder: (context, value, child) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 選取類別
@@ -77,7 +85,7 @@ class _StaticPageEditPageState extends State<StaticPageEditPage> {
                   onChanged: (selected) {
                     FocusScope.of(context).requestFocus(FocusNode());
                     if (selected == null) return;
-                    value.selectedPageTopic = selected;
+                    context.go("${Routes.pageEdit.path}/${selected.id}");
                   },
                   value: value.selectedPageTopic,
                 ),
@@ -108,15 +116,6 @@ class _StaticPageEditPageState extends State<StaticPageEditPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // 取消按鈕
-                    const SizedBox(width: 20),
-                    OutlinedButton.icon(
-                      style: OutlinedButtonStyle.rRectStyle(),
-                      onPressed: () {},
-                      icon: const Icon(Icons.cancel),
-                      label: const Text("取消", style: TextStyle(fontSize: 16)),
-                    ),
-
                     // 上傳附件按鈕
                     const SizedBox(width: 20),
                     OutlinedButton.icon(
@@ -154,8 +153,22 @@ class _StaticPageEditPageState extends State<StaticPageEditPage> {
                     OutlinedButton.icon(
                       style: OutlinedButtonStyle.rRectStyle(),
                       onPressed: () async {
-                        value.uploadPage(json.encode(
+                        await value.uploadPage(json.encode(
                             _quillController.document.toDelta().toJson()));
+                        if (context.mounted) {
+                          await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("儲存成功"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text("確定"),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                       },
                       icon: const Icon(Icons.save),
                       label: const Text("保存變更", style: TextStyle(fontSize: 16)),
@@ -163,9 +176,9 @@ class _StaticPageEditPageState extends State<StaticPageEditPage> {
                   ],
                 ),
               ],
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
