@@ -42,16 +42,6 @@ class Image(db.Model, SchemaMixin):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
 
 
-class User(db.Model, SchemaMixin):
-    chinese_name = db.Column(db.String(40), nullable=False, unique=False)
-    authorization = db.Column(db.Integer, nullable=False, unique=False, default=-1)
-
-
-class OauthTmpInfo(db.Model, SchemaMixin):
-    state = db.Column(db.String(100), nullable=False, unique=False)
-    access_token = db.Column(db.String(40), nullable=False, unique=False)
-
-
 class Carousel(db.Model, SchemaMixin):
     __tablename__ = 'carousel'
     name = db.Column(db.String(40), nullable=False)
@@ -96,3 +86,12 @@ class RestaurantAttachment(db.Model, SchemaMixin):
     name = db.Column(db.String(40), nullable=False)
     file_path = db.Column(db.String(100), nullable=False, unique=True)
     post_id = db.Column(db.Integer, db.ForeignKey('restaurant_attachment.id'), nullable=False)
+
+
+class User(db.Model, SchemaMixin):
+    id = db.Column(db.String(40), primary_key=True)
+    chinese_name = db.Column(db.String(40), nullable=False, unique=False)
+    state = db.Column(db.String(40), nullable=False, unique=False)
+    # 0: admin, 1: teacher, 2: student, 9: normal
+    authorization = db.Column(db.Integer, nullable=False, unique=False, default=9)
+

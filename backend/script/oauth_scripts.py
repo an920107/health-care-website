@@ -1,4 +1,33 @@
 import requests
+from functools import wraps
+from flask_jwt_extended import verify_jwt_in_request, get_jwt
+from models.responses import Response
+
+
+def authorization_required(required_role):
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            verify_jwt_in_request()
+            claims = get_jwt()
+            if 'sub' not in claims:
+                return Response.client_error('authorization not found')
+
+            if required_role == -1:
+                return fn(*args, **kwargs)
+
+            if claims['sub']['authorization'] > required_role:
+                return Response.unauthorized('authorization not enough', f"authorization at least {required_role}")
+
+            if required_role != -1 and claims['sub']['authorization'] == -1:
+                return Response.unauthorized('authorization not enough', f"authorization at least {required_role}")
+
+            else:
+                return fn(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def get_oauth_access_token(code, state):

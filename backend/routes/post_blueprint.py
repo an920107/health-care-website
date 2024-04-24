@@ -4,6 +4,7 @@ from config import Config
 from pathlib import Path
 
 from script.utils import api_input_check, api_input_get
+from script.oauth_scripts import authorization_required
 
 from models.models import Post, db, Image, Attachment
 from models.responses import Response
@@ -78,6 +79,7 @@ def get_posts():
 
     posts = Post.query.filter_by(**query_conditions).order_by(Post.create_time).all()
     posts.sort(key=lambda x: x.importance, reverse=True)
+    total_page = len(posts) // Config.PAGE_SIZE + 1
 
     if request.args.get('page') and int(request.args['page']) >= 1:
         page = int(request.args['page'])
@@ -87,7 +89,7 @@ def get_posts():
     posts = posts[(page - 1) * Config.PAGE_SIZE:page * Config.PAGE_SIZE]
 
     payload = {
-        'total_page': str(len(posts) // Config.PAGE_SIZE + 1),
+        'total_page': str(total_page),
         'posts': [post.as_dict() for post in posts],
         'page': str(page)
     }
@@ -95,12 +97,15 @@ def get_posts():
 
 
 @post_blueprint.route('', methods=['POST'])
+@authorization_required(2)
 def upload_posts():
     """
     Upload post
     ---
     tags:
       - Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: title
         in: formData
@@ -143,12 +148,15 @@ def upload_posts():
 
 
 @post_blueprint.route('/<int:post_id>', methods=['PUT'])
+@authorization_required(2)
 def update_post(post_id):
     """
     Update post by post_id
     ---
     tags:
       - Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
@@ -214,12 +222,15 @@ def update_post(post_id):
 
 
 @post_blueprint.route('/<int:post_id>/importance', methods=['PATCH'])
+@authorization_required(2)
 def update_post_importance(post_id):
     """
     Update post importance by post_id
     ---
     tags:
       - Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
@@ -248,12 +259,15 @@ def update_post_importance(post_id):
 
 
 @post_blueprint.route('/<int:post_id>/visible', methods=['PATCH'])
+@authorization_required(2)
 def update_post_visible(post_id):
     """
     Update post visible by post_id
     ---
     tags:
       - Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
@@ -282,12 +296,15 @@ def update_post_visible(post_id):
 
 
 @post_blueprint.route('/<int:post_id>/image', methods=['POST'])
+@authorization_required(2)
 def add_images(post_id):
     """
     Add images to post by post_id
     ---
     tags:
       - Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
@@ -328,12 +345,15 @@ def add_images(post_id):
 
 
 @post_blueprint.route('/<int:post_id>/attachment', methods=['POST'])
+@authorization_required(2)
 def add_attachments(post_id):
     """
     Add attachments to post by post_id
     ---
     tags:
       - Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
@@ -377,12 +397,15 @@ def add_attachments(post_id):
 
 
 @post_blueprint.route('/<int:post_id>', methods=['DELETE'])
+@authorization_required(2)
 def delete_post(post_id):
     """
     Delete post by post_id
     ---
     tags:
       - Post
+    security:
+    - BearerAuth: []
     parameters:
       - name: post_id
         in: path
