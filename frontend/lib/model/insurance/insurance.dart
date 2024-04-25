@@ -25,7 +25,6 @@ class Insurance {
   DateTime claimDate;
   String applicationScanId;
   String note;
-  DateTime submitTime;
   DateTime createTime;
   DateTime updateTime;
 
@@ -52,7 +51,6 @@ class Insurance {
     required this.claimDate,
     required this.applicationScanId,
     required this.note,
-    required this.submitTime,
     required this.createTime,
     required this.updateTime,
   });
@@ -82,7 +80,6 @@ class Insurance {
         claimDate: DateTime.parse(json["claim_date"]),
         applicationScanId: json["application_scan_id"],
         note: json["note"],
-        submitTime: DateTime.parse(json["submit_time"]),
         createTime: DateTime.parse(json["create_time"]),
         updateTime: DateTime.parse(json["update_time"]),
       );
@@ -110,7 +107,6 @@ class Insurance {
         "claim_date": claimDate.toIso8601String(),
         "application_scan_id": applicationScanId,
         "note": note,
-        "submit_time": submitTime.toIso8601String(),
         "create_time": createTime.toIso8601String(),
         "update_time": updateTime.toIso8601String(),
       };

@@ -14,6 +14,8 @@ enum Routes {
   restaurantEdit("/admin/restaurant/edit", UserRole.studentB),
   postList("/admin/post", UserRole.studentB),
   postEdit("/admin/post/edit", UserRole.studentB),
+  insuranceList("/admin/insurance", UserRole.studentB),
+  insuranceEdit("/admin/insurance/edit", UserRole.studentB),
   permission("/admin/permission", UserRole.admin);
 
   final String path;
