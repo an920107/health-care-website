@@ -1,8 +1,13 @@
+import 'package:file_picker/_internal/file_picker_web.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_care_website/model/insurance/insurance.dart';
+import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/theme/button_style.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/datetime_form_field.dart';
+import 'package:health_care_website/view/widget/dialog/post_delete_dialog.dart';
 
 class InsuranceEditPage extends StatefulWidget {
   const InsuranceEditPage(
@@ -19,6 +24,7 @@ class InsuranceEditPage extends StatefulWidget {
 class _InsuranceEditPageState extends State<InsuranceEditPage> {
   final _accidentDateTextController = TextEditingController();
   final _claimDateTextController = TextEditingController();
+  final _applicationScanTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,16 @@ class _InsuranceEditPageState extends State<InsuranceEditPage> {
       body: Form(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              "基本資料",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 36,
+              ),
+            ),
+            const SizedBox(height: 20),
             TextFormField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -72,6 +87,14 @@ class _InsuranceEditPageState extends State<InsuranceEditPage> {
                 border: OutlineInputBorder(),
                 icon: Icon(Icons.contact_emergency),
                 label: Text("身分證字號"),
+              ),
+            ),
+            const SizedBox(height: 40),
+            const Text(
+              "保險資訊",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 36,
               ),
             ),
             const SizedBox(height: 20),
@@ -179,7 +202,7 @@ class _InsuranceEditPageState extends State<InsuranceEditPage> {
             DropdownButtonFormField<bool>(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                icon: Icon(Icons.type_specimen),
+                icon: Icon(Icons.check_box),
                 label: Text("存摺"),
               ),
               borderRadius: BorderRadius.circular(4),
@@ -194,7 +217,7 @@ class _InsuranceEditPageState extends State<InsuranceEditPage> {
             DropdownButtonFormField<bool>(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                icon: Icon(Icons.type_specimen),
+                icon: Icon(Icons.check_box),
                 label: Text("X-ray"),
               ),
               borderRadius: BorderRadius.circular(4),
@@ -228,6 +251,7 @@ class _InsuranceEditPageState extends State<InsuranceEditPage> {
               children: [
                 Expanded(
                   child: TextFormField(
+                    controller: _applicationScanTextController,
                     readOnly: true,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -239,7 +263,31 @@ class _InsuranceEditPageState extends State<InsuranceEditPage> {
                 const SizedBox(width: 20),
                 ElevatedButton.icon(
                   style: ElevatedButtonStyle.rRectStyle(),
-                  onPressed: () async {},
+                  onPressed: () async {
+                    final result = await FilePickerWeb.platform.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: [
+                        "pdf",
+                        "jpg",
+                        "jpeg",
+                        "png",
+                        "doc",
+                        "docx",
+                        "xls",
+                        "xlsx",
+                        "ppt",
+                        "pptx",
+                        "odt",
+                        "csv",
+                      ],
+                    );
+                    if (result == null) return;
+                    final blob = result.files.single.bytes;
+                    final name = result.files.single.name;
+                    if (blob == null) return;
+                    _applicationScanTextController.text = name;
+                    // await value.uploadAttachment(blob, name);
+                  },
                   icon: const Icon(Icons.upload),
                   label: const Text("上傳文件"),
                 ),
@@ -252,6 +300,54 @@ class _InsuranceEditPageState extends State<InsuranceEditPage> {
                 icon: Icon(Icons.format_align_left),
                 label: Text("備註"),
               ),
+            ),
+            const SizedBox(height: 40),
+
+            // 功能按鈕們
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // 刪除按鈕
+                TextButton.icon(
+                  style: TextButtonStyle.rRectStyle(),
+                  onPressed: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => const DeleteDialog(),
+                    );
+                    // if (context.mounted && reply == true) {
+                    //   await context.read<PostEditPageViewModel>().delete();
+                    //   if (context.mounted) {
+                    //     context.pushReplacement(Routes.postList.path);
+                    //   }
+                    // }
+                    if (!context.mounted) return;
+                    context.go(Routes.insuranceList.path);
+                  },
+                  icon: const Icon(Icons.delete),
+                  label: const Text("刪除", style: TextStyle(fontSize: 16)),
+                ),
+
+                // 取消按鈕
+                const SizedBox(width: 20),
+                OutlinedButton.icon(
+                  style: OutlinedButtonStyle.rRectStyle(),
+                  onPressed: () => context.go(Routes.insuranceList.path),
+                  icon: const Icon(Icons.cancel),
+                  label: const Text("取消", style: TextStyle(fontSize: 16)),
+                ),
+
+                // 儲存按鈕
+                const SizedBox(width: 20),
+                OutlinedButton.icon(
+                  style: OutlinedButtonStyle.rRectStyle(),
+                  onPressed: () async {
+                    context.go(Routes.insuranceList.path);
+                  },
+                  icon: const Icon(Icons.save),
+                  label: const Text("保存變更", style: TextStyle(fontSize: 16)),
+                ),
+              ],
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:health_care_website/router/routes.dart';
@@ -45,36 +46,35 @@ class _InsuranceListPageState extends State<InsuranceListPage> {
                 ElevatedButton.icon(
                   style: ElevatedButtonStyle.rRectStyle(),
                   onPressed: () async {
-                    // final range = await showCalendarDatePicker2Dialog(
-                    //   context: context,
-                    //   dialogSize: const Size(325, 400),
-                    //   config: CalendarDatePicker2WithActionButtonsConfig(
-                    //     lastDate: DateTime.now(),
-                    //     calendarType: CalendarDatePicker2Type.range,
-                    //     centerAlignModePicker: true,
-                    //   ),
-                    // );
-                    // if (range != null && context.mounted) {
-                    //   if (range.length != 2 ||
-                    //       range[0] == null ||
-                    //       range[1] == null) {
-                    //     await showDialog(
-                    //       context: context,
-                    //       builder: (context) => AlertDialog(
-                    //         title: const Text("錯誤"),
-                    //         content: const Text("未選取日期範圍"),
-                    //         actions: [
-                    //           TextButton(
-                    //             onPressed: () => Navigator.of(context).pop(),
-                    //             child: const Text("確認"),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     );
-                    //   } else {
-                    //     launchUrl(value.getStatsUrl(range[0]!, range[1]!));
-                    //   }
-                    // }
+                    final range = await showCalendarDatePicker2Dialog(
+                      context: context,
+                      dialogSize: const Size(325, 400),
+                      config: CalendarDatePicker2WithActionButtonsConfig(
+                        lastDate: DateTime.now(),
+                        calendarType: CalendarDatePicker2Type.range,
+                        centerAlignModePicker: true,
+                      ),
+                    );
+                    if (range == null || !context.mounted) return;
+                    if (range.length != 2 ||
+                        range[0] == null ||
+                        range[1] == null) {
+                      await showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("錯誤"),
+                          content: const Text("未選取日期範圍"),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text("確認"),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      // launchUrl(value.getStatsUrl(range[0]!, range[1]!));
+                    }
                   },
                   icon: const Icon(Icons.download),
                   label: const Text("下載報表"),
