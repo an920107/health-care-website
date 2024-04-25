@@ -1,7 +1,8 @@
 enum UserRole {
+  none(100000),
   normal(9),
-  student(2),
-  teacher(1),
+  studentB(2),
+  studentA(1),
   admin(0);
 
   final int code;

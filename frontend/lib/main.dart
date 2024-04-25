@@ -8,6 +8,8 @@ import 'package:health_care_website/router/router.dart';
 import 'package:health_care_website/view_model/auth_view_model.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/private/carousel_page_view_model.dart';
+import 'package:health_care_website/view_model/private/insurance_edit_page_view_model.dart';
+import 'package:health_care_website/view_model/private/insurance_list_page_view_model.dart';
 import 'package:health_care_website/view_model/private/permission_page_view_model.dart';
 import 'package:health_care_website/view_model/private/post_edit_page_view_model.dart';
 import 'package:health_care_website/view_model/private/post_list_page_view_model.dart';
@@ -51,6 +53,8 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => StaticPageEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => RestaurantListPageViewModel()),
         ChangeNotifierProvider(create: (_) => RestaurantEditPageViewModel()),
+        ChangeNotifierProvider(create: (_) => InsuranceListPageViewModel()),
+        ChangeNotifierProvider(create: (_) => InsuranceEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => HomePageViewModel()),
         ChangeNotifierProvider(create: (_) => PostPageViewModel()),
         ChangeNotifierProvider(create: (_) => RestaurantPageViewModel()),

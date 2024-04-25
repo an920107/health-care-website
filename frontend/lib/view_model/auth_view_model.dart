@@ -8,7 +8,7 @@ class AuthViewModel with ChangeNotifier {
 
   String get id => _user?.id ?? "";
   String get name => _user?.name ?? "";
-  UserRole get role => _user?.role ?? UserRole.normal;
+  UserRole get role => _user?.role ?? UserRole.none;
 
   AuthViewModel() {
     AuthRepo.getAccessToken(cookieOnly: true).then((value) {
