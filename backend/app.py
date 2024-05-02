@@ -15,6 +15,7 @@ from routes.auth_blueprint import auth_blueprint
 from routes.restaurant_post_blueprint import restaurant_post_blueprint
 from routes.user_blueprint import user_blueprint
 from routes.insurance_plueprint import insurance_blueprint
+from routes.dengue_blueprint import dengue_blueprint
 
 from flask import Flask, request, send_file, redirect
 from flask_cors import CORS
@@ -32,6 +33,7 @@ def create_app():
     app.register_blueprint(restaurant_post_blueprint, url_prefix='/api/restaurant_post')
     app.register_blueprint(user_blueprint, url_prefix='/api/user')
     app.register_blueprint(insurance_blueprint, url_prefix='/api/insurance')
+    app.register_blueprint(dengue_blueprint, url_prefix='/api/dengue')
 
     app.config.from_mapping({
         'SQLALCHEMY_DATABASE_URI': 'sqlite:///health-care-website.db',
@@ -106,4 +108,4 @@ def get_allow_endswith():
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host="0.0.0.0", port=5001)
+    app.run(debug=False, host="0.0.0.0", port=5002)

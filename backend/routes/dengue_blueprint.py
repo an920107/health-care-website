@@ -55,7 +55,7 @@ def create_building():
 
 
 @dengue_blueprint.route('/building/<int:building_id>', methods=['DELETE'])
-def create_building(building_id):
+def delete_building(building_id):
     """
     Create a building
     ---
