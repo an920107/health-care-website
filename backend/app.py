@@ -14,6 +14,7 @@ from routes.carousel_blueprint import carousel_blueprint
 from routes.auth_blueprint import auth_blueprint
 from routes.restaurant_post_blueprint import restaurant_post_blueprint
 from routes.user_blueprint import user_blueprint
+from routes.insurance_plueprint import insurance_blueprint
 
 from flask import Flask, request, send_file, redirect
 from flask_cors import CORS
@@ -30,6 +31,7 @@ def create_app():
     app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
     app.register_blueprint(restaurant_post_blueprint, url_prefix='/api/restaurant_post')
     app.register_blueprint(user_blueprint, url_prefix='/api/user')
+    app.register_blueprint(insurance_blueprint, url_prefix='/api/insurance')
 
     app.config.from_mapping({
         'SQLALCHEMY_DATABASE_URI': 'sqlite:///health-care-website.db',
@@ -63,16 +65,16 @@ def create_app():
 app = create_app()
 
 
-# with app.app_context():
-#     db.session.remove()
-#     db.drop_all()
-#     db.create_all()
+with app.app_context():
+    db.session.remove()
+    db.drop_all()
+    db.create_all()
 
 
-# @app.errorhandler(Exception)
-# def error_handler(error: Exception):
-#     print(error)
-#     return Response.sever_error(str(error))
+@app.errorhandler(Exception)
+def error_handler(error: Exception):
+    print(error)
+    return Response.sever_error(str(error))
 
 
 @app.route("/", methods=['GET'])
