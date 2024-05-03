@@ -30,21 +30,34 @@ class BaseEndDrawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                onTap: () => context.push(Routes.carousel.path),
-                title: const Text("首頁橫幅圖片"),
-              ),
-              ListTile(
-                onTap: () => context.push(Routes.pageEdit.path),
-                title: const Text("靜態頁面"),
-              ),
-              ListTile(
-                onTap: () => context.push(Routes.postList.path),
-                title: const Text("文章公告"),
-              ),
-              ListTile(
-                onTap: () => context.push(Routes.restaurantList.path),
-                title: const Text("商家檢查"),
-              ),
+                  onTap: () => context.push(Routes.dengueForm.path),
+                  title: const Text("登革熱填報"),
+                ),
+              if (value.role > UserRole.normal)
+                ListTile(
+                  onTap: () => context.push(Routes.carousel.path),
+                  title: const Text("首頁橫幅圖片"),
+                ),
+              if (value.role > UserRole.normal)
+                ListTile(
+                  onTap: () => context.push(Routes.pageEdit.path),
+                  title: const Text("靜態頁面"),
+                ),
+              if (value.role > UserRole.normal)
+                ListTile(
+                  onTap: () => context.push(Routes.postList.path),
+                  title: const Text("文章公告"),
+                ),
+              if (value.role > UserRole.normal)
+                ListTile(
+                  onTap: () => context.push(Routes.restaurantList.path),
+                  title: const Text("商家檢查"),
+                ),
+              if (value.role >= UserRole.admin)
+                ListTile(
+                  onTap: () => context.push(Routes.dengueManagement.path),
+                  title: const Text("登革熱填報管理"),
+                ),
               if (value.role >= UserRole.admin)
                 ListTile(
                   onTap: () => context.push(Routes.permission.path),

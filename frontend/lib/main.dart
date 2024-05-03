@@ -8,6 +8,8 @@ import 'package:health_care_website/router/router.dart';
 import 'package:health_care_website/view_model/auth_view_model.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/private/carousel_page_view_model.dart';
+import 'package:health_care_website/view_model/private/dengue_form_page_view_model.dart';
+import 'package:health_care_website/view_model/private/dengue_management_page_view_model.dart';
 import 'package:health_care_website/view_model/private/insurance_edit_page_view_model.dart';
 import 'package:health_care_website/view_model/private/insurance_list_page_view_model.dart';
 import 'package:health_care_website/view_model/private/permission_page_view_model.dart';
@@ -20,6 +22,7 @@ import 'package:health_care_website/view_model/public/home_page_view_model.dart'
 import 'package:health_care_website/view_model/public/post_page_view_model.dart';
 import 'package:health_care_website/view_model/public/restaurant_page_view_model.dart';
 import 'package:health_care_website/view_model/public/static_page_page_view_model.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -55,6 +58,8 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RestaurantEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => InsuranceListPageViewModel()),
         ChangeNotifierProvider(create: (_) => InsuranceEditPageViewModel()),
+        ChangeNotifierProvider(create: (_) => DengueFormPageViewModel()),
+        ChangeNotifierProvider(create: (_) => DengueManagementPageViewModel()),
         ChangeNotifierProvider(create: (_) => HomePageViewModel()),
         ChangeNotifierProvider(create: (_) => PostPageViewModel()),
         ChangeNotifierProvider(create: (_) => RestaurantPageViewModel()),
@@ -64,6 +69,9 @@ class App extends StatelessWidget {
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: "Health Care Website",
+        localizationsDelegates: const [
+          MonthYearPickerLocalizations.delegate,
+        ],
         theme: ThemeData(
           textTheme:
               GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),

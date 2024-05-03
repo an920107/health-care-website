@@ -4,6 +4,8 @@ import 'package:health_care_website/enum/page_topic.dart';
 import 'package:health_care_website/enum/user_role.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/page/private/carousel_page.dart';
+import 'package:health_care_website/view/page/private/dengue_form_page.dart';
+import 'package:health_care_website/view/page/private/dengue_management_page.dart';
 import 'package:health_care_website/view/page/private/insurance_edit_page.dart';
 import 'package:health_care_website/view/page/private/insurance_list_page.dart';
 import 'package:health_care_website/view/page/private/permission_page.dart';
@@ -42,6 +44,11 @@ class Router {
             path: "${Routes.page.path}/:id",
             builder: (context, state) =>
                 StaticPagePage(state.pathParameters["id"]!),
+          ),
+          GoRoute(
+            path: Routes.dengueForm.path,
+            builder: (context, state) => const DengueFormPage(),
+            redirect: _authCheckAndRedirect,
           ),
 
           // 後台
@@ -102,6 +109,11 @@ class Router {
             path: "${Routes.insuranceEdit.path}/:id",
             builder: (context, state) =>
                 InsuranceEditPage(state.pathParameters["id"]!),
+            // redirect: _authCheckAndRedirect,
+          ),
+          GoRoute(
+            path: Routes.dengueManagement.path,
+            builder: (context, state) => const DengueManagementPage(),
             // redirect: _authCheckAndRedirect,
           ),
 
