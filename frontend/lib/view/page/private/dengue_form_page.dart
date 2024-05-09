@@ -15,6 +15,7 @@ class DengueFormPage extends StatefulWidget {
 }
 
 class _DengueFormPageState extends State<DengueFormPage> {
+  final _formKey = GlobalKey<FormState>();
   final _inspectDateTextController = TextEditingController();
 
   @override
@@ -30,35 +31,46 @@ class _DengueFormPageState extends State<DengueFormPage> {
                 "基本資訊",
                 softWrap: true,
                 style: TextStyle(
-                  fontSize: 36,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 20),
-              DateTimeFormField(
-                controller: _inspectDateTextController,
-                context: context,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  icon: Icon(Icons.calendar_month),
-                  label: Text("檢查日期"),
+              Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    DateTimeFormField(
+                      controller: _inspectDateTextController,
+                      context: context,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        icon: Icon(Icons.calendar_month),
+                        label: Text("檢查日期"),
+                      ),
+                      validator: (text) => text?.trim().isEmpty ?? true ? "不得為空" : null,
+                    ),
+                    const SizedBox(height: 20),
+                    DropdownButtonFormField<int>(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        icon: Icon(Icons.location_pin),
+                        label: Text("檢查地點"),
+                      ),
+                      items: value.buildings.entries
+                          .map((e) => DropdownMenuItem<int>(
+                                value: e.key,
+                                child: Text("${e.key}: ${e.value}"),
+                              ))
+                          .toList(),
+                      onTap: () =>
+                          FocusScope.of(context).requestFocus(FocusNode()),
+                      onChanged: (selected) {},
+                      validator: (index) => index == null ? "不得為空" : null,
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 20),
-              DropdownButtonFormField<int>(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  icon: Icon(Icons.location_pin),
-                  label: Text("檢查地點"),
-                ),
-                items: value.buildings.entries
-                    .map((e) => DropdownMenuItem<int>(
-                          value: e.key,
-                          child: Text("${e.key}: ${e.value}"),
-                        ))
-                    .toList(),
-                onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-                onChanged: (selected) {},
               ),
               const SizedBox(height: 40),
               // 一堆題目
@@ -66,7 +78,7 @@ class _DengueFormPageState extends State<DengueFormPage> {
                 "您的住家屋外或周圍環境是否有下列容器",
                 softWrap: true,
                 style: TextStyle(
-                  fontSize: 36,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -81,7 +93,7 @@ class _DengueFormPageState extends State<DengueFormPage> {
                 "您的住宅內是否有下列容器",
                 softWrap: true,
                 style: TextStyle(
-                  fontSize: 36,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -110,13 +122,17 @@ class _DengueFormPageState extends State<DengueFormPage> {
                   OutlinedButton.icon(
                     style: OutlinedButtonStyle.rRectStyle(),
                     onPressed: () async {
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
                       if (value.checkQuestionsFilled().isNotEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("請確認填寫所有的問題")),
                         );
                         return;
                       }
-                      await value.upload("", DateTime.parse(_inspectDateTextController.text));
+                      await value.upload(
+                          "", DateTime.parse(_inspectDateTextController.text));
                       if (!context.mounted) return;
                       context.go(Routes.root.path);
                     },
@@ -137,6 +153,8 @@ class _DengueFormPageState extends State<DengueFormPage> {
     required int index,
     int layer = 0,
   }) {
+    final textController = TextEditingController(text: question.text ?? "");
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,36 +176,56 @@ class _DengueFormPageState extends State<DengueFormPage> {
                         : null),
               ),
             ),
-            ToggleButtons(
-              renderBorder: true,
-              borderRadius: BorderRadius.circular(4),
-              onPressed: (buttonIndex) => context
-                  .read<DengueFormPageViewModel>()
-                  .toggleButtonsPressed(index, layer, buttonIndex),
-              isSelected: question.selected,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.check),
-                      const SizedBox(width: 5),
-                      Text(question.type.trueLabel),
-                    ],
+            if (question.type != DengueFormQuestionType.open)
+              ToggleButtons(
+                renderBorder: true,
+                borderRadius: BorderRadius.circular(4),
+                onPressed: (buttonIndex) => context
+                    .read<DengueFormPageViewModel>()
+                    .toggleButtonsPressed(index, layer, buttonIndex),
+                isSelected: question.selected,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.check),
+                        const SizedBox(width: 5),
+                        Text(question.type.trueLabel),
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.close),
-                      const SizedBox(width: 5),
-                      Text(question.type.falseLabel),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.close),
+                        const SizedBox(width: 5),
+                        Text(question.type.falseLabel),
+                      ],
+                    ),
                   ),
+                ],
+              )
+            else
+              Expanded(
+                flex: 2,
+                child: TextField(
+                  controller: textController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                  onSubmitted: (value) => context
+                      .read<DengueFormPageViewModel>()
+                      .formTextSubmitted(index, layer, value),
+                  onTapOutside: (event) {
+                    context
+                        .read<DengueFormPageViewModel>()
+                        .formTextSubmitted(index, layer, textController.text);
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
                 ),
-              ],
-            ),
+              )
           ],
         ),
         if (question.selected[0] && question.subQuestion != null)

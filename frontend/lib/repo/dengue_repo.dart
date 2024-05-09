@@ -7,8 +7,8 @@ import 'package:health_care_website/util/http_util.dart';
 import 'package:intl/intl.dart';
 
 abstract class DengueRepo {
-  static Future<void> uploadForm(
-      String buildingId, DateTime inspectDate, Map<String, bool?> form) async {
+  static Future<void> uploadForm(String buildingId, DateTime inspectDate,
+      Map<String, dynamic> form) async {
     try {
       final response = await HttpUtil.request(
         method: HttpMethod.post,

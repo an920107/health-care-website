@@ -226,6 +226,7 @@ class DengueFormPageViewModel with ChangeNotifier {
     ),
     DengueFormQuestion(
       title: "其他（任何容器或雜物）",
+      type: DengueFormQuestionType.open,
     ),
     DengueFormQuestion(
       title: "花盤、花瓶、插水生植物容器（如：萬年青、黃金葛等）",
@@ -257,6 +258,7 @@ class DengueFormPageViewModel with ChangeNotifier {
     ),
     DengueFormQuestion(
       title: "其他",
+      type: DengueFormQuestionType.open,
     ),
   ];
 
@@ -274,6 +276,16 @@ class DengueFormPageViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void formTextSubmitted(int questionIndex, int layer, String text) {
+    var question = _questions[questionIndex];
+    while (layer > 0) {
+      question = question.subQuestion!;
+      layer--;
+    }
+    question.text = text;
+    notifyListeners();
+  }
+
   final Set<int> _questionsNotFilled = {};
   Set<int> get questionsNotFilled => UnmodifiableSetView(_questionsNotFilled);
 
@@ -281,7 +293,9 @@ class DengueFormPageViewModel with ChangeNotifier {
   Set<int> checkQuestionsFilled() {
     _questionsNotFilled.clear();
     for (int i = 0; i < _questions.length; i++) {
-      if (!_questions[i].selected[0] && !_questions[i].selected[1]) {
+      if (_questions[i].type == DengueFormQuestionType.open) {
+        // ignore
+      } else if (!_questions[i].selected[0] && !_questions[i].selected[1]) {
         _questionsNotFilled.add(i);
       } else if (_questions[i].selected[0] &&
           _questions[i].subQuestion != null) {
@@ -295,20 +309,44 @@ class DengueFormPageViewModel with ChangeNotifier {
     return UnmodifiableSetView(_questionsNotFilled);
   }
 
-  MapEntry<String, bool?> _jsonfy(int index, int layer, List<bool> selected) {
-    final result = selected[0] ? true : (selected[1] ? false : null);
-    return MapEntry("${index.toString()}${"_" * layer}", result);
+  /// Returns:
+  /// 
+  /// ```json
+  /// {
+  ///   "1_question": "bool | string",
+  ///   "sub_1_question": "bool | string"
+  /// }
+  /// ```
+  MapEntry<String, dynamic> _jsonfy(
+    int index,
+    int layer,
+    String title,
+    List<bool> selected,
+    String? text,
+    DengueFormQuestionType type,
+  ) {
+    final result =
+        type == DengueFormQuestionType.open ? (text ?? "") : selected[0];
+    return MapEntry("${"sub_" * layer}${index.toString()}_$title", result);
   }
 
   Future<void> upload(String buildingId, DateTime inspectDate) async {
-    Map<String, bool?> form = {};
+    Map<String, dynamic> form = {};
     for (int i = 0; i < _questions.length; i++) {
       form.addEntries([
-        _jsonfy(i, 0, _questions[i].selected),
+        _jsonfy(i, 0, _questions[i].title, _questions[i].selected,
+            _questions[i].text, _questions[i].type),
       ]);
-      if (_questions[i].selected[0] && _questions[i].subQuestion != null) {
+      if (_questions[i].subQuestion != null) {
         form.addEntries([
-          _jsonfy(i, 1, _questions[i].subQuestion!.selected),
+          _jsonfy(
+            i,
+            1,
+            _questions[i].subQuestion!.title,
+            _questions[i].subQuestion!.selected,
+            _questions[i].subQuestion?.text,
+            _questions[i].subQuestion!.type,
+          ),
         ]);
       }
     }
@@ -321,6 +359,7 @@ class DengueFormQuestion {
   final DengueFormQuestionType type;
   final List<bool> selected = [false, false];
   final DengueFormQuestion? subQuestion;
+  String? text;
 
   DengueFormQuestion({
     required this.title,
@@ -331,7 +370,8 @@ class DengueFormQuestion {
 
 enum DengueFormQuestionType {
   yesOrNo("是", "否"),
-  hasOrNot("有", "無");
+  hasOrNot("有", "無"),
+  open("", "");
 
   final String trueLabel;
   final String falseLabel;
