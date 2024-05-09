@@ -45,12 +45,15 @@ abstract class DengueRepo {
     return null;
   }
 
-  static Future<List<Building>> getBuildings() async {
+  static Future<List<Building>> getBuildings([String? userId]) async {
     try {
       final response = await HttpUtil.request(
         method: HttpMethod.get,
         authRequired: true,
         uri: "/api/dengue/building",
+        query: {
+          if (userId != null) "user_id": userId,
+        },
       );
       response.check();
       return (json.decode(response.body)["response"] as List)

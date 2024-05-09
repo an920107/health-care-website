@@ -1,60 +1,10 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:health_care_website/model/dengue/building.dart';
 import 'package:health_care_website/repo/dengue_repo.dart';
 
 class DengueFormPageViewModel with ChangeNotifier {
-  Map<int, String> get buildings {
-    return [
-      "工一館(化材系)",
-      "文學院1.2.3館",
-      "工程二館(電機系)",
-      "機械館、實習三廠、機電實驗室",
-      "校內公共區域總務處事務組",
-      "總圖書館(各組)",
-      "氣象觀測站(大氣系)",
-      "科學一館",
-      "教學研究綜合大樓(大禮堂及地下停車場)",
-      "工程二館(通訊系)",
-      "依仁堂,棒壘球場,室外網球場,羽球館,溜冰場,室外籃/排球場,室內游泳池,國民運動中心(體育室)",
-      "國鼎圖書館",
-      "科學二館",
-      "第二行政中心(中正圖書館)",
-      "太空及遙測研究中心",
-      "研究中心大樓二期",
-      "據德樓",
-      "游藝館",
-      "志道樓",
-      "宿舍(17處，含中大會館)/學務處住宿服務組",
-      "健雄館",
-      "環境工程學研究所",
-      "大講堂",
-      "松苑",
-      "女十四舍",
-      "九餐",
-      "松果餐廳",
-      "行政大樓",
-      "教學研究綜合大樓(教室區)",
-      "綜教館",
-      "工程五館",
-      "科學三館(化學系)",
-      "土木系",
-      "大型力學實驗室",
-      "科五館",
-      "志希館(BF1~2F)",
-      "工四館(化材系)",
-      "鴻經館",
-      "志希館(3F~11F)",
-      "管理二館",
-      "教職員宿舍(6處)/總務處資產經營管理組",
-      "松果館(產學營運中心)",
-      "客家學院大樓",
-      "國鼎光電大樓",
-      "享想空間",
-      "科思創全球能量固化研發中心",
-    ].asMap();
-  }
-
   final _questions = <DengueFormQuestion>[
     DengueFormQuestion(
       title: "空瓶、空罐",
@@ -264,10 +214,19 @@ class DengueFormPageViewModel with ChangeNotifier {
 
   List<DengueFormQuestion> get questions => UnmodifiableListView(_questions);
 
-  int? _selectedBuildingId;
-  int? get selectedBuildingId => _selectedBuildingId;
-  set selectedBuildingId(int? value) {
+  String? _selectedBuildingId;
+  String? get selectedBuildingId => _selectedBuildingId;
+  set selectedBuildingId(String? value) {
     _selectedBuildingId = value;
+    notifyListeners();
+  }
+
+  List<Building> _buildings = [];
+  List<Building> get buildings => UnmodifiableListView(_buildings);
+
+  Future<void> fetchFromServer() async {
+    // TODO: using real uid
+    _buildings = await DengueRepo.getBuildings("110502557");
     notifyListeners();
   }
 
@@ -361,7 +320,7 @@ class DengueFormPageViewModel with ChangeNotifier {
       }
     }
     await DengueRepo.uploadForm(
-      _selectedBuildingId.toString(),
+      _selectedBuildingId!,
       inspectDate,
       form,
     );

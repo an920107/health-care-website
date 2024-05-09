@@ -19,6 +19,14 @@ class _DengueFormPageState extends State<DengueFormPage> {
   final _inspectDateTextController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<DengueFormPageViewModel>().fetchFromServer();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BaseScaffold(
       body: Consumer<DengueFormPageViewModel>(
@@ -53,16 +61,16 @@ class _DengueFormPageState extends State<DengueFormPage> {
                           text?.trim().isEmpty ?? true ? "不得為空" : null,
                     ),
                     const SizedBox(height: 20),
-                    DropdownButtonFormField<int>(
+                    DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         icon: Icon(Icons.location_pin),
                         label: Text("檢查地點"),
                       ),
-                      items: value.buildings.entries
-                          .map((e) => DropdownMenuItem<int>(
-                                value: e.key,
-                                child: Text("${e.key}: ${e.value}"),
+                      items: value.buildings
+                          .map((e) => DropdownMenuItem(
+                                value: e.id,
+                                child: Text(e.name),
                               ))
                           .toList(),
                       onTap: () =>
