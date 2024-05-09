@@ -7,6 +7,7 @@ import 'package:health_care_website/view/widget/dialog/post_delete_dialog.dart';
 import 'package:health_care_website/view_model/private/dengue_list_page_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DengueListPage extends StatefulWidget {
   const DengueListPage({super.key});
@@ -75,7 +76,7 @@ class _DengueListPageState extends State<DengueListPage> {
                           )),
                           DataCell(IconButton(
                             onPressed: () async {
-                              // TODO: download
+                              launchUrl(value.getStatsUrl(dengue));
                             },
                             icon: const Icon(Icons.download),
                           )),

@@ -165,4 +165,8 @@ abstract class DengueRepo {
       "end_date": DateFormat("yyyy-MM").format(end),
     });
   }
+
+  static Uri getStatsUrlById(String id) {
+    return Uri.https(Config.backend, "/api/dengue/form-download/$id");
+  }
 }
