@@ -17,7 +17,7 @@ abstract class HttpUtil {
     assert(![HttpMethod.get, HttpMethod.delete].contains(method) || body == null,
         "When using HTTP GET and DELETE, `data` cannot be set.");
 
-    final url = Uri.https(Config.backend, uri, query);
+    final url = Uri.http(Config.backend, uri, query);
     if (authRequired) {
       headers ??= {};
       headers["Authorization"] = "Bearer ${CookieManager.get("token")}";
@@ -47,7 +47,7 @@ abstract class HttpUtil {
     Map<String, String>? headers,
     Map<String, String>? query,
   }) async {
-    final url = Uri.https(Config.backend, uri, query);
+    final url = Uri.http(Config.backend, uri, query);
     if (authRequired) {
       headers ??= {};
       headers["Authorization"] = "Bearer ${CookieManager.get("token")}";

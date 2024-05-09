@@ -1,60 +1,11 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:health_care_website/model/dengue/building.dart';
 import 'package:health_care_website/repo/dengue_repo.dart';
+import 'package:health_care_website/view_model/auth_view_model.dart';
 
 class DengueFormPageViewModel with ChangeNotifier {
-  Map<int, String> get buildings {
-    return [
-      "工一館(化材系)",
-      "文學院1.2.3館",
-      "工程二館(電機系)",
-      "機械館、實習三廠、機電實驗室",
-      "校內公共區域總務處事務組",
-      "總圖書館(各組)",
-      "氣象觀測站(大氣系)",
-      "科學一館",
-      "教學研究綜合大樓(大禮堂及地下停車場)",
-      "工程二館(通訊系)",
-      "依仁堂,棒壘球場,室外網球場,羽球館,溜冰場,室外籃/排球場,室內游泳池,國民運動中心(體育室)",
-      "國鼎圖書館",
-      "科學二館",
-      "第二行政中心(中正圖書館)",
-      "太空及遙測研究中心",
-      "研究中心大樓二期",
-      "據德樓",
-      "游藝館",
-      "志道樓",
-      "宿舍(17處，含中大會館)/學務處住宿服務組",
-      "健雄館",
-      "環境工程學研究所",
-      "大講堂",
-      "松苑",
-      "女十四舍",
-      "九餐",
-      "松果餐廳",
-      "行政大樓",
-      "教學研究綜合大樓(教室區)",
-      "綜教館",
-      "工程五館",
-      "科學三館(化學系)",
-      "土木系",
-      "大型力學實驗室",
-      "科五館",
-      "志希館(BF1~2F)",
-      "工四館(化材系)",
-      "鴻經館",
-      "志希館(3F~11F)",
-      "管理二館",
-      "教職員宿舍(6處)/總務處資產經營管理組",
-      "松果館(產學營運中心)",
-      "客家學院大樓",
-      "國鼎光電大樓",
-      "享想空間",
-      "科思創全球能量固化研發中心",
-    ].asMap();
-  }
-
   final _questions = <DengueFormQuestion>[
     DengueFormQuestion(
       title: "空瓶、空罐",
@@ -226,6 +177,7 @@ class DengueFormPageViewModel with ChangeNotifier {
     ),
     DengueFormQuestion(
       title: "其他（任何容器或雜物）",
+      type: DengueFormQuestionType.open,
     ),
     DengueFormQuestion(
       title: "花盤、花瓶、插水生植物容器（如：萬年青、黃金葛等）",
@@ -257,10 +209,34 @@ class DengueFormPageViewModel with ChangeNotifier {
     ),
     DengueFormQuestion(
       title: "其他",
+      type: DengueFormQuestionType.open,
     ),
   ];
 
   List<DengueFormQuestion> get questions => UnmodifiableListView(_questions);
+
+  String? _selectedBuildingId;
+  String? get selectedBuildingId => _selectedBuildingId;
+  set selectedBuildingId(String? value) {
+    _selectedBuildingId = value;
+    notifyListeners();
+  }
+
+  List<Building> _buildings = [];
+  List<Building> get buildings => UnmodifiableListView(_buildings);
+
+  AuthViewModel _authViewModel;
+
+  DengueFormPageViewModel(this._authViewModel);
+
+  void proxyUpdate(AuthViewModel authViewModel) {
+    _authViewModel = authViewModel;
+  }
+
+  Future<void> fetchFromServer() async {
+    _buildings = await DengueRepo.getBuildings(_authViewModel.id);
+    notifyListeners();
+  }
 
   void toggleButtonsPressed(int questionIndex, int layer, int buttonIndex) {
     var question = _questions[questionIndex];
@@ -274,6 +250,16 @@ class DengueFormPageViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void formTextSubmitted(int questionIndex, int layer, String text) {
+    var question = _questions[questionIndex];
+    while (layer > 0) {
+      question = question.subQuestion!;
+      layer--;
+    }
+    question.text = text;
+    notifyListeners();
+  }
+
   final Set<int> _questionsNotFilled = {};
   Set<int> get questionsNotFilled => UnmodifiableSetView(_questionsNotFilled);
 
@@ -281,7 +267,9 @@ class DengueFormPageViewModel with ChangeNotifier {
   Set<int> checkQuestionsFilled() {
     _questionsNotFilled.clear();
     for (int i = 0; i < _questions.length; i++) {
-      if (!_questions[i].selected[0] && !_questions[i].selected[1]) {
+      if (_questions[i].type == DengueFormQuestionType.open) {
+        // ignore
+      } else if (!_questions[i].selected[0] && !_questions[i].selected[1]) {
         _questionsNotFilled.add(i);
       } else if (_questions[i].selected[0] &&
           _questions[i].subQuestion != null) {
@@ -295,24 +283,55 @@ class DengueFormPageViewModel with ChangeNotifier {
     return UnmodifiableSetView(_questionsNotFilled);
   }
 
-  MapEntry<String, bool?> _jsonfy(int index, int layer, List<bool> selected) {
-    final result = selected[0] ? true : (selected[1] ? false : null);
-    return MapEntry("${index.toString()}${"_" * layer}", result);
+  /// Returns:
+  ///
+  /// ```json
+  /// {
+  ///   "1_question": "bool | string",
+  ///   "sub_1_question": "bool | string"
+  /// }
+  /// ```
+  MapEntry<String, dynamic> _jsonfy(
+    int index,
+    int layer,
+    String title,
+    List<bool> selected,
+    String? text,
+    DengueFormQuestionType type,
+  ) {
+    final result =
+        type == DengueFormQuestionType.open ? (text ?? "") : selected[0];
+    return MapEntry("${"sub_" * layer}${index.toString()}_$title", result);
   }
 
-  Future<void> upload(String buildingId, DateTime inspectDate) async {
-    Map<String, bool?> form = {};
+  Future<void> upload(DateTime inspectDate) async {
+    // TODO: 錯誤處理
+    if (_selectedBuildingId == null) throw Exception();
+
+    Map<String, dynamic> form = {};
     for (int i = 0; i < _questions.length; i++) {
       form.addEntries([
-        _jsonfy(i, 0, _questions[i].selected),
+        _jsonfy(i, 0, _questions[i].title, _questions[i].selected,
+            _questions[i].text, _questions[i].type),
       ]);
-      if (_questions[i].selected[0] && _questions[i].subQuestion != null) {
+      if (_questions[i].subQuestion != null) {
         form.addEntries([
-          _jsonfy(i, 1, _questions[i].subQuestion!.selected),
+          _jsonfy(
+            i,
+            1,
+            _questions[i].subQuestion!.title,
+            _questions[i].subQuestion!.selected,
+            _questions[i].subQuestion?.text,
+            _questions[i].subQuestion!.type,
+          ),
         ]);
       }
     }
-    await DengueRepo.uploadForm(buildingId, inspectDate, form);
+    await DengueRepo.uploadForm(
+      _selectedBuildingId!,
+      inspectDate,
+      form,
+    );
   }
 }
 
@@ -321,6 +340,7 @@ class DengueFormQuestion {
   final DengueFormQuestionType type;
   final List<bool> selected = [false, false];
   final DengueFormQuestion? subQuestion;
+  String? text;
 
   DengueFormQuestion({
     required this.title,
@@ -331,7 +351,8 @@ class DengueFormQuestion {
 
 enum DengueFormQuestionType {
   yesOrNo("是", "否"),
-  hasOrNot("有", "無");
+  hasOrNot("有", "無"),
+  open("", "");
 
   final String trueLabel;
   final String falseLabel;

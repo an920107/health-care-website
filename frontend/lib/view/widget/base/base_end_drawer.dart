@@ -30,7 +30,7 @@ class BaseEndDrawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                  onTap: () => context.push(Routes.dengueForm.path),
+                  onTap: () => context.push(Routes.dengueList.path),
                   title: const Text("登革熱填報"),
                 ),
               if (value.role > UserRole.normal)

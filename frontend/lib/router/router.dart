@@ -5,6 +5,7 @@ import 'package:health_care_website/enum/user_role.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/page/private/carousel_page.dart';
 import 'package:health_care_website/view/page/private/dengue_form_page.dart';
+import 'package:health_care_website/view/page/private/dengue_list_page.dart';
 import 'package:health_care_website/view/page/private/dengue_management_page.dart';
 import 'package:health_care_website/view/page/private/insurance_edit_page.dart';
 import 'package:health_care_website/view/page/private/insurance_list_page.dart';
@@ -44,6 +45,11 @@ class Router {
             path: "${Routes.page.path}/:id",
             builder: (context, state) =>
                 StaticPagePage(state.pathParameters["id"]!),
+          ),
+          GoRoute(
+            path: Routes.dengueList.path,
+            builder: (context, state) => const DengueListPage(),
+            redirect: _authCheckAndRedirect,
           ),
           GoRoute(
             path: Routes.dengueForm.path,

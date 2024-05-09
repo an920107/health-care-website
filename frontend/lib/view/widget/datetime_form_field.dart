@@ -6,6 +6,7 @@ class DateTimeFormField extends TextFormField {
     super.key,
     super.controller,
     super.decoration,
+    super.validator,
     required BuildContext context,
   }) : super(
           onTap: () async {

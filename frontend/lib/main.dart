@@ -9,6 +9,7 @@ import 'package:health_care_website/view_model/auth_view_model.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
 import 'package:health_care_website/view_model/private/carousel_page_view_model.dart';
 import 'package:health_care_website/view_model/private/dengue_form_page_view_model.dart';
+import 'package:health_care_website/view_model/private/dengue_list_page_view_model.dart';
 import 'package:health_care_website/view_model/private/dengue_management_page_view_model.dart';
 import 'package:health_care_website/view_model/private/insurance_edit_page_view_model.dart';
 import 'package:health_care_website/view_model/private/insurance_list_page_view_model.dart';
@@ -58,7 +59,14 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RestaurantEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => InsuranceListPageViewModel()),
         ChangeNotifierProvider(create: (_) => InsuranceEditPageViewModel()),
-        ChangeNotifierProvider(create: (_) => DengueFormPageViewModel()),
+        ChangeNotifierProvider(create: (_) => DengueListPageViewModel()),
+        ChangeNotifierProxyProvider<AuthViewModel, DengueFormPageViewModel>(
+          create: (context) => DengueFormPageViewModel(context.read()),
+          update: (context, authViewModel, dengueFormPageViewModel) {
+            dengueFormPageViewModel!.proxyUpdate(authViewModel);
+            return dengueFormPageViewModel;
+          },
+        ),
         ChangeNotifierProvider(create: (_) => DengueManagementPageViewModel()),
         ChangeNotifierProvider(create: (_) => HomePageViewModel()),
         ChangeNotifierProvider(create: (_) => PostPageViewModel()),
