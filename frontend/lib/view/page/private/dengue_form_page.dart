@@ -49,7 +49,8 @@ class _DengueFormPageState extends State<DengueFormPage> {
                         icon: Icon(Icons.calendar_month),
                         label: Text("檢查日期"),
                       ),
-                      validator: (text) => text?.trim().isEmpty ?? true ? "不得為空" : null,
+                      validator: (text) =>
+                          text?.trim().isEmpty ?? true ? "不得為空" : null,
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<int>(
@@ -66,7 +67,10 @@ class _DengueFormPageState extends State<DengueFormPage> {
                           .toList(),
                       onTap: () =>
                           FocusScope.of(context).requestFocus(FocusNode()),
-                      onChanged: (selected) {},
+                      onChanged: (selected) {
+                        if (selected == null) return;
+                        value.selectedBuildingId = selected;
+                      },
                       validator: (index) => index == null ? "不得為空" : null,
                     ),
                   ],
@@ -112,7 +116,7 @@ class _DengueFormPageState extends State<DengueFormPage> {
                   const SizedBox(width: 20),
                   OutlinedButton.icon(
                     style: OutlinedButtonStyle.rRectStyle(),
-                    onPressed: () => context.go(Routes.root.path),
+                    onPressed: () => context.go(Routes.dengueList.path),
                     icon: const Icon(Icons.cancel),
                     label: const Text("取消", style: TextStyle(fontSize: 16)),
                   ),
@@ -132,9 +136,9 @@ class _DengueFormPageState extends State<DengueFormPage> {
                         return;
                       }
                       await value.upload(
-                          "", DateTime.parse(_inspectDateTextController.text));
+                          DateTime.parse(_inspectDateTextController.text));
                       if (!context.mounted) return;
-                      context.go(Routes.root.path);
+                      context.pushReplacement(Routes.dengueList.path);
                     },
                     icon: const Icon(Icons.send),
                     label: const Text("送出", style: TextStyle(fontSize: 16)),

@@ -264,6 +264,13 @@ class DengueFormPageViewModel with ChangeNotifier {
 
   List<DengueFormQuestion> get questions => UnmodifiableListView(_questions);
 
+  int? _selectedBuildingId;
+  int? get selectedBuildingId => _selectedBuildingId;
+  set selectedBuildingId(int? value) {
+    _selectedBuildingId = value;
+    notifyListeners();
+  }
+
   void toggleButtonsPressed(int questionIndex, int layer, int buttonIndex) {
     var question = _questions[questionIndex];
     while (layer > 0) {
@@ -310,7 +317,7 @@ class DengueFormPageViewModel with ChangeNotifier {
   }
 
   /// Returns:
-  /// 
+  ///
   /// ```json
   /// {
   ///   "1_question": "bool | string",
@@ -330,7 +337,10 @@ class DengueFormPageViewModel with ChangeNotifier {
     return MapEntry("${"sub_" * layer}${index.toString()}_$title", result);
   }
 
-  Future<void> upload(String buildingId, DateTime inspectDate) async {
+  Future<void> upload(DateTime inspectDate) async {
+    // TODO: 錯誤處理
+    if (_selectedBuildingId == null) throw Exception();
+
     Map<String, dynamic> form = {};
     for (int i = 0; i < _questions.length; i++) {
       form.addEntries([
@@ -350,7 +360,11 @@ class DengueFormPageViewModel with ChangeNotifier {
         ]);
       }
     }
-    await DengueRepo.uploadForm(buildingId, inspectDate, form);
+    await DengueRepo.uploadForm(
+      _selectedBuildingId.toString(),
+      inspectDate,
+      form,
+    );
   }
 }
 

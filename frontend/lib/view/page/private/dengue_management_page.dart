@@ -115,7 +115,7 @@ class _DengueManagementPageState extends State<DengueManagementPage> {
                     columns: const [
                       DataColumn(label: Text("建物名稱")),
                       DataColumn(label: Text("建物管理員")),
-                      DataColumn(label: Text("刪除（無法復原）")),
+                      DataColumn(label: Text("刪除")),
                     ],
                     rows: [
                       for (var building in value.buildings)
