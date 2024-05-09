@@ -17,4 +17,8 @@ class DengueListPageViewModel with ChangeNotifier {
     await DengueRepo.deleteDengue(dengue.id);
     await fetchFromServer();
   }
+
+  Uri getStatsUrl(Dengue dengue) {
+    return DengueRepo.getStatsUrlById(dengue.id);
+  }
 }
