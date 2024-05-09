@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:health_care_website/model/dengue/building.dart';
 import 'package:health_care_website/repo/dengue_repo.dart';
+import 'package:health_care_website/view_model/auth_view_model.dart';
 
 class DengueFormPageViewModel with ChangeNotifier {
   final _questions = <DengueFormQuestion>[
@@ -224,9 +225,16 @@ class DengueFormPageViewModel with ChangeNotifier {
   List<Building> _buildings = [];
   List<Building> get buildings => UnmodifiableListView(_buildings);
 
+  AuthViewModel _authViewModel;
+
+  DengueFormPageViewModel(this._authViewModel);
+
+  void proxyUpdate(AuthViewModel authViewModel) {
+    _authViewModel = authViewModel;
+  }
+
   Future<void> fetchFromServer() async {
-    // TODO: using real uid
-    _buildings = await DengueRepo.getBuildings("110502557");
+    _buildings = await DengueRepo.getBuildings(_authViewModel.id);
     notifyListeners();
   }
 

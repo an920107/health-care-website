@@ -60,7 +60,13 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => InsuranceListPageViewModel()),
         ChangeNotifierProvider(create: (_) => InsuranceEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => DengueListPageViewModel()),
-        ChangeNotifierProvider(create: (_) => DengueFormPageViewModel()),
+        ChangeNotifierProxyProvider<AuthViewModel, DengueFormPageViewModel>(
+          create: (context) => DengueFormPageViewModel(context.read()),
+          update: (context, authViewModel, dengueFormPageViewModel) {
+            dengueFormPageViewModel!.proxyUpdate(authViewModel);
+            return dengueFormPageViewModel;
+          },
+        ),
         ChangeNotifierProvider(create: (_) => DengueManagementPageViewModel()),
         ChangeNotifierProvider(create: (_) => HomePageViewModel()),
         ChangeNotifierProvider(create: (_) => PostPageViewModel()),
@@ -75,8 +81,8 @@ class App extends StatelessWidget {
           MonthYearPickerLocalizations.delegate,
         ],
         theme: ThemeData(
-          // textTheme:
-          //     GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),
+          textTheme:
+              GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
           useMaterial3: true,
         ),
