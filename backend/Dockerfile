@@ -16,5 +16,5 @@ FROM install-requirements AS release
 WORKDIR /app
 COPY . .
 
-CMD ["gunicorn" , "-b", "0.0.0.0:5001", "app:app"]
+CMD ["gunicorn" , "-b", "0.0.0.0:5001", "--workers=41", "app:app"]
 EXPOSE 5001
