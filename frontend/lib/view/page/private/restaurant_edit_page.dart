@@ -117,9 +117,9 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                                 Switch(
                                   value: value.visible,
                                   onChanged: (result) => value.visible = result,
-                                  thumbIcon: MaterialStateProperty.resolveWith(
+                                  thumbIcon: WidgetStateProperty.resolveWith(
                                     (states) => Icon(
-                                        states.contains(MaterialState.selected)
+                                        states.contains(WidgetState.selected)
                                             ? Icons.star
                                             : Icons.edit),
                                   ),
