@@ -17,6 +17,11 @@ class SchemaMixin:
         return pay_load
 
 
+class TotalViewer(db.Model, SchemaMixin):
+    __tablename__ = 'total_viewer'
+    viewer = db.Column(db.Integer, nullable=False, default=0)
+
+
 class Post(db.Model, SchemaMixin):
     __tablename__ = 'post'
     title = db.Column(db.String(40), nullable=False)
@@ -92,7 +97,7 @@ class User(db.Model, SchemaMixin):
     id = db.Column(db.String(40), primary_key=True)
     chinese_name = db.Column(db.String(40), nullable=False, unique=False)
     state = db.Column(db.String(40), nullable=False, unique=False)
-    # 0: admin, 1: teacher, 2: student, 9: normal
+    # 0: admin, 1: studentA, 2: studentB, 3:building, 9:normal, 10:none
     authorization = db.Column(db.Integer, nullable=False, unique=False, default=9)
 
 

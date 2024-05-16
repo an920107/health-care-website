@@ -10,7 +10,7 @@ user_blueprint = Blueprint('user', __name__)
 
 
 @user_blueprint.route("", methods=['GET'])
-@authorization_required(1)
+@authorization_required([0])
 def get_users():
     """
     Get Users
@@ -31,7 +31,7 @@ def get_users():
 
 
 @user_blueprint.route("/<string:user_id>/authorization", methods=['PATCH'])
-@authorization_required(0)
+@authorization_required([0])
 def patch_user_authorization(user_id):
     """
     Patch User Authorization
@@ -59,7 +59,7 @@ def patch_user_authorization(user_id):
 
 
 @user_blueprint.route("/<string:user_id>", methods=['DELETE'])
-@authorization_required(0)
+@authorization_required([0])
 def delete_user(user_id):
     """
     Delete User

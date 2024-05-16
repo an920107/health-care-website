@@ -79,7 +79,7 @@ def get_posts():
     if request.args.get('visible'):
         query_conditions['visible'] = request.args.get('visible')
 
-    posts = Post.query.filter_by(**query_conditions).order_by(Post.create_time).all()
+    posts = Post.query.filter_by(**query_conditions).order_by(Post.create_time.desc()).all()
     posts.sort(key=lambda x: x.importance, reverse=True)
     total_page = max(1, len(posts) // Config.PAGE_SIZE + bool(len(posts) % Config.PAGE_SIZE))
 
@@ -99,7 +99,7 @@ def get_posts():
 
 
 @post_blueprint.route('', methods=['POST'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def upload_posts():
     """
     Upload post
@@ -150,7 +150,7 @@ def upload_posts():
 
 
 @post_blueprint.route('/<int:post_id>', methods=['PUT'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def update_post(post_id):
     """
     Update post by post_id
@@ -224,7 +224,7 @@ def update_post(post_id):
 
 
 @post_blueprint.route('/<int:post_id>/importance', methods=['PATCH'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def update_post_importance(post_id):
     """
     Update post importance by post_id
@@ -261,7 +261,7 @@ def update_post_importance(post_id):
 
 
 @post_blueprint.route('/<int:post_id>/visible', methods=['PATCH'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def update_post_visible(post_id):
     """
     Update post visible by post_id
@@ -298,7 +298,7 @@ def update_post_visible(post_id):
 
 
 @post_blueprint.route('/<int:post_id>/image', methods=['POST'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def add_images(post_id):
     """
     Add images to post by post_id
@@ -347,7 +347,7 @@ def add_images(post_id):
 
 
 @post_blueprint.route('/<int:post_id>/attachment', methods=['POST'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def add_attachments(post_id):
     """
     Add attachments to post by post_id
@@ -399,7 +399,7 @@ def add_attachments(post_id):
 
 
 @post_blueprint.route('/<int:post_id>', methods=['DELETE'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def delete_post(post_id):
     """
     Delete post by post_id
