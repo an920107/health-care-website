@@ -115,6 +115,7 @@ class _DengueManagementPageState extends State<DengueManagementPage> {
                     columns: const [
                       DataColumn(label: Text("建物名稱")),
                       DataColumn(label: Text("建物管理員")),
+                      DataColumn(label: Text("填報狀態")),
                       DataColumn(label: Text("刪除")),
                     ],
                     rows: [
@@ -133,6 +134,7 @@ class _DengueManagementPageState extends State<DengueManagementPage> {
                                       onBuildingManagerPressed(building),
                                   icon: const Icon(Icons.add),
                                 )),
+                          DataCell(Text(value.isCompleteFilled(building) ? "完成填報" : "尚有月份未填報")),
                           DataCell(IconButton(
                             onPressed: () async {
                               final deleteConfirm = await showDialog(
