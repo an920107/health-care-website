@@ -125,9 +125,9 @@ class _PostEditPageState extends State<PostEditPage> {
                               Switch(
                                 value: value.visible,
                                 onChanged: (result) => value.visible = result,
-                                thumbIcon: WidgetStateProperty.resolveWith(
+                                thumbIcon: MaterialStateProperty.resolveWith(
                                   (states) => Icon(
-                                      states.contains(WidgetState.selected)
+                                      states.contains(MaterialState.selected)
                                           ? Icons.star
                                           : Icons.edit),
                                 ),
