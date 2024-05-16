@@ -1,8 +1,8 @@
 abstract class Config {
   // 前後端 url
-  static String get frontend => "health-care-dev.squidspirit.com";
+  static String get frontend => "ncu-health-care.squidspirit.com";
   // static String get backend => "health-care-dev.squidspirit.com";
-  static String get backend => "ncu-health-care.nevercareu.space";
+  static String get backend => "ncu-health-care.squidspirit.com";
   static String get ncuPortal => "portal.ncu.edu.tw";
 
   // 外部連結
