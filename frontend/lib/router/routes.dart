@@ -5,6 +5,7 @@ enum Routes {
   post("/post", UserRole.none),
   restaurant("/restaurant", UserRole.none),
   page("/page", UserRole.none),
+  privacy("/privacy", UserRole.none),
   login("/login", UserRole.none),
   logout("/logout", UserRole.none),
   redirect("/redirect", UserRole.none),

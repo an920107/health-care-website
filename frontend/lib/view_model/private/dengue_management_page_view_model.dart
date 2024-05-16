@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -8,7 +9,10 @@ class DengueManagementPageViewModel with ChangeNotifier {
   List<Building> _buildings = [];
   List<Building> get buildings => UnmodifiableListView(_buildings);
 
+  Map<String, bool> _filledStatus = {};
+
   Future<void> fetchFromServer() async {
+    _filledStatus = await DengueRepo.getFilledStatus();
     await updateBuildings();
   }
 
@@ -33,6 +37,10 @@ class DengueManagementPageViewModel with ChangeNotifier {
     await DengueRepo.patchBuildingUser(building.id, userId);
     await updateBuildings();
     notifyListeners();
+  }
+
+  bool isCompleteFilled(Building building) {
+    return _filledStatus[building.id] ?? false;
   }
 
   Uri getStatsUrl(DateTime begin, DateTime end) {

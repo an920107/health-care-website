@@ -19,10 +19,12 @@ import 'package:health_care_website/view_model/private/post_list_page_view_model
 import 'package:health_care_website/view_model/private/restaurant_edit_page_view_model.dart';
 import 'package:health_care_website/view_model/private/restaurant_list_page_view_model.dart';
 import 'package:health_care_website/view_model/private/static_page_edit_page_view_model.dart';
+import 'package:health_care_website/view_model/public/footer_view_model.dart';
 import 'package:health_care_website/view_model/public/home_page_view_model.dart';
 import 'package:health_care_website/view_model/public/post_page_view_model.dart';
 import 'package:health_care_website/view_model/public/restaurant_page_view_model.dart';
 import 'package:health_care_website/view_model/public/static_page_page_view_model.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -50,6 +52,7 @@ class App extends StatelessWidget {
       providers: [
         Provider(create: (_) => PlatformViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider(create: (_) => FooterViewModel()),
         ChangeNotifierProvider(create: (_) => CarouselPageViewModel()),
         ChangeNotifierProvider(create: (_) => PostEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => PostListPageViewModel()),
@@ -76,6 +79,9 @@ class App extends StatelessWidget {
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: "Health Care Website",
+        localizationsDelegates: const [
+          MonthYearPickerLocalizations.delegate,
+        ],
         theme: ThemeData(
           textTheme:
               GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),

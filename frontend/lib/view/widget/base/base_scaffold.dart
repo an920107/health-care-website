@@ -24,25 +24,27 @@ class BaseScaffold extends StatelessWidget {
     return Scaffold(
       drawer: const BaseDrawer(),
       endDrawer: const BaseEndDrawer(),
-      body: ListView(
-        children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(minHeight: size.height),
-            child: Column(
-              children: [
-                const BaseNavbar(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: sidePadding),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 100),
-                    child: body ?? Container(),
+      body: SelectionArea(
+        child: ListView(
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(minHeight: size.height),
+              child: Column(
+                children: [
+                  const BaseNavbar(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: sidePadding),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 100),
+                      child: body ?? Container(),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const BaseFooter(),
-        ],
+            const BaseFooter(),
+          ],
+        ),
       ),
     );
   }

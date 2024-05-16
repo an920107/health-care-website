@@ -17,7 +17,7 @@ class StaticPage {
 
   factory StaticPage.fromJson(Map<String, dynamic> json) => StaticPage(
         id: json["id"],
-        content: json["content"] ?? "",
+        content: json["content"] ?? "[{\"insert\":\"\\n\"}]",
         attachments: json["attachments"] ?? "",
         viewer: int.parse(json["viewer"]),
         createTime: DateTime.parse(json["create_time"]),

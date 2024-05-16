@@ -159,6 +159,22 @@ abstract class DengueRepo {
     }
   }
 
+  static Future<Map<String, bool>> getFilledStatus() async {
+    try {
+      final response = await HttpUtil.request(
+        method: HttpMethod.get,
+        uri: "/api/dengue/form-status",
+        authRequired: true,
+      );
+      response.check();
+      return (json.decode(response.body)["response"] as Map)
+          .map((key, value) => MapEntry(key, value == "1"));
+    } on Exception catch (e) {
+      if (kDebugMode) print(e);
+    }
+    return {};
+  }
+
   static Uri getStatsUrl(DateTime start, DateTime end) {
     return Uri.https(Config.backend, "/api/dengue/form-download", {
       "start_date": DateFormat("yyyy-MM").format(start),

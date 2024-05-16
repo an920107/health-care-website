@@ -20,12 +20,14 @@ class LinkText extends StatelessWidget {
   Widget build(BuildContext context) {
     return CleanButton(
       onPressed: () => context.go(path),
-      child: Text(
-        label,
-        // overflow: TextOverflow.fade,
-        softWrap: true,
-        style: style?.copyWith(decoration: TextDecoration.underline) ??
-            const TextStyle(decoration: TextDecoration.underline),
+      child: SelectionContainer.disabled(
+        child: Text(
+          label,
+          // overflow: TextOverflow.fade,
+          softWrap: true,
+          style: style?.copyWith(decoration: TextDecoration.underline) ??
+              const TextStyle(decoration: TextDecoration.underline),
+        ),
       ),
     );
   }
