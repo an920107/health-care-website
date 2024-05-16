@@ -1,5 +1,5 @@
 class Config:
-    FRONTEND_URL = 'https://daf3-140-115-205-70.ngrok-free.app'
+    FRONTEND_URL = 'https://health.ncu.edu.tw'
     ALLOW_IMAGE_ENDSWITH = ['.png', '.jpg', '.jpeg']
     ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xls', '.xlsx', '.csv', '.odt']
     PAGE_SIZE = 10
