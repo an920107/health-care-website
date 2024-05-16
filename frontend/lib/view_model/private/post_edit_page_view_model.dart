@@ -39,6 +39,7 @@ class PostEditPageViewModel with ChangeNotifier, TitleValidator {
     _id = id;
     _post = await PostRepo.getPost(_id);
     _visible = _post!.visible;
+    _selectedPostColumn = _post!.column;
 
     // 附件傳輸
     final attachmentIds = json.decode(_post!.attachments) as List;

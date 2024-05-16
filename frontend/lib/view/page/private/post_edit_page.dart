@@ -238,7 +238,7 @@ class _PostEditPageState extends State<PostEditPage> {
                         if (!_titleFormFieldKey.currentState!.validate()) {
                           return;
                         }
-                        value.uploadPost(
+                        await value.uploadPost(
                           title: _titleTextController.text,
                           content: json.encode(
                               _quillController.document.toDelta().toJson()),

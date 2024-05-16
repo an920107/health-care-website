@@ -48,6 +48,7 @@ class RestaurantEditPageViewModel with ChangeNotifier, TitleValidator {
     _restaurant = await RestaurantRepo.getRestaurant(_id);
     _visible = _restaurant!.visible;
     _selectedRestaurantColumn = _restaurant!.item;
+    _passedInspection = _restaurant!.valid;
 
     // 附件傳輸
     final attachmentIds = json.decode(_restaurant!.attachments) as List;

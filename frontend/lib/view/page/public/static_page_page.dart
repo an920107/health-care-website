@@ -35,7 +35,8 @@ class _StaticPagePageState extends State<StaticPagePage> {
   @override
   void initState() {
     super.initState();
-    _fetchFutureCallback = context.read<StaticPagePageViewModel>().fetchFromServer;
+    _fetchFutureCallback =
+        context.read<StaticPagePageViewModel>().fetchFromServer;
   }
 
   @override
@@ -57,7 +58,10 @@ class _StaticPagePageState extends State<StaticPagePage> {
 
             return Consumer<StaticPagePageViewModel>(
               builder: (context, value, child) {
-                final page = value.page!;
+                final page = value.page;
+                if (page == null) {
+                  return const LoadingCircle();
+                }
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -6,7 +6,9 @@ import 'package:health_care_website/view/theme/button_style.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
 import 'package:health_care_website/view/widget/dialog/post_delete_dialog.dart';
 import 'package:health_care_website/view_model/private/dengue_management_page_view_model.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DengueManagementPage extends StatefulWidget {
   const DengueManagementPage({super.key});
@@ -79,24 +81,21 @@ class _DengueManagementPageState extends State<DengueManagementPage> {
                   ElevatedButton.icon(
                     style: ElevatedButtonStyle.rRectStyle(),
                     onPressed: () async {
-                      // TODO: MonthYearPicker has been out of date, so we need to 
-                      //  use another method to select year & month.
-
-                      // final begin = await showMonthYearPicker(
-                      //   context: context,
-                      //   initialDate: DateTime.now(),
-                      //   firstDate: DateTime.fromMillisecondsSinceEpoch(0),
-                      //   lastDate: DateTime.now(),
-                      // );
-                      // if (begin == null || !context.mounted) return;
-                      // final end = await showMonthYearPicker(
-                      //   context: context,
-                      //   initialDate: DateTime.now(),
-                      //   firstDate: begin,
-                      //   lastDate: DateTime.now(),
-                      // );
-                      // if (end == null || !context.mounted) return;
-                      // launchUrl(value.getStatsUrl(begin, end));
+                      final begin = await showMonthYearPicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.fromMillisecondsSinceEpoch(0),
+                        lastDate: DateTime.now(),
+                      );
+                      if (begin == null || !context.mounted) return;
+                      final end = await showMonthYearPicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: begin,
+                        lastDate: DateTime.now(),
+                      );
+                      if (end == null || !context.mounted) return;
+                      launchUrl(value.getStatsUrl(begin, end));
                     },
                     icon: const Icon(Icons.file_download),
                     label: const Text("下載報表"),

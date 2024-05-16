@@ -184,9 +184,9 @@ class BaseNavbar extends StatelessWidget {
                                       onPressed: () => context.push(
                                           "${Routes.page.path}/${PageTopic.aed.id}"),
                                       child: const Text("校園 AED")),
-                                  TextButton(
-                                      onPressed: () {},
-                                      child: const Text("登革熱填報")),
+                                  // TextButton(
+                                  //     onPressed: () {},
+                                  //     child: const Text("登革熱填報")),
                                   TextButton(
                                       onPressed: () {},
                                       child: const Text("相關法規")),

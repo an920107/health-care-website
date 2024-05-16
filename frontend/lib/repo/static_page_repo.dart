@@ -17,9 +17,6 @@ abstract class StaticPageRepo {
       );
       response.check();
       return StaticPage.fromJson(json.decode(response.body)["response"]);
-    } on HttpRequestException catch (e) {
-      if (e.statusCode == 404) return await createPage(topic);
-      rethrow;
     } on Exception catch (e) {
       if (kDebugMode) print(e);
     }
