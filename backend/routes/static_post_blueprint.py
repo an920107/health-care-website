@@ -45,7 +45,7 @@ def get_static_post(static_post_name):
     with open(post_path, "w") as f:
         json.dump(static_post, f)
 
-    return Response.response('get static_post successful', static_post)
+    return Response.response('get static_post successful', {key: str(value) for key, value in static_post.items()})
 
 
 @static_post_blueprint.route('', methods=['GET'])
@@ -63,12 +63,11 @@ def get_static_posts():
         json.load(open(static_post, "r")) for static_post in
         Path(Config.STATIC_POST_CONFIG['POST_DIR']).glob("*.json")
     ]
-
     return Response.response('get posts successful', static_posts)
 
 
 @static_post_blueprint.route('', methods=['POST'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def upload_static_posts():
     """
     Upload static_post
@@ -124,7 +123,7 @@ def upload_static_posts():
 
 
 @static_post_blueprint.route('/<static_post_name>', methods=['PUT'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def update_static_post(static_post_name):
     """
     Update static_post by static_post_name
@@ -177,7 +176,7 @@ def update_static_post(static_post_name):
 
 
 @static_post_blueprint.route('/<static_post_name>/image', methods=['POST'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def add_static_images(static_post_name):
     """
     Add static_post images
@@ -226,7 +225,7 @@ def add_static_images(static_post_name):
 
 
 @static_post_blueprint.route('/<static_post_name>/attachment', methods=['POST'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def add_static_attachments(static_post_name):
     """
     Add static_post attachments

@@ -20,6 +20,9 @@ from flask_jwt_extended import get_jwt_identity
 
 dengue_blueprint = Blueprint('dengue', __name__)
 
+to_month = lambda x: int(x.split('-')[0]) * 12 + int(x.split('-')[1])
+to_year_month = lambda x: f"{x // 12}-{x % 12 + 1:02d}"
+
 
 @dengue_blueprint.route('/building', methods=['GET'])
 def get_buildings():
@@ -67,6 +70,7 @@ def get_building(building_id):
 
 
 @dengue_blueprint.route('/building', methods=['POST'])
+@authorization_required([0, 1, 2])
 def create_building():
     """
     create_building
@@ -96,6 +100,7 @@ def create_building():
 
 
 @dengue_blueprint.route('/building/<int:building_id>', methods=['PATCH'])
+@authorization_required([0, 1, 2])
 def update_building(building_id):
     """
     update a building
@@ -120,6 +125,7 @@ def update_building(building_id):
 
 
 @dengue_blueprint.route('/building/<int:building_id>', methods=['DELETE'])
+@authorization_required([0, 1, 2])
 def delete_building(building_id):
     """
     Create a building
@@ -142,6 +148,7 @@ def delete_building(building_id):
 
 
 @dengue_blueprint.route('/form', methods=['POST'])
+@authorization_required()
 def create_form():
     """
     Create a form
@@ -178,6 +185,7 @@ def create_form():
 
 
 @dengue_blueprint.route('/form/<int:form_id>', methods=['DELETE'])
+@authorization_required()
 def delete_form(form_id):
     """
     Delete a form
@@ -222,6 +230,7 @@ def get_forms():
 
 
 @dengue_blueprint.route('/form-download', methods=['GET'])
+@authorization_required([0, 1, 2])
 def download_forms():
     """
     download all forms
@@ -248,8 +257,6 @@ def download_forms():
     if not api_input_check(['start_date', 'end_date'], request.args):
         return Response.client_error("missing ['start_date', 'end_date'] query data")
 
-    to_month = lambda x: int(x.split('-')[0]) * 12 + int(x.split('-')[1])
-    to_year_month = lambda x: f"{x // 12}-{x % 12 + 1:02d}"
     start_year_month, end_year_month = api_input_get(['start_date', 'end_date'], request.args)
 
     buildings = [building.chinese_name for building in Building.query.all()]
@@ -291,6 +298,7 @@ def download_forms():
 
 
 @dengue_blueprint.route('/form-download/<int:form_id>', methods=['GET'])
+@authorization_required([0, 1, 2])
 def download_form(form_id):
     """
     download all forms
@@ -319,7 +327,6 @@ def download_form(form_id):
     if dengue is None:
         return Response.not_found('form not found')
 
-
     dengue_data_class = DengueDataClass(dengue[0])
     chinese_name = dengue[1]
 
@@ -346,3 +353,30 @@ def download_form(form_id):
         download_name=f'{chinese_name}_{dengue_data_class.dengue.create_year_month}.xlsx',
         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
+
+
+@dengue_blueprint.route('/form-status', methods=['GET'])
+def get_form_status():
+    """
+    get form status
+    ---
+    tags:
+      - Dengue
+    responses:
+      200:
+        description: get form status success
+    """
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+
+    buildings_name2id = {building.chinese_name: building.id for building in Building.query.all()}
+    buildings = {building.id: "0" for building in Building.query.all()}
+    time_range = [to_month(f'{current_year}-{current_month}')]
+
+    for dengue, chinese_name in Dengue.query.join(Building).add_columns(Building.chinese_name).all():
+        if to_month(dengue.create_year_month) not in time_range:
+            continue
+
+        buildings[buildings_name2id[chinese_name]] = "1"
+
+    return Response.response("get form status successful", buildings)

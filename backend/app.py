@@ -3,7 +3,7 @@ import logging
 
 from config import Config
 
-from models.models import db
+from models.models import db, TotalViewer
 from models.extensions import jwt
 from models.responses import Response
 
@@ -78,6 +78,8 @@ with app.app_context():
     # db.drop_all()
     db.create_all()
 
+total_viewer = 0
+
 
 @app.errorhandler(Exception)
 def error_handler(error: Exception):
@@ -97,6 +99,28 @@ def test_connection():
         description: connect success
     """
     return Response.response('connect success')
+
+
+@app.route("/api/total_viewer", methods=['GET'])
+def get_total_viewer():
+    """
+    Get total viewer
+    ---
+    tags:
+      - Viewer
+    responses:
+      200:
+        description: return total viewer
+    """
+    if not TotalViewer.query.all():
+        tv = TotalViewer(viewer=1)
+        db.session.add(tv)
+        db.session.commit()
+
+    tv = TotalViewer.query.first()
+    tv.viewer += 1
+    db.session.commit()
+    return Response.response('connect success', tv.as_dict())
 
 
 @app.route("/api/allow_endswith", methods=['GET'])

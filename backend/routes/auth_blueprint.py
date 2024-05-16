@@ -11,7 +11,7 @@ auth_blueprint = Blueprint('auth', __name__)
 
 
 @auth_blueprint.route("", methods=['GET'])
-@authorization_required(-1)
+@authorization_required([-1])
 def get_authorization():
     """
     Get Authorization
@@ -133,3 +133,4 @@ def return_to():
 
     db.session.commit()
     return redirect(f'{config.Config.FRONTEND_URL}/redirect')
+

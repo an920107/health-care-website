@@ -86,7 +86,7 @@ def get_restaurant_posts():
 
 
 @restaurant_post_blueprint.route('', methods=['POST'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def post_restaurant_post():
     """
     Post restaurant_post post
@@ -142,7 +142,7 @@ def post_restaurant_post():
 
 
 @restaurant_post_blueprint.route('/<int:post_id>', methods=['PUT'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def put_restaurant_post(post_id):
     """
     Put restaurant_post post by id
@@ -212,7 +212,7 @@ def put_restaurant_post(post_id):
 
 
 @restaurant_post_blueprint.route('/<int:post_id>', methods=['DELETE'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def delete_restaurant_post(post_id):
     """
     Delete restaurant_post post by id
@@ -248,7 +248,7 @@ def delete_restaurant_post(post_id):
 
 
 @restaurant_post_blueprint.route('/<int:post_id>/visible', methods=['PATCH'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def patch_restaurant_post_visible(post_id):
     """
     Patch restaurant_post post visible
@@ -285,7 +285,7 @@ def patch_restaurant_post_visible(post_id):
 
 
 @restaurant_post_blueprint.route('/<int:post_id>/attachment', methods=['POST'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def post_restaurant_attachment(post_id):
     """
     Post restaurant_post attachment
@@ -333,7 +333,7 @@ def post_restaurant_attachment(post_id):
 
 
 @restaurant_post_blueprint.route('stats', methods=['GET'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def get_restaurant_stats():
     """
     Get restaurant_post stats

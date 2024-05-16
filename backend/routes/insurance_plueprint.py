@@ -13,34 +13,6 @@ from flask import Blueprint, request
 
 insurance_blueprint = Blueprint('insurance', __name__)
 
-"""
-class Insurance(db.Model, SchemaMixin):
-    __tablename__ = 'insurance'
-    id = db.Column(db.String(40), primary_key=True)
-    name = db.Column(db.String(40), nullable=False, unique=False)
-    student_number = db.Column(db.String(40), nullable=False, unique=False)
-    email = db.Column(db.String(40), nullable=False, unique=False)
-    address = db.Column(db.String(40), nullable=False, unique=False)
-    phone = db.Column(db.String(40), nullable=False, unique=False)
-    identity_number = db.Column(db.String(40), nullable=False, unique=False)
-    accident_reason = db.Column(db.String(40), nullable=False, unique=False)
-    accident_type = db.Column(db.String(40), nullable=False, unique=False)
-    accident_date = db.Column(db.DateTime, nullable=False)
-    accident_location = db.Column(db.String(40), nullable=False, unique=False)
-    claim_type = db.Column(db.String(40), nullable=False, unique=False)
-    apply_amount = db.Column(db.Integer, nullable=False)
-    claim_amount = db.Column(db.Integer, nullable=False)
-    receipt = db.Column(db.String(100), nullable=False)
-    certificate = db.Column(db.String(100), nullable=False)
-    deposit_book = db.Column(db.Boolean, nullable=False)
-    x_ray = db.Column(db.Boolean, nullable=False)
-    sign = db.Column(db.String(40), nullable=False)
-    claim_date = db.Column(db.DateTime, nullable=False)
-    application_scan_id = db.Column(db.String(40), nullable=False)
-    note = db.Column(db.String(40), nullable=False)
-"""
-
-
 @insurance_blueprint.route('/<int:insurance_id>', methods=['GET'])
 def get_insurance(insurance_id):
     """
