@@ -1,5 +1,5 @@
 class Config:
-    FRONTEND_URL = 'https://health-care-dev.squidspirit.com'
+    FRONTEND_URL = 'https://health.ncu.edu.tw'
     ALLOW_IMAGE_ENDSWITH = ['.png', '.jpg', '.jpeg']
     ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xls', '.xlsx', '.csv', '.odt']
     PAGE_SIZE = 10
