@@ -122,16 +122,14 @@ class Insurance(db.Model, SchemaMixin):
 
 
 class Building(db.Model, SchemaMixin):
+    __tablename__ = 'building'
     chinese_name = db.Column(db.String(40), nullable=False, unique=False)
-
-
-class BuildingUser(db.Model, SchemaMixin):
-    __class__ = 'building_user'
-    building_id = db.Column(db.Integer, db.ForeignKey('building.id'), nullable=False)
     user_id = db.Column(db.String(40), db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', backref='building_user')
-    building = db.relationship('Building', backref='building_user')
+    dengue = db.relationship('Dengue', backref='building', lazy=True)
 
 
 class Dengue(db.Model, SchemaMixin):
+    __tablename__ = 'dengue'
     json_data = db.Column(db.Text, nullable=False)
+    create_year_month = db.Column(db.Text, nullable=False)
+    building_id = db.Column(db.Integer, db.ForeignKey('building.id'), nullable=False)

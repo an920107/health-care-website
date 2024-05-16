@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 
 from config import Config
 
@@ -61,21 +62,26 @@ def create_app():
     CORS(app)
     jwt.init_app(app)
 
+    handler = logging.FileHandler('./statics/app.log')
+    handler.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    app.logger.addHandler(handler)
+
     return app
 
 
 app = create_app()
 
-
 with app.app_context():
-    db.session.remove()
-    db.drop_all()
+    # db.session.remove()
+    # db.drop_all()
     db.create_all()
 
 
 @app.errorhandler(Exception)
 def error_handler(error: Exception):
-    print(error)
+    app.logger.error(f'Error on path {request.path}: {error}')
     return Response.sever_error(str(error))
 
 
@@ -108,4 +114,4 @@ def get_allow_endswith():
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host="0.0.0.0", port=5002)
+    app.run(debug=False, host="0.0.0.0", port=5003)

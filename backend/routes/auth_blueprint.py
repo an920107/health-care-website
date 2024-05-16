@@ -124,11 +124,12 @@ def return_to():
     access_token = get_oauth_access_token(code, state)
     oauth_info = get_user_info(access_token)
 
-    if User.query.get(oauth_info['id']) is None:
-        user = User(id=oauth_info['id'], chinese_name=oauth_info['chineseName'], state=state)
+    if User.query.get(oauth_info['identifier']) is None:
+        user = User(id=oauth_info['identifier'], chinese_name=oauth_info['chineseName'], state=state)
         db.session.add(user)
     else:
-        user = User.query.get(oauth_info['id'])
+        user = User.query.get(oauth_info['identifier'])
         user.state = state
+
     db.session.commit()
     return redirect(f'{config.Config.FRONTEND_URL}/redirect')
