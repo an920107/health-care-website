@@ -19,6 +19,7 @@ import 'package:health_care_website/view_model/private/post_list_page_view_model
 import 'package:health_care_website/view_model/private/restaurant_edit_page_view_model.dart';
 import 'package:health_care_website/view_model/private/restaurant_list_page_view_model.dart';
 import 'package:health_care_website/view_model/private/static_page_edit_page_view_model.dart';
+import 'package:health_care_website/view_model/public/footer_view_model.dart';
 import 'package:health_care_website/view_model/public/home_page_view_model.dart';
 import 'package:health_care_website/view_model/public/post_page_view_model.dart';
 import 'package:health_care_website/view_model/public/restaurant_page_view_model.dart';
@@ -51,6 +52,7 @@ class App extends StatelessWidget {
       providers: [
         Provider(create: (_) => PlatformViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider(create: (_) => FooterViewModel()),
         ChangeNotifierProvider(create: (_) => CarouselPageViewModel()),
         ChangeNotifierProvider(create: (_) => PostEditPageViewModel()),
         ChangeNotifierProvider(create: (_) => PostListPageViewModel()),
@@ -81,8 +83,8 @@ class App extends StatelessWidget {
           MonthYearPickerLocalizations.delegate,
         ],
         theme: ThemeData(
-          textTheme:
-              GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),
+          // textTheme:
+          //     GoogleFonts.notoSansTcTextTheme(Theme.of(context).textTheme),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
           useMaterial3: true,
         ),

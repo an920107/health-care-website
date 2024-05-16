@@ -2,10 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/link_text.dart';
 import 'package:health_care_website/view_model/platform_view_model.dart';
+import 'package:health_care_website/view_model/public/footer_view_model.dart';
 import 'package:provider/provider.dart';
 
-class BaseFooter extends StatelessWidget {
+class BaseFooter extends StatefulWidget {
   const BaseFooter({super.key});
+
+  @override
+  State<BaseFooter> createState() => _BaseFooterState();
+}
+
+class _BaseFooterState extends State<BaseFooter> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<FooterViewModel>().fetchFromServer();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +49,7 @@ class BaseFooter extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("【瀏覽人次 0 人】"),
+                        Text("【瀏覽人次 ${context.watch<FooterViewModel>().totalViewer} 人】"),
                         LinkText(
                           path: Routes.privacy.path,
                           label: "【隱私權政策聲明】",
@@ -58,7 +72,7 @@ class BaseFooter extends StatelessWidget {
                         const Text("Email：ncu7270@ncu.edu.tw"),
                         const Text("地址：320 桃園市中壢區中大路 300 號 中正圖書館 1 樓"),
                         const Text(""),
-                        const Text("【瀏覽人次 0 人】"),
+                        Text("【瀏覽人次 ${context.watch<FooterViewModel>().totalViewer} 人】"),
                         LinkText(
                           path: Routes.privacy.path,
                           label: "【隱私權政策聲明】",

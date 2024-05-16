@@ -20,8 +20,8 @@ class StaticPage {
         content: json["content"] ?? "[{\"insert\":\"\\n\"}]",
         attachments: json["attachments"] ?? "",
         viewer: int.parse(json["viewer"]),
-        createTime: DateTime.now(), //DateTime.parse(json["create_time"]),
-        updateTime: DateTime.now(), //DateTime.parse(json["update_time"]),
+        createTime: DateTime.parse(json["create_time"]),
+        updateTime: DateTime.parse(json["update_time"]),
       );
 
   Map<String, dynamic> toJson() => {

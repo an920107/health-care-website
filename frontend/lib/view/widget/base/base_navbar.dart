@@ -144,28 +144,31 @@ class BaseNavbar extends StatelessWidget {
                           children: [
                             // Logo & 網站名稱
                             CleanButton(
-                              onPressed: () => context.pushReplacement(Routes.root.path),
+                              onPressed: () =>
+                                  context.pushReplacement(Routes.root.path),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Image.asset("assets/logo.png"),
-                                  const Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        "衛生保健組",
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
+                                  const SelectionContainer.disabled(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          "衛生保健組",
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        "Health Center",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                        Text(
+                                          "Health Center",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),

@@ -17,6 +17,7 @@ import 'package:health_care_website/view/page/public/home_page.dart';
 import 'package:health_care_website/view/page/private/post_edit_page.dart';
 import 'package:health_care_website/view/page/private/post_list_page.dart';
 import 'package:health_care_website/view/page/public/post_page.dart';
+import 'package:health_care_website/view/page/public/privacy_page.dart';
 import 'package:health_care_website/view/page/public/redirect_page.dart';
 import 'package:health_care_website/view/page/public/restaurant_page.dart';
 import 'package:health_care_website/view/page/public/static_page_page.dart';
@@ -45,6 +46,10 @@ class Router {
             path: "${Routes.page.path}/:id",
             builder: (context, state) =>
                 StaticPagePage(state.pathParameters["id"]!),
+          ),
+          GoRoute(
+            path: Routes.privacy.path,
+            builder: (context, state) => const PrivacyPage(),
           ),
           GoRoute(
             path: Routes.dengueList.path,
@@ -109,18 +114,18 @@ class Router {
           GoRoute(
             path: Routes.insuranceList.path,
             builder: (context, state) => const InsuranceListPage(),
-            // redirect: _authCheckAndRedirect,
+            redirect: _authCheckAndRedirect,
           ),
           GoRoute(
             path: "${Routes.insuranceEdit.path}/:id",
             builder: (context, state) =>
                 InsuranceEditPage(state.pathParameters["id"]!),
-            // redirect: _authCheckAndRedirect,
+            redirect: _authCheckAndRedirect,
           ),
           GoRoute(
             path: Routes.dengueManagement.path,
             builder: (context, state) => const DengueManagementPage(),
-            // redirect: _authCheckAndRedirect,
+            redirect: _authCheckAndRedirect,
           ),
 
           // 登入相關
