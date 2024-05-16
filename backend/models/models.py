@@ -95,3 +95,41 @@ class User(db.Model, SchemaMixin):
     # 0: admin, 1: teacher, 2: student, 9: normal
     authorization = db.Column(db.Integer, nullable=False, unique=False, default=9)
 
+
+class Insurance(db.Model, SchemaMixin):
+    __tablename__ = 'insurance'
+    name = db.Column(db.String(40), nullable=False, unique=False)
+    student_number = db.Column(db.String(40), nullable=False, unique=False)
+    email = db.Column(db.String(40), nullable=False, unique=False)
+    address = db.Column(db.String(40), nullable=False, unique=False)
+    phone = db.Column(db.String(40), nullable=False, unique=False)
+    identity_number = db.Column(db.String(40), nullable=False, unique=False)
+    accident_reason = db.Column(db.String(40), nullable=False, unique=False)
+    accident_type = db.Column(db.String(40), nullable=False, unique=False)
+    accident_date = db.Column(db.DateTime, nullable=False)
+    accident_location = db.Column(db.String(40), nullable=False, unique=False)
+    claim_type = db.Column(db.String(40), nullable=False, unique=False)
+    apply_amount = db.Column(db.Integer, nullable=False)
+    claim_amount = db.Column(db.Integer, nullable=False)
+    receipt = db.Column(db.String(100), nullable=False)
+    certificate = db.Column(db.String(100), nullable=False)
+    deposit_book = db.Column(db.Boolean, nullable=False)
+    x_ray = db.Column(db.Boolean, nullable=False)
+    sign = db.Column(db.String(40), nullable=False)
+    claim_date = db.Column(db.DateTime, nullable=False)
+    application_scan_id = db.Column(db.String(40), nullable=False)
+    note = db.Column(db.String(40), nullable=False)
+
+
+class Building(db.Model, SchemaMixin):
+    __tablename__ = 'building'
+    chinese_name = db.Column(db.String(40), nullable=False, unique=False)
+    user_id = db.Column(db.String(40), db.ForeignKey('user.id'), nullable=False)
+    dengue = db.relationship('Dengue', backref='building', lazy=True)
+
+
+class Dengue(db.Model, SchemaMixin):
+    __tablename__ = 'dengue'
+    json_data = db.Column(db.Text, nullable=False)
+    create_year_month = db.Column(db.Text, nullable=False)
+    building_id = db.Column(db.Integer, db.ForeignKey('building.id'), nullable=False)

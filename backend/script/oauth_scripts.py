@@ -24,9 +24,7 @@ def authorization_required(required_role):
 
             else:
                 return fn(*args, **kwargs)
-
         return wrapper
-
     return decorator
 
 
