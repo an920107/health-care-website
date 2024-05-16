@@ -148,7 +148,6 @@ def delete_building(building_id):
 
 
 @dengue_blueprint.route('/form', methods=['POST'])
-@authorization_required()
 def create_form():
     """
     Create a form
@@ -185,7 +184,6 @@ def create_form():
 
 
 @dengue_blueprint.route('/form/<int:form_id>', methods=['DELETE'])
-@authorization_required()
 def delete_form(form_id):
     """
     Delete a form
