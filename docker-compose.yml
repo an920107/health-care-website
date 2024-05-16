@@ -7,6 +7,7 @@ services:
     container_name: health-care-website-frontend
     networks:
       - internal-network
+      - external-network
   backend:
     build: backend
     image: health-care-website-backend
@@ -16,6 +17,7 @@ services:
       - ./backend/statics:/app/statics
     networks:
       - internal-network
+      - external-network
   proxy:
     image: docker.io/library/nginx:latest
     container_name: health-care-website-proxy
