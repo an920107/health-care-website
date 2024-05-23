@@ -1,4 +1,4 @@
-enum RestaurantInspectionItem {
+enum RestaurantInspectionCategory {
   water("飲用水"),
   food("熟食"),
   drink("飲料"),
@@ -7,5 +7,5 @@ enum RestaurantInspectionItem {
 
   final String label;
 
-  const RestaurantInspectionItem(this.label);
+  const RestaurantInspectionCategory(this.label);
 }
