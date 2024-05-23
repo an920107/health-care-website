@@ -2,6 +2,7 @@ import requests
 from functools import wraps
 from flask_jwt_extended import verify_jwt_in_request, get_jwt
 from models.responses import Response
+from config import Config
 
 
 def authorization_required(required_role):
@@ -28,13 +29,13 @@ def get_oauth_access_token(code, state):
     url = ' https://portal.ncu.edu.tw/oauth2/token'
     headers = {
         'Accept': 'application/json',
-        'Authorization': 'Basic MjAyNDAzMDUwMDUyMjJiamZzN3lENkNpd1Q6TFc2Nm4xVXY3d2hlNlY5QkxZU3J3YTBIRThmbVpldVhZV0d1N0FTVWNxWTRSUmcyYk54Mw=='
+        'Authorization': 'Basic ' + Config.Basic_Auth
     }
     data = {
         'grant_type': 'authorization_code',
         'code': code,
         'state': state,
-        'redirect_url': 'https://api.spuidspirit.com/health/rta',
+        'redirect_url': Config.FRONTEND_URL + '/health/rta',
     }
 
     response = requests.post(url, headers=headers, data=data)
