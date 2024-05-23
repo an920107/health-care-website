@@ -3,6 +3,7 @@ import os
 import uuid
 from pathlib import Path
 from config import Config
+from datetime import datetime
 
 from script.utils import api_input_check, api_input_get
 from script.oauth_scripts import authorization_required
@@ -168,6 +169,7 @@ def update_static_post(static_post_name):
     content, attachments = api_input_get(['content', 'attachments'], request.form)
     static_post['content'] = content
     static_post['attachments'] = attachments
+    static_post['update_time'] = str(datetime.now())
 
     with open(post_path, "w") as f:
         json.dump(static_post, f)

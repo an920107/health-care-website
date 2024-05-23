@@ -111,6 +111,11 @@ def post_restaurant_post():
         type: string
         required: true
         description: category
+      - name: item
+        in: formData
+        type: string
+        required: true
+        description: category
       - name: time
         in: formData
         type: string
@@ -125,16 +130,16 @@ def post_restaurant_post():
       200:
         description: post restaurant_post success
     """
-    if not api_input_check(['title', 'attachments', 'category', 'time', 'valid'], request.form):
+    if not api_input_check(['title', 'attachments', 'category', 'time', 'valid', 'item'], request.form):
         return Response.client_error("missing ['title', 'attachments', 'category', 'time', 'valid'] form data")
 
-    title, attachments, category, time, valid = api_input_get(
-        ['title', 'attachments', 'category', 'time', 'valid'], request.form
+    title, attachments, category, time, valid, item = api_input_get(
+        ['title', 'attachments', 'category', 'time', 'valid', 'item'], request.form
     )
 
     restaurant_post = RestaurantPost(
         title=title, attachments=attachments, category=category, time=datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%f"),
-        valid=valid
+        valid=valid, item=item
     )
     db.session.add(restaurant_post)
     db.session.commit()
@@ -192,12 +197,12 @@ def put_restaurant_post(post_id):
     if restaurant_post is None:
         return Response.not_found('post not found')
 
-    if not api_input_check(['title', 'attachments', 'category', 'time', 'valid', 'visible'], request.form):
+    if not api_input_check(['title', 'attachments', 'category', 'time', 'valid', 'visible', 'item'], request.form):
         return Response.client_error(
-            "missing ['title', 'attachments', 'category', 'time', 'valid', 'visible'] form data")
+            "missing ['title', 'attachments', 'category', 'time', 'valid', 'visible', 'item'] form data")
 
-    title, attachments, category, time, valid, visible = api_input_get(
-        ['title', 'attachments', 'category', 'time', 'valid', 'visible'], request.form
+    title, attachments, category, time, valid, visible, item = api_input_get(
+        ['title', 'attachments', 'category', 'time', 'valid', 'visible', 'item'], request.form
     )
 
     restaurant_post.title = title
@@ -206,6 +211,7 @@ def put_restaurant_post(post_id):
     restaurant_post.time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%f")
     restaurant_post.valid = valid
     restaurant_post.visible = visible
+    restaurant_post.item = item
     db.session.commit()
 
     return Response.response('put restaurant_post success', restaurant_post.as_dict())
@@ -333,7 +339,6 @@ def post_restaurant_attachment(post_id):
 
 
 @restaurant_post_blueprint.route('stats', methods=['GET'])
-@authorization_required([0, 1, 2])
 def get_restaurant_stats():
     """
     Get restaurant_post stats

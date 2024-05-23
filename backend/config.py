@@ -3,6 +3,8 @@ class Config:
     ALLOW_IMAGE_ENDSWITH = ['.png', '.jpg', '.jpeg']
     ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xls', '.xlsx', '.csv', '.odt']
     PAGE_SIZE = 10
+    MAX_CONTENT_LENGTH = 500 * 1024 * 1024
+    Basic_Auth = 'MjAyNDAzMDUwMDUyMjJiamZzN3lENkNpd1Q6TFc2Nm4xVXY3d2hlNlY5QkxZU3J3YTBIRThmbVpldVhZV0d1N0FTVWNxWTRSUmcyYk54Mw=='
 
     POST_COLUMN = ['activity', 'health', 'restaurant_post', 'nutrition']
     STATIC_POST_COLUMN = [
