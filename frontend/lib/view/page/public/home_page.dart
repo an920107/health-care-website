@@ -334,9 +334,12 @@ class _HomePageState extends State<HomePage> {
               columnSpacing: 10,
               columns: [
                 const DataColumn2(label: Text("商家名稱")),
+                const DataColumn2(label: Text("檢驗項目")),
+                if (platform != Platform.mobile)
+                  const DataColumn2(label: Text("抽檢樣品")),
                 const DataColumn2(label: Text("檢驗結果"), fixedWidth: 80),
                 if (platform != Platform.mobile)
-                  const DataColumn2(label: Text("日期"), fixedWidth: 80),
+                  const DataColumn2(label: Text("抽檢日期"), fixedWidth: 80),
               ],
               rows: [
                 for (var restaurant
@@ -352,6 +355,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     )),
+                    DataCell(Text(restaurant.category.label)),
+                    if (platform != Platform.mobile)
+                      DataCell(Text(restaurant.item)),
                     DataCell(InspectResultCard(restaurant.valid)),
                     if (platform != Platform.mobile)
                       DataCell(Text(DateFormat("yyyy-MM-dd")

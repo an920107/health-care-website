@@ -30,11 +30,12 @@ class _StaticPagePageState extends State<StaticPagePage> {
     document: Document(),
     selection: const TextSelection.collapsed(offset: 0),
     keepStyleOnNewLine: false,
+    readOnly: true,
   );
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _fetchFutureCallback =
         context.read<StaticPagePageViewModel>().fetchFromServer;
   }
@@ -132,7 +133,7 @@ class _StaticPagePageState extends State<StaticPagePage> {
                     QuillEditor.basic(
                       configurations: QuillEditorConfigurations(
                         controller: _quillController,
-                        readOnly: true,
+                        disableClipboard: true,
                         scrollable: false,
                         expands: false,
                         showCursor: false,

@@ -2,7 +2,7 @@ abstract class Config {
   // 前後端 url
   static String get frontend => "health.ncu.edu.tw";
   static String get backend => "health.ncu.edu.tw";
-  // static String get frontend => "daf3-140-115-205-70.ngrok-free.app";
+  // static String get frontend => "cd97-2001-b011-7005-fafd-8eed-28d8-339b-d088.ngrok-free.app";
   // static String get backend => "ncu-health-care.nevercareu.space";
   static String get ncuPortal => "portal.ncu.edu.tw";
 

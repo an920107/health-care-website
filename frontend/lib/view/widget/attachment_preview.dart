@@ -17,34 +17,37 @@ class AttachmentPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CleanButton(
-      onPressed: () => launchUrl(info.url),
-      child: Card(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Expanded(
-              flex: 1,
-              child: Icon(Icons.file_present_rounded),
-            ),
-            Expanded(
-              flex: (removeCallback != null) ? 3 : 4,
-              child: Text(
-                info.name,
-                overflow: TextOverflow.fade,
-                softWrap: false,
-              ),
-            ),
-            if (removeCallback != null)
-              Flexible(
+    return Tooltip(
+      message: info.name,
+      child: CleanButton(
+        onPressed: () => launchUrl(info.url),
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Expanded(
                 flex: 1,
-                child: IconButton(
-                  onPressed: removeCallback,
-                  icon: const Icon(Icons.cancel_outlined),
+                child: Icon(Icons.file_present_rounded),
+              ),
+              Expanded(
+                flex: (removeCallback != null) ? 3 : 4,
+                child: Text(
+                  info.name,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
                 ),
               ),
-          ],
+              if (removeCallback != null)
+                Flexible(
+                  flex: 1,
+                  child: IconButton(
+                    onPressed: removeCallback,
+                    icon: const Icon(Icons.cancel_outlined),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

@@ -5,7 +5,8 @@ class Restaurant {
   String id;
   String title;
   // String author;
-  RestaurantInspectionItem item;
+  RestaurantInspectionCategory category;
+  String item;
   String attachments;
   int viewer;
   bool visible;
@@ -17,6 +18,7 @@ class Restaurant {
   Restaurant({
     required this.id,
     required this.title,
+    required this.category,
     required this.item,
     required this.attachments,
     required this.viewer,
@@ -30,7 +32,8 @@ class Restaurant {
   factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
         id: json["id"],
         title: json["title"],
-        item: RestaurantInspectionItem.values.where((e) => e.name == json["category"]).first,
+        category: RestaurantInspectionCategory.values.where((e) => e.name == json["category"]).first,
+        item: json["item"],
         attachments: json["attachments"] ?? "",
         viewer: int.parse(json["viewer"]),
         visible: json["visible"] == "1",
@@ -43,7 +46,8 @@ class Restaurant {
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
-        "category": item.name,
+        "category": category.name,
+        "item": item,
         "attachments": attachments,
         "viewer": viewer.toString(),
         "visible": visible.toZeroOne().toString(),

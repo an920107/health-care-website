@@ -1,5 +1,5 @@
 mixin class TitleValidator {
-  String? titleValidator(String? text) {
+  String? titleValidator(String? text, [int maxLength = 25]) {
     if (text == null) return "標題不可為空";
     text = text.trim();
     if (text.isEmpty) return "標題不可為空";

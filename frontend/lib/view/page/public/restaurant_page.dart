@@ -121,7 +121,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                     const Divider(),
 
                     // 內容
-                    Text("檢驗項目：${restaurant.item.label}"),
+                    Text("檢驗項目：${restaurant.category.label}"),
                     Text("通過：${restaurant.valid ? "是" : "否"}"),
 
                     // 附件

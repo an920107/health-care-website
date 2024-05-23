@@ -33,11 +33,11 @@ class RestaurantEditPageViewModel with ChangeNotifier, TitleValidator {
     notifyListeners();
   }
 
-  RestaurantInspectionItem _selectedRestaurantColumn =
-      RestaurantInspectionItem.values.first;
-  RestaurantInspectionItem get selectedRestaurantItem =>
+  RestaurantInspectionCategory _selectedRestaurantColumn =
+      RestaurantInspectionCategory.values.first;
+  RestaurantInspectionCategory get selectedRestaurantItem =>
       _selectedRestaurantColumn;
-  set selectedRestaurantItem(RestaurantInspectionItem value) {
+  set selectedRestaurantItem(RestaurantInspectionCategory value) {
     _selectedRestaurantColumn = value;
     notifyListeners();
   }
@@ -47,7 +47,7 @@ class RestaurantEditPageViewModel with ChangeNotifier, TitleValidator {
     _id = id;
     _restaurant = await RestaurantRepo.getRestaurant(_id);
     _visible = _restaurant!.visible;
-    _selectedRestaurantColumn = _restaurant!.item;
+    _selectedRestaurantColumn = _restaurant!.category;
     _passedInspection = _restaurant!.valid;
 
     // 附件傳輸
@@ -70,13 +70,15 @@ class RestaurantEditPageViewModel with ChangeNotifier, TitleValidator {
 
   Future<void> uploadRestaurant({
     required String title,
+    required String item,
     required DateTime inspectTime,
   }) async {
     if (_restaurant == null) return;
     _restaurant!
       ..title = title
       ..valid = _passedInspection
-      ..item = _selectedRestaurantColumn
+      ..category = _selectedRestaurantColumn
+      ..item = item
       ..inspectTime = inspectTime
       ..attachments = json.encode(_attachments.map((e) => e.id).toList())
       ..visible = _visible;

@@ -103,8 +103,9 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                     ),
                     columns: const [
                       DataColumn(label: Text("商家名稱")),
-                      DataColumn(label: Text("日期")),
+                      DataColumn(label: Text("抽檢日期")),
                       DataColumn(label: Text("檢驗項目")),
+                      DataColumn(label: Text("抽檢樣品")),
                       DataColumn(label: Text("檢驗結果")),
                       DataColumn(label: Text("發布狀態")),
                       DataColumn(label: Text("編輯")),
@@ -114,8 +115,9 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                         DataRow(cells: [
                           DataCell(Text(restaurant.title)),
                           DataCell(Text(DateFormat("yyyy-MM-dd")
-                              .format(restaurant.updateTime))),
-                          DataCell(Text(restaurant.item.label)),
+                              .format(restaurant.inspectTime))),
+                          DataCell(Text(restaurant.category.label)),
+                          DataCell(Text(restaurant.item)),
                           DataCell(InspectResultCard(restaurant.valid)),
                           DataCell(IconText(
                             mainAxisSize: MainAxisSize.min,
