@@ -34,8 +34,8 @@ class _StaticPagePageState extends State<StaticPagePage> {
   );
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     _fetchFutureCallback =
         context.read<StaticPagePageViewModel>().fetchFromServer;
   }
