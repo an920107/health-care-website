@@ -55,8 +55,9 @@ dependencies:
   calendar_date_picker2: ^1.0.2
   flutter_quill: ^9.2.3
   flutter_quill_extensions: ^9.2.10
-  intl: ^0.18.1
-  month_year_picker: ^0.3.0+1
+  intl: ^0.19.0
+  month_year_picker2: ^1.0.0+2
+  # month_year_picker: ^0.3.0+1
 
 dev_dependencies:
   flutter_test:

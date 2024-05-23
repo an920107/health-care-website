@@ -30,6 +30,7 @@ class _PostPageState extends State<PostPage> {
     document: Document(),
     selection: const TextSelection.collapsed(offset: 0),
     keepStyleOnNewLine: false,
+    readOnly: true,
   );
 
   @override
@@ -133,7 +134,7 @@ class _PostPageState extends State<PostPage> {
                     QuillEditor.basic(
                       configurations: QuillEditorConfigurations(
                         controller: _quillController,
-                        readOnly: true,
+                        disableClipboard: true,
                         scrollable: false,
                         expands: false,
                         showCursor: false,

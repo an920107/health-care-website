@@ -41,6 +41,7 @@ class _PostEditPageState extends State<PostEditPage> {
     document: Document(),
     selection: const TextSelection.collapsed(offset: 0),
     keepStyleOnNewLine: false,
+    readOnly: false,
   );
   final _titleFormFieldKey = GlobalKey<FormFieldState>();
 
@@ -298,7 +299,6 @@ class _PostEditPageState extends State<PostEditPage> {
             child: QuillEditor.basic(
               configurations: QuillEditorConfigurations(
                 controller: _quillController,
-                readOnly: false,
                 scrollable: true,
                 expands: true,
                 padding: const EdgeInsets.all(10),

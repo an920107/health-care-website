@@ -40,6 +40,7 @@ class _StaticPageEditPageState extends State<StaticPageEditPage> {
     document: Document(),
     selection: const TextSelection.collapsed(offset: 0),
     keepStyleOnNewLine: false,
+    readOnly: false,
   );
 
   @override
@@ -221,7 +222,6 @@ class _StaticPageEditPageState extends State<StaticPageEditPage> {
             child: QuillEditor.basic(
               configurations: QuillEditorConfigurations(
                 controller: _quillController,
-                readOnly: false,
                 scrollable: true,
                 expands: true,
                 padding: const EdgeInsets.all(10),
