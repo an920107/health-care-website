@@ -55,8 +55,11 @@ class _BaseDrawerState extends State<BaseDrawer> {
                         children: [
                           for (var link in group.value)
                             ListTile(
-                              onTap: () => context
-                                  .push("${Routes.page.path}/${link.id}"),
+                              onTap: () {
+                                context
+                                  .go("${Routes.page.path}/${link.id}");
+                                Scaffold.of(context).closeDrawer();
+                              },
                               title: Text(link.label),
                             ),
                         ],
