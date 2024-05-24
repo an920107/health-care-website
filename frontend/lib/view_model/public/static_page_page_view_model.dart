@@ -12,8 +12,6 @@ class StaticPagePageViewModel with ChangeNotifier {
   StaticPage? _page;
   StaticPage? get page => _page;
 
-
-
   late PageTopic _topic;
   PageTopic get topic => _topic;
 
