@@ -6,8 +6,9 @@ services:
     image: health-care-website-frontend
     container_name: health-care-website-frontend
     networks:
-      - internal-network
-      - external-network
+      - health-care-website
+    ports:
+      - 127.0.0.1:8000:80
   backend:
     build: backend
     image: health-care-website-backend
@@ -16,26 +17,10 @@ services:
       - ./backend/instance:/app/instance
       - ./backend/statics:/app/statics
     networks:
-      - internal-network
-      - external-network
-  proxy:
-    image: docker.io/library/nginx:latest
-    container_name: health-care-website-proxy
-    volumes:
-      - ./proxy/reverse_proxy.conf:/etc/nginx/conf.d/default.conf
+      - health-care-website
     ports:
-      - 18080:80
-    networks:
-      - internal-network
-      - external-network
+      - 127.0.0.1:5001:5001
 
 networks:
-  internal-network:
-    name: health-care-website-internal
-    internal: true
-    ipam:
-      config:
-        - subnet: 10.0.0.0/24
-          gateway: 10.0.0.1
-  external-network:
-    name: health-care-website-external
+  health-care-website:
+    name: health-care-website
