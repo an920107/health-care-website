@@ -164,7 +164,8 @@ class _HomePageState extends State<HomePage> {
         width: constrain.maxWidth,
         child: CarouselSlider(
           options: CarouselOptions(
-            aspectRatio: 16 / 9,
+            aspectRatio: 16 / 9 / 0.8,
+            viewportFraction: 0.8,
             autoPlay: true,
             enlargeCenterPage: true,
           ),
