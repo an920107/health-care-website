@@ -1,9 +1,1 @@
-{
-    "static_post_name": "work_team",
-    "content": "[{\"insert\":\"\\n\"}]",
-    "attachments": "[]",
-    "viewer": 0,
-    "id": 1,
-    "create_time": "1999-01-01 00:00:00.000000",
-    "update_time": "1999-01-01 00:00:00.000000"
-}
+{"static_post_name": "work_team", "content": "[{\"insert\":\"123\\n\"}]", "attachments": "[\"9f4d7c79-1bb0-4955-ba95-d4f8dbb1ae69__bafykbzacebr7bxn5lcwfyzyz7emduzdgtprjzegaaymdkjanmhuo26reule5o.pdf\"]", "viewer": 55, "id": 1, "create_time": "2024-05-24 02:49:46.534360", "update_time": "2024-05-24 02:49:46.534383"}

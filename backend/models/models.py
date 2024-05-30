@@ -80,6 +80,7 @@ class RestaurantPost(db.Model, SchemaMixin):
     title = db.Column(db.String(40), nullable=False)
     attachments = db.Column(db.String(100), nullable=False)
     category = db.Column(db.String(40), nullable=False)
+    item = db.Column(db.String(40), nullable=False)
     time = db.Column(db.DateTime, nullable=False)
     valid = db.Column(db.String(1), nullable=False)
     visible = db.Column(db.String(1), nullable=False, default='0')

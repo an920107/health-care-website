@@ -65,7 +65,7 @@ def get_carousels():
 
 
 @carousel_blueprint.route('', methods=['POST'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def upload_carousel():
     """
     Upload carousel
@@ -88,7 +88,6 @@ def upload_carousel():
     if file is None:
         return Response.client_error('no file part')
 
-
     file_path = Path(Config.CAROUSEL_CONFIG['IMAGE_DIR']) / Path(str(uuid.uuid4()) + '.' + file.filename.split('.')[-1])
     file.save(file_path)
 
@@ -100,7 +99,7 @@ def upload_carousel():
 
 
 @carousel_blueprint.route('/<int:carousel_id>', methods=['DELETE'])
-@authorization_required(2)
+@authorization_required([0, 1, 2])
 def delete_carousel(carousel_id):
     """
     Delete carousel
