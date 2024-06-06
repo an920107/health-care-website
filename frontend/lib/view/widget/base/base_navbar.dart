@@ -145,7 +145,7 @@ class BaseNavbar extends StatelessWidget {
                             // Logo & 網站名稱
                             CleanButton(
                               onPressed: () =>
-                                  context.pushReplacement(Routes.root.path),
+                                  context.go(Routes.root.path),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -180,21 +180,20 @@ class BaseNavbar extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   TextButton(
-                                      onPressed: () => context.push(
+                                      onPressed: () => context.go(
                                           "${Routes.page.path}/${PageTopic.workteam.id}"),
                                       child: const Text("關於我們")),
                                   TextButton(
-                                      onPressed: () => context.push(
+                                      onPressed: () => context.go(
                                           "${Routes.page.path}/${PageTopic.aed.id}"),
                                       child: const Text("校園 AED")),
-                                  // TextButton(
-                                  //     onPressed: () {},
-                                  //     child: const Text("登革熱填報")),
                                   TextButton(
-                                      onPressed: () {},
+                                      onPressed: () => context.go(
+                                          "${Routes.page.path}/${PageTopic.regulation.id}"),
                                       child: const Text("相關法規")),
                                   TextButton(
-                                      onPressed: () {},
+                                      onPressed: () => context.go(
+                                          "${Routes.page.path}/${PageTopic.downloadArea.id}"),
                                       child: const Text("下載專區")),
                                 ],
                               ),

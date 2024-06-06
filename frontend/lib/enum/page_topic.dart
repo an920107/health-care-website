@@ -18,7 +18,9 @@ enum PageTopic {
   cpr("freshman_cpr", "大一 CPR", PageGroup.train),
   tabaccoPrevention("campus_tobacco_control_education", "校園菸害防制教育", PageGroup.train),
   aidsPrevention("campus_aids_prevention_education", "校園愛滋防治教育", PageGroup.train),
-  diseasePrevension("campus_infectious_disease_prevention", "校園傳染病防治", PageGroup.train);
+  diseasePrevension("campus_infectious_disease_prevention", "校園傳染病防治", PageGroup.train),
+  downloadArea("download_area", "下載專區", PageGroup.others),
+  regulation("regulation", "相關法規", PageGroup.others);
 
   final String id;
   final String label;

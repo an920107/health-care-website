@@ -4,7 +4,8 @@ enum PageGroup {
   emergency("緊急醫療"),
   service("健康服務"),
   workplace("健康職場"),
-  train("教育訓練");
+  train("教育訓練"),
+  others("其他");
 
   final String label;
 
