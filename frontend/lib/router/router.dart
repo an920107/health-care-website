@@ -75,8 +75,16 @@ class Router {
           ),
           GoRoute(
             path: "${Routes.postEdit.path}/:id",
-            builder: (context, state) =>
-                PostEditPage(state.pathParameters["id"]!),
+            builder: (context, state) {
+              final extra = state.extra as Map<String, Object>?;
+              if (extra != null && extra.containsKey("is_carousel")) {
+                return PostEditPage(
+                  state.pathParameters["id"]!, 
+                  isCarousel: extra["is_carousel"] == true,
+                );
+              }
+              return PostEditPage(state.pathParameters["id"]!);
+            },
             redirect: _authCheckAndRedirect,
           ),
           GoRoute(

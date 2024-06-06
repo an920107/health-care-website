@@ -46,6 +46,7 @@ abstract class HttpUtil {
     bool authRequired = false,
     Map<String, String>? headers,
     Map<String, String>? query,
+    Map<String, String>? fields,
   }) async {
     final url = Uri.https(Config.backend, uri, query);
     if (authRequired) {
@@ -56,6 +57,7 @@ abstract class HttpUtil {
 
     final request = http.MultipartRequest("POST", url);
     if (headers != null) request.headers.addAll(headers);
+    if (fields != null) request.fields.addAll(fields);
     request.files
         .add(http.MultipartFile.fromBytes(field, blob, filename: filename));
     final streamResponse = await request.send();

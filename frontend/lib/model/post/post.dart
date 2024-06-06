@@ -4,7 +4,6 @@ import 'package:health_care_website/extension/boolean_extension.dart';
 class Post {
   String id;
   String title;
-  // String author;
   PostColumn column;
   String content;
   String attachments;
