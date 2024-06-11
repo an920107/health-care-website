@@ -4,7 +4,7 @@ import uuid
 from pathlib import Path
 from config import Config
 
-from models.models import db, Carousel
+from models.models import db, Carousel, Post
 from models.responses import Response
 
 from flask import Blueprint, request, send_file
@@ -58,7 +58,8 @@ def get_carousels():
         payload.append({
             'id': str(carousel.id),
             'name': carousel.name,
-            'carousel_uri': f'/api/carousel/{carousel.id}'
+            'carousel_uri': f'/api/carousel/{carousel.id}',
+            'post_id': carousel.post_id
         })
 
     return Response.response('get carousels successful', payload)
@@ -88,10 +89,13 @@ def upload_carousel():
     if file is None:
         return Response.client_error('no file part')
 
+    if 'post_id' not in request.form:
+        return Response.client_error('no post_id part')
+
     file_path = Path(Config.CAROUSEL_CONFIG['IMAGE_DIR']) / Path(str(uuid.uuid4()) + '.' + file.filename.split('.')[-1])
     file.save(file_path)
 
-    carousel = Carousel(name=file.filename, file_path=str(file_path))
+    carousel = Carousel(name=file.filename, file_path=str(file_path), post_id=request.form['post_id'])
     db.session.add(carousel)
     db.session.commit()
 
@@ -123,6 +127,12 @@ def delete_carousel(carousel_id):
     carousel = Carousel.query.get(carousel_id)
     if carousel is None:
         return Response.not_found('carousel not found')
+
+    post_id = carousel.post_id
+    if post_id:
+        post = Post.query.get(post_id)
+        if post is not None:
+            db.session.delete(post)
 
     os.remove(carousel.file_path)
     db.session.delete(carousel)

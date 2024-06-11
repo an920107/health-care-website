@@ -1,12 +1,12 @@
 class Config:
-    FRONTEND_URL = 'https://health.ncu.edu.tw'
+    FRONTEND_URL = 'https://31db-140-115-205-70.ngrok-free.app'
     ALLOW_IMAGE_ENDSWITH = ['.png', '.jpg', '.jpeg']
     ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xls', '.xlsx', '.csv', '.odt']
     PAGE_SIZE = 10
     MAX_CONTENT_LENGTH = 500 * 1024 * 1024
-    Basic_Auth = 'MjAyNDAzMDUwMDUyMjJiamZzN3lENkNpd1Q6TFc2Nm4xVXY3d2hlNlY5QkxZU3J3YTBIRThmbVpldVhZV0d1N0FTVWNxWTRSUmcyYk54Mw=='
+    Basic_Auth = 'MjAyNDA1MjQwMDU0MTNjSDZFbjVSRlpjMzU6Y2pBODhodTFUMmlScXBydGVUeEZKT3JuMm05aGhRQk80RXhkZDNWUjNMUGN6NzFCdg=='
 
-    POST_COLUMN = ['activity', 'health', 'restaurant_post', 'nutrition']
+    POST_COLUMN = ['activity', 'health', 'restaurant_post', 'nutrition', 'carousel']
     STATIC_POST_COLUMN = [
         # about us
         'work_team', 'service_hours', 'traffic_map',
@@ -26,6 +26,9 @@ class Config:
         # health education
         'freshman_cpr', 'campus_tobacco_control_education', 'campus_aids_prevention_education',
         'campus_infectious_disease_prevention',
+
+        # others
+        'regulation', 'download_area'
     ]
 
     STATIC_POST_CONFIG = {
