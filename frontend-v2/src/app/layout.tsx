@@ -4,6 +4,7 @@ import "@radix-ui/themes/styles.css";
 import NavigationBar from "./navigation-bar";
 import { Theme } from "@radix-ui/themes";
 import { Noto_Sans_TC } from 'next/font/google';
+import Footer from "./footer";
 
 const fontSans = Noto_Sans_TC({
   subsets: ['latin'],
@@ -24,10 +25,13 @@ export default function RootLayout({
     <html lang="zh-tw">
       <body className={fontSans.className}>
         <Theme>
-          <NavigationBar />
-          <div className="container">
-            {children}
+          <div style={{minHeight: "calc(100vh)"}}>
+            <NavigationBar />
+            <div className="container">
+              {children}
+            </div>
           </div>
+          <Footer />
         </Theme>
       </body>
     </html>

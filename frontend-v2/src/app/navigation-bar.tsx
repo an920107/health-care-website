@@ -1,4 +1,4 @@
-import Button from "@/component/button"
+import Button from "@/components/button"
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons"
 import { faGlobe, faGraduationCap, faHouse } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
