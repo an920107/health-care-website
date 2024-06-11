@@ -296,7 +296,6 @@ def download_forms():
 
 
 @dengue_blueprint.route('/form-download/<int:form_id>', methods=['GET'])
-@authorization_required([0, 1, 2])
 def download_form(form_id):
     """
     download all forms

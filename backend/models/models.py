@@ -51,6 +51,7 @@ class Carousel(db.Model, SchemaMixin):
     __tablename__ = 'carousel'
     name = db.Column(db.String(40), nullable=False)
     file_path = db.Column(db.String(100), nullable=False, unique=True)
+    post_id = db.Column(db.Integer)
 
 
 class StaticPost(db.Model, SchemaMixin):
