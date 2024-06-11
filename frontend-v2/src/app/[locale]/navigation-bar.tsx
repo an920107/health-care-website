@@ -1,15 +1,24 @@
 "use client";
 
 import Button from "@/components/button"
+import Logo from "@/components/logo";
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons"
 import { faBars, faGlobe, faGraduationCap, faHouse } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
 import { useState } from "react"
+import Drawer from "./drawer";
+import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 
 type Props = {}
 
 export default function NavigationBar({ }: Props) {
+  const trans = useTranslations("Home");
+
+  const pathname = usePathname();
+  const currentLanguage = pathname.split("/")[1];
+
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const toggleDrawer = () => {
@@ -23,27 +32,27 @@ export default function NavigationBar({ }: Props) {
         <Link href="/">
           <Button>
             <FontAwesomeIcon icon={faHouse} className="size-5 me-2" />
-            首頁
+            {trans("homepage")}
           </Button>
         </Link>
         <Link href="https://ncu.edu.tw/">
           <Button>
             <FontAwesomeIcon icon={faGraduationCap} className="size-5 me-2" />
-            中大首頁
+            {trans("ncuHomepage")}
           </Button>
         </Link>
-        <Link href="/">
+        <Link href={`${currentLanguage === "zh" ? "en" : "zh"}`}>
           <Button>
             <FontAwesomeIcon icon={faGlobe} className="size-5 me-2" />
-            English
+            {trans("language")}
           </Button>
         </Link>
-        <Link href="/">
+        <Link href="https://www.instagram.com/ncu7270">
           <Button>
             <FontAwesomeIcon icon={faInstagram} className="size-5 my-0.5" />
           </Button>
         </Link>
-        <Link href="/">
+        <Link href="https://www.facebook.com/profile.php?id=100057326145371">
           <Button>
             <FontAwesomeIcon icon={faFacebook} className="size-5 my-0.5" />
           </Button>
@@ -55,52 +64,44 @@ export default function NavigationBar({ }: Props) {
         <Button className="md:hidden" onClick={toggleDrawer}>
           <FontAwesomeIcon icon={faBars} className="size-5 my-2" />
         </Button>
-        <Link href="/" className="flex items-center h-32">
-          <img alt="logo" src="/logo.png" className="h-32" />
-          <div className="flex flex-col items-center">
-            <span className="text-2xl font-semibold">衛生保健組</span>
-            <span className="text-xl font-semibold">Health Center</span>
-          </div>
-        </Link>
+        <Logo />
         <div className="flex items-center max-md:hidden gap-2">
           <Link href="/" className="text-yellow-900">
-            <Button>關於我們</Button>
+            <Button>{trans("aboutUs")}</Button>
           </Link>
           <Link href="/" className="text-yellow-900">
-            <Button>校園 AED</Button>
+            <Button>{trans("aed")}</Button>
           </Link>
           <Link href="/" className="text-yellow-900">
-            <Button>相關法規</Button>
+            <Button>{trans("restriction")}</Button>
           </Link>
           <Link href="/" className="text-yellow-900">
-            <Button>下載專區</Button>
+            <Button>{trans("downloadArea")}</Button>
           </Link>
         </div>
       </div>
 
       <Drawer isOpen={isDrawerOpen} closeCallback={toggleDrawer}>
-        <></>
+        <div className="mx-4 mt-20">
+          <h2>選單</h2>
+          <hr className="my-4" />
+
+        </div>
       </Drawer>
     </div>
   )
 }
 
-type DrawerProps = {
-  children: Readonly<React.ReactNode>;
-  isOpen: boolean;
-  closeCallback?: () => void;
-}
-
-function Drawer({ children, isOpen, closeCallback }: DrawerProps) {
-  return (
-    <>
-      <button
-        className={`fixed inset-0 bg-black transform ${isOpen ? "translate-x-0" : "-translate-x-full"} ${isOpen ? "opacity-50" : "opacity-0"} duration-500 transition-opacity ease-in-out`}
-        onClick={closeCallback}
-      ></button>
-      <div className={`fixed top-0 left-0 h-full bg-white w-72 rounded-r-xl transform ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out`}>
-        {children}
-      </div>
-    </>
-  )
+export function getStaticProps({
+  locale
+}: {
+  locale: string;
+}) {
+  return {
+    props: {
+      messages: {
+        ...require(`../../../messages/${locale}.json`),
+      }
+    }
+  }
 }

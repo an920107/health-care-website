@@ -1,10 +1,12 @@
 import { faEnvelope, faEye, faFax, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
-type Props = {}
+export default function Footer() {
+  const trans = useTranslations("Home");
+  const symbol = useTranslations("Symbol");
 
-export default function Footer({ }: Props) {
   const views = 1234;
 
   return (
@@ -13,28 +15,28 @@ export default function Footer({ }: Props) {
         <div>
           <p className="flex items-center">
             <FontAwesomeIcon icon={faPhone} className="size-4 me-2" />
-            電話：<a href="tel:+88634227151#57270" className="link">03-4227151#57270</a>、<a href="tel:+88632804814" className="link">03-2804814</a>
+            {trans("phone")}{symbol("colon")}<a href="tel:+88634227151#57270" className="link">03-4227151#57270</a>、<a href="tel:+88632804814" className="link">03-2804814</a>
           </p>
           <p className="flex items-center">
             <FontAwesomeIcon icon={faFax} className="size-4 me-2" />
-            傳真：03-4272405
+            {trans("fax")}{symbol("colon")}03-4272405
           </p>
           <p className="flex items-center">
             <FontAwesomeIcon icon={faEnvelope} className="size-4 me-2" />
-            Email：<a href="mailto:ncu7270@ncu.edu.tw" className="link">ncu7270@ncu.edu.tw</a>
+            Email{symbol("colon")}<a href="mailto:ncu7270@ncu.edu.tw" className="link">ncu7270@ncu.edu.tw</a>
           </p>
           <p className="flex items-center">
             <FontAwesomeIcon icon={faLocationDot} className="size-4 me-2" />
-            地址：320 桃園市中壢區中大路 300 號 中正圖書館 1 樓
+            {trans("address")}{symbol("colon")}320 桃園市中壢區中大路 300 號 中正圖書館 1 樓
           </p>
           <p className="flex items-center">
             <FontAwesomeIcon icon={faEye} className="size-4 me-2" />
-            瀏覽人次：{views}
+            {trans("views")}{symbol("colon")}{views}
           </p>
         </div>
         <div>
-          <p><Link href="/" className="link">隱私權政策聲明</Link></p>
-          <p>版權所有 © 國立中央大學衛生保健組</p>
+          <p><Link href="/" className="link">{trans("privacy")}</Link></p>
+          <p>{trans("copyright")} © 國立中央大學衛生保健組</p>
           <p>National Central University - Health Center</p>
         </div>
       </div>

@@ -1,0 +1,26 @@
+{
+    "Symbol": {
+        "comma": ", ",
+        "colon": ": "
+    },
+    "NotFound": {
+        "title": "Page not found",
+        "message": "Return to",
+        "homepage": "Homepage"
+    },
+    "Home": {
+        "homepage": "Home",
+        "ncuHomepage": "NCU Website",
+        "language": "中文",
+        "aboutUs": "About Us",
+        "aed": "Campus AED",
+        "restriction": "Restrictions",
+        "downloadArea": "Downloads",
+        "phone": "Phone",
+        "fax": "Fax",
+        "address": "Address",
+        "views": "Views",
+        "privacy": "Privacy Policy Statement",
+        "copyright": "Copyright"
+    }
+}

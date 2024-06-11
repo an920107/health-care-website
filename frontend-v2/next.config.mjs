@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+import { createRequire  } from 'module';
+const require = createRequire(import.meta.url);
 
-export default nextConfig;
+const withNextIntl = require('next-intl/plugin')();
+ 
+export default withNextIntl({
+
+});

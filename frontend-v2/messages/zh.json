@@ -1,0 +1,27 @@
+
+{
+    "Symbol": {
+        "comma": "，",
+        "colon": "："
+    },
+    "NotFound": {
+        "title": "找不到頁面",
+        "message": "返回",
+        "homepage": "首頁"
+    },
+    "Home": {
+        "homepage": "首頁",
+        "ncuHomepage": "中大首頁",
+        "language": "English",
+        "aboutUs": "關於我們",
+        "aed": "校園 AED",
+        "restriction": "相關法規",
+        "downloadArea": "下載專區",
+        "phone": "電話",
+        "fax": "傳真",
+        "address": "地址",
+        "views": "瀏覽人次",
+        "privacy": "隱私權政策聲明",
+        "copyright": "版權所有"
+    }
+}
