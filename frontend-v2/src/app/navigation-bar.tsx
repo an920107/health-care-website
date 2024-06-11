@@ -10,31 +10,31 @@ export default function NavigationBar({ }: Props) {
   return (
     <div>
       {/* Social links */}
-      <div className="flex items-center justify-end bg-amber-400 py-1 px-2 gap-2">
-        <Link href="/" className="text-gray-800">
+      <div className="flex items-center justify-end bg-amber-400 py-1 px-2 gap-2 text-gray-800">
+        <Link href="/">
           <Button>
             <FontAwesomeIcon icon={faHouse} className="size-5 me-2" />
             首頁
           </Button>
         </Link>
-        <Link href="https://ncu.edu.tw/" className="text-gray-800">
+        <Link href="https://ncu.edu.tw/">
           <Button>
             <FontAwesomeIcon icon={faGraduationCap} className="size-5 me-2" />
             中大首頁
           </Button>
         </Link>
-        <Link href="/" className="text-gray-800">
+        <Link href="/">
           <Button>
             <FontAwesomeIcon icon={faGlobe} className="size-5 me-2" />
             English
           </Button>
         </Link>
-        <Link href="/" className="text-gray-800">
+        <Link href="/">
           <Button>
             <FontAwesomeIcon icon={faInstagram} className="size-5 my-0.5" />
           </Button>
         </Link>
-        <Link href="/" className="text-gray-800">
+        <Link href="/">
           <Button>
             <FontAwesomeIcon icon={faFacebook} className="size-5 my-0.5" />
           </Button>
