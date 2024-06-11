@@ -24,10 +24,12 @@ import 'package:provider/provider.dart';
 class PostEditPage extends StatefulWidget {
   const PostEditPage(
     this.id, {
+    this.isCarousel = false,
     super.key,
   });
 
   final String id;
+  final bool isCarousel;
 
   @override
   State<PostEditPage> createState() => _PostEditPageState();
@@ -68,193 +70,211 @@ class _PostEditPageState extends State<PostEditPage> {
           }
 
           return Consumer<PostEditPageViewModel>(
-            builder: (context, value, child) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    // 標題輸入框
-                    Expanded(
-                      flex: 2,
-                      child: TextFormField(
-                        key: _titleFormFieldKey,
-                        maxLines: 1,
-                        controller: _titleTextController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          icon: Icon(Icons.title),
-                          label: Text("標題"),
-                        ),
-                        validator: value.titleValidator,
-                      ),
-                    ),
-                    const SizedBox(width: 40),
+            builder: (context, value, child) {
+              if (widget.isCarousel) {
+                value.selectedPostColumn = PostColumn.carousel;
+              }
 
-                    // 類別選取框
-                    Expanded(
-                      flex: 1,
-                      child: DropdownButtonFormField<PostColumn>(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          icon: Icon(Icons.type_specimen),
-                          label: Text("類別"),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      // 標題輸入框
+                      Expanded(
+                        flex: 2,
+                        child: TextFormField(
+                          key: _titleFormFieldKey,
+                          maxLines: 1,
+                          controller: _titleTextController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.title),
+                            label: Text("標題"),
+                          ),
+                          validator: value.titleValidator,
                         ),
-                        items: PostColumn.values
-                            .map((e) => DropdownMenuItem(
-                                  value: e,
-                                  child: Text(e.label),
-                                ))
-                            .toList(),
-                        onChanged: (selected) {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          if (selected == null) return;
-                          value.selectedPostColumn = selected;
-                        },
-                        value: value.selectedPostColumn,
                       ),
-                    ),
+                      const SizedBox(width: 40),
 
-                    // 發布/轉為草稿
-                    const SizedBox(width: 40),
-                    CleanButton(
-                      onPressed: () => value.visible = !value.visible,
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Column(
-                            children: [
-                              Switch(
-                                value: value.visible,
-                                onChanged: (result) => value.visible = result,
-                                thumbIcon: WidgetStateProperty.resolveWith(
-                                  (states) => Icon(
-                                      states.contains(WidgetState.selected)
-                                          ? Icons.star
-                                          : Icons.edit),
+                      // 類別選取框
+                      Expanded(
+                        flex: 1,
+                        child: DropdownButtonFormField<PostColumn>(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.type_specimen),
+                            label: Text("類別"),
+                          ),
+                          items: PostColumn.values
+                              .where((e) => value.selectedPostColumn ==
+                                      PostColumn.carousel
+                                  ? e == PostColumn.carousel
+                                  : e != PostColumn.carousel)
+                              .map((e) => DropdownMenuItem(
+                                    value: e,
+                                    child: Text(e.label),
+                                  ))
+                              .toList(),
+                          onChanged:
+                              value.selectedPostColumn == PostColumn.carousel
+                                  ? null
+                                  : (selected) {
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
+                                      if (selected == null) return;
+                                      value.selectedPostColumn = selected;
+                                    },
+                          value: value.selectedPostColumn,
+                        ),
+                      ),
+
+                      // 發布/轉為草稿
+                      const SizedBox(width: 40),
+                      CleanButton(
+                        onPressed: () => value.visible = !value.visible,
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Column(
+                              children: [
+                                Switch(
+                                  value: value.visible,
+                                  onChanged: (result) => value.visible = result,
+                                  thumbIcon: WidgetStateProperty.resolveWith(
+                                    (states) => Icon(
+                                        states.contains(WidgetState.selected)
+                                            ? Icons.star
+                                            : Icons.edit),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                value.visible ? "發佈" : "草稿",
-                                style: const TextStyle(color: Colors.black54),
-                              ),
-                            ],
+                                Text(
+                                  value.visible ? "發佈" : "草稿",
+                                  style: const TextStyle(color: Colors.black54),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
-                // 編輯器本體
-                const SizedBox(height: 20),
-                _buildTextEditor(),
+                  // 編輯器本體
+                  const SizedBox(height: 20),
+                  _buildTextEditor(),
 
-                // 附件預覽
-                if (value.attachments.isNotEmpty) const SizedBox(height: 20),
-                GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: 4,
-                  children: value.attachments
-                      .map((e) => AttachmentPreview(
-                            info: e,
-                            removeCallback: () async =>
-                                value.removeAttachment(e.id),
-                          ))
-                      .toList(),
-                ),
+                  // 附件預覽
+                  if (value.attachments.isNotEmpty) const SizedBox(height: 20),
+                  GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
+                    childAspectRatio: 4,
+                    children: value.attachments
+                        .map((e) => AttachmentPreview(
+                              info: e,
+                              removeCallback: () async =>
+                                  value.removeAttachment(e.id),
+                            ))
+                        .toList(),
+                  ),
 
-                // 功能按鈕們
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // 刪除按鈕
-                    TextButton.icon(
-                      style: TextButtonStyle.rRectStyle(),
-                      onPressed: () async {
-                        final reply = await showDialog(
-                          context: context,
-                          builder: (context) => const DeleteDialog(),
-                        );
-                        if (context.mounted && reply == true) {
-                          await context.read<PostEditPageViewModel>().delete();
+                  // 功能按鈕們
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // 刪除按鈕
+                      TextButton.icon(
+                        style: TextButtonStyle.rRectStyle(),
+                        onPressed: () async {
+                          final reply = await showDialog(
+                            context: context,
+                            builder: (context) => const DeleteDialog(),
+                          );
+                          if (context.mounted && reply == true) {
+                            await context
+                                .read<PostEditPageViewModel>()
+                                .delete();
+                            if (context.mounted) {
+                              context.pushReplacement(Routes.postList.path);
+                            }
+                          }
+                        },
+                        icon: const Icon(Icons.delete),
+                        label: const Text("刪除", style: TextStyle(fontSize: 16)),
+                      ),
+
+                      // 取消按鈕
+                      const SizedBox(width: 20),
+                      OutlinedButton.icon(
+                        style: OutlinedButtonStyle.rRectStyle(),
+                        onPressed: () => context.go(Routes.postList.path),
+                        icon: const Icon(Icons.cancel),
+                        label: const Text("取消", style: TextStyle(fontSize: 16)),
+                      ),
+
+                      // 上傳附件按鈕
+                      const SizedBox(width: 20),
+                      OutlinedButton.icon(
+                        style: OutlinedButtonStyle.rRectStyle(),
+                        onPressed: () async {
+                          final result = await FilePickerWeb.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: [
+                              "pdf",
+                              "jpg",
+                              "jpeg",
+                              "png",
+                              "doc",
+                              "docx",
+                              "xls",
+                              "xlsx",
+                              "ppt",
+                              "pptx",
+                              "odt",
+                              "csv",
+                            ],
+                          );
+                          if (result == null) return;
+                          final blob = result.files.single.bytes;
+                          final name = result.files.single.name;
+                          if (blob == null) return;
+                          await value.uploadAttachment(blob, name);
+                        },
+                        icon: const Icon(Icons.upload_file_rounded),
+                        label:
+                            const Text("上傳附件", style: TextStyle(fontSize: 16)),
+                      ),
+
+                      // 儲存按鈕
+                      const SizedBox(width: 20),
+                      OutlinedButton.icon(
+                        style: OutlinedButtonStyle.rRectStyle(),
+                        onPressed: () async {
+                          if (!_titleFormFieldKey.currentState!.validate()) {
+                            return;
+                          }
+                          await value.uploadPost(
+                            title: _titleTextController.text,
+                            content: json.encode(
+                                _quillController.document.toDelta().toJson()),
+                          );
                           if (context.mounted) {
                             context.pushReplacement(Routes.postList.path);
                           }
-                        }
-                      },
-                      icon: const Icon(Icons.delete),
-                      label: const Text("刪除", style: TextStyle(fontSize: 16)),
-                    ),
-
-                    // 取消按鈕
-                    const SizedBox(width: 20),
-                    OutlinedButton.icon(
-                      style: OutlinedButtonStyle.rRectStyle(),
-                      onPressed: () => context.go(Routes.postList.path),
-                      icon: const Icon(Icons.cancel),
-                      label: const Text("取消", style: TextStyle(fontSize: 16)),
-                    ),
-
-                    // 上傳附件按鈕
-                    const SizedBox(width: 20),
-                    OutlinedButton.icon(
-                      style: OutlinedButtonStyle.rRectStyle(),
-                      onPressed: () async {
-                        final result = await FilePickerWeb.platform.pickFiles(
-                          type: FileType.custom,
-                          allowedExtensions: [
-                            "pdf",
-                            "jpg",
-                            "jpeg",
-                            "png",
-                            "doc",
-                            "docx",
-                            "xls",
-                            "xlsx",
-                            "ppt",
-                            "pptx",
-                            "odt",
-                            "csv",
-                          ],
-                        );
-                        if (result == null) return;
-                        final blob = result.files.single.bytes;
-                        final name = result.files.single.name;
-                        if (blob == null) return;
-                        await value.uploadAttachment(blob, name);
-                      },
-                      icon: const Icon(Icons.upload_file_rounded),
-                      label: const Text("上傳附件", style: TextStyle(fontSize: 16)),
-                    ),
-
-                    // 儲存按鈕
-                    const SizedBox(width: 20),
-                    OutlinedButton.icon(
-                      style: OutlinedButtonStyle.rRectStyle(),
-                      onPressed: () async {
-                        if (!_titleFormFieldKey.currentState!.validate()) {
-                          return;
-                        }
-                        await value.uploadPost(
-                          title: _titleTextController.text,
-                          content: json.encode(
-                              _quillController.document.toDelta().toJson()),
-                        );
-                        if (context.mounted) {
-                          context.pushReplacement(Routes.postList.path);
-                        }
-                      },
-                      icon: const Icon(Icons.save),
-                      label: const Text("保存變更", style: TextStyle(fontSize: 16)),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                        },
+                        icon: const Icon(Icons.save),
+                        label:
+                            const Text("保存變更", style: TextStyle(fontSize: 16)),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
           );
         },
       ),

@@ -9,6 +9,7 @@ import 'package:health_care_website/enum/page_topic.dart';
 import 'package:health_care_website/enum/post_column.dart';
 import 'package:health_care_website/router/routes.dart';
 import 'package:health_care_website/view/widget/base/base_scaffold.dart';
+import 'package:health_care_website/view/widget/clean_button.dart';
 import 'package:health_care_website/view/widget/dialog/login_dialog.dart';
 import 'package:health_care_website/view/widget/icon_text.dart';
 import 'package:health_care_website/view/widget/inspect_result_card.dart';
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // 圖片輪播
-                      _buildCarousel(value),
+                      _buildCarousel(platform, value),
 
                       // 公告
                       const SizedBox(height: 20),
@@ -138,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.symmetric(vertical: 5),
                           child: TextButton(
                             onPressed: () =>
-                                context.push("${Routes.page.path}/${link.id}"),
+                                context.go("${Routes.page.path}/${link.id}"),
                             child: Text(
                               link.label,
                               softWrap: false,
@@ -158,7 +159,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// 輪播圖片
-  Widget _buildCarousel(HomePageViewModel value) {
+  Widget _buildCarousel(Platform platform, HomePageViewModel value) {
     return LayoutBuilder(builder: (context, constrain) {
       return SizedBox(
         width: constrain.maxWidth,
@@ -170,19 +171,54 @@ class _HomePageState extends State<HomePage> {
             enlargeCenterPage: true,
           ),
           items: value.images
-              .map((e) => ClipRRect(
+              .map((e) {
+                return ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: AspectRatio(
                       aspectRatio: 16 / 9,
-                      child: CachedNetworkImage(
-                        imageUrl: Uri.decodeComponent(
-                            Uri.https(Config.backend, e.uri).toString()),
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
+                      child: CleanButton(
+                        onPressed: () => context.go("${Routes.post.path}/${e.postId}"),
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: CachedNetworkImage(
+                                imageUrl: Uri.decodeComponent(
+                                    Uri.https(Config.backend, e.uri).toString()),
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator()),
+                              ),
+                            ),
+                            Positioned.fill(
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [Colors.transparent, Colors.black],
+                                    stops: [0.7, 1.0],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: platform == Platform.mobile ? 10 : 20,
+                              bottom: platform == Platform.mobile ? 10 : 20,
+                              child: Text(
+                                value.carouselPosts[e.postId]?.title ?? "",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: platform == Platform.mobile ? 16 : 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ))
+                  );
+              })
               .toList(),
         ),
       );
@@ -230,12 +266,14 @@ class _HomePageState extends State<HomePage> {
                     value: null,
                     label: Text("所有公告"),
                   ),
-                  ...PostColumn.values.map(
-                    (e) => ButtonSegment<PostColumn?>(
-                      value: e,
-                      label: Text(e.label),
-                    ),
-                  )
+                  ...PostColumn.values
+                      .where((e) => e != PostColumn.carousel)
+                      .map(
+                        (e) => ButtonSegment<PostColumn?>(
+                          value: e,
+                          label: Text(e.label),
+                        ),
+                      )
                 ],
                 showSelectedIcon: platform != Platform.mobile,
                 selectedIcon: const Icon(Icons.view_agenda),

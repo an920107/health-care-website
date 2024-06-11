@@ -5,7 +5,7 @@ import 'package:health_care_website/model/carousel/carousel_info.dart';
 import 'package:health_care_website/util/http_util.dart';
 
 abstract class CarouselRepo {
-  static Future<void> uploadImage(Uint8List blob, String filename) async {
+  static Future<void> uploadImage(Uint8List blob, String filename, String postId) async {
     try {
       final response = await HttpUtil.upload(
         uri: "/api/carousel",
@@ -13,6 +13,9 @@ abstract class CarouselRepo {
         filename: filename,
         blob: blob,
         authRequired: true,
+        fields: {
+          "post_id": postId,
+        }
       );
       response.check();
     } on Exception catch (e) {

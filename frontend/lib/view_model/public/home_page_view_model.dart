@@ -72,12 +72,19 @@ class HomePageViewModel with ChangeNotifier {
   List<CarouselInfo> _images = [];
   List<CarouselInfo> get images => UnmodifiableListView(_images);
 
+  Map<String, Post?> _carouselPosts = {};
+  Map<String, Post?> get carouselPosts => UnmodifiableMapView(_carouselPosts);
+
   Future<void> fetchFromServer() async {
     _postCurrentPage = 1;
     _restaurantCurrentPage = 1;
     _postResponse = await PostRepo.getPosts(column: _column);
     _restaurantResponse = await RestaurantRepo.getRestaurants();
     _images = await CarouselRepo.getImages();
+    _carouselPosts = {};
+    for (var image in _images) {
+      _carouselPosts[image.postId] = await PostRepo.getPost(image.postId);
+    }
     notifyListeners();
   }
 }
