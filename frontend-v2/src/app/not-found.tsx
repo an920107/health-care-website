@@ -1,9 +1,12 @@
-import { redirect } from "next/navigation"
+"use client";
+
+import { redirect, usePathname } from "next/navigation"
 
 type Props = {}
 
 export default function RootNotFound({ }: Props) {
-  redirect("/?notfound=true")
+  const pathname = usePathname();
+  redirect(`/?notfound=${pathname}`);
 
   return (
       <></>
