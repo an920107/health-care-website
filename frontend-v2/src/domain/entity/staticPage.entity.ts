@@ -1,0 +1,32 @@
+export enum PageTopic {
+    Workteam = "work_team",
+    ServiceTime = "service_hours",
+    Transportation = "traffic_map",
+    FreshmenCheckUp = "freshmanHealth_check",
+    PhysiqueCheck = "new_employee_physical_exam",
+    SpecialCheck = "regular_health_check",
+    EmergencyHotline = "emergency_hotline",
+    InjuryProcess = "campus_injury_treatment",
+    Aed = "campus_aed",
+    Insurance = "student_group_insurance",
+    Equipment = "medical_equipment_loan",
+    Facility = "health_management_facilities",
+    OnCampusService = "on_site_occupational_health_service",
+    WorkplaceServicePlan = "workplace_health_service_plan",
+    Cpr = "freshman_cpr",
+    TabaccoPrevention = "campus_tobacco_control_education",
+    AidsPrevention = "campus_aids_prevention_education",
+    DiseasePrevension = "campus_infectious_disease_prevention",
+    DownloadArea = "download_area",
+    Regulation = "regulation",
+}
+
+export enum PageGroup {
+    About = "about",
+    CheckUp = "check_up",
+    Emergency = "emergency",
+    Service = "service",
+    Workplace = "workplace",
+    Train = "train",
+    Others = "others",
+}

@@ -1,11 +1,12 @@
 "use client";
 
+import { redirect } from "@/navigation";
 import { useSearchParams } from "next/navigation";
-import { redirect } from "../../navigation";
 
 export default function HomePage() {
   const query = useSearchParams();
-  if (query.get("notfound") ?? false) redirect("/404");
+  const notfoundPath = query.get("notfound");
+  if (notfoundPath !== null) redirect(`/404?notfound=${notfoundPath}`);
 
   return (
     <div className="container">HomePage</div>

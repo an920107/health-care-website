@@ -5,19 +5,21 @@ import Logo from "@/components/logo";
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons"
 import { faBars, faGlobe, faGraduationCap, faHouse } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Link from "next/link"
 import { useState } from "react"
 import Drawer from "./drawer";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
+import { getPageTopics } from "@/domain/usecase/staticPage.usecase";
+import { Link } from "@/navigation";
 
-type Props = {}
-
-export default function NavigationBar({ }: Props) {
-  const trans = useTranslations("Home");
+export default function NavigationBar() {
+  const homeTrans = useTranslations("Home");
+  const pageTrans = useTranslations("Page");
 
   const pathname = usePathname();
   const currentLanguage = pathname.split("/")[1];
+
+  const pageTopics = getPageTopics();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
@@ -32,19 +34,19 @@ export default function NavigationBar({ }: Props) {
         <Link href="/">
           <Button>
             <FontAwesomeIcon icon={faHouse} className="size-5 me-2" />
-            {trans("homepage")}
+            {homeTrans("homepage")}
           </Button>
         </Link>
         <Link href="https://ncu.edu.tw/">
           <Button>
             <FontAwesomeIcon icon={faGraduationCap} className="size-5 me-2" />
-            {trans("ncuHomepage")}
+            {homeTrans("ncu_homepage")}
           </Button>
         </Link>
         <Link href={`${currentLanguage === "zh" ? "en" : "zh"}`}>
           <Button>
             <FontAwesomeIcon icon={faGlobe} className="size-5 me-2" />
-            {trans("language")}
+            {homeTrans("language")}
           </Button>
         </Link>
         <Link href="https://www.instagram.com/ncu7270">
@@ -66,42 +68,34 @@ export default function NavigationBar({ }: Props) {
         </Button>
         <Logo />
         <div className="flex items-center max-md:hidden gap-2">
-          <Link href="/" className="text-yellow-900">
-            <Button>{trans("aboutUs")}</Button>
+          <Link href="/page/workteam" className="text-yellow-900">
+            <Button>{homeTrans("about_us")}</Button>
           </Link>
-          <Link href="/" className="text-yellow-900">
-            <Button>{trans("aed")}</Button>
+          <Link href="/page/campus_aed" className="text-yellow-900">
+            <Button>{homeTrans("aed")}</Button>
           </Link>
-          <Link href="/" className="text-yellow-900">
-            <Button>{trans("restriction")}</Button>
+          <Link href="/page/regulation" className="text-yellow-900">
+            <Button>{homeTrans("regulation")}</Button>
           </Link>
-          <Link href="/" className="text-yellow-900">
-            <Button>{trans("downloadArea")}</Button>
+          <Link href="/page/download_area" className="text-yellow-900">
+            <Button>{homeTrans("download_area")}</Button>
           </Link>
         </div>
       </div>
 
       <Drawer isOpen={isDrawerOpen} closeCallback={toggleDrawer}>
         <div className="mx-4 mt-20">
-          <h2>選單</h2>
+          <h2>{homeTrans("menu")}</h2>
           <hr className="my-4" />
-
+          {
+            Object.entries(pageTopics).map(([k, v]) => (
+              <Link href={`/page/${k}`} key={k}>
+                <Button>{pageTrans(k)}</Button>
+              </Link>
+            ))
+          }
         </div>
       </Drawer>
     </div>
   )
-}
-
-export function getStaticProps({
-  locale
-}: {
-  locale: string;
-}) {
-  return {
-    props: {
-      messages: {
-        ...require(`../../../messages/${locale}.json`),
-      }
-    }
-  }
 }
