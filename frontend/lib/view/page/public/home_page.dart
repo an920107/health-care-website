@@ -189,30 +189,32 @@ class _HomePageState extends State<HomePage> {
                                     child: CircularProgressIndicator()),
                               ),
                             ),
-                            Positioned.fill(
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [Colors.transparent, Colors.black],
-                                    stops: [0.7, 1.0],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: platform == Platform.mobile ? 10 : 20,
-                              bottom: platform == Platform.mobile ? 10 : 20,
-                              child: Text(
-                                value.carouselPosts[e.postId]?.title ?? "",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: platform == Platform.mobile ? 16 : 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
+                            // The following code is to show the title of the carousel
+
+                            // Positioned.fill(
+                            //   child: Container(
+                            //     decoration: const BoxDecoration(
+                            //       gradient: LinearGradient(
+                            //         begin: Alignment.topCenter,
+                            //         end: Alignment.bottomCenter,
+                            //         colors: [Colors.transparent, Colors.black],
+                            //         stops: [0.7, 1.0],
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            // Positioned(
+                            //   left: platform == Platform.mobile ? 10 : 20,
+                            //   bottom: platform == Platform.mobile ? 10 : 20,
+                            //   child: Text(
+                            //     value.carouselPosts[e.postId]?.title ?? "",
+                            //     style: TextStyle(
+                            //       color: Colors.white,
+                            //       fontSize: platform == Platform.mobile ? 16 : 20,
+                            //       fontWeight: FontWeight.bold,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
