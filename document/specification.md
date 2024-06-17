@@ -9,7 +9,7 @@
    > Tablet and computer only
    - Buttons:
       - Admin Panel
-        > only available for logged in users
+        > only available to logged-in users
       - Homepage
       - NCU Website <https://ncu.edu.tw>
       - Language (Chinese and English)
@@ -18,20 +18,20 @@
 
 1. Main Navigation Bar
 
-   - Logo that links to homepage
+   - Logo that links to the homepage
       > Navigate to the [file](./frontend/assets/logo.png)
    - Buttons:
-      - About Us (關於我們), linking to Work Team (工作團隊) at side menu
-      - Campus AED (校園 AED), linking to Campus AED (校園 AED) at side menu
-      - Regulations (相關法規), linking to Regulations (相關法規) at side menu
-      - Downloads (下載專區), linking to Downloads (下載專區) at side menu
+      - About Us (關於我們), linking to Work Team (工作團隊) in the side menu
+      - Campus AED (校園 AED), linking to Campus AED (校園 AED) in the side menu
+      - Regulations (相關法規), linking to Regulations (相關法規) in the side menu
+      - Downloads (下載專區), linking to Downloads (下載專區) in the side menu
    - On mobile devices, only a logo and a menu button are displayed.
 
 1. Carousel
 
    - Link to a post
    - Aspect ratio 16:9
-   - Buttons to switch to the next and previous
+   - Buttons to switch to the next and previous slides
 
 1. News
 
@@ -41,9 +41,9 @@
      - Title (主題)
      - Released date (發佈日期)
    - Link to its page
-   - Grouped buttons to switch post columns
-   - Navigation control panel to show and control pagination
-   - A link to post page to show all posts, which includes the following functionalities:
+   - Grouped buttons to switch between post columns
+   - Navigation control panel to display and control pagination
+   - A link to the post page to display all posts, including the following functionalities:
      - All functionalities above
      - Specify page number
      - Search post
@@ -51,14 +51,15 @@
 1. Restaurant Reports (餐廳檢查報告)
 
    > Navigate to [Restaurant](#restaurant)
-   - Every row contains the following information:
+   - Each row contains the following information:
      - Restaurant name (商家名稱)
      - Inspect item (檢驗項目)
      - Inspect sample (抽檢樣品)
      - Result (抽檢結果)
-     - Inspection date (抽檢日期)
+     - Inspect date (檢驗日期)
    - Link to its page
-   - A link to post page to show all reports, which includes the following functionalities:
+   - Navigation control panel to display and control pagination
+   - A link to the restaurant report page to display all reports, including the following functionalities:
      - All functionalities above
      - Specify page number
      - Search post
@@ -382,6 +383,8 @@
   > Document: <https://portal.ncu.edu.tw/about/howto>
   >
   > App Setting: <https://portal.ncu.edu.tw/my/applications>
+  >
+  > OAuth: <https://www.rfc-editor.org/rfc/rfc6749>
 
 ## Frontend Routes
 
@@ -391,29 +394,29 @@
   - `[locale]`: Internationalization
     - `post`: Show all posts with keyword search and category filter
       - `[id]`: Show the specified post
-    - `restaurant`: Show all restaurant report with keyword search and category filter
+    - `restaurant`: Show all restaurant reports with keyword search and category filter
       - `[id]`: Show the specified restaurant report
     - `page` / `[id]`: Show the specified page
-    - `disease`: Show all disease post with keyword search and category filter
+    - `disease`: Show all disease posts with keyword search and category filter
       - `[id]`: Show the specified disease post
     - `download`: Show all download links with keyword search and category filter
     - `privacy`: Show the privacy announcement
     - `dengue`: Show all dengue filled history
       - `new`: Create a new dengue form
-    - `admin`: Show all accessable admin page
+    - `admin`: Show all accessible admin pages
       - `carousel`: Show all uploaded carousel, to create and to manage them
       - `post`: Show all created post, to create and manage them
         - `edit` / `[id]`: Create a new post or edit an existing one
       - `restaurant`: Show all created restaurant reports
         - `edit` / `[id]`: Create a new restaurant report or edit an existing one
       - `page` / `edit` / `[id]`: Edit the specified static page
-      - `dengue`: Show all building manager and manage them, and to download the report
-      - `insurance`: Show all insurance information, to create and manage them
+      - `dengue`: Show all building managers and manage them, and download the report
+      - `insurance`: Show all insurance information, create and manage them
         - `edit` / `[id]`: Create a new insurance information
-      - `permission`: Show all user and manage them
-    - `login`: A Button to redirect to portal
-    - `logout`: Crear access token cookies
-    - `redirect`: The langing page to wait auth token
-  - `callback`: Receive auth token from backend server
+      - `permission`: Show all users and manage them
+    - `login`: A button to redirect to the portal
+    - `logout`: Clear access token cookies
+    - `redirect`: The landing page to wait for auth token
+  - `callback`: Receive auth token from the backend server
 
 ## APIs
