@@ -420,3 +420,81 @@
   - `callback`: Receive auth token from the backend server
 
 ## APIs
+
+## Authentication
+
+```mermaid
+flowchart TD
+
+subgraph Login
+
+subgraph Login_Phase_1
+direction LR
+LU1[User]
+LF1(Frontend)
+LP1(Portal)
+LU1 --"1-1. Login request"--> LF1
+LF1 --"1-2. Redirect and request code with a random state, scope, and redirect_uri"--> LP1
+LU1 --"1-3. Login to Portal"--> LP1
+LP1 --"1-4. Redirect to redirect_uri and return code"--> LF1
+end
+
+subgraph Login_Phase_2
+direction LR
+LU2[User]
+LF2(Frontend)
+LF2 --"2.1 Check if the state is valid (T/F)"--> L2conditon((" "))
+L2conditon --"2-1-T. Request access token with code"--> LB2
+L2conditon --"2-1-F. Login failed"--> LU2
+end
+
+
+subgraph Login_Phase_3
+direction LR
+LB3(Backend)
+LP3(Portal)
+LF3(Frontend)
+LB3 --"3-1. Request access token with code"--> LP3
+LP3 --"3-2. Return access token"--> LB3
+LB3 --"3-3. Request user data with access token"--> LP3
+LP3 --"3-4. Return user data"--> LB3
+LB3 --"3-5. Generate jwt and save the token for a period"--> LB3
+LB3 --"3-6. Return jwt"--> LF3
+LF3 --"3-7. Save the jwt in cookies"--> LF3
+end
+
+Login_Phase_1 --> Login_Phase_2
+Login_Phase_2 --> Login_Phase_3
+
+end
+
+subgraph Request
+
+subgraph Request_Phase_1
+direction LR
+RU1[User]
+RF1(Frontend)
+RB1(Backend)
+RU1 --"1-1. Request for some resource"--> RF1
+RF1 --"1-2. Load access token from cookies"--> RF1
+RF1 --"1-3. Request resource with access token"--> RB1
+RB1 --"1-4. Check whether the access token is valid (T/F)"--> R1condition((" "))
+R1condition --"1-4-T. Return resource"--> RF1
+R1condition --"1-4-F. Return 401 not authorized"--> RF1
+end
+
+subgraph Request_Phase_2
+direction LR
+RU2[User]
+RF2(Frontend)
+RF2 --"2-1. Check whether the resource is gotton successfully (T/F)"--> R2condition((" "))
+R2condition --"2-1-T. Display the resource"--> RU2
+R2condition --"2-1-F. Logout by clearing cookies"--> RF2
+end
+
+Request_Phase_1 --> Request_Phase_2
+
+end
+
+Login ~~~ Request
+```
