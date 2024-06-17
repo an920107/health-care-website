@@ -385,4 +385,35 @@
 
 ## Frontend Routes
 
+> Represented as Next.js app route directory structure
+
+- `/`: Home page
+  - `[locale]`: Internationalization
+    - `post`: Show all posts with keyword search and category filter
+      - `[id]`: Show the specified post
+    - `restaurant`: Show all restaurant report with keyword search and category filter
+      - `[id]`: Show the specified restaurant report
+    - `page` / `[id]`: Show the specified page
+    - `disease`: Show all disease post with keyword search and category filter
+      - `[id]`: Show the specified disease post
+    - `download`: Show all download links with keyword search and category filter
+    - `privacy`: Show the privacy announcement
+    - `dengue`: Show all dengue filled history
+      - `new`: Create a new dengue form
+    - `admin`: Show all accessable admin page
+      - `carousel`: Show all uploaded carousel, to create and to manage them
+      - `post`: Show all created post, to create and manage them
+        - `edit` / `[id]`: Create a new post or edit an existing one
+      - `restaurant`: Show all created restaurant reports
+        - `edit` / `[id]`: Create a new restaurant report or edit an existing one
+      - `page` / `edit` / `[id]`: Edit the specified static page
+      - `dengue`: Show all building manager and manage them, and to download the report
+      - `insurance`: Show all insurance information, to create and manage them
+        - `edit` / `[id]`: Create a new insurance information
+      - `permission`: Show all user and manage them
+    - `login`: A Button to redirect to portal
+    - `logout`: Crear access token cookies
+    - `redirect`: The langing page to wait auth token
+  - `callback`: Receive auth token from backend server
+
 ## APIs
