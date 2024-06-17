@@ -56,7 +56,7 @@
      - Inspect item (檢驗項目)
      - Inspect sample (抽檢樣品)
      - Result (抽檢結果)
-     - Inspected date (抽檢日期)
+     - Inspection date (抽檢日期)
    - Link to its page
    - A link to post page to show all reports, which includes the following functionalities:
      - All functionalities above
@@ -101,21 +101,90 @@
 
 ### Static Page
 
+- Frontstage
+  - Views count
+  - Content
+- Backstage
+  - Two scopes to edit Chinese and English content
+  - Form fields:
+    - Page Topic
+    - Content
+  - Buttons:
+    - Upload Attachment
+    - Save and Upload
+  - There have to be a list to show attachments and to change their order.
+
 ### Disease Prevention
+
+- Frontstage
+  - List
+    - Keyword search
+    - Column selection
+    - A table with information:
+      - Column
+      - Title
+      - Importance
+      - Updated date
+  - Content
+    - Views count
+    - Updated date
+    - All the form fields below
+- Backstage
+  - Two scopes to edit Chinese and English content
+  - Form fields:
+    - Title
+    - Column
+      - Influenza (流行性感冒)
+      - Dengue (登革熱)
+      - Tuberculosis (肺結核)
+      - Chicken Pox (水痘)
+    - Content
+    - Visibility
+    - Importance
+  - Buttons
+    - Delete
+    - Cancel
+    - Upload Attachment
+    - Save and Upload
+  - There have to be a list to show attachments and to change their order.
 
 ### Downloads
 
-### Post
+- Frontstage
+  > Example: <https://www.oga.ncu.edu.tw/1d0c71b2/news/b68d0dbf>
+  - Keyword search
+  - Column selection
+  - A table with information:
+    - Updated date
+    - Column
+    - Attachment filename (click and download)
+- Backstage
+  - Two scopes to edit Chinese and English content
+  - Form fields:
+    - Attachment (With upload button)
+    - Column
+      - Freshmen Check-up (新生健康檢查)
+      - Student Group Insurance (學生團體保險)
+      - Staff Check-up (教職員工健康檢查)
+      - Medical Equipment Loan (醫療物品借用)
+      - Others (其他)
+  - Buttons:
+    - Cancel
+    - Delete
+    - Save
+
+### Restaurant
 
 - Frontstage
   - Views count
+  - Inspection date
   - All the form fields below
 - Backstage
   - Two scopes to edit Chinese and English content
   - Form fields:
     - Restaurant name (title)
       > Less or equal than 25
-    - Inspected date
+    - Inspection date
     - Inspect item
       - Water (飲用水)
       - Food (熟食)
@@ -130,14 +199,17 @@
     - Content
   - Buttons:
     - Delete
-    - Upload Attachments
     - Cancel
+    - Upload Attachments
     - Save and Upload
   - There have to be a list to show attachments and to change their order.
 
-### Restaurant
+### Post
 
 - Frontstage
+  - Views count
+  - Updated date
+  - All the form fields below
 - Backstage
   - Two scopes to edit Chinese and English content
   - Download the report by date range
@@ -156,8 +228,8 @@
     - Content
   - Buttons:
     - Delete
-    - Upload Attachments
     - Cancel
+    - Upload Attachments
     - Save and Upload
   - There have to be a list to show attachments and to change their order.
 
@@ -233,6 +305,67 @@
   - Download the report by month range
 
 ### Student Group Insurance
+
+> This is a backstage-only functionality
+>
+> English is not required for this page
+
+- List
+  - Keyword search
+  - A table with information:
+    - ID
+    - Application date
+    - Accident date
+    - Name
+    - Student ID
+    - Claim content
+    - Payment category
+    - Place
+    - Claim amount
+    - Claim date
+    - Insurance company received date
+- Edit page
+  - Form fields:
+    - Basic Information (基本資訊)
+      - ID (編號)
+        > Auto generated
+      - Applied date (申請日期)
+        > Auto filled
+      - Accident date (事故日期)
+      - Name (姓名)
+      - Student ID (學號)
+      - National ID (身分證字號)
+      - Address (地址)
+      - Phone (電話)
+      - Email
+    - Insurance Information (保險資訊)
+      - Claim Content (理賠內容)
+        - Accident (意外)
+        - Disease (疾病)
+      - Payment Category (給付類別)
+        - Medical (醫療)
+        - Disability (失能)
+        - First Diagnosis of Cancer (初次罹癌)
+        - Death (身故)
+      - Place (地點)
+        - On-campus (校內)
+        - Off-campus (校外)
+      - Accident Cause (事故原因)
+      - Receipt (收據)
+        > Hospital name and quantity
+      - Certificate (診斷書)
+        > Hospital name and quantity
+      - Bankbook (存摺)
+        > Selections from 0 to 3
+      - X-ray (X 光)
+        > Selections from 0 to 3
+      - Requested Amount (申請金額)
+        > NTD
+      - Remark (備註)
+      - Claim Amount (理賠金額)
+        > NTD
+      - Claim Date (理賠日期)
+      - Insurance Company Received Date (保險公司收件日期)
 
 ### Permission Management
 
