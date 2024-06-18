@@ -423,7 +423,7 @@
 
 ### Execptions
 
-> time formate iso-8601
+> Datetime formate iso-8601
 
 ```json5
 500: {
@@ -507,6 +507,8 @@
 - **GET** `/api/image/<id>`
   > Get an image blob
 
+  - Query:
+    - visibility: false (default false)
   - Content-Type: (image)
   - Response: 200 (image)
 
@@ -556,6 +558,7 @@
                 "id": 123,
                 "title": "string",
                 "content": "string",
+                "visibility": true,
                 "updated_time": "datetime",
                 "created_time": "datetime"
             },
@@ -576,6 +579,7 @@
             "id": 123,
             "title": "string",
             "content": "string",
+            "visibility": true,
             "updated_time": "datetime",
             "created_time": "datetime"
         }
@@ -596,6 +600,7 @@
     - blob: (file)
     - title: "string"
     - content: "string"
+    - visibility: false
   - Response:
 
     ```json5
@@ -610,6 +615,7 @@
     - blob: (file)
     - title: "string"
     - content: "string"
+    - visibility: false
   - Response:
 
     ```json5
@@ -633,10 +639,10 @@
   > Get all posts
   
   - Query:
-    - column: "string" (combined with '+')
-    - visibility: boolean (default: false)
-    - limit: number (default: 10)
-    - page: number (default: 1)
+    - column: "string" (seperated by '+')
+    - visibility: false (default: false)
+    - limit: 123 (default: 10)
+    - page: 123 (default: 1)
     - search: "string"
   - Content-Type: application/json
   - Response:
@@ -644,20 +650,25 @@
     ```json5
     200: {
         "message": "get post successful",
-        "data": [
-            {
-                "id": "number",
-                "title": "string",
-                "content": "string",
-                "column": "string",
-                "attachments": [123],
-                "view": 123,
-                "importance": true,
-                "visibility": true,
-                "updated_time": "datetime",
-                "created_time": "datetime"
-            }
-        ]
+        "data": {
+            "page": 123,
+            "total_pages": 123,
+            "posts": [
+                {
+                    "id": 123,
+                    "title": "string",
+                    "content": "string",
+                    "column": "string",
+                    "attachments": [123],
+                    "view": 123,
+                    "importance": true,
+                    "visibility": true,
+                    "updated_time": "datetime",
+                    "created_time": "datetime"
+                }
+            ]
+        }
+
     }
     ```
 
@@ -667,11 +678,11 @@
   - Content-Type: application/json
   - Response:
 
-    ```json5
+    ```json55
     200: {
         "message": "get post successful",
         "data": {
-                "id": "number",
+                "id": 123
                 "title": "string",
                 "content": "string",
                 "column": "string",
@@ -691,7 +702,7 @@
   - Accept: application/json
   - Request:
 
-    ```json5
+    ```json55
     {
         "title": "string",
         "content": "string",
@@ -706,6 +717,534 @@
 
     ```json5
     201: null
+    ```
+
+### Insurance
+
+### Auth
+
+- **POST** `/api/auth/login`
+  > Login with portal oauth code
+
+  - Accept: application/json
+  - Request:
+
+    ```json5
+    {
+        "code": "string"
+    }
+    ```
+
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": {
+            "token": "string"
+        }
+    }
+    ```
+  
+- **POST** `/api/auth/logout`
+  > Logout
+  
+  - Response:
+
+    ```json5
+    204: null
+    ```
+
+### Dengue
+
+#### Form
+
+- **GET** `/api/dengue/form`
+  > Get all forms
+  
+  - Query:
+    - user_id: "string"
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": {
+            "id": 123,
+            "building_id": 123,
+            "form": {
+                "1": {
+                    "title": "string",
+                    "value": true | "string"
+                },
+                "1_sub": {
+                    "title": "string",
+                    "value": true | "string"
+                }
+            },
+            "inspection_time": "datetime",
+            "created_time": "datetime",
+            "updated_time": "datetime"
+        }
+    }
+    ```
+
+- **POST** `/api/dengue/form`
+  > Create a form
+
+  - Accept: application/json
+  - Request:
+
+    ```json5
+    {
+        "building_id": 123,
+        "form": {
+            "1": {
+                "title": "string",
+                "value": true | "string"
+            },
+            "1_sub": {
+                "title": "string",
+                "value": true | "string"
+            }
+        },
+        "inspection_time": "datetime",
+    }
+    ```
+
+  - Response:
+
+    ```json5
+    201: null
+    ```
+
+- **GET** `/api/dengue/form-report`
+  > Download report for all forms
+
+  - Query:
+    - from: "datetime"
+    - to: "datetime"
+  - Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  - Response: 200 (.xlsx)
+
+- **GET** `/api/dengue/form-report/<id>`
+  > Download report for the form
+
+  - Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  - Response: 200 (.xlsx)
+
+- **GET** `/api/dengue/form-status`
+  > Get filled status
+  >
+  > It returns months for which the form has not yet been filled in for last year
+  
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": [
+            {
+                "id": 123,
+                "status": ["datatime"]
+            }
+        ]
+    }
+    ```
+
+- **DELETE** `/api/dengue/form/<id>`
+  > Delete the form
+
+  - Response:
+
+    ```json5
+    204: null
+    ```
+
+#### Building
+
+- **Get** `/api/dengue/building`
+  > Get all buildings
+  >
+  > It's should return results depending on the current user
+
+  - Query:
+    - search: "string"
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": [
+            {
+                "id": 123,
+                "name": "string",
+                "user_id": "string" | null,
+                "created_time": "datetime",
+                "updated_time": "datetime"
+            }
+        ]
+    }
+    ```
+
+- **POST** `/api/dengue/building`
+  > Create a building
+  
+  - Accept: application/json
+  - Request:
+
+    ```json5
+    {
+        "name": "string",
+    }
+    ```
+
+  - Response:
+
+    ```json5
+    201: null
+    ```
+
+- **GET** `/api/dengue/building/<id>`
+  > Get the building
+  
+  - Content-Type: application/json
+  - Reponse:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": {
+            "id": 123,
+            "name": "string",
+            "user_id": "string" | null,
+            "created_time": "datetime",
+            "updated_time": "datetime"
+        }
+    }
+    ```
+
+- **PATCH** `/api/dengue/building/<id>`
+  > Modify the building manager
+  
+  - Accept: application/json
+  - Request:
+
+    ```json5
+    {
+        "name": "string",
+        "user_id": "string" | null
+    }
+    ```
+
+- **DELETE** `/api/dengue/building/<id>`
+  > Delete the building
+
+  - Response:
+
+    ```json5
+    204: null
+    ```
+
+### Restaurant
+
+- **GET** `/api/restaurant`
+  > Get all restaurant
+  
+  - Query:
+    - category: "string"
+    - visibility: false (default: false)
+    - limit: 123 (default: 10)
+    - page: 123 (default: 1)
+    - search: "string"
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": {
+            "page": 123,
+            "total_pages": 123,
+            "restaurants": [
+                {
+                    "id": 123,
+                    "title": "string",
+                    "category": "string",
+                    "item": "string",
+                    "attachments": [123],
+                    "view": 123,
+                    "valid": true,
+                    "visibility": true,
+                    "updated_time": "datetime",
+                    "created_time": "datetime"
+                }
+            ]
+        }
+    }
+    ```
+
+- **POST** `/api/restaurant`
+  > Create a restaurant
+  
+  - Accept: application/json
+  - Request:
+
+    ```json5
+    {
+        "title": "string",
+        "category": "string",
+        "item": "string",
+        "attachments": [123],
+        "valid": true,
+        "visibility": true,
+    }
+    ```
+
+  - Response:
+
+    ```json5
+    201: null
+    ```
+
+- **GET** `/api/restaurant/report`
+  > Download all restaurants report
+
+  - Query:
+    - from: "datetime"
+    - to: "datetime"
+  - Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  - Response: 200 (.xlsx)
+
+- **GET** `/api/restaurant/<id>`
+  > Get the restaurant
+
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": {
+            "id": 123,
+            "title": "string",
+            "category": "string",
+            "item": "string",
+            "attachments": [123],
+            "view": 123,
+            "valid": true,
+            "visibility": true,
+            "updated_time": "datetime",
+            "created_time": "datetime"
+        }
+    }
+    ```
+
+- **PATCH** `/api/restaurant/<id>`
+  > Modify the restaurant
+
+  - Accept: application/json
+  - Request:
+  
+    ```json5
+    {
+        "title": "string",
+        "category": "string",
+        "item": "string",
+        "attachments": [123],
+        "valid": true,
+        "visibility": true,
+    }
+    ```
+
+  - Response:
+
+    ```json5
+    204: null
+    ```
+
+- **DELETE** `/api/restaurant/<id>`
+  > Delete the restaurant
+
+  - Response:
+
+    ```json5
+    204: null
+    ```
+
+### Download
+
+- **GET** `/api/download`
+  > Get all download links
+
+  - Query:
+    - search: "string"
+    - column: "string" (seperated by '+')
+    - visibility: false (defalt false)
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "string",
+        "data": [
+            {
+                "id": 123,
+                "title": "string",
+                "column": "string",
+                "visibility": true,
+                "updated_time": "datetime",
+                "created_time": "datetime"
+            }
+        ]
+    }
+    ```
+
+- **POST** `/api/download`
+  > Create a download link
+
+  - Accept: multipart/from-data
+  - Fields:
+    - blob: (file)
+    - title: "string"
+    - column: "string"
+    - visibility: false
+  - Response:
+
+    ```json5
+    201: null
+    ```
+
+- **GET** `/api/download/<id>`
+  > Download the file
+
+  - Content-Type: (file)
+  - Response: 200 (file)
+
+- **GET** `/api/download/<id>/info`
+  > Get the download info
+
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": {
+            "id": 123,
+            "title": "string",
+            "column": "string",
+            "visibility": true,
+            "updated_time": "datetime",
+            "created_time": "datetime"
+        }
+    }
+    ```
+
+- **PATCH** `/api/download/<id>`
+  > Modify the download
+
+  - Accept: application/json
+  - Request:
+
+    ```json5
+    {
+        "title": "string",
+        "column": "string",
+        "visibility": true
+    }
+    ```
+
+  - Response:
+
+    ```json5
+    204: null
+    ```
+
+### User
+
+- **GET** `/api/user/me`
+  > Get the current user info
+  
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": {
+            "id": "string",
+            "chinese_name": "string",
+            "role": 123,
+            "created_time": "datetime",
+            "updated_time": "datetime"
+        }
+    }
+    ```
+
+- **GET** `/api/user`
+  > Get all users
+  
+  - Query:
+    - role: number
+    - search: "string"
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": [
+            {
+                "id": "string",
+                "chinese_name": "string",
+                "role": 123,
+                "created_time": "datetime",
+                "updated_time": "datetime"
+            }
+        ]
+    }
+    ```
+
+- **GET** `/api/user/<id>`
+  > Get the user
+
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": {
+            "id": "string",
+            "chinese_name": "string",
+            "role": 123,
+            "created_time": "datetime",
+            "updated_time": "datetime"
+        }
+    }
+    ```
+
+- **PATCH** `/api/user/<id>`
+  > Modify the user's role
+  
+  - Accept: application/json
+  - Request:
+
+    ```json5
+    {
+        "role": 123
+    }
+    ```
+
+  - Response:
+
+    ```json5
+    204: null
     ```
 
 ### Insurance
