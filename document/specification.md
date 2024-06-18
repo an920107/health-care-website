@@ -425,21 +425,21 @@
 
 > time formate iso-8601
 
-```json
+```json5
 500: {
     "message": "Internal Sever Error",
     "data": {}
 }
 ```
 
-```json
+```json5
 422: {
     "message": "'...' not found in json",
     "data": {}
 }
 ```
 
-```json
+```json5
 404: {
     "message": "... not found",
     "data": {}
@@ -460,7 +460,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "get attachmet info successful",
         "data": {
@@ -481,7 +481,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     201: {
         "message": "create attachment successful",
         "data": {
@@ -498,7 +498,7 @@
 
   - Response:
 
-    ```json
+    ```json5
     204: null
     ```
 
@@ -519,7 +519,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     201: {
         "message": "create attachment successful",
         "data": {
@@ -536,7 +536,7 @@
 
   - Response: 204
 
-    ```json
+    ```json5
     204: null
     ```
 
@@ -548,7 +548,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "get all carousels successful",
         "data": [
@@ -569,7 +569,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "get all carousels successful",
         "data": {
@@ -598,7 +598,7 @@
     - content: "string"
   - Response:
 
-    ```json
+    ```json5
     201: null
     ```
 
@@ -612,7 +612,7 @@
     - content: "string"
   - Response:
 
-    ```json
+    ```json5
     204: null
     ```
 
@@ -621,7 +621,7 @@
 
   - Response:
 
-    ```json
+    ```json5
     204: null
     ```
 
@@ -641,7 +641,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "get post successful",
         "data": [
@@ -667,7 +667,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "get post successful",
         "data": {
@@ -691,7 +691,7 @@
   - Accept: application/json
   - Request:
 
-    ```json
+    ```json5
     {
         "title": "string",
         "content": "string",
@@ -704,7 +704,7 @@
 
   - Response:
 
-    ```json
+    ```json5
     201: null
     ```
 
@@ -718,7 +718,7 @@
   - Accept: application/json
   - Request:
 
-    ```json
+    ```json5
     {
         "code": "string"
     }
@@ -727,7 +727,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "",
         "data": {
@@ -741,7 +741,7 @@
   
   - Response:
 
-    ```json
+    ```json5
     204: null
     ```
 
@@ -757,7 +757,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "",
         "data": {
@@ -806,7 +806,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "",
         "data": [
@@ -827,7 +827,7 @@
   - Accept: application/json
   - Request:
 
-    ```json
+    ```json5
     {
         "name": "string",
     }
@@ -835,7 +835,7 @@
 
   - Response:
 
-    ```json
+    ```json5
     201: null
     ```
 
@@ -845,7 +845,7 @@
   - Content-Type: application/json
   - Reponse:
 
-    ```json
+    ```json5
     200: {
         "message": "",
         "data": {
@@ -864,7 +864,7 @@
   - Accept: application/json
   - Request:
 
-    ```json
+    ```json5
     {
         "name": "string",
         "user_id": "string" | null
@@ -876,7 +876,7 @@
 
   - Response:
 
-    ```json
+    ```json5
     204: null
     ```
 
@@ -892,7 +892,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "",
         "data": {
@@ -914,7 +914,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "",
         "data": [
@@ -935,7 +935,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json
+    ```json5
     200: {
         "message": "",
         "data": {
@@ -954,7 +954,7 @@
   - Accept: application/json
   - Request:
 
-    ```json
+    ```json5
     {
         "role": 123
     }
@@ -962,7 +962,7 @@
 
   - Response:
 
-    ```json
+    ```json5
     204: null
     ```
 
