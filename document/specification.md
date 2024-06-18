@@ -222,8 +222,6 @@
       - Activity (活動快訊)
       - Health (健康焦點)
       - Nutrution (營養報報)
-      - Carousel (橫幅)
-        > Carousel posts bind with carousel on homepage, which cannot be select by user
     - Visibility
     - Importance
     - Content
@@ -406,9 +404,11 @@
     - `admin`: Show all accessible admin pages
       - `carousel`: Show all uploaded carousel, to create and to manage them
       - `post`: Show all created post, to create and manage them
-        - `edit` / `[id]`: Create a new post or edit an existing one
+        - `new`: Create a new carousel
+        - `edit` / `[id]`: Edit an existing carousel
       - `restaurant`: Show all created restaurant reports
-        - `edit` / `[id]`: Create a new restaurant report or edit an existing one
+        - `new`: Create a new restaurant report
+        - `edit` / `[id]`: Edit an existing restaurant report
       - `page` / `edit` / `[id]`: Edit the specified static page
       - `dengue`: Show all building managers and manage them, and download the report
       - `insurance`: Show all insurance information, create and manage them
@@ -420,6 +420,551 @@
   - `callback`: Receive auth token from the backend server
 
 ## APIs
+
+### Execptions
+
+> time formate iso-8601
+
+```json
+500: {
+    "message": "Internal Sever Error",
+    "data": {}
+}
+```
+
+```json
+422: {
+    "message": "'...' not found in json",
+    "data": {}
+}
+```
+
+```json
+404: {
+    "message": "... not found",
+    "data": {}
+}
+```
+
+### Attachment
+
+- **GET** `/api/attachmet/<id>`
+  > Get an attachment blob
+  
+  - Content-Type: (file)
+  - Response: 200 (file)
+
+- **GET** `/api/attachmet/<id>/info`
+  > Get an attachment info
+
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "get attachmet info successful",
+        "data": {
+            "id": 123,
+            "filename": "string",
+            "updated_time": "datetime",
+            "created_time": "datetime"
+        }
+    }
+    ```
+
+- **POST** `/api/attachment`
+  > Upload an attachment
+  
+  - Accept: multipart/form-data
+  - Fields:
+    - blob: (file)
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    201: {
+        "message": "create attachment successful",
+        "data": {
+            "id": 123,
+            "filename": "string",
+            "updated_time": "datetime",
+            "created_time": "datetime"
+        }
+    }
+    ```
+
+- **DELETE** `/api/attachmet/<id>`
+  > Delete an attachment
+
+  - Response:
+
+    ```json
+    204: null
+    ```
+
+### Image
+
+- **GET** `/api/image/<id>`
+  > Get an image blob
+
+  - Content-Type: (image)
+  - Response: 200 (image)
+
+- **POST** `/api/image`
+  > Upload an image
+  
+  - Accept: multipart/form-data
+  - Fields:
+    - blob: (image)
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    201: {
+        "message": "create attachment successful",
+        "data": {
+            "id": 123,
+            "filename": "string",
+            "updated_time": "datetime",
+            "created_time": "datetime"
+        }
+    }
+    ```
+
+- **DELETE** `/api/image/<id>`
+  > Delete an image
+
+  - Response: 204
+
+    ```json
+    204: null
+    ```
+
+### Carousel
+
+- **GET** `/api/carousel`
+  > Get all carousels
+  
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "get all carousels successful",
+        "data": [
+            {
+                "id": 123,
+                "title": "string",
+                "content": "string",
+                "updated_time": "datetime",
+                "created_time": "datetime"
+            },
+        ]
+    }
+    ```
+
+- **GET** `/api/carousel/<id>/info`
+  > Get the carousel
+  
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "get all carousels successful",
+        "data": {
+            "id": 123,
+            "title": "string",
+            "content": "string",
+            "updated_time": "datetime",
+            "created_time": "datetime"
+        }
+    }
+    ```
+
+- **GET** `/api/carousel/<id>`
+  > Get the carousel
+  
+  - Content-Type: (image)
+  - Response: 200 (image)
+
+- **POST** `/api/carousel`
+  > Create a carousel
+
+  - Accept: multipart/from-data
+  - Fields:
+    - blob: (file)
+    - title: "string"
+    - content: "string"
+  - Response:
+
+    ```json
+    201: null
+    ```
+
+- **PATCH** `/api/carousel/<id>`
+  > Modify the carousel info
+
+  - Accept: multipart/from-data
+  - Fields:
+    - blob: (file)
+    - title: "string"
+    - content: "string"
+  - Response:
+
+    ```json
+    204: null
+    ```
+
+- **DELETE** `/api/carousel/<id>`
+  > Delete a carousel
+
+  - Response:
+
+    ```json
+    204: null
+    ```
+
+### Post
+
+> Static posts are pre-defined from 0 ~ 99, the id of normal posts should start from 100
+
+- **GET** `/api/post`
+  > Get all posts
+  
+  - Query:
+    - column: "string" (combined with '+')
+    - visibility: boolean (default: false)
+    - limit: number (default: 10)
+    - page: number (default: 1)
+    - search: "string"
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "get post successful",
+        "data": [
+            {
+                "id": "number",
+                "title": "string",
+                "content": "string",
+                "column": "string",
+                "attachments": [123],
+                "view": 123,
+                "importance": true,
+                "visibility": true,
+                "updated_time": "datetime",
+                "created_time": "datetime"
+            }
+        ]
+    }
+    ```
+
+- **GET** `/api/post/<id>`
+  > Get a post
+
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "get post successful",
+        "data": {
+                "id": "number",
+                "title": "string",
+                "content": "string",
+                "column": "string",
+                "attachments": [123],
+                "view": 123,
+                "importance": true,
+                "visibility": true,
+                "updated_time": "datetime",
+                "created_time": "datetime"
+        }
+    }
+    ```
+
+- **POST** `/api/post`
+  > Create a post
+
+  - Accept: application/json
+  - Request:
+
+    ```json
+    {
+        "title": "string",
+        "content": "string",
+        "column": "string",
+        "attachments": [123],
+        "importance": true,
+        "visibility": true
+    }
+    ```
+
+  - Response:
+
+    ```json
+    201: null
+    ```
+
+### Insurance
+
+### Auth
+
+- **POST** `/api/auth/login`
+  > Login with portal oauth code
+
+  - Accept: application/json
+  - Request:
+
+    ```json
+    {
+        "code": "string"
+    }
+    ```
+
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "",
+        "data": {
+            "token": "string"
+        }
+    }
+    ```
+  
+- **POST** `/api/auth/logout`
+  > Logout
+  
+  - Response:
+
+    ```json
+    204: null
+    ```
+
+### Dengue
+
+#### Form
+
+- **GET** `/api/dengue/form`
+  > Get all forms
+  
+  - Query:
+    - user_id: "string"
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "",
+        "data": {
+            "id": 123,
+            "building_id": 123,
+            "form": {
+                "1": {
+                    "title": "string",
+                    "value": true | "string"
+                },
+                "1_sub": {
+                    "title": "string",
+                    "value": true | "string"
+                }
+            },
+            "filled_time": "datetime",
+            "created_time": "datetime",
+            "updated_time": "datetime"
+        }
+    }
+    ```
+
+- **POST** `/api/dengue/form`
+  > Create a form
+
+- **GET** `/api/dengue/form-report`
+  > Download report for all forms
+
+- **GET** `/api/dengue/form-report/<id>`
+  > Download report for the form
+
+- **GET** `/api/dengue/form-status`
+  > Get status of all forms
+
+- **DELETE** `/api/dengue/form/<id>`
+  > Delete the form
+
+#### Building
+
+- **Get** `/api/dengue/building`
+  > Get all buildings
+
+  - Query:
+    - search: "string"
+    - user_id: "string"
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "",
+        "data": [
+            {
+                "id": 123,
+                "name": "string",
+                "user_id": "string" | null,
+                "created_time": "datetime",
+                "updated_time": "datetime"
+            }
+        ]
+    }
+    ```
+
+- **POST** `/api/dengue/building`
+  > Create a building
+  
+  - Accept: application/json
+  - Request:
+
+    ```json
+    {
+        "name": "string",
+    }
+    ```
+
+  - Response:
+
+    ```json
+    201: null
+    ```
+
+- **GET** `/api/dengue/building/<id>`
+  > Get the building
+  
+  - Content-Type: application/json
+  - Reponse:
+
+    ```json
+    200: {
+        "message": "",
+        "data": {
+            "id": 123,
+            "name": "string",
+            "user_id": "string" | null,
+            "created_time": "datetime",
+            "updated_time": "datetime"
+        }
+    }
+    ```
+
+- **PATCH** `/api/dengue/building/<id>`
+  > Modify the building manager
+  
+  - Accept: application/json
+  - Request:
+
+    ```json
+    {
+        "name": "string",
+        "user_id": "string" | null
+    }
+    ```
+
+- **DELETE** `/api/dengue/building/<id>`
+  > Delete the building
+
+  - Response:
+
+    ```json
+    204: null
+    ```
+
+### Restaurant
+
+### Download
+
+### User
+
+- **GET** `/api/me`
+  > Get the current user info
+  
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "",
+        "data": {
+            "id": "string",
+            "chinese_name": "string",
+            "role": 123,
+            "created_time": "datetime",
+            "updated_time": "datetime"
+        }
+    }
+    ```
+
+- **GET** `/api/user`
+  > Get all users
+  
+  - Query:
+    - role: number
+    - search: "string"
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "",
+        "data": [
+            {
+                "id": "string",
+                "chinese_name": "string",
+                "role": 123,
+                "created_time": "datetime",
+                "updated_time": "datetime"
+            }
+        ]
+    }
+    ```
+
+- **GET** `/api/user/<id>`
+  > Get the user
+
+  - Content-Type: application/json
+  - Response:
+
+    ```json
+    200: {
+        "message": "",
+        "data": {
+            "id": "string",
+            "chinese_name": "string",
+            "role": 123,
+            "created_time": "datetime",
+            "updated_time": "datetime"
+        }
+    }
+    ```
+
+- **PATCH** `/api/user/<id>`
+  > Modify the user's role
+  
+  - Accept: application/json
+  - Request:
+
+    ```json
+    {
+        "role": 123
+    }
+    ```
+
+  - Response:
+
+    ```json
+    204: null
+    ```
 
 ## Authentication
 
