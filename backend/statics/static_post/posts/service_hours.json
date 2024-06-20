@@ -1,1 +1,9 @@
-{"static_post_name": "service_hours", "content": "[{\"insert\":\"\\n\"}]", "attachments": "[\"625e8c6d-547c-4448-bcf0-3441ccebcca9__2024-python__1.xlsx\"]", "viewer": 5, "id": 1, "create_time": "2024-05-24 02:53:52.025271", "update_time": "2024-05-24 02:53:52.025278"}
+{
+    "static_post_name": "service_hours",
+    "content": "[{\"insert\":\"\\n\"}]",
+    "attachments": "[]",
+    "viewer": 0,
+    "id": 1,
+    "create_time": "2024-05-24 02:53:52.025271",
+    "update_time": "2024-05-24 02:53:52.025278"
+}
