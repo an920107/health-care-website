@@ -8,20 +8,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
 import Drawer from "./drawer";
 import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
 import { getPageTopics } from "@/domain/usecase/staticPage.usecase";
-import { Link } from "@/navigation";
+import { Link, usePathname } from "@/navigation";
+import DropdownMenu from "@/components/dropdown-menu";
+import { useSearchParams } from "next/navigation";
 
 export default function NavigationBar() {
   const homeTrans = useTranslations("Home");
   const pageTrans = useTranslations("Page");
 
   const pathname = usePathname();
-  const currentLanguage = pathname.split("/")[1];
+  const query = useSearchParams().toString();
 
   const pageTopics = getPageTopics();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState<boolean>(false);
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -43,12 +45,27 @@ export default function NavigationBar() {
             {homeTrans("ncu_homepage")}
           </Button>
         </Link>
-        <Link href={`${currentLanguage === "zh" ? "en" : "zh"}`}>
-          <Button>
+        <div>
+          <Button onClick={() => setIsLanguageDropdownOpen(true)}>
             <FontAwesomeIcon icon={faGlobe} className="size-5 me-2" />
             {homeTrans("language")}
           </Button>
-        </Link>
+          <DropdownMenu
+            isOpen={isLanguageDropdownOpen}
+            onCancel={() => setIsLanguageDropdownOpen(false)}
+          >
+            {
+              [["zh", "中文"], ["en", "English"]].map(([locale, label]) => (
+                <Link
+                  key={locale} href={{ pathname, query }} locale={locale}
+                  className="hover:bg-black hover:bg-opacity-5 px-2 rounded-sm"
+                >
+                  {label}
+                </Link>
+              ))
+            }
+          </DropdownMenu>
+        </div>
         <Link href="https://www.instagram.com/ncu7270">
           <Button>
             <FontAwesomeIcon icon={faInstagram} className="size-5 my-0.5" />
@@ -83,7 +100,7 @@ export default function NavigationBar() {
         </div>
       </div>
 
-      <Drawer isOpen={isDrawerOpen} closeCallback={toggleDrawer}>
+      <Drawer isOpen={isDrawerOpen} onClose={toggleDrawer}>
         <div className="mx-4 mt-20">
           <h2>{homeTrans("menu")}</h2>
           <hr className="my-4" />
