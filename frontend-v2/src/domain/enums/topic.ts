@@ -1,8 +1,8 @@
-export enum PageTopic {
+export enum TopicEnum {
     Workteam = "work_team",
     ServiceTime = "service_hours",
     Transportation = "traffic_map",
-    FreshmenCheckUp = "freshmanHealth_check",
+    FreshmenCheckUp = "freshman_health_check",
     PhysiqueCheck = "new_employee_physical_exam",
     SpecialCheck = "regular_health_check",
     EmergencyHotline = "emergency_hotline",
@@ -21,7 +21,7 @@ export enum PageTopic {
     Regulation = "regulation",
 }
 
-export enum PageGroup {
+export enum TopicGroupEnum {
     About = "about",
     CheckUp = "check_up",
     Emergency = "emergency",

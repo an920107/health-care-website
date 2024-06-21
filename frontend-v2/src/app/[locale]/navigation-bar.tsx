@@ -1,17 +1,17 @@
 "use client";
 
-import Button from "@/components/button"
-import Logo from "@/components/logo";
+import Button from "@/app/components/button"
+import Logo from "@/app/components/logo";
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons"
 import { faBars, faGlobe, faGraduationCap, faHouse } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
 import Drawer from "./drawer";
 import { useTranslations } from "next-intl";
-import { getPageTopics } from "@/domain/usecase/staticPage.usecase";
 import { Link, usePathname } from "@/navigation";
-import DropdownMenu from "@/components/dropdown-menu";
+import DropdownMenu from "@/app/components/dropdown-menu";
 import { useSearchParams } from "next/navigation";
+import TopicUseCase from "@/application/useCases/topic";
 
 export default function NavigationBar() {
   const homeTrans = useTranslations("Home");
@@ -20,7 +20,7 @@ export default function NavigationBar() {
   const pathname = usePathname();
   const query = useSearchParams().toString();
 
-  const pageTopics = getPageTopics();
+  const topics = TopicUseCase.getTopics();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState<boolean>(false);
@@ -58,7 +58,7 @@ export default function NavigationBar() {
               [["zh", "中文"], ["en", "English"]].map(([locale, label]) => (
                 <Link
                   key={locale} href={{ pathname, query }} locale={locale}
-                  className="hover:bg-black hover:bg-opacity-5 px-2 rounded-sm"
+                  className="hover:bg-black hover:bg-opacity-5 px-2 py-1 rounded-md"
                 >
                   {label}
                 </Link>
@@ -105,7 +105,7 @@ export default function NavigationBar() {
           <h2>{homeTrans("menu")}</h2>
           <hr className="my-4" />
           {
-            Object.entries(pageTopics).map(([k, v]) => (
+            Object.entries(topics).map(([k, v]) => (
               <Link href={`/page/${k}`} key={k}>
                 <Button>{pageTrans(k)}</Button>
               </Link>
