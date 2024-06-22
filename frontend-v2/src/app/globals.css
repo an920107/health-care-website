@@ -14,6 +14,10 @@ h3 {
   @apply text-xl font-bold;
 }
 
+h4 {
+  @apply text-lg font-bold;
+}
+
 .link {
   @apply text-yellow-900 underline;
 }

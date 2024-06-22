@@ -11,23 +11,15 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/navigation";
 import DropdownMenu from "@/app/components/dropdown-menu";
 import { useSearchParams } from "next/navigation";
-import TopicUseCase from "@/application/useCases/topic";
 
 export default function NavigationBar() {
   const homeTrans = useTranslations("Home");
-  const pageTrans = useTranslations("Page");
 
   const pathname = usePathname();
   const query = useSearchParams().toString();
 
-  const topics = TopicUseCase.getTopics();
-
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState<boolean>(false);
-
-  const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-  };
 
   return (
     <div>
@@ -79,40 +71,30 @@ export default function NavigationBar() {
       </div>
 
       {/* Inner links */}
-      <div className="flex justify-between items-center container mx-auto">
-        <Button className="md:hidden" onClick={toggleDrawer}>
+      <div className="flex flex-row justify-between items-center container mx-auto">
+        <Button className="md:hidden" onClick={() => setIsDrawerOpen(true)}>
           <FontAwesomeIcon icon={faBars} className="size-5 my-2" />
         </Button>
-        <Logo />
-        <div className="flex items-center max-md:hidden gap-2">
-          <Link href="/page/workteam" className="text-yellow-900">
+        <div className="flex flex-row w-full justify-center md:justify-start">
+          <Logo />
+        </div>
+        <div className="flex flex-row items-center max-md:hidden gap-2">
+          <Link href="/page/workteam" className="text-yellow-900 text-nowrap">
             <Button>{homeTrans("about_us")}</Button>
           </Link>
-          <Link href="/page/campus_aed" className="text-yellow-900">
+          <Link href="/page/campus_aed" className="text-yellow-900 text-nowrap">
             <Button>{homeTrans("aed")}</Button>
           </Link>
-          <Link href="/page/regulation" className="text-yellow-900">
+          <Link href="/page/regulation" className="text-yellow-900 text-nowrap">
             <Button>{homeTrans("regulation")}</Button>
           </Link>
-          <Link href="/page/download_area" className="text-yellow-900">
+          <Link href="/page/download_area" className="text-yellow-900 text-nowrap">
             <Button>{homeTrans("download_area")}</Button>
           </Link>
         </div>
       </div>
 
-      <Drawer isOpen={isDrawerOpen} onClose={toggleDrawer}>
-        <div className="mx-4 mt-20">
-          <h2>{homeTrans("menu")}</h2>
-          <hr className="my-4" />
-          {
-            Object.entries(topics).map(([k, v]) => (
-              <Link href={`/page/${k}`} key={k}>
-                <Button>{pageTrans(k)}</Button>
-              </Link>
-            ))
-          }
-        </div>
-      </Drawer>
+      <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
     </div>
   )
 }

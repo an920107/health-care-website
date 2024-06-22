@@ -15,7 +15,9 @@ export default async function RootLayout({
     <NextIntlClientProvider messages={messages}>
       <div style={{ minHeight: "calc(100vh)" }}>
         <NavigationBar />
-        {children}
+        <div className="container mx-auto">
+          {children}
+        </div>
       </div>
       <Footer />
     </NextIntlClientProvider>
