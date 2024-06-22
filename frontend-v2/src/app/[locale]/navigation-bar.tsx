@@ -72,9 +72,9 @@ export default function NavigationBar() {
 
       {/* Inner links */}
       <div className="flex flex-row justify-between items-center container mx-auto">
-        <Button className="md:hidden" onClick={() => setIsDrawerOpen(true)}>
-          <FontAwesomeIcon icon={faBars} className="size-5 my-2" />
-        </Button>
+        <div className="md:hidden" onClick={() => setIsDrawerOpen(true)}>
+          <FontAwesomeIcon icon={faBars} className="size-5" />
+        </div>
         <div className="flex flex-row w-full justify-center md:justify-start">
           <Logo />
         </div>

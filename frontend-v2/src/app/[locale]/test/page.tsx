@@ -2,20 +2,24 @@
 
 export default function TestPage() {
   return (
-    <div className="flex flex-col h-[200px] cursor-pointer" onMouseDown={() => console.log("mouse down")} onMouseUp={() => console.log("mouse up")}>
-      <p>1</p>
-      <div className="flex flex-col flex-1 overflow-y-auto">
-        {
-          Array.from({ length: 100 }).map((_, index) => (
-            <p key={index}>in{index}</p>
-          ))
-        }
-      </div>
-      <p>2</p>
-      <p>3</p>
-      <p>4</p>
-      <p>5</p>
-      <p>6</p>
+    // <div className="flex flex-row gap-2">
+    //   <Circle isSelected={false} />
+    //   <Circle isSelected={true} />
+    //   <Circle isSelected={false} />
+    //   <Circle isSelected={false} />
+    // </div>
+    <Circle isSelected={false} />
+  )
+}
+
+function Circle({
+  isSelected
+}: {
+  isSelected: boolean
+}) {
+  return (
+    <div className={`size-10 drop ${isSelected ? "bg-opacity-80" : "bg-opacity-50"} bg-black`}>
+      {/* <div className={`absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 ${isSelected ? "size-1.5" : ""} rounded-full bg-white bg-opacity-80`}></div> */}
     </div>
   )
 }

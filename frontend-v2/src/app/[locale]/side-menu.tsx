@@ -38,7 +38,7 @@ function SideMenuGroup({
   const topicTrans = useTranslations("Topic");
 
   return (
-    <div className="flex flex-col items-center bg-yellow-700 bg-opacity-5 border border-gray-200 rounded-lg shadow-md py-4 px-6 gap-2">
+    <div className="flex flex-col items-center bg-yellow-700 bg-opacity-5 rounded-xl shadow-md py-4 px-6 gap-2">
       <h4>{topicTrans(group)}</h4>
       <hr className="w-full" />
       {
