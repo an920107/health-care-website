@@ -8,10 +8,10 @@ from pathlib import Path
 from models.attachment_model import Attachment, db
 from flask import Blueprint, request, send_file, current_app
 
-activity_blueprint = Blueprint('attachment', __name__)
+attachment_blueprint = Blueprint('attachment', __name__)
 
 
-@activity_blueprint.route('<int:id_>', methods=['GET'])
+@attachment_blueprint.route('<int:id_>', methods=['GET'])
 def get_attachment(id_):
     attachment = Attachment.query.get(id_)
 
@@ -21,7 +21,7 @@ def get_attachment(id_):
     return send_file(attachment.filepath, as_attachment=True, download_name=attachment.filename)
 
 
-@activity_blueprint.route('<int:id_>/info', methods=['GET'])
+@attachment_blueprint.route('<int:id_>/info', methods=['GET'])
 def get_attachment_info(id_):
     attachment = Attachment.query.get(id_)
 
@@ -31,7 +31,7 @@ def get_attachment_info(id_):
     return CustomResponse.success('get attachment info success', attachment.to_dict())
 
 
-@activity_blueprint.route('', methods=['POST'])
+@attachment_blueprint.route('', methods=['POST'])
 def post_attachment():
     file = request.files['file']
     file_name = file.filename
@@ -47,7 +47,7 @@ def post_attachment():
     return CustomResponse.success('post attachment success', attachment.to_dict())
 
 
-@activity_blueprint.route('<int:id_>', methods=['DELETE'])
+@attachment_blueprint.route('<int:id_>', methods=['DELETE'])
 def delete_attachment(id_):
     attachment = Attachment.query.get(id_)
 
