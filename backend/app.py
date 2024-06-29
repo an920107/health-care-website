@@ -11,6 +11,7 @@ from models.database import db
 from flask_migrate import Migrate
 
 from blueprints.attachment_blueprint import attachment_blueprint
+from blueprints.image_blueprint import image_blueprint
 
 swagger_template = json.loads(open('docs/swagger_template.json', 'r').read())
 
@@ -61,6 +62,7 @@ def create_app(status='development'):
     CORS(app, resources={r"/*": {"origins": "*", "allow_headers": "*", "expose_headers": "*"}}, )
 
     app.register_blueprint(attachment_blueprint, url_prefix='/api/attachment')
+    app.register_blueprint(image_blueprint, url_prefix='/api/image')
 
     return app
 

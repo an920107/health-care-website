@@ -57,11 +57,28 @@
             "id": 1,
             "filename": "filename",
             "filepath": "file/uuid",
-            "created_time": "2024-01-01",
-            "updated_time": "2024-01-01"
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
           }
         }
       }
-    }
+    },
+    "ImageInfo": {"type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get Image info success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "filename": "filename",
+            "filepath": "file/uuid",
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }}
   }
 }

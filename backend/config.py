@@ -4,6 +4,7 @@ import logging
 class Config:
     LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     ATTACHMENT_DIR = 'statics/attachments'
+    IMAGE_DIR = 'statics/images'
 
 
 class DevelopmentConfig(Config):
