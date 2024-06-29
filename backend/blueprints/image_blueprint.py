@@ -34,7 +34,7 @@ def get_image(id_):
     image = Image.query.get(id_)
 
     if image is None:
-        return CustomResponse.not_found('image not found', '')
+        return CustomResponse.not_found('image not found', {})
 
     return send_file(image.filepath)
 
