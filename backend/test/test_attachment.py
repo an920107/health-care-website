@@ -57,6 +57,6 @@ def test_get_item(client):
     assert response.status_code == 200
 
 
-def test_delete_item_info(client):
+def test_delete_item(client):
     response = client.delete(f'/api/attachment/{attachment_id}')
     assert response.status_code == 204
