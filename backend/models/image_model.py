@@ -8,4 +8,4 @@ class Image(SchemaMixin, db.Model):
     filepath = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):
-        return f'<Attachment {self.filename}>'
+        return f'<Image {self.filename}>'

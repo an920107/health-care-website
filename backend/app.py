@@ -8,10 +8,10 @@ from flasgger import Swagger
 from flask_cors import CORS
 from config import DevelopmentConfig, ProductionConfig, TestingConfig
 from models.database import db
-from flask_migrate import Migrate
 
 from blueprints.attachment_blueprint import attachment_blueprint
 from blueprints.image_blueprint import image_blueprint
+from blueprints.carousel_blueprint import carousel_blueprint
 
 swagger_template = json.loads(open('docs/swagger_template.json', 'r').read())
 
@@ -51,18 +51,17 @@ def create_app(status='development'):
     configure_logging(app)
 
     db.init_app(app)
-    migrate = Migrate(app, db)
 
-    with app.app_context():
-        # db.drop_all()
-        # db.create_all()
-        db.session.commit()
+    # with app.app_context():
+    #     db.drop_all()
+    #     db.create_all()
 
     Swagger(app, template=swagger_template)
     CORS(app, resources={r"/*": {"origins": "*", "allow_headers": "*", "expose_headers": "*"}}, )
 
     app.register_blueprint(attachment_blueprint, url_prefix='/api/attachment')
     app.register_blueprint(image_blueprint, url_prefix='/api/image')
+    app.register_blueprint(carousel_blueprint, url_prefix='/api/carousel')
 
     return app
 
