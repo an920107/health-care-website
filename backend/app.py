@@ -1,3 +1,4 @@
+import json
 import uuid
 import logging.config
 import os
@@ -9,27 +10,20 @@ from config import DevelopmentConfig, ProductionConfig, TestingConfig
 from models.database import db
 from flask_migrate import Migrate
 
+from blueprints.attachment_blueprint import attachment_blueprint
+
+swagger_template = json.loads(open('docs/swagger_template.json', 'r').read())
+
 
 def configure_logging(app):
     log_config = {
         'version': 1,
         'disable_existing_loggers': False,
-        'handlers': {
-            'file': {
-                'level': app.config['LOGGING_LEVEL'],
-                'class': 'logging.FileHandler',
-                'filename': app.config['LOGGING_FILENAME'],
-                'formatter': 'default',
-            },
-        },
+        'handlers': app.config['LOGGING_HANDLERS'],
         'formatters': {
             'default': {
                 'format': app.config['LOGGING_FORMAT'],
             },
-        },
-        'root': {
-            'level': app.config['LOGGING_LEVEL'],
-            'handlers': ['file']
         }
     }
     logging.config.dictConfig(log_config)
@@ -59,13 +53,14 @@ def create_app(status='development'):
     migrate = Migrate(app, db)
 
     with app.app_context():
-        db.drop_all()
-        db.create_all()
+        # db.drop_all()
+        # db.create_all()
         db.session.commit()
 
-    Swagger(app)
-
+    Swagger(app, template=swagger_template)
     CORS(app, resources={r"/*": {"origins": "*", "allow_headers": "*", "expose_headers": "*"}}, )
+
+    app.register_blueprint(attachment_blueprint, url_prefix='/api/attachment')
 
     return app
 

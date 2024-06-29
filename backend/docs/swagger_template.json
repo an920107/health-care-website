@@ -1,0 +1,67 @@
+{
+  "info": {
+    "title": "Healthcare API",
+    "description": "This is a simple API for NCU healthcare",
+    "version": "2.0.0"
+  },
+  "definitions": {
+    "NotFound": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Resource not found"
+        },
+        "data": {
+          "type": "object",
+          "example": {}
+        }
+      }
+    },
+    "Success": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "do something success"
+        },
+        "data": {
+          "type": "object",
+          "example": {}
+        }
+      }
+    },
+    "BadRequest": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Users have a bad request"
+        },
+        "data": {
+          "type": "object",
+          "example": {}
+        }
+      }
+    },
+    "AttachmentInfo": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get attachment info success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "filename": "filename",
+            "filepath": "file/uuid",
+            "created_time": "2024-01-01",
+            "updated_time": "2024-01-01"
+          }
+        }
+      }
+    }
+  }
+}
