@@ -92,7 +92,7 @@ class _PostEditPageState extends State<PostEditPage> {
                             icon: Icon(Icons.title),
                             label: Text("標題"),
                           ),
-                          validator: value.titleValidator,
+                          validator: (text) => value.titleValidator(text, 35),
                         ),
                       ),
                       const SizedBox(width: 40),
