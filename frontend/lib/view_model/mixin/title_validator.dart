@@ -3,7 +3,7 @@ mixin class TitleValidator {
     if (text == null) return "標題不可為空";
     text = text.trim();
     if (text.isEmpty) return "標題不可為空";
-    if (text.length > 25) return "標題不可超過 25 字";
+    if (text.length > maxLength) return "標題不可超過 $maxLength 字";
     return null;
   }
 }

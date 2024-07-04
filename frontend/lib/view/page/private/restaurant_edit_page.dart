@@ -50,6 +50,7 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
             _nameTextController.text = value!.title;
             _dateTextController.text =
                 value.inspectTime.toIso8601String().substring(0, 10);
+            _itemTextController.text = value.item;
           }),
           builder: (context, snapshot) {
             // Loading 圈圈
@@ -80,7 +81,7 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                           ),
                         ),
                         const SizedBox(width: 40),
-                
+
                         // 日期選取
                         Expanded(
                           child: TextFormField(
@@ -107,18 +108,20 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                           ),
                         ),
                         const SizedBox(width: 40),
-                
+
                         // 發布/轉為草稿
                         CleanButton(
                           onPressed: () => value.visible = !value.visible,
                           child: Card(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
                               child: Column(
                                 children: [
                                   Switch(
                                     value: value.visible,
-                                    onChanged: (result) => value.visible = result,
+                                    onChanged: (result) =>
+                                        value.visible = result,
                                     thumbIcon: WidgetStateProperty.resolveWith(
                                       (states) => Icon(
                                           states.contains(WidgetState.selected)
@@ -128,7 +131,8 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                                   ),
                                   Text(
                                     value.visible ? "發佈" : "草稿",
-                                    style: const TextStyle(color: Colors.black54),
+                                    style:
+                                        const TextStyle(color: Colors.black54),
                                   ),
                                 ],
                               ),
@@ -155,17 +159,17 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                                       child: Text(e.label),
                                     ))
                                 .toList(),
-                            onTap: () =>
-                                FocusScope.of(context).requestFocus(FocusNode()),
+                            onTap: () => FocusScope.of(context)
+                                .requestFocus(FocusNode()),
                             onChanged: (selected) {
                               if (selected == null) return;
-                              value.selectedRestaurantItem = selected;
+                              value.selectedRestaurantColumn = selected;
                             },
-                            value: value.selectedRestaurantItem,
+                            value: value.selectedRestaurantColumn,
                           ),
                         ),
                         const SizedBox(width: 40),
-                
+
                         // 抽檢樣品
                         Expanded(
                           child: TextFormField(
@@ -179,13 +183,13 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                           ),
                         ),
                         const SizedBox(width: 40),
-                
+
                         // 通過檢驗
                         Container(
                           constraints: const BoxConstraints(minHeight: 56),
                           child: CleanButton(
-                            onPressed: () =>
-                                value.passedInspection = !value.passedInspection,
+                            onPressed: () => value.passedInspection =
+                                !value.passedInspection,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -208,9 +212,10 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                       ],
                     ),
                     const SizedBox(height: 60),
-                
+
                     // 附件預覽
-                    if (value.attachments.isNotEmpty) const SizedBox(height: 20),
+                    if (value.attachments.isNotEmpty)
+                      const SizedBox(height: 20),
                     GridView.count(
                       shrinkWrap: true,
                       crossAxisCount: 4,
@@ -225,7 +230,7 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                               ))
                           .toList(),
                     ),
-                
+
                     // 功能按鈕們
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -241,30 +246,34 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                             if (result == true) {
                               await value.delete();
                               if (context.mounted) {
-                                context
-                                    .pushReplacement(Routes.restaurantList.path);
+                                context.pushReplacement(
+                                    Routes.restaurantList.path);
                               }
                             }
                           },
                           icon: const Icon(Icons.delete),
-                          label: const Text("刪除", style: TextStyle(fontSize: 16)),
+                          label:
+                              const Text("刪除", style: TextStyle(fontSize: 16)),
                         ),
-                
+
                         // 取消按鈕
                         const SizedBox(width: 20),
                         OutlinedButton.icon(
                           style: OutlinedButtonStyle.rRectStyle(),
-                          onPressed: () => context.go(Routes.restaurantList.path),
+                          onPressed: () =>
+                              context.go(Routes.restaurantList.path),
                           icon: const Icon(Icons.cancel),
-                          label: const Text("取消", style: TextStyle(fontSize: 16)),
+                          label:
+                              const Text("取消", style: TextStyle(fontSize: 16)),
                         ),
-                
+
                         // 上傳附件按鈕
                         const SizedBox(width: 20),
                         OutlinedButton.icon(
                           style: OutlinedButtonStyle.rRectStyle(),
                           onPressed: () async {
-                            final result = await FilePickerWeb.platform.pickFiles(
+                            final result =
+                                await FilePickerWeb.platform.pickFiles(
                               type: FileType.custom,
                               allowedExtensions: [
                                 "pdf",
@@ -288,10 +297,10 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                             await value.uploadAttachment(blob, name);
                           },
                           icon: const Icon(Icons.upload_file_rounded),
-                          label:
-                              const Text("上傳附件", style: TextStyle(fontSize: 16)),
+                          label: const Text("上傳附件",
+                              style: TextStyle(fontSize: 16)),
                         ),
-                
+
                         // 儲存按鈕
                         const SizedBox(width: 20),
                         OutlinedButton.icon(
@@ -307,12 +316,13 @@ class _RestaurantEditPageState extends State<RestaurantEditPage> {
                                   DateTime.parse(_dateTextController.text),
                             );
                             if (context.mounted) {
-                              context.pushReplacement(Routes.restaurantList.path);
+                              context
+                                  .pushReplacement(Routes.restaurantList.path);
                             }
                           },
                           icon: const Icon(Icons.save),
-                          label:
-                              const Text("保存變更", style: TextStyle(fontSize: 16)),
+                          label: const Text("保存變更",
+                              style: TextStyle(fontSize: 16)),
                         ),
                       ],
                     ),

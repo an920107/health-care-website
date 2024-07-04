@@ -35,9 +35,9 @@ class RestaurantEditPageViewModel with ChangeNotifier, TitleValidator {
 
   RestaurantInspectionCategory _selectedRestaurantColumn =
       RestaurantInspectionCategory.values.first;
-  RestaurantInspectionCategory get selectedRestaurantItem =>
+  RestaurantInspectionCategory get selectedRestaurantColumn =>
       _selectedRestaurantColumn;
-  set selectedRestaurantItem(RestaurantInspectionCategory value) {
+  set selectedRestaurantColumn(RestaurantInspectionCategory value) {
     _selectedRestaurantColumn = value;
     notifyListeners();
   }
