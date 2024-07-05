@@ -2,7 +2,8 @@ import TopicUseCase from "@/application/useCases/topic"
 import { TopicEnum, TopicGroupEnum } from "@/domain/enums/topic";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
-import Button from "../components/button";
+import Button from "@/app/components/button";
+import Card from "@/app/components/card";
 
 type Props = {
   className?: string;
@@ -38,16 +39,18 @@ function SideMenuGroup({
   const topicTrans = useTranslations("Topic");
 
   return (
-    <div className="flex flex-col items-center bg-yellow-700 bg-opacity-5 rounded-xl shadow-md py-4 px-6 gap-2">
-      <h4>{topicTrans(group)}</h4>
-      <hr className="w-full" />
-      {
-        topics.map((topic) => (
-          <Button key={topic} className="text-yellow-900">
-            <Link href={`/page/${topic}`}>{topicTrans(topic)}</Link>
-          </Button>
-        ))
-      }
-    </div>
+    <Card>
+      <div className="flex flex-col items-center py-4 px-6 gap-2">
+        <h4>{topicTrans(group)}</h4>
+        <hr className="w-full" />
+        {
+          topics.map((topic) => (
+            <Button key={topic} className="text-yellow-900">
+              <Link href={`/page/${topic}`}>{topicTrans(topic)}</Link>
+            </Button>
+          ))
+        }
+      </div>
+    </Card>
   )
 }
