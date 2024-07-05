@@ -6,11 +6,12 @@ import Image from "next/image";
 import { MouseEventHandler, useEffect, useState } from "react";
 
 type Props = {
+  className?: string;
   images: string[];
   interval?: number;
 };
 
-export default function Carousel({ images, interval = 3000 }: Props) {
+export default function Carousel({ className, images, interval = 3000 }: Props) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const getNextIndex = (value: number): number => ((value + 1) % images.length);
@@ -20,24 +21,26 @@ export default function Carousel({ images, interval = 3000 }: Props) {
   const handlePrevious = () => setCurrentIndex(getPreviousIndex);
 
   return (
-    <div className="relative rounded-3xl shadow-lg aspect-video w-full h-auto overflow-hidden">
-      {
-        images.map((image, index) => (
-          <Image
-            key={index} alt="carousel" src={image} fill={true}
-            className={`object-cover shadow-lg transform transition-all duration-500 ease-in-out overflow-hidden
-            ${index > currentIndex ? "translate-x-full opacity-50" : (index < currentIndex ? "-translate-x-full opacity-50" : "translate-x-0 opacity-100")}`}
-          />
-        ))
-      }
-      <CarouselControl
-        index={currentIndex}
-        total={images.length}
-        interval={interval}
-        onNext={handleNext}
-        onPrevious={handlePrevious}
-        onJump={setCurrentIndex}
-      />
+    <div className={className}>
+      <div className="relative rounded-xl aspect-video w-full h-auto overflow-hidden">
+        {
+          images.map((image, index) => (
+            <Image
+              key={index} alt="carousel" src={image} fill={true}
+              className={`object-cover transform transition-all duration-500 ease-in-out overflow-hidden
+          ${index > currentIndex ? "translate-x-full opacity-50" : (index < currentIndex ? "-translate-x-full opacity-50" : "translate-x-0 opacity-100")}`}
+            />
+          ))
+        }
+        <CarouselControl
+          index={currentIndex}
+          total={images.length}
+          interval={interval}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          onJump={setCurrentIndex}
+        />
+      </div>
     </div>
   )
 }

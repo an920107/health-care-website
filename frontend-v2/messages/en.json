@@ -52,5 +52,18 @@
         "workplace": "Workplace",
         "train": "Education",
         "others": "Others"
+    },
+    "Post": {
+        "title": "NEWS",
+        "all": "All Announcements",
+        "latest": "Latest News",
+        "activity": "Event Updates",
+        "health": "Health Focus",
+        "nutrition": "Nutrition News",
+        "more": "See more..."
+    },
+    "Restaurant": {
+        "title": "Merchant Inspection Report",
+        "more": "See more..."
     }
 }

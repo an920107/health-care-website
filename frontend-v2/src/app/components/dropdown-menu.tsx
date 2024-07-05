@@ -26,7 +26,7 @@ export default function DropdownMenu({
     const dropdownWidth = dropdownMenuElement?.offsetWidth ?? 0;
     const dropdownMenuInnerElement = document.getElementById(`dropdown-menu-inner-${rnd}`);
     if (dropdownMenuInnerElement !== null)
-      dropdownMenuInnerElement!.style.width = `${dropdownWidth}px`;
+      dropdownMenuInnerElement!.style.minWidth = `${dropdownWidth}px`;
 
     // Check if the dropdown menu is too close to bottom
     const adjustDropdownDirection = () => {
@@ -61,7 +61,7 @@ export default function DropdownMenu({
   return (
     <div id={`dropdown-menu-${rnd}`} className={className}>
       <div id={`dropdown-menu-inner-${rnd}`}
-        className={`fixed transform transition-all duration-200 ease-in-out
+        className={`absolute transform transition-all duration-200 ease-in-out
         ${isOpen ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-2 opacity-0 pointer-events-none"}`}
       >
         <div className="flex flex-col my-2 p-1 rounded-lg bg-yellow-700 bg-opacity-5 border border-gray-200 backdrop-blur-md shadow-lg">
