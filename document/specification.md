@@ -719,6 +719,29 @@
     201: null
     ```
 
+- **PATCH** `/api/post/<id>`
+  > Modify the post
+
+  - Accept: application/json
+  - Request:
+  
+    ```json5
+    {
+        "title": "string",
+        "content": "string",
+        "column": "string",
+        "attachments": [123],
+        "importance": true,
+        "visibility": true
+    }
+    ```
+
+  - Response:
+
+    ```json5
+    204: null
+    ```
+
 - **DELETE** `/api/post/<id>`
   > Delete the post
 
