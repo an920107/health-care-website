@@ -678,7 +678,7 @@
   - Content-Type: application/json
   - Response:
 
-    ```json55
+    ```json5
     200: {
         "message": "get post successful",
         "data": {
@@ -702,7 +702,7 @@
   - Accept: application/json
   - Request:
 
-    ```json55
+    ```json5
     {
         "title": "string",
         "content": "string",
@@ -717,6 +717,15 @@
 
     ```json5
     201: null
+    ```
+
+- **DELETE** `/api/post/<id>`
+  > Delete the post
+
+  - Response:
+
+    ```json5
+    204: null
     ```
 
 ### Insurance
