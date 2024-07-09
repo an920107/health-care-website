@@ -1,6 +1,6 @@
 import { faSquareCaretRight, faStore } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Card from "@/app/components/card";
+import Card from "@/components/card";
 import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
 

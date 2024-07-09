@@ -1,17 +1,17 @@
-import SideMenu from "./side-menu";
+import IndexMenu from "./index-menu";
 import NotFoundRedirect from "./redirect";
 import Carousel from "./carousel";
 import Post from "./post";
 import Restaurant from "./restaurant";
 
-export default async function HomePage() {
+export default function HomePage() {
   return (
     <>
       <NotFoundRedirect />
       <div className="flex flex-row mb-20 gap-10">
-        <SideMenu className="max-md:hidden" />
+        <IndexMenu className="max-md:hidden" />
         <div className="flex flex-col flex-1 gap-10">
-          <Carousel className="rounded-xl shadow-lg" images={
+          <Carousel className="rounded-xl shadow-lg mb-4" images={
             [
               "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/1200px-Cat_August_2010-4.jpg",
               "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg",

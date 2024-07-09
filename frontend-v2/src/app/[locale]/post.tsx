@@ -1,9 +1,9 @@
 import { faBullhorn, faSquareCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Card from "@/app/components/card";
-import GroupedButton from "../components/grouped-button";
+import Card from "@/components/card";
+import GroupedButton from "../../components/grouped-button";
 import { useState } from "react";
-import DropdownButton from "../components/dropdown-button";
+import DropdownButton from "../../components/dropdown-button";
 import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
 

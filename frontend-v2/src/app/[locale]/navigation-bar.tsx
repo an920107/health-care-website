@@ -1,7 +1,7 @@
 "use client";
 
-import Button from "@/app/components/button"
-import Logo from "@/app/components/logo";
+import Button from "@/components/button"
+import Logo from "@/components/logo";
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons"
 import { faBars, faGlobe, faGraduationCap, faHouse } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -9,7 +9,7 @@ import { useState } from "react"
 import Drawer from "./drawer";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/navigation";
-import DropdownMenu from "@/app/components/dropdown-menu";
+import DropdownMenu from "@/components/dropdown-menu";
 import { useSearchParams } from "next/navigation";
 
 export default function NavigationBar() {
