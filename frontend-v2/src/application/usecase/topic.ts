@@ -1,4 +1,4 @@
-import { TopicEnum, TopicGroupEnum } from "@/domain/enums/topic";
+import { TopicEnum, TopicGroupEnum } from "@/domain/enum/topic";
 
 export default class TopicUseCase {
     static getTopics(): { [key in TopicGroupEnum]: TopicEnum[] } {

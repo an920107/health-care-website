@@ -1,5 +1,5 @@
-import TopicUseCase from "@/application/useCases/topic"
-import { TopicEnum, TopicGroupEnum } from "@/domain/enums/topic";
+import TopicUseCase from "@/application/usecase/topic"
+import { TopicEnum, TopicGroupEnum } from "@/domain/enum/topic";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
 import Button from "@/app/components/button";

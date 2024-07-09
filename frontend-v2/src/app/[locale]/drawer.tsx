@@ -1,13 +1,12 @@
 "use client";
 
-import TopicUseCase from "@/application/useCases/topic";
+import TopicUseCase from "@/application/usecase/topic";
 import { Link, usePathname } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import ExpensionTile from "@/app/components/expension-tile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe, faGraduationCap, faHouse } from "@fortawesome/free-solid-svg-icons";
-import Button from "@/app/components/button";
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import ListTile from "@/app/components/list-tile";
 import DropdownMenu from "@/app/components/dropdown-menu";
