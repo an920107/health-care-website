@@ -10,8 +10,8 @@ import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import ListTile from "@/components/list-tile";
 import DropdownMenu from "@/components/dropdown-menu";
 import { useSearchParams } from "next/navigation";
-import { IndexMenuUsecase } from "@/module/indexMenu/application/usecase/indexMenuUsecase";
-import { IndexMenuViewModel } from "@/module/indexMenu/presenter/viewModel/indexMenuViewModel";
+import IndexMenuUsecase from "@/module/indexMenu/application/indexMenuUsecase";
+import IndexMenuViewModel from "@/module/indexMenu/presenter/indexMenuViewModel";
 
 type Props = {
   isOpen: boolean;

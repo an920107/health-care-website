@@ -1,10 +1,10 @@
-import TopicEntity from "../../domain/entity/topicEntity";
-import TopicGroupEntity from "../../domain/entity/topicGroupEntity";
-import TopicEnum from "../../domain/enum/topicEnum";
-import TopicGroupEnum from "../../domain/enum/topicGroupEnum";
+import TopicEntity from "../domain/topicEntity";
+import TopicGroupEntity from "../domain/topicGroupEntity";
+import TopicEnum from "../domain/topicEnum";
+import TopicGroupEnum from "../domain/topicGroupEnum";
 
 
-export class IndexMenuUsecase {
+export default class IndexMenuUsecase {
     getTopics(): TopicGroupEntity[] {
         return [
             new TopicGroupEntity({

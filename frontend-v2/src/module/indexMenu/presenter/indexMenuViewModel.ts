@@ -1,6 +1,6 @@
-import { IndexMenuUsecase } from "../../application/usecase/indexMenuUsecase";
+import IndexMenuUsecase from "../application/indexMenuUsecase";
 
-export class IndexMenuViewModel {
+export default class IndexMenuViewModel {
     private _usecase: IndexMenuUsecase;
 
     constructor(usecase: IndexMenuUsecase) {

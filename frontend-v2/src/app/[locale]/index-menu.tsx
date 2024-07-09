@@ -2,8 +2,8 @@ import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
 import Button from "@/components/button";
 import Card from "@/components/card";
-import { IndexMenuUsecase } from "@/module/indexMenu/application/usecase/indexMenuUsecase";
-import { IndexMenuViewModel } from "@/module/indexMenu/presenter/viewModel/indexMenuViewModel";
+import IndexMenuUsecase from "@/module/indexMenu/application/indexMenuUsecase";
+import IndexMenuViewModel from "@/module/indexMenu/presenter/indexMenuViewModel";
 
 type Props = {
   className?: string;
