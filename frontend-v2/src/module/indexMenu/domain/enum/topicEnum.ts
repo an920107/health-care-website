@@ -1,4 +1,4 @@
-export enum TopicEnum {
+enum TopicEnum {
     Workteam = "work_team",
     ServiceTime = "service_hours",
     Transportation = "traffic_map",
@@ -21,12 +21,4 @@ export enum TopicEnum {
     Regulation = "regulation",
 }
 
-export enum TopicGroupEnum {
-    About = "about",
-    CheckUp = "check_up",
-    Emergency = "emergency",
-    Service = "service",
-    Workplace = "workplace",
-    Train = "train",
-    Others = "others",
-}
+export default TopicEnum;

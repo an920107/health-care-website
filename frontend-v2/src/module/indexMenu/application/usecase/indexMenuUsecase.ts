@@ -1,5 +1,8 @@
-import { TopicEntity, TopicGroupEntity } from "../../domain/entity/topicEntity";
-import { TopicEnum, TopicGroupEnum } from "../../domain/enum/topicEnum";
+import TopicEntity from "../../domain/entity/topicEntity";
+import TopicGroupEntity from "../../domain/entity/topicGroupEntity";
+import TopicEnum from "../../domain/enum/topicEnum";
+import TopicGroupEnum from "../../domain/enum/topicGroupEnum";
+
 
 export class IndexMenuUsecase {
     getTopics(): TopicGroupEntity[] {
