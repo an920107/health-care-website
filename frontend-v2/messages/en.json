@@ -60,7 +60,11 @@
         "activity": "Event Updates",
         "health": "Health Focus",
         "nutrition": "Nutrition News",
-        "more": "See more..."
+        "table_column": "Column",
+        "table_title": "Title",
+        "table_date": "Released Date",
+        "more": "See more...",
+        "not_found": "There is no post found!"
     },
     "Restaurant": {
         "title": "Merchant Inspection Report",

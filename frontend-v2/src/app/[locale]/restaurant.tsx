@@ -20,7 +20,7 @@ export default function Restaurant({ }: Props) {
       <Card className="w-full mt-4">
         <div className="h-80"></div>
       </Card>
-      <div className="mt-3 text-right">
+      <div className="mt-4 text-right">
         <Link href="/restaurant" className="link">
           <FontAwesomeIcon icon={faSquareCaretRight} className="size-4 me-2" />
           {trans("more")}

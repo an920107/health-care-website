@@ -3,13 +3,15 @@
 import { useState } from "react";
 
 type Props = {
-  className?: string
+  className?: string,
+  textClassName?: string,
   options: string[],
-  onChange?(index: number): void
+  onChange?(index: number): void,
 };
 
 export default function GroupedButton({
   className,
+  textClassName,
   options,
   onChange,
 }: Props) {
@@ -32,8 +34,8 @@ export default function GroupedButton({
               className={`flex-auto text-center cursor-pointer ${index === selected ? "bg-yellow-700 bg-opacity-5" : "bg-opacity-0"} transition-colors ease-in-out duration-200`}
               onClick={() => handleClick(index)}
             >
-              <div className={`py-2 bg-black bg-opacity-0 hover:bg-opacity-5 transition-colors ease-in-out duration-200`}>
-                <p>{label}</p>
+              <div className={`py-3 bg-black bg-opacity-0 ${index !== selected && "hover:bg-opacity-5"} transition-colors ease-in-out duration-200`}>
+                <p className={textClassName}>{label}</p>
               </div>
             </div>
           ))

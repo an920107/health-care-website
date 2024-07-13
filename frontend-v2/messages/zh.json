@@ -1,4 +1,3 @@
-
 {
     "Symbol": {
         "comma": "，",
@@ -61,7 +60,11 @@
         "activity": "活動快訊",
         "health": "健康焦點",
         "nutrition": "營養報報",
-        "more": "查看更多..."
+        "table_column": "訊息類別",
+        "table_title": "標題",
+        "table_date": "發布日期",
+        "more": "查看更多...",
+        "not_found": "找不到貼文！"
     },
     "Restaurant": {
         "title": "商家檢查報告",
