@@ -12,6 +12,7 @@ import PostColumnEnum from "@/module/post/domain/postColumnEnum";
 import PostRepoImpl from "@/module/post/presenter/postRepoImpl";
 import NormalPostUsecase from "@/module/post/application/normalPostUsecase";
 import PostEntity from "@/module/post/domain/postEntity";
+import PostViewModel from "@/module/post/presenter/postViewModel";
 
 type Props = {};
 
@@ -86,13 +87,16 @@ export default function Post({ }: Props) {
             </thead>
             <tbody>
               {
-                posts.map((post) => (
-                  <tr key={post.id} className="border-t">
-                    <td className="px-3 md:px-6 py-3 md:ps-10 ps-5 text-nowrap">{trans(post.column)}</td>
-                    <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap"><Link href={`/post/${post.id}`} className="link">{post.title}</Link></td>
-                    <td className="px-3 md:px-6 py-3 md:pe-10 max-md:hidden text-nowrap">{post.createdTime.toISOString().substring(0, 10)}</td>
-                  </tr>
-                ))
+                posts.map((oriPost) => {
+                  const post = new PostViewModel(oriPost);
+                  return (
+                    <tr key={post.id} className="border-t">
+                      <td className="px-3 md:px-6 py-3 md:ps-10 ps-5 text-nowrap">{trans(post.column)}</td>
+                      <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap"><Link href={`/post/${post.id}`} className="link">{post.title}</Link></td>
+                      <td className="px-3 md:px-6 py-3 md:pe-10 max-md:hidden text-nowrap">{post.releasedDate}</td>
+                    </tr>
+                  );
+                })
               }
             </tbody>
           </table>
