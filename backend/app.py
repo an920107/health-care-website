@@ -6,7 +6,7 @@ import os
 from flask import Flask
 from flasgger import Swagger
 from flask_cors import CORS
-from config import DevelopmentConfig, ProductionConfig, TestingConfig
+from config import DevelopmentConfig, TestingConfig
 from models.database import db
 
 from blueprints.attachment_blueprint import attachment_blueprint
@@ -33,8 +33,6 @@ def configure_logging(app):
 def get_config(status):
     if status == 'development':
         return DevelopmentConfig
-    elif status == 'production':
-        return ProductionConfig
     elif status == 'testing':
         return TestingConfig
     else:
@@ -52,9 +50,9 @@ def create_app(status='development'):
 
     db.init_app(app)
 
-    # with app.app_context():
-    #     db.drop_all()
-    #     db.create_all()
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
 
     Swagger(app, template=swagger_template)
     CORS(app, resources={r"/*": {"origins": "*", "allow_headers": "*", "expose_headers": "*"}}, )
@@ -69,4 +67,4 @@ def create_app(status='development'):
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5003)
+    app.run(debug=True, host="0.0.0.0", port=5004)
