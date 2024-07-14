@@ -86,6 +86,10 @@ def get_posts():
         name: title
         type: string
         required: false
+      - in: query
+        name: visibility
+        type: boolean
+        required: false
     responses:
       200:
         description: get posts success
@@ -97,7 +101,7 @@ def get_posts():
         if "page" in request.args and int(request.args['page']) > 1 \
         else 1
 
-    posts = db.session.query(Post).filter(Post.visibility == True)
+    posts = db.session.query(Post)
 
     if "column" in request.args:
         posts = posts.filter(
@@ -107,6 +111,11 @@ def get_posts():
     if "title" in request.args:
         posts = posts.filter(
             Post.column_en.in_(request.args['title'].split('+'))
+        )
+
+    if "visibility" in request.args:
+        posts = posts.filter(
+            Post.visibility == bool(request.args['visibility'])
         )
 
     posts = posts.order_by(desc(Post.importance), desc(Post.created_time)).all()
