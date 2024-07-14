@@ -21,6 +21,10 @@ export default function Post({ }: Props) {
 
   const [columnSelected, setColumnSelected] = useState<_ColumnSelectionType>(_columnSelection[0]);
 
+  const handleColumnSelectionChange = (index: number) => {
+    setColumnSelected(_columnSelection[index]);
+  }
+
   return (
     <div>
       <div className="flex flex-row items-center">
@@ -28,14 +32,17 @@ export default function Post({ }: Props) {
         <h2>{trans("title")}</h2>
       </div>
       <div className="md:hidden mt-3">
-        <DropdownButton options={_columnSelection.map((e) => (trans(e.label)))} />
+        <DropdownButton
+          options={_columnSelection.map((e) => (trans(e.label)))}
+          onChange={handleColumnSelectionChange}
+        />
       </div>
       <div className="mt-4 border shadow-md rounded-xl overflow-hidden">
         <GroupedButton
           className="w-full rounded-t-md overflow-hidden max-md:hidden border-b-2"
           textClassName="font-bold"
           options={_columnSelection.map((e) => (trans(e.label)))}
-          onChange={(index) => setColumnSelected(_columnSelection[index])}
+          onChange={handleColumnSelectionChange}
         />
         <Card className="w-full rounded-b-xl overflow-hidden" isRounded={false} isBorder={false}>
           <PostTiles column={columnSelected.value} />
