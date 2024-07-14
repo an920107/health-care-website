@@ -1,5 +1,4 @@
-backend/.idea
+backend/.idea/
 backend/.instance/
 backend/.venv/
-backend/.test/static/
 backend/.log/

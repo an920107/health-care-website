@@ -1,14 +1,16 @@
+import io
 import pytest
 from app import create_app
-import io
 from models.database import db
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def client():
     app = create_app(status='testing')
-    with app.test_client() as client:
-        yield client
+    with app.app_context():
+        db.create_all()
+        yield app.test_client()
+        db.drop_all()
 
 
 attachment_id = None
@@ -22,6 +24,7 @@ def test_create_item_success(client):
         'file': (io.BytesIO(file_data), '100MB-TESTFILE.ORG.pdf')
     }
     response = client.post('/api/attachment', content_type='multipart/form-data', data=data)
+
     assert response.status_code == 201
     payload = response.get_json()
 

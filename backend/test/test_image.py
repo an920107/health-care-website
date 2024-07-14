@@ -1,13 +1,16 @@
-from app import create_app
-import pytest
 import io
+import pytest
+from app import create_app
+from models.database import db
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def client():
     app = create_app(status='testing')
-    with app.test_client() as client:
-        yield client
+    with app.app_context():
+        db.create_all()
+        yield app.test_client()
+        db.drop_all()
 
 
 image_id = None
