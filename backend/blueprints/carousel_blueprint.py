@@ -113,7 +113,7 @@ def post_carousel():
       422:
         description: unprocessable content
         schema:
-          $ref: '#/definitions/UnprocessableContent'
+          id: UnprocessableContent
     """
     if "title" not in request.form:
         return CustomResponse.unprocessable_content("Title is required", {})
