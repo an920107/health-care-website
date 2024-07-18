@@ -751,7 +751,6 @@
     204: null
     ```
 
-### Insurance
 
 ### Auth
 
@@ -788,9 +787,178 @@
     204: null
     ```
 
-### Dengue
 
-#### Form
+### Insurance
+
+- **GET** `/api/insurance`
+  > Get all insurance data
+  - Content-Type: application/json
+  - Response:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": [
+          {
+            "id": 1,
+            "application_date": "2024-01-01T00:00:00.000000",
+            "incident_date": "2024-01-01T00:00:00.000000",
+            "name": "",
+            "student_id": "",
+            "id_number": "",
+            "address": "",
+            "phone_number": "",
+            "email": "",
+            "claim_details": "",
+            "payment_type": "",
+            "location": "",
+            "incident_cause": "",
+            "receipt": "",
+            "diagnosis_certificate": "",
+            "bankbook": "",
+            "x_ray": "",
+            "application_amount": "",
+            "claim_amount": "",
+            "claim_date": "2024-01-01T00:00:00.000000",
+            "remarks": "",
+            "insurance_company_stamp": true,
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        ]
+    }
+    ```
+
+- **POST** `/api/insurance`
+  > create a insurance
+
+  - Accept: application/json
+  - Request:
+
+    ```json5
+    {
+      "application_date": "2024-01-01T00:00:00.000000",
+      "incident_date": "2024-01-01T00:00:00.000000",
+      "name": "",
+      "student_id": "",
+      "id_number": "",
+      "address": "",
+      "phone_number": "",
+      "email": "",
+      "claim_details": "",
+      "payment_type": "",
+      "location": "",
+      "incident_cause": "",
+      "receipt": "",
+      "diagnosis_certificate": "",
+      "bankbook": "",
+      "x_ray": "",
+      "application_amount": "",
+      "claim_amount": "",
+      "claim_date": "2024-01-01T00:00:00.000000",
+      "remarks": "",
+      "insurance_company_stamp": true,
+    }
+    ```
+
+  - Response:
+
+    ```json5
+    201: null
+    ```
+
+- **GET** `/api/insurance/<id>`
+  > create a insurance
+
+  - Accept: application/json
+  - Request:
+
+    ```json5
+    200: {
+        "message": "",
+        "data": {
+          "id": 1,
+          "application_date": "2024-01-01T00:00:00.000000",
+          "incident_date": "2024-01-01T00:00:00.000000",
+          "name": "",
+          "student_id": "",
+          "id_number": "",
+          "address": "",
+          "phone_number": "",
+          "email": "",
+          "claim_details": "",
+          "payment_type": "",
+          "location": "",
+          "incident_cause": "",
+          "receipt": "",
+          "diagnosis_certificate": "",
+          "bankbook": "",
+          "x_ray": "",
+          "application_amount": "",
+          "claim_amount": "",
+          "claim_date": "2024-01-01T00:00:00.000000",
+          "remarks": "",
+          "insurance_company_stamp": true,
+          "created_time": "2024-01-01T00:00:00.000000",
+          "updated_time": "2024-01-01T00:00:00.000000"
+        }
+    }
+    ```
+
+  - Response:
+
+    ```json5
+    201: null
+    ```
+
+- **PATCH** `/api/insurance/<id>`
+  > Modify the insurance
+
+  - Accept: application/json
+  - Request:
+
+    ```json5
+    {
+      "application_date": "2024-01-01T00:00:00.000000",
+      "incident_date": "2024-01-01T00:00:00.000000",
+      "name": "",
+      "student_id": "",
+      "id_number": "",
+      "address": "",
+      "phone_number": "",
+      "email": "",
+      "claim_details": "",
+      "payment_type": "",
+      "location": "",
+      "incident_cause": "",
+      "receipt": "",
+      "diagnosis_certificate": "",
+      "bankbook": "",
+      "x_ray": "",
+      "application_amount": "",
+      "claim_amount": "",
+      "claim_date": "2024-01-01T00:00:00.000000",
+      "remarks": "",
+      "insurance_company_stamp": true,
+    }
+    ```
+
+  - Response:
+
+    ```json5
+    204: null
+    ```
+
+- **DELETE** `/api/insurance/<id>`
+  > Delete the form
+
+  - Response:
+
+    ```json5
+    204: null
+    ```
+
+### Dengue
 
 - **GET** `/api/dengue/form`
   > Get all forms
@@ -1279,8 +1447,6 @@
     204: null
     ```
 
-### Insurance
-
 ### Auth
 
 - **POST** `/api/auth/login`
@@ -1316,7 +1482,6 @@
     204: null
     ```
 
-### Dengue
 
 #### Form
 
@@ -1451,11 +1616,8 @@
     204: null
     ```
 
-### Restaurant
 
-### Download
 
-### User
 
 - **GET** `/api/me`
   > Get the current user info
