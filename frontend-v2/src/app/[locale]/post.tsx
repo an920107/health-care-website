@@ -12,17 +12,17 @@ import PostColumnEnum from "@/module/post/domain/postColumnEnum";
 import PostRepoImpl from "@/module/post/presenter/postRepoImpl";
 import NormalPostUsecase from "@/module/post/application/normalPostUsecase";
 import PostEntity from "@/module/post/domain/postEntity";
-import PostViewModel from "@/module/post/presenter/postViewModel";
+import PostViewModel, { ColumnSelectionType } from "@/module/post/presenter/postViewModel";
 
 type Props = {};
 
 export default function Post({ }: Props) {
   const trans = useTranslations("Post");
 
-  const [columnSelected, setColumnSelected] = useState<_ColumnSelectionType>(_columnSelection[0]);
+  const [columnSelected, setColumnSelected] = useState<ColumnSelectionType>(PostViewModel.columnSelections[0]);
 
   const handleColumnSelectionChange = (index: number) => {
-    setColumnSelected(_columnSelection[index]);
+    setColumnSelected(PostViewModel.columnSelections[index]);
   }
 
   return (
@@ -33,7 +33,7 @@ export default function Post({ }: Props) {
       </div>
       <div className="md:hidden mt-3">
         <DropdownButton
-          options={_columnSelection.map((e) => (trans(e.label)))}
+          options={PostViewModel.columnSelections.map((e) => (trans(e.label)))}
           onChange={handleColumnSelectionChange}
         />
       </div>
@@ -41,7 +41,7 @@ export default function Post({ }: Props) {
         <GroupedButton
           className="w-full rounded-t-md overflow-hidden max-md:hidden border-b-2"
           textClassName="font-bold"
-          options={_columnSelection.map((e) => (trans(e.label)))}
+          options={PostViewModel.columnSelections.map((e) => (trans(e.label)))}
           onChange={handleColumnSelectionChange}
         />
         <Card className="w-full rounded-b-xl overflow-hidden" isRounded={false} isBorder={false}>
@@ -111,36 +111,3 @@ export default function Post({ }: Props) {
       );
   }
 }
-
-type _ColumnSelectionType = {
-  label: string;
-  value: PostColumnEnum[];
-};
-
-const _columnSelection: _ColumnSelectionType[] = [
-  {
-    label: "all",
-    value: [
-      PostColumnEnum.Latest,
-      PostColumnEnum.Activity,
-      PostColumnEnum.Health,
-      PostColumnEnum.Nutrition,
-    ],
-  },
-  {
-    label: PostColumnEnum.Latest,
-    value: [PostColumnEnum.Latest],
-  },
-  {
-    label: PostColumnEnum.Activity,
-    value: [PostColumnEnum.Activity],
-  },
-  {
-    label: PostColumnEnum.Health,
-    value: [PostColumnEnum.Health],
-  },
-  {
-    label: PostColumnEnum.Nutrition,
-    value: [PostColumnEnum.Nutrition],
-  }
-]
