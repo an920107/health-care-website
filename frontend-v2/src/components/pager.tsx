@@ -2,7 +2,7 @@
 
 import { faAngleLeft, faAngleRight, faAnglesLeft, faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./button";
 import PagerEntity from "@/module/pager/domain/pagerEntity";
 
@@ -19,6 +19,10 @@ export default function Pager({
   const [pagerEntity, setPagerEntity] = useState<PagerEntity>(
     new PagerEntity({ currentPage: 1, totalPage: totalPage }),
   );
+
+  useEffect(() => {
+    onChange && onChange(pagerEntity.currentPage);
+  }, [pagerEntity]);
 
   return (
     <div className="flex flex-row items-center">

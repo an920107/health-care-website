@@ -11,7 +11,6 @@ export default class NormalPostUsecase {
 
     async getAllPosts({
         page = 1,
-        limit = 10,
         column = [
             PostColumnEnum.Latest,
             PostColumnEnum.Activity,
@@ -22,14 +21,12 @@ export default class NormalPostUsecase {
         search,
     }: {
         page?: number,
-        limit?: number,
         column?: PostColumnEnum[],
         visibility?: boolean,
         search?: string,
     }): Promise<PostResponse[]> {
         return this._repo.query({
             page: page,
-            limit: limit,
             column: column,
             visibility: visibility,
             search: search,

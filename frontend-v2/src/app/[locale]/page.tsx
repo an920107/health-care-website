@@ -1,8 +1,8 @@
 import IndexMenu from "./index-menu";
 import NotFoundRedirect from "./redirect";
 import Carousel from "./carousel";
-import Post from "./post";
 import Restaurant from "./restaurant";
+import PostPanel from "./post/post-panel";
 
 export default function HomePage() {
   return (
@@ -20,7 +20,7 @@ export default function HomePage() {
               "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png",
             ]
           } />
-          <Post />
+          <PostPanel isEnableMore={true} />
           <Restaurant />
         </div>
       </div>

@@ -26,6 +26,7 @@ export default class PostRepoImpl implements PostRepo {
             params.search = search;
         }
 
+        console.log("Sending request /api/post with params:", params);
         const response = await axios.get(new URL("/api/post", BACKEND_HOST).href, {
             params: params
         });

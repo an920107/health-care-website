@@ -27,24 +27,20 @@ export default function DropdownButton({
   };
 
   return (
-    <div className={className}>
-      <div className="w-fit">
-        <div className="rounded-lg border py-1 px-2" onClick={() => setIsDropdownOpen(true)}>
-          <div className="flex flex-row items-center gap-1.5">
-            {options[selectedOptionIndex]}
-            <FontAwesomeIcon icon={faCaretDown} className="mt-[-0.2rem] size-4" />
-          </div>
-        </div>
-        <DropdownMenu isOpen={isDropdownOpen} onCancel={() => setIsDropdownOpen(false)}>
-          {
-            options.map((option, index) => (
-              <div key={index} className="px-2 py-1 rounded-md" onClick={() => handleOptionClick(index)}>
-                {option}
-              </div>
-            ))
-          }
-        </DropdownMenu>
+    <div className="w-fit text-nowrap">
+      <div className={`rounded-lg border py-1 px-2 flex flex-row items-center gap-1.5 ${className ?? ""}`} onClick={() => setIsDropdownOpen(true)}>
+        {options[selectedOptionIndex]}
+        <FontAwesomeIcon icon={faCaretDown} className="mt-[-0.2rem] size-4" />
       </div>
+      <DropdownMenu isOpen={isDropdownOpen} onCancel={() => setIsDropdownOpen(false)}>
+        {
+          options.map((option, index) => (
+            <div key={index} className="px-2 py-1 rounded-md" onClick={() => handleOptionClick(index)}>
+              {option}
+            </div>
+          ))
+        }
+      </DropdownMenu>
     </div>
   )
 }
