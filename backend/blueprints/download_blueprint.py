@@ -29,7 +29,7 @@ def get_downloads():
         type: boolean
         description: visibility
     responses:
-        200:
+      200:
         description: get downloads success
         schema:
           id: DownloadQuery
@@ -223,10 +223,10 @@ def delete_download(id_):
     tags:
       - download
     parameters:
-        - name: id_
-            in: path
-            type: integer
-            required: true
+      - name: id_
+        in: path
+        type: integer
+        required: true
     responses:
       204:
         description: delete download success
