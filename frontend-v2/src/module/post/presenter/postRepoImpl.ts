@@ -8,13 +8,11 @@ import { PostRequest, PostResponse } from "../application/postDto";
 export default class PostRepoImpl implements PostRepo {
     async query({
         page,
-        limit,
         column,
         visibility,
         search,
     }: {
         page?: number,
-        limit?: number,
         column?: PostColumnEnum[],
         visibility?: boolean,
         search?: string,
@@ -22,51 +20,21 @@ export default class PostRepoImpl implements PostRepo {
         const params: any = {};
 
         if (page) params.page = page;
-        if (limit) params.limit = limit;
-        if (column) params.column = column;
+        if (column) params.column = column.join("+");
         if (visibility !== undefined) params.visibility = visibility;
         if ((search ?? "").trim().length > 0) {
             params.search = search;
         }
 
-        console.log(params);
+        const response = await axios.get(new URL("/api/post", BACKEND_HOST).href, {
+            params: params
+        });
 
-        // const response = await axios.get(new URL("/api/post", BACKEND_HOST).href, {
-        //     params: params
-        // });
+        if (response.status !== 200)
+            return Promise.reject(new Error(response.data));
 
-        // if (response.status !== 200)
-        //     return Promise.reject(new Error(response.data));
-
-        // return (JSON.parse(response.data) as Array<any>)
-        //     .map((post) => new PostResponse(post));
-
-        return [
-            new PostEntity({
-                id: 0,
-                title: "Haha",
-                content: "",
-                column: PostColumnEnum.Latest,
-                attachments: [],
-                view: 300,
-                importance: true,
-                visibility: true,
-                createdTime: new Date(Date.now()),
-                updatedTime: new Date(Date.now()),
-            }),
-            new PostEntity({
-                id: 1,
-                title: "Haha222",
-                content: "",
-                column: PostColumnEnum.Latest,
-                attachments: [],
-                view: 300,
-                importance: true,
-                visibility: true,
-                createdTime: new Date(Date.now()),
-                updatedTime: new Date(Date.now()),
-            })
-        ]
+        return (response.data["data"] as Array<any>)
+            .map((post) => new PostResponse(post));
     }
 
     async get(id: number): Promise<PostEntity> {
@@ -75,7 +43,7 @@ export default class PostRepoImpl implements PostRepo {
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));
 
-        return new PostResponse(JSON.parse(response.data));
+        return new PostResponse(response.data["data"]);
     }
 
     async create(post: PostEntity): Promise<void> {

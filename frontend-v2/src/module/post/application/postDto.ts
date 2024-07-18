@@ -54,8 +54,8 @@ export class PostResponse extends PostEntity {
             view: json.view,
             importance: json.importance,
             visibility: json.visibility,
-            createdTime: json.created_time,
-            updatedTime: json.updated_time,
+            createdTime: new Date(json.created_time),
+            updatedTime: new Date(json.updated_time),
         });
     }
 }

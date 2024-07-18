@@ -4,7 +4,6 @@ import PostColumnEnum from "./postColumnEnum";
 export default interface PostRepo {
     query({ }: {
         page?: number,
-        limit?: number,
         column?: PostColumnEnum[],
         visibility?: boolean,
         search?: string,
