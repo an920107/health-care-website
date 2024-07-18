@@ -20,12 +20,12 @@ export default function Restaurant({ }: Props) {
       <Card className="w-full mt-4">
         <div className="h-80"></div>
       </Card>
-      <div className="mt-4 text-right">
-        <Link href="/restaurant" className="link">
+      <Link href="/post" className="link">
+        <div className="flex flex-row items-center justify-end mt-4">
           <FontAwesomeIcon icon={faSquareCaretRight} className="size-4 me-2" />
           {trans("more")}
-        </Link>
-      </div>
+        </div>
+      </Link>
     </div>
   )
 }

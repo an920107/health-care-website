@@ -48,12 +48,12 @@ export default function Post({ }: Props) {
           <PostTiles column={columnSelected.value} />
         </Card>
       </div>
-      <div className="mt-4 text-right">
-        <Link href="/post" className="link">
+      <Link href="/post" className="link">
+        <div className="flex flex-row items-center justify-end mt-4">
           <FontAwesomeIcon icon={faSquareCaretRight} className="size-4 me-2" />
           {trans("more")}
-        </Link>
-      </div>
+        </div>
+      </Link>
     </div>
   )
 
