@@ -68,6 +68,17 @@
     },
     "Restaurant": {
         "title": "Merchant Inspection Report",
-        "more": "See more..."
+        "drink": "Drink",
+        "food": "Food",
+        "water": "Water",
+        "ice": "Ice",
+        "others": "Others",
+        "table_title": "Merchant",
+        "table_category": "Category",
+        "table_item": "Item",
+        "table_valid": "Result",
+        "table_date": "Inspected Date",
+        "more": "See more...",
+        "not_found": "There is no post found!"
     }
 }

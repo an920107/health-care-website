@@ -68,6 +68,17 @@
     },
     "Restaurant": {
         "title": "商家檢查報告",
-        "more": "查看更多..."
+        "drink": "飲料",
+        "food": "食物",
+        "water": "飲用水",
+        "ice": "冰塊",
+        "others": "其他",
+        "table_title": "商家名稱",
+        "table_category": "檢驗項目",
+        "table_item": "抽檢樣品",
+        "table_valid": "檢驗結果",
+        "table_date": "抽檢日期",
+        "more": "查看更多...",
+        "not_found": "找不到商家！"
     }
 }
