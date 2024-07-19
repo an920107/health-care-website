@@ -3,7 +3,7 @@ from helpers.CustomResponse import CustomResponse
 from models.post_model import Post, db
 from flask import Blueprint, request
 from sqlalchemy import desc
-
+import math
 post_blueprint = Blueprint('post', __name__)
 
 
@@ -105,7 +105,7 @@ def get_posts():
 
     if "column" in request.args:
         posts = posts.filter(
-            Post.column_en.in_(request.args['column'].split('+'))
+            Post.column.in_(request.args['column'].split('+'))
         )
 
     if "title" in request.args:
@@ -119,10 +119,10 @@ def get_posts():
         )
 
     posts = posts.order_by(desc(Post.importance), desc(Post.created_time)).all()
+    total_page = math.ceil(len(posts) // 10)
     posts = [post.to_dict() for post in posts][(page - 1) * 10:page * 10]
 
-
-    return CustomResponse.success("get posts success", posts)
+    return {'message': "get posts success", 'data': posts, "total_page": total_page}, 200
 
 
 @post_blueprint.route('', methods=['POST'])
@@ -151,7 +151,7 @@ def post_post():
     try:
         request_payload = PostContainer(request.json).get_data()
     except Exception as e:
-        return CustomResponse.unprocessable_content(e, {})
+        return CustomResponse.unprocessable_content(str(e), {})
 
     post = Post(**request_payload)
     db.session.add(post)
