@@ -4,6 +4,8 @@ import PostEntity from "../domain/postEntity";
 import PostRepo from "../domain/postRepo";
 import axios from "axios";
 import { PostRequest, PostResponse } from "../application/postDto";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
+import { PagerResponse } from "@/module/pager/application/pagerDto";
 
 export default class PostRepoImpl implements PostRepo {
     async query({
@@ -16,7 +18,7 @@ export default class PostRepoImpl implements PostRepo {
         column?: PostColumnEnum[],
         visibility?: boolean,
         search?: string,
-    }): Promise<PostEntity[]> {
+    }): Promise<[PostEntity[], PagerEntity]> {
         const params: any = {};
 
         if (page) params.page = page;
@@ -34,8 +36,10 @@ export default class PostRepoImpl implements PostRepo {
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));
 
-        return (response.data["data"] as Array<any>)
-            .map((post) => new PostResponse(post));
+        return [
+            (response.data["data"] as Array<any>).map((post) => new PostResponse(post)),
+            new PagerResponse(response.data),
+        ];
     }
 
     async get(id: number): Promise<PostEntity> {

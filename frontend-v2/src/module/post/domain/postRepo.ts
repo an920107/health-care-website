@@ -1,5 +1,6 @@
 import PostEntity from "./postEntity";
 import PostColumnEnum from "./postColumnEnum";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 
 export default interface PostRepo {
     query({ }: {
@@ -7,7 +8,7 @@ export default interface PostRepo {
         column?: PostColumnEnum[],
         visibility?: boolean,
         search?: string,
-    }): Promise<PostEntity[]>;
+    }): Promise<[PostEntity[], PagerEntity]>;
 
     get(id: number): Promise<PostEntity>;
 

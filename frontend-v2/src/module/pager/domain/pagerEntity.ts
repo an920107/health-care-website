@@ -3,10 +3,10 @@ export default class PagerEntity {
     totalPage: number;
 
     constructor({
-        currentPage,
+        currentPage = 1,
         totalPage,
     }: {
-        currentPage: number,
+        currentPage?: number,
         totalPage: number,
     }) {
         this.currentPage = currentPage;

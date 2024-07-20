@@ -1,6 +1,7 @@
 import PostColumnEnum from "../domain/postColumnEnum";
 import PostRepo from "../domain/postRepo";
 import { PostRequest, PostResponse } from "./postDto";
+import { PagerResponse } from "@/module/pager/application/pagerDto";
 
 export default class NormalPostUsecase {
     private _repo: PostRepo;
@@ -24,7 +25,7 @@ export default class NormalPostUsecase {
         column?: PostColumnEnum[],
         visibility?: boolean,
         search?: string,
-    }): Promise<PostResponse[]> {
+    }): Promise<[PostResponse[], PagerResponse]> {
         return this._repo.query({
             page: page,
             column: column,

@@ -12,6 +12,7 @@ import GroupedButton from "@/components/grouped-button";
 import Card from "@/components/card";
 import SearchBar from "@/components/search-bar";
 import Pager from "@/components/pager";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 
 type Props = {
   isEnableSearch?: boolean;
@@ -26,6 +27,7 @@ export default function PostTable({
 
   const [searchText, setSearchText] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
   const [columnSelected, setColumnSelected] =
     useState<ColumnSelectionType>(PostViewModel.columnSelections[0]);
 
@@ -68,7 +70,7 @@ export default function PostTable({
       {
         isEnablePager &&
         <div className="flex flex-row justify-end mt-3">
-          <Pager totalPage={10} onChange={setCurrentPage} />
+          <Pager totalPage={totalPage} onChange={setCurrentPage} />
         </div>
       }
     </div>
@@ -88,7 +90,11 @@ export default function PostTable({
         visibility: true,
         search: searchText
       })
-        .then(val => { setPosts(val); console.log("Posts fetched:", val); })
+        .then(([posts, pager]) => {
+          setPosts(posts);
+          setTotalPage(pager.totalPage);
+          console.log("Posts fetched:", posts, ", and with pager:", pager);
+        })
         .catch(err => console.error("Failed to fetch posts", err));
     }, [columnSelected, searchText, currentPage]);
 

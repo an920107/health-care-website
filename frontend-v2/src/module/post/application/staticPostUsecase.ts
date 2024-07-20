@@ -10,7 +10,7 @@ export default class StaticPostUsecase {
     }
 
     async getStaticPost(label: string): Promise<PostResponse> {
-        const posts = await this._repo.query({
+        const [posts, _] = await this._repo.query({
             page: 1,
             column: [PostColumnEnum.Static],
             visibility: false,
