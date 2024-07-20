@@ -5,23 +5,29 @@ import { Link } from "@/navigation";
 import PostTable from "./post-table";
 
 type Props = {
+  isEnableTitle?: boolean;
   isEnableMore?: boolean;
   isEnableSearch?: boolean;
   isEnablePager?: boolean;
+  isAdmin?: boolean;
+  actions?: Readonly<React.ReactNode>;
 };
 
 export default function PostPanel({
+  isEnableTitle = false,
   isEnableMore = false,
   isEnableSearch = false,
   isEnablePager = false,
+  isAdmin = false,
+  actions,
 }: Props) {
 
   const trans = useTranslations("Post");
 
   return (
     <div>
-      <PostTitle />
-      <PostTable isEnableSearch={isEnableSearch} isEnablePager={isEnablePager} />
+      {isEnableTitle && <PostTitle />}
+      <PostTable isEnableSearch={isEnableSearch} isEnablePager={isEnablePager} actions={actions}/>
       {isEnableMore && <PostMore />}
     </div>
   );

@@ -53,6 +53,12 @@
         "train": "Education",
         "others": "Others"
     },
+    "Status": {
+        "released": "Released",
+        "draft": "Draft",
+        "normal": "普通",
+        "important": "重要"
+    },
     "Post": {
         "title": "NEWS",
         "all": "All Announcements",
@@ -64,6 +70,7 @@
         "table_title": "Title",
         "table_date": "Released Date",
         "more": "See more...",
+        "new": "New Post",
         "not_found": "There is no post found!"
     },
     "Restaurant": {

@@ -53,6 +53,12 @@
         "train": "教育訓練",
         "others": "其他"
     },
+    "Status": {
+        "released": "已發佈",
+        "draft": "草稿",
+        "normal": "普通",
+        "important": "重要"
+    },
     "Post": {
         "title": "NEWS",
         "all": "所有公告",
@@ -64,6 +70,7 @@
         "table_title": "標題",
         "table_date": "發布日期",
         "more": "查看更多...",
+        "new": "新增文章",
         "not_found": "找不到貼文！"
     },
     "Restaurant": {

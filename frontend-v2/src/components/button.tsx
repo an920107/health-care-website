@@ -16,10 +16,9 @@ export default function Button({
   onClick
 }: Props) {
   return (
-    <div className={className}>
       <button
         title={title}
-        className={`flex flex-row items-center px-3 py-1 rounded-full
+        className={`${className ?? ""} flex flex-row items-center px-3 py-1 rounded-full
           ${disabled ? "text-gray-300" : "hover:bg-opacity-5 hover:bg-black transition-colors"}`}
         disabled={disabled}
         type="button"
@@ -27,6 +26,5 @@ export default function Button({
       >
         {children}
       </button>
-    </div>
   )
 }

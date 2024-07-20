@@ -12,16 +12,19 @@ import GroupedButton from "@/components/grouped-button";
 import Card from "@/components/card";
 import SearchBar from "@/components/search-bar";
 import Pager from "@/components/pager";
-import PagerEntity from "@/module/pager/domain/pagerEntity";
 
 type Props = {
   isEnableSearch?: boolean;
   isEnablePager?: boolean;
+  isAdmin?: boolean;
+  actions?: Readonly<React.ReactNode>;
 };
 
 export default function PostTable({
   isEnableSearch = false,
   isEnablePager = false,
+  isAdmin = false,
+  actions,
 }: Props) {
   const trans = useTranslations("Post");
 
@@ -47,7 +50,7 @@ export default function PostTable({
       }
       <div className="md:hidden mt-3 flex flex-row items-center gap-2">
         <DropdownButton
-          className={isEnableSearch ? "h-[2.875rem]" : ""}
+          className={isEnableSearch ? "h-[2.625rem]" : ""}
           options={PostViewModel.columnSelections.map((e) => (trans(e.label)))}
           onChange={handleColumnSelectionChange}
         />
@@ -67,12 +70,15 @@ export default function PostTable({
           <Table></Table>
         </Card>
       </div>
-      {
-        isEnablePager &&
-        <div className="flex flex-row justify-end mt-3">
-          <Pager totalPage={totalPage} onChange={setCurrentPage} />
-        </div>
-      }
+      <div className="flex flex-row justify-between items-start md:items-center mt-4">
+        <div>{actions ?? (<></>)}</div>
+        {
+          isEnablePager &&
+          <div className="flex flex-row justify-end">
+            <Pager totalPage={totalPage} onChange={setCurrentPage} />
+          </div>
+        }
+      </div>
     </div>
   )
 
