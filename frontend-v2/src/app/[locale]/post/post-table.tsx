@@ -99,7 +99,7 @@ export default function PostTable({
         .then(([posts, pager]) => {
           setPosts(posts);
           setTotalPage(pager.totalPage);
-          console.log("Posts fetched:", posts, ", and with pager:", pager);
+          console.debug("Posts fetched:", posts, ", and with pager:", pager);
         })
         .catch(err => console.error("Failed to fetch posts", err));
     }, [columnSelected, searchText, currentPage]);

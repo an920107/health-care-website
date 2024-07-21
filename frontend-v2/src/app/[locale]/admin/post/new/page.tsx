@@ -1,10 +1,18 @@
 "use client";
 
+import AttachmentPreview from "@/components/attachment-preview";
 import Button from "@/components/button";
 import DropdownButton from "@/components/dropdown-button";
 import Editor from "@/components/editor";
 import TextField from "@/components/text-field";
+import AttachmentUsecase from "@/module/attachment/application/attachmentUsecase";
+import AttachmentEntity from "@/module/attachment/domain/attachmentEntity";
+import UploadingAttachmentEntity from "@/module/attachment/domain/uploadingAttachmentEntity";
+import UploadingPregressMap from "@/module/attachment/domain/uploadingProgressMap";
+import AttachmentRepoImpl from "@/module/attachment/presenter/attachmentRepoImpl";
+import NormalPostUsecase from "@/module/post/application/normalPostUsecase";
 import PostColumnEnum from "@/module/post/domain/postColumnEnum";
+import PostRepoImpl from "@/module/post/presenter/postRepoImpl";
 import ImportanceEnum from "@/module/status/doamin/importanceEnum";
 import ReleaseStatusEnum from "@/module/status/doamin/releaseStatusEnum";
 import { faSave, faTrash, faUpload } from "@fortawesome/free-solid-svg-icons";
@@ -18,10 +26,46 @@ export default function NewPostPage() {
 
   const [chineseTitle, setChineseTitle] = useState<string>("");
   const [englishTitle, setEnglishTitle] = useState<string>("");
+  const [attachments, setAttachments] = useState<AttachmentEntity[]>([]);
+  const [uploadingAttachments, setUploadingAttachments] = useState<UploadingAttachmentEntity[]>([]);
+  const [uploadingProgressMap, setUploadingProgressMap] = useState<UploadingPregressMap>({});
+
+  const postRepo = new PostRepoImpl();
+  const postUsecase = new NormalPostUsecase(postRepo);
+  const attachmentRepo = new AttachmentRepoImpl();
+  const attachmentUsecase = new AttachmentUsecase(attachmentRepo);
 
   function handleUpload(files: FileList | null) {
     if (files === null) return;
-    
+
+    for (var i = 0; i < files.length; i++) {
+      if (files.item(i) === null) continue;
+
+      const file = files.item(i)!;
+      const state = Math.floor(Math.random() * 1e16);
+
+      setUploadingAttachments((prev) => [
+        ...prev,
+        new UploadingAttachmentEntity({
+          state: state,
+          file: file,
+          uploadPromise: attachmentUsecase.uploadFile(
+            file, (progress) => setUploadingProgressMap((prev) => ({ ...prev, [state]: progress })),
+          ).then((attachment) => {
+            setAttachments((prev) => [...prev, attachment]);
+            return attachment;
+          }).catch((err) => {
+            console.error("Failed to upload attachment", err)
+          }).finally(() => {
+            setUploadingProgressMap((prev) => {
+              delete prev[state];
+              return { ...prev };
+            });
+            setUploadingAttachments((prev) => prev.filter((e) => e.state !== state));
+          }),
+        }),
+      ]);
+    }
   }
 
   return (
@@ -41,6 +85,14 @@ export default function NewPostPage() {
           <Editor label="Chinese Content" />
           <Editor label="Englist Content" />
         </div>
+        <div>
+          <label className="label">{trans("upload-preview")}</label>
+          <AttachmentPreview
+            attachments={attachments}
+            uploadingAttachments={uploadingAttachments}
+            uploadingProgressMap={uploadingProgressMap}
+          />
+        </div>
         <div className="flex flex-row justify-end gap-2">
           <Button className="border">
             <FontAwesomeIcon icon={faTrash} className="me-2 size-4" />
@@ -49,7 +101,7 @@ export default function NewPostPage() {
           <Button className="border">
             <label htmlFor="upload" className="cursor-pointer">
               <FontAwesomeIcon icon={faUpload} className="me-2 size-4" />
-              <input id="upload" type="file" className="hidden"
+              <input id="upload" type="file" className="hidden" multiple={true}
                 onChange={(event) => handleUpload(event.target.files)} />
               <span className="py-1">{trans("upload")}</span>
             </label>
