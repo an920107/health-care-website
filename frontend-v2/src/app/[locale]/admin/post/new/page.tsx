@@ -23,6 +23,7 @@ import { useState } from "react";
 export default function NewPostPage() {
   const trans = useTranslations("Post");
   const statusTrans = useTranslations("Status");
+  const attachmentTrans = useTranslations("Attachment");
 
   const [chineseTitle, setChineseTitle] = useState<string>("");
   const [englishTitle, setEnglishTitle] = useState<string>("");
@@ -73,21 +74,21 @@ export default function NewPostPage() {
       <h1>{trans("new")}</h1>
       <form className="mt-6 flex flex-col gap-4">
         <div className="flex flex-row gap-4">
-          <DropdownButton label="Post Column" options={columnOptions.map((option) => trans(option))} className="h-10" />
-          <DropdownButton label="Status" options={releaseStatusOptions.map((option) => statusTrans(option))} className="h-10" />
-          <DropdownButton label="Importance" options={importanceOptions.map((option) => statusTrans(option))} className="h-10" />
+          <DropdownButton label={trans("column")} options={columnOptions.map((option) => trans(option))} className="h-10" />
+          <DropdownButton label={statusTrans("status")} options={releaseStatusOptions.map((option) => statusTrans(option))} className="h-10" />
+          <DropdownButton label={statusTrans("importance")} options={importanceOptions.map((option) => statusTrans(option))} className="h-10" />
         </div>
         <div className="flex flex-row gap-4">
-          <TextField label="Chinese Title" value={chineseTitle} onChange={setChineseTitle} />
-          <TextField label="English Title" value={englishTitle} onChange={setEnglishTitle} />
+          <TextField label={trans("chinese_title")} value={chineseTitle} onChange={setChineseTitle} />
+          <TextField label={trans("english_title")}value={englishTitle} onChange={setEnglishTitle} />
         </div>
         <div className="flex flex-row gap-4">
-          <Editor label="Chinese Content" />
-          <Editor label="Englist Content" />
+          <Editor label={trans("chinese_content")}/>
+          <Editor label={trans("english_content")}/>
         </div>
         <div>
-          <label className="label">{trans("upload-preview")}</label>
           <AttachmentPreview
+            label={attachmentTrans("preview")}
             attachments={attachments}
             uploadingAttachments={uploadingAttachments}
             uploadingProgressMap={uploadingProgressMap}
@@ -95,15 +96,11 @@ export default function NewPostPage() {
         </div>
         <div className="flex flex-row justify-end gap-2">
           <Button className="border">
-            <FontAwesomeIcon icon={faTrash} className="me-2 size-4" />
-            <span className="py-1">{trans("delete")}</span>
-          </Button>
-          <Button className="border">
             <label htmlFor="upload" className="cursor-pointer">
               <FontAwesomeIcon icon={faUpload} className="me-2 size-4" />
               <input id="upload" type="file" className="hidden" multiple={true}
                 onChange={(event) => handleUpload(event.target.files)} />
-              <span className="py-1">{trans("upload")}</span>
+              <span className="py-1">{attachmentTrans("upload")}</span>
             </label>
           </Button>
           <Button className="border">
