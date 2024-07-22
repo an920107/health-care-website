@@ -21,7 +21,7 @@ export default class AttachmentRepoImpl implements AttachmentRepo {
         const formData = new FormData();
         formData.append("file", file);
 
-        console.debug("Sending request to /api/attachment with file: ", file);
+        console.debug("POST /api/attachment with file: ", file);
         const response = await axios.post(new URL("/api/attachment", BACKEND_HOST).href,
             formData,
             {

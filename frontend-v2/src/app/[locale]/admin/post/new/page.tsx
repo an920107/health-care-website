@@ -49,7 +49,7 @@ export default function NewPostPage() {
 
   const titleValidations = [
     new NotEmptyValidationUsecase(trans("validate_empty")),
-    new LengthValidationUsecase(3, trans("validate_length", { length: 3 })),
+    new LengthValidationUsecase(40, trans("validate_length", { length: 40 })),
   ]
 
   function handleUpload(files: FileList | null) {
@@ -98,17 +98,16 @@ export default function NewPostPage() {
   useEffect(() => {
     if (isValidationPassed.length < 2 ||
       isValidationPassed.filter((value) => !value).length > 0) return;
-    console.warn("Saved!");
-    // postUsecase.createPost(new PostRequest({
-    //   title: chineseTitle,
-    //   titleEn: englishTitle,
-    //   content: chineseContent.toString(),
-    //   contentEn: englishContent.toString(),
-    //   attachments: attachments.map((attachment) => attachment.id),
-    //   column: column,
-    //   visibility: releaseStatus === ReleaseStatusEnum.Released,
-    //   importance: importance === ImportanceEnum.Important,
-    // }));
+    postUsecase.createPost(new PostRequest({
+      title: chineseTitle,
+      titleEn: englishTitle,
+      content: chineseContent.toString(),
+      contentEn: englishContent.toString(),
+      attachments: attachments.map((attachment) => attachment.id),
+      column: column,
+      visibility: releaseStatus === ReleaseStatusEnum.Released,
+      importance: importance === ImportanceEnum.Important,
+    }));
   }, [isValidationPassed]);
 
   return (

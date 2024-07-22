@@ -28,7 +28,7 @@ export default class PostRepoImpl implements PostRepo {
             params.search = search;
         }
 
-        console.debug("Sending request /api/post with params:", params);
+        console.debug("GET /api/post with params:", params);
         const response = await axios.get(new URL("/api/post", BACKEND_HOST).href, {
             params: params
         });
@@ -52,6 +52,7 @@ export default class PostRepoImpl implements PostRepo {
     }
 
     async create(post: PostEntity): Promise<void> {
+        console.debug("POST /api/post with body:", new PostRequest(post));
         const response = await axios.post(new URL("/api/post", BACKEND_HOST).href,
             new PostRequest(post).toJson(),
             {
