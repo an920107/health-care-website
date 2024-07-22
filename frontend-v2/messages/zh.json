@@ -91,6 +91,8 @@
         "english_content": "英文內容",
         "delete": "刪除文章",
         "save": "儲存文章",
+        "validate_empty": "此欄位不得為空",
+        "validate_length": "長度不得超過 {length}",
         "not_found": "找不到貼文！"
     },
     "Restaurant": {

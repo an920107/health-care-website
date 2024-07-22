@@ -91,6 +91,8 @@
         "english_content": "English Content",
         "delete": "Delete Post",
         "save": "Save Post",
+        "validate_empty": "The field cannot be empty",
+        "validate_length": "The length shouldn't be more than {length}",
         "not_found": "There is no post found!"
     },
     "Restaurant": {
