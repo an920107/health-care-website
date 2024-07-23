@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <>
       <NotFoundRedirect />
-      <div className="flex flex-row mb-20 gap-10">
+      <div className="flex flex-row gap-10">
         <IndexMenu className="max-md:hidden" />
         <div className="flex flex-col flex-1 gap-10">
           <Carousel className="rounded-xl shadow-lg mb-4" images={
@@ -20,7 +20,7 @@ export default function HomePage() {
               "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png",
             ]
           } />
-          <PostPanel isEnableMore={true} />
+          <PostPanel isEnableTitle={true} isEnableMore={true} />
           <Restaurant />
         </div>
       </div>

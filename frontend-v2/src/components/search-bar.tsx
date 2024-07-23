@@ -42,7 +42,7 @@ export default function SearchBar({
         type="text"
         placeholder={placeholder ?? ""}
         value={text}
-        className="w-full ps-10 pe-4 py-2 text-lg rounded-lg ring-1 ring-gray-200 outline-none focus:outline-none focus:ring-2 focus:ring-opacity-30 focus:ring-yellow-900 transition-all duration-200"
+        className="w-full ps-10 pe-4 py-1.5 text-lg rounded-lg ring-1 ring-gray-200 outline-none focus:outline-none focus:ring-2 focus:ring-opacity-30 focus:ring-yellow-900 transition-all duration-200"
         onChange={handleChange}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}

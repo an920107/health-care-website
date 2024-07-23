@@ -53,6 +53,25 @@
         "train": "教育訓練",
         "others": "其他"
     },
+    "Status": {
+        "status": "狀態",
+        "importance": "重要度",
+        "released": "已發佈",
+        "draft": "草稿",
+        "normal": "普通",
+        "important": "重要"
+    },
+    "Attachment": {
+        "upload": "上傳附件",
+        "preview": "附件預覽",
+        "table_order": "次序",
+        "table_filename": "檔案名稱",
+        "table_time": "上傳時間",
+        "table_progress": "進度",
+        "table_move": "移動",
+        "table_delete": "刪除",
+        "not_found": "找不到附件！"
+    },
     "Post": {
         "title": "NEWS",
         "all": "所有公告",
@@ -64,6 +83,16 @@
         "table_title": "標題",
         "table_date": "發布日期",
         "more": "查看更多...",
+        "new": "新增文章",
+        "column": "訊息類別",
+        "chinese_title": "中文標題",
+        "english_title": "英文標題",
+        "chinese_content": "中文內容",
+        "english_content": "英文內容",
+        "delete": "刪除文章",
+        "save": "儲存文章",
+        "validate_empty": "此欄位不得為空",
+        "validate_length": "長度不得超過 {length}",
         "not_found": "找不到貼文！"
     },
     "Restaurant": {

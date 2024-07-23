@@ -53,6 +53,25 @@
         "train": "Education",
         "others": "Others"
     },
+    "Status": {
+        "status": "Status",
+        "importance": "Importance",
+        "released": "Released",
+        "draft": "Draft",
+        "normal": "Normal",
+        "important": "Important"
+    },
+    "Attachment": {
+        "upload": "Upload Attachments",
+        "preview": "Attachments Preview",
+        "table_order": "Order",
+        "table_filename": "Filename",
+        "table_time": "Uploaded Time",
+        "table_progress": "Progress",
+        "table_move": "Move",
+        "table_delete": "Delete",
+        "not_found": "There is no attachment found!"
+    },
     "Post": {
         "title": "NEWS",
         "all": "All Announcements",
@@ -64,6 +83,16 @@
         "table_title": "Title",
         "table_date": "Released Date",
         "more": "See more...",
+        "new": "New Post",
+        "column": "Post Column",
+        "chinese_title": "Chinese Title",
+        "english_title": "English Title",
+        "chinese_content": "Chinese Content",
+        "english_content": "English Content",
+        "delete": "Delete Post",
+        "save": "Save Post",
+        "validate_empty": "The field cannot be empty",
+        "validate_length": "The length shouldn't be more than {length}",
         "not_found": "There is no post found!"
     },
     "Restaurant": {
@@ -79,6 +108,6 @@
         "table_valid": "Result",
         "table_date": "Inspected Date",
         "more": "See more...",
-        "not_found": "There is no post found!"
+        "not_found": "There is no merchant found!"
     }
 }
