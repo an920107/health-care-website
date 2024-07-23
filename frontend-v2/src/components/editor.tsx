@@ -4,7 +4,7 @@ import "./editor.css";
 
 import ReactQuill, { Quill } from "react-quill";
 import { DeltaStatic, Sources } from "quill";
-import React, { Fragment, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { ImageResize } from "quill-image-resize-module-ts";
 import AttachmentRepoImpl from "@/module/attachment/presenter/attachmentRepoImpl";
 import AttachmentUsecase from "@/module/attachment/application/attachmentUsecase";

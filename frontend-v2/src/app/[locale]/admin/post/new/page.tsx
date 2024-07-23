@@ -10,6 +10,7 @@ import AttachmentEntity from "@/module/attachment/domain/attachmentEntity";
 import UploadingAttachmentEntity from "@/module/attachment/domain/uploadingAttachmentEntity";
 import UploadingPregressMap from "@/module/attachment/domain/uploadingProgressMap";
 import AttachmentRepoImpl from "@/module/attachment/presenter/attachmentRepoImpl";
+import AttachmentUploadAction from "@/module/attachment/presenter/attachmentUploadAction";
 import NormalPostUsecase from "@/module/post/application/normalPostUsecase";
 import { PostRequest } from "@/module/post/application/postDto";
 import PostColumnEnum from "@/module/post/domain/postColumnEnum";
@@ -46,44 +47,17 @@ export default function NewPostPage() {
   const postUsecase = new NormalPostUsecase(postRepo);
   const attachmentRepo = new AttachmentRepoImpl();
   const attachmentUsecase = new AttachmentUsecase(attachmentRepo);
+  const attachmentUploadAction = new AttachmentUploadAction({
+    usecase: attachmentUsecase,
+    setAttachments: setAttachments,
+    setUploadingAttachments: setUploadingAttachments,
+    setUploadingProgressMap: setUploadingProgressMap,
+  })
 
   const titleValidations = [
     new NotEmptyValidationUsecase(trans("validate_empty")),
     new LengthValidationUsecase(40, trans("validate_length", { length: 40 })),
   ]
-
-  function handleUpload(files: FileList | null) {
-    if (files === null) return;
-
-    for (var i = 0; i < files.length; i++) {
-      if (files.item(i) === null) continue;
-
-      const file = files.item(i)!;
-      const state = Math.floor(Math.random() * 1e16);
-
-      setUploadingAttachments((prev) => [
-        ...prev,
-        new UploadingAttachmentEntity({
-          state: state,
-          file: file,
-          uploadPromise: attachmentUsecase.uploadFile(
-            file, (progress) => setUploadingProgressMap((prev) => ({ ...prev, [state]: progress })),
-          ).then((attachment) => {
-            setAttachments((prev) => [...prev, attachment]);
-            return attachment;
-          }).catch((err) => {
-            console.error("Failed to upload attachment", err)
-          }).finally(() => {
-            setUploadingProgressMap((prev) => {
-              delete prev[state];
-              return { ...prev };
-            });
-            setUploadingAttachments((prev) => prev.filter((e) => e.state !== state));
-          }),
-        }),
-      ]);
-    }
-  }
 
   function handleValidate(result: boolean) {
     setToValidate(false);
@@ -162,16 +136,15 @@ export default function NewPostPage() {
             attachments={attachments}
             uploadingAttachments={uploadingAttachments}
             uploadingProgressMap={uploadingProgressMap}
+            onChange={setAttachments}
           />
         </div>
         <div className="flex flex-row justify-end gap-2">
-          <Button className="border">
-            <label htmlFor="upload" className="cursor-pointer">
-              <FontAwesomeIcon icon={faUpload} className="me-2 size-4" />
-              <input id="upload" type="file" className="hidden" multiple={true}
-                onChange={(event) => handleUpload(event.target.files)} />
-              <span className="py-1">{attachmentTrans("upload")}</span>
-            </label>
+          <Button className="border" onClick={() => { document.getElementById("upload")?.click() }}>
+            <FontAwesomeIcon icon={faUpload} className="me-2 size-4" />
+            <input id="upload" type="file" className="hidden" multiple={true}
+              onChange={(event) => attachmentUploadAction.invoke(event.target.files)} />
+            <span className="py-1">{attachmentTrans("upload")}</span>
           </Button>
           <Button className="border" onClick={handleSave}>
             <FontAwesomeIcon icon={faSave} className="me-2 size-4" />

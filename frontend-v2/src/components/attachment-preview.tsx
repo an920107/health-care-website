@@ -17,6 +17,7 @@ type Props = {
   attachments?: AttachmentEntity[];
   uploadingAttachments?: UploadingAttachmentEntity[];
   uploadingProgressMap?: UploadingPregressMap;
+  onChange?(attachments: AttachmentEntity[]): void;
 };
 
 export default function AttachmentPreview({
@@ -25,8 +26,31 @@ export default function AttachmentPreview({
   attachments = [],
   uploadingAttachments = [],
   uploadingProgressMap = {},
+  onChange,
 }: Props) {
   const trans = useTranslations("Attachment");
+
+  function handleMoveUp(index: number) {
+    const newAttachments = [...attachments];
+    if (index > 0) {
+      [newAttachments[index], newAttachments[index - 1]] = [newAttachments[index - 1], newAttachments[index]];
+    }
+    onChange?.(newAttachments);
+  }
+
+  function handleMoveDown(index: number) {
+    const newAttachments = [...attachments];
+    if (index < newAttachments.length - 1) {
+      [newAttachments[index], newAttachments[index + 1]] = [newAttachments[index + 1], newAttachments[index]];
+    }
+    onChange?.(newAttachments);
+  }
+
+  function handleDelete(index: number) {
+    const newAttachments = [...attachments];
+    newAttachments.splice(index, 1);
+    onChange?.(newAttachments);
+  }
 
   return (
     <div>
@@ -59,19 +83,25 @@ export default function AttachmentPreview({
                         <Table.Cell>{vm.uploadedTime}</Table.Cell>
                         <Table.Cell>
                           <div className="flex flex-row">
-                            <Button><FontAwesomeIcon icon={faArrowUp} className="size-3 py-1.5" /></Button>
-                            <Button><FontAwesomeIcon icon={faArrowDown} className="size-3 py-1.5" /></Button>
+                            <Button onClick={() => handleMoveUp(index)} disabled={index === 0}>
+                              <FontAwesomeIcon icon={faArrowUp} className="size-3 py-1.5" />
+                            </Button>
+                            <Button onClick={() => handleMoveDown(index)} disabled={index === attachments.length - 1}>
+                              <FontAwesomeIcon icon={faArrowDown} className="size-3 py-1.5" />
+                            </Button>
                           </div>
                         </Table.Cell>
                         <Table.Cell>
-                          <Button><FontAwesomeIcon icon={faClose} className="size-3 py-1.5" /></Button>
+                          <Button onClick={() => handleDelete(index)}>
+                            <FontAwesomeIcon icon={faClose} className="size-3 py-1.5" />
+                          </Button>
                         </Table.Cell>
                       </Table.Row>
                     );
                   })
                 }
                 {
-                  uploadingAttachments.map((entity, index) => {
+                  uploadingAttachments.map((entity) => {
                     const vm = new UploadingAttachmentViewModel(entity, uploadingProgressMap);
                     return (
                       <Table.Row>
