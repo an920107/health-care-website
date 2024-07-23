@@ -49,7 +49,7 @@
 .ql-editor h4,
 .ql-editor h5,
 .ql-editor h6 {
-  margin: 0;
+  margin-bottom: 0.5rem;
   padding: 0;
   counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
 }
@@ -692,6 +692,7 @@
 .ql-snow .ql-color-picker,
 .ql-snow .ql-icon-picker {
   width: 28px;
+  height: 24px;
 }
 .ql-snow .ql-color-picker .ql-picker-label,
 .ql-snow .ql-icon-picker .ql-picker-label {

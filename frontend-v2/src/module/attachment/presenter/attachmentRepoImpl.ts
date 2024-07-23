@@ -19,7 +19,7 @@ export default class AttachmentRepoImpl implements AttachmentRepo {
         onProgress?: (progress: number) => void
     ): Promise<AttachmentEntity> {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", file, file.name);
 
         console.debug("POST /api/attachment with file: ", file);
         const response = await axios.post(new URL("/api/attachment", BACKEND_HOST).href,
