@@ -5,6 +5,7 @@ import { Link } from "@/navigation";
 import PostTable from "./post-table";
 
 type Props = {
+  locale: string;
   isEnableTitle?: boolean;
   isEnableMore?: boolean;
   isEnableSearch?: boolean;
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export default function PostPanel({
+  locale,
   isEnableTitle = false,
   isEnableMore = false,
   isEnableSearch = false,
@@ -21,13 +23,18 @@ export default function PostPanel({
   isAdmin = false,
   actions,
 }: Props) {
-
   const trans = useTranslations("Post");
 
   return (
     <div>
       {isEnableTitle && <PostTitle />}
-      <PostTable isEnableSearch={isEnableSearch} isEnablePager={isEnablePager} actions={actions}/>
+      <PostTable
+        locale={locale}
+        isEnableSearch={isEnableSearch}
+        isEnablePager={isEnablePager}
+        isAdmin={isAdmin}
+        actions={actions}
+      />
       {isEnableMore && <PostMore />}
     </div>
   );

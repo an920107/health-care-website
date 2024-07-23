@@ -4,7 +4,11 @@ import Carousel from "./carousel";
 import Restaurant from "./restaurant";
 import PostPanel from "./post/post-panel";
 
-export default function HomePage() {
+type Props = {
+  params: { locale: string };
+};
+
+export default function HomePage({ params }: Props) {
   return (
     <>
       <NotFoundRedirect />
@@ -20,7 +24,7 @@ export default function HomePage() {
               "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png",
             ]
           } />
-          <PostPanel isEnableTitle={true} isEnableMore={true} />
+          <PostPanel locale={params.locale} isEnableTitle={true} isEnableMore={true} />
           <Restaurant />
         </div>
       </div>

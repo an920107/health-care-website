@@ -12,8 +12,12 @@ import GroupedButton from "@/components/grouped-button";
 import Card from "@/components/card";
 import SearchBar from "@/components/search-bar";
 import Pager from "@/components/pager";
+import Button from "@/components/button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
+  locale: string;
   isEnableSearch?: boolean;
   isEnablePager?: boolean;
   isAdmin?: boolean;
@@ -21,12 +25,14 @@ type Props = {
 };
 
 export default function PostTable({
+  locale,
   isEnableSearch = false,
   isEnablePager = false,
   isAdmin = false,
   actions,
 }: Props) {
   const trans = useTranslations("Post");
+  const statusTrans = useTranslations("Status");
 
   const [searchText, setSearchText] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -93,7 +99,7 @@ export default function PostTable({
       postUsecase.getAllPosts({
         page: currentPage,
         column: columnSelected.value,
-        visibility: true,
+        visibility: !isAdmin,
         search: searchText
       })
         .then(([posts, pager]) => {
@@ -117,7 +123,14 @@ export default function PostTable({
               <tr className="border-b-2">
                 <th className="px-3 md:px-6 py-3 md:ps-10 ps-5 text-nowrap">{trans("table_column")}</th>
                 <th className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap w-full">{trans("table_title")}</th>
-                <th className="px-3 md:px-6 py-3 md:pe-10 max-md:hidden text-nowrap">{trans("table_date")}</th>
+                <th className={`px-3 md:px-6 py-3 ${isAdmin ? "max-md:pe-5" : "md:pe-10"} max-md:hidden text-nowrap`}>{trans("table_date")}</th>
+                {
+                  isAdmin &&
+                  <>
+                    <th className={`px-3 md:px-6 py-3 max-md:pe-5 text-nowrap`}>{statusTrans("status")}</th>
+                    <th className="px-3 md:px-6 py-3 md:pe-10 text-nowrap">{trans("table_edit")}</th>
+                  </>
+                }
               </tr>
             </thead>
             <tbody>
@@ -126,9 +139,28 @@ export default function PostTable({
                   const postVM = new PostViewModel(post);
                   return (
                     <tr key={postVM.id} className="border-t">
-                      <td className="px-3 md:px-6 py-3 md:ps-10 ps-5 text-nowrap">{trans(postVM.column)}</td>
-                      <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap"><Link href={`/post/${postVM.id}`} className="link">{postVM.title}</Link></td>
-                      <td className="px-3 md:px-6 py-3 md:pe-10 max-md:hidden text-nowrap">{postVM.releasedDate}</td>
+                      <td className="px-3 md:px-6 py-3 md:ps-10 ps-5 text-nowrap">
+                        {trans(postVM.column)}
+                      </td>
+                      <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">
+                        <Link href={`/post/${postVM.id}`} className="link">
+                          {locale === "en" ? postVM.titleEn : postVM.title}
+                        </Link>
+                      </td>
+                      <td className={`px-3 md:px-6 py-3 ${isAdmin ? "max-md:pe-5" : "md:pe-10"} max-md:hidden text-nowrap`}>
+                        {postVM.releasedDate}
+                      </td>
+                      {
+                        isAdmin &&
+                        <>
+                          <td className={`px-3 md:px-6 py-3 max-md:pe-5 text-nowrap`}>{statusTrans(postVM.releaseStatus)}</td>
+                          <td className="px-3 md:px-6 py-3 md:pe-10 text-nowrap">
+                            <Link href={`/admin/post/edit/${postVM.id}`}>
+                              <FontAwesomeIcon icon={faPen} className="size-4" />
+                            </Link>
+                          </td>
+                        </>
+                      }
                     </tr>
                   );
                 })

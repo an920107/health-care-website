@@ -23,7 +23,7 @@ export default class PostRepoImpl implements PostRepo {
 
         if (page) params.page = page;
         if (column) params.column = column.join("+");
-        if (visibility !== undefined) params.visibility = visibility;
+        if (visibility === true) params.visibility = visibility;
         if ((search ?? "").trim().length > 0) {
             params.search = search;
         }

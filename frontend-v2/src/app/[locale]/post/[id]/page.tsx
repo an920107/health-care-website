@@ -42,7 +42,7 @@ export default async function PostPage({ params }: Props) {
           </span>
         </div>
       </div>
-      <hr className="my-2" />
+      <hr className="my-3" />
       <QuillViewer value={isEn ? viewModel.contentEn : viewModel.content} />
     </div>
   );

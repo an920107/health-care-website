@@ -1,3 +1,4 @@
+import ReleaseStatusEnum from "@/module/status/doamin/releaseStatusEnum";
 import PostColumnEnum from "../domain/postColumnEnum";
 import PostEntity from "../domain/postEntity";
 
@@ -8,6 +9,10 @@ export default class PostViewModel extends PostEntity {
 
     get releasedDate(): string {
         return this.createdTime.toISOString().substring(0, 10);
+    }
+
+    get releaseStatus(): ReleaseStatusEnum {
+        return this.visibility ? ReleaseStatusEnum.Released : ReleaseStatusEnum.Draft;
     }
 
     static get columnSelections(): ColumnSelectionType[] {

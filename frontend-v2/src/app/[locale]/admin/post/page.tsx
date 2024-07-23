@@ -5,7 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "@/navigation";
 
-export default function AdminPostPage() {
+type Props = {
+  params: { locale: string };
+}
+
+export default function AdminPostPage({ params }: Props) {
   const trans = useTranslations("Post");
 
   const actions = (
@@ -18,7 +22,7 @@ export default function AdminPostPage() {
   return (
     <div>
       <h1>{trans("title")}</h1>
-      <PostPanel isAdmin={true} isEnableSearch={true} isEnablePager={true} actions={actions} />
+      <PostPanel locale={params.locale} isAdmin={true} isEnableSearch={true} isEnablePager={true} actions={actions} />
     </div>
   );
 }
