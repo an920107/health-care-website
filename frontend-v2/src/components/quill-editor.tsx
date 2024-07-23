@@ -1,7 +1,6 @@
 "use client";
 
-import "./editor.css";
-
+import "./quill.css";
 import ReactQuill, { Quill } from "react-quill";
 import { DeltaStatic, Sources } from "quill";
 import React, { useMemo, useRef, useState } from "react";
@@ -19,7 +18,7 @@ type Props = {
   onChange?(value: string, delta: DeltaStatic, source: Sources, editor: ReactQuill.UnprivilegedEditor): void;
 };
 
-export default function Editor({
+export default function QuillEditor({
   className,
   label,
   value,
@@ -32,7 +31,7 @@ export default function Editor({
   const modules = useMemo(() => ({
     toolbar: {
       container: [
-        [{ header: [1, 2, 3, 4, false] }],
+        [{ header: [2, 3, 4, false] }],
         ["bold", "italic", "underline", "strike", "blockquote"],
         [{ color: [] }, { background: [] }],
         [{ list: "ordered" }, { list: "bullet" }],

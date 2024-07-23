@@ -3,7 +3,7 @@
 import AttachmentPreview from "@/components/attachment-preview";
 import Button from "@/components/button";
 import DropdownButton from "@/components/dropdown-button";
-import Editor from "@/components/editor";
+import QuillEditor from "@/components/quill-editor";
 import TextField from "@/components/text-field";
 import AttachmentUsecase from "@/module/attachment/application/attachmentUsecase";
 import AttachmentEntity from "@/module/attachment/domain/attachmentEntity";
@@ -127,8 +127,8 @@ export default function NewPostPage() {
           />
         </div>
         <div className="flex flex-col md:flex-row gap-4">
-          <Editor label={trans("chinese_content")} value={chineseContent} onChange={setChineseContent} />
-          <Editor label={trans("english_content")} value={englishContent} onChange={setEnglishContent} />
+          <QuillEditor label={trans("chinese_content")} value={chineseContent} onChange={setChineseContent} />
+          <QuillEditor label={trans("english_content")} value={englishContent} onChange={setEnglishContent} />
         </div>
         <div>
           <AttachmentPreview
