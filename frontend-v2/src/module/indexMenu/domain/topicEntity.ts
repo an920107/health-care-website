@@ -1,5 +1,7 @@
+import TopicEnum from "./topicEnum";
+
 export default class TopicEntity {
-    label: string;
+    label: TopicEnum;
 
     constructor({
         label,

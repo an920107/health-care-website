@@ -72,6 +72,17 @@
         "table_delete": "Delete",
         "not_found": "There is no attachment found!"
     },
+    "Static": {
+        "title": "Static Post",
+        "edit": "Edit {name}",
+        "save": "Save Page",
+        "chinese_content": "Chinese Content",
+        "english_content": "English Content",
+        "table_group": "Group",
+        "table_topic": "Topic",
+        "table_date": "Updated Date",
+        "table_edit": "Edit"
+    },
     "Post": {
         "title": "NEWS",
         "all": "All Announcements",

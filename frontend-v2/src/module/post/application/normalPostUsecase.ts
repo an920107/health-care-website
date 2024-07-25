@@ -1,6 +1,6 @@
 import PostColumnEnum from "../domain/postColumnEnum";
 import PostRepo from "../domain/postRepo";
-import { PostRequest, PostResponse } from "./postDto";
+import { NormalPostRequest, PostResponse } from "./postDto";
 import { PagerResponse } from "@/module/pager/application/pagerDto";
 
 export default class NormalPostUsecase {
@@ -38,11 +38,11 @@ export default class NormalPostUsecase {
         return this._repo.get(id);
     }
 
-    async createPost(post: PostRequest): Promise<void> {
+    async createPost(post: NormalPostRequest): Promise<void> {
         return this._repo.create(post);
     }
 
-    async updatePost(id: number, post: PostRequest): Promise<void> {
+    async updatePost(id: number, post: NormalPostRequest): Promise<void> {
         return this._repo.update(id, post);
     }
 

@@ -1,6 +1,6 @@
 import PostColumnEnum from "../domain/postColumnEnum";
 import PostRepo from "../domain/postRepo";
-import { PostRequest, PostResponse } from "./postDto";
+import { PostResponse, StaticPostRequest } from "./postDto";
 
 export default class StaticPostUsecase {
     private _repo: PostRepo;
@@ -21,12 +21,12 @@ export default class StaticPostUsecase {
         return Promise.resolve(posts[0]);
     }
 
-    async updateStaticPost(post: PostRequest): Promise<void> {
+    async updateStaticPost(post: StaticPostRequest): Promise<void> {
         try {
             await this.getStaticPost(post.title);
         } catch (err) {
             return this._repo.create(post);
         }
-        return this._repo.update(post);
+        return this._repo.update(post.id, post);
     }
 }

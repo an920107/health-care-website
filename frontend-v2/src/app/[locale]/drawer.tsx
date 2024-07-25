@@ -11,7 +11,6 @@ import ListTile from "@/components/list-tile";
 import DropdownMenu from "@/components/dropdown-menu";
 import { useSearchParams } from "next/navigation";
 import IndexMenuUsecase from "@/module/indexMenu/application/indexMenuUsecase";
-import IndexMenuViewModel from "@/module/indexMenu/presenter/indexMenuViewModel";
 
 type Props = {
   isOpen: boolean;
@@ -29,7 +28,6 @@ export default function Drawer({ isOpen, onClose: closeCallback }: Props) {
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState<boolean>(false);
 
   const indexMenuUsecase = new IndexMenuUsecase();
-  const indexMenuViewModel = new IndexMenuViewModel(indexMenuUsecase);
 
   useEffect(() => {
     const clickHandler = (event: MouseEvent) => {
@@ -54,13 +52,13 @@ export default function Drawer({ isOpen, onClose: closeCallback }: Props) {
           <hr className="m-4" />
           <div className="flex flex-col flex-1 overflow-y-auto">
             {
-              indexMenuViewModel.getGroups().map((groupLabel) => (
-                <ExpensionTile key={groupLabel} title={topicTrans(groupLabel)} className="w-full" titleClassName="py-2 px-4">
+              indexMenuUsecase.getTopicGroups().map((group) => (
+                <ExpensionTile key={group.label} title={topicTrans(group.label)} className="w-full" titleClassName="py-2 px-4">
                   {
-                    indexMenuViewModel.getTopicsInGroup(groupLabel).map((topicLabel) => (
-                      <ListTile key={topicLabel} className="py-2 px-4">
-                        <Link href={indexMenuViewModel.getUri(topicLabel)} className="py-2">
-                          {topicTrans(topicLabel)}
+                    group.topics.map((topic) => (
+                      <ListTile key={topic.label} className="py-2 px-4">
+                        <Link href={`/page/${topic.label}`} className="py-2">
+                          {topicTrans(topic.label)}
                         </Link>
                       </ListTile>
                     ))

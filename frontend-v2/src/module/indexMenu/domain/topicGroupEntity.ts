@@ -1,7 +1,8 @@
 import TopicEntity from "./topicEntity";
+import TopicGroupEnum from "./topicGroupEnum";
 
 export default class TopicGroupEntity {
-    label: string;
+    label: TopicGroupEnum;
     topics: TopicEntity[];
 
     constructor({
