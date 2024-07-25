@@ -1,5 +1,6 @@
 import QuillViewer from "@/components/quill-viewer";
 import NormalPostUsecase from "@/module/post/application/normalPostUsecase";
+import PostEntity from "@/module/post/domain/postEntity";
 import PostRepoImpl from "@/module/post/presenter/postRepoImpl";
 import PostViewModel from "@/module/post/presenter/postViewModel";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
@@ -15,15 +16,16 @@ type Props = {
 }
 
 export default async function PostPage({ params }: Props) {
-  const repo = new PostRepoImpl();
-  const usecase = new NormalPostUsecase(repo);
-
   const idNum = Number.parseInt(params.id);
-  if (idNum === Number.NaN) {
+  if (idNum === Number.NaN) notFound();
+
+  const usecase = new NormalPostUsecase(new PostRepoImpl());
+  var entity: PostEntity;
+  try {
+    entity = await usecase.getPostById(idNum);
+  } catch {
     notFound();
   }
-
-  const entity = await usecase.getPostById(idNum);
   const viewModel = new PostViewModel(entity);
   const isEn = params.locale === "en";
 
