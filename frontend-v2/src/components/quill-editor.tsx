@@ -5,9 +5,9 @@ import ReactQuill, { Quill } from "react-quill";
 import { DeltaStatic, Sources } from "quill";
 import React, { useMemo, useRef, useState } from "react";
 import { ImageResize } from "quill-image-resize-module-ts";
-import AttachmentRepoImpl from "@/module/attachment/presenter/attachmentRepoImpl";
-import AttachmentUsecase from "@/module/attachment/application/attachmentUsecase";
-import AttachmentViewModel from "@/module/attachment/presenter/attachmentViewModel";
+import ImageRepoImpl from "@/module/image/presenter/imageRepoImpl";
+import ImageUsecase from "@/module/image/application/imageUsecase";
+import ImageViewModel from "@/module/image/presenter/imageViewModel";
 
 Quill.register("modules/imageResize", ImageResize);
 
@@ -49,11 +49,10 @@ export default function QuillEditor({
             const file = fileInput.files?.item(0);
             if (!file) return;
 
-            const repo = new AttachmentRepoImpl();
-            const usecase = new AttachmentUsecase(repo);
+            const usecase = new ImageUsecase(new ImageRepoImpl());
 
-            usecase.uploadFile(file).then((attachment) => {
-              const vm = new AttachmentViewModel(attachment);
+            usecase.uploadImage(file).then((image) => {
+              const vm = new ImageViewModel(image);
               const editor = quillRef.current.getEditor();
               const range = editor.getSelection();
               editor.insertEmbed(range?.index ?? 0, "image", vm.url);
