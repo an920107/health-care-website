@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import Button from "@/components/button";
 import Card from "@/components/card";
 import IndexMenuUsecase from "@/module/indexMenu/application/indexMenuUsecase";
-import IndexMenuViewModel from "@/module/indexMenu/presenter/indexMenuViewModel";
+import TopicGroupEntity from "@/module/indexMenu/domain/topicGroupEntity";
 
 type Props = {
   className?: string;
@@ -14,33 +14,29 @@ export default function IndexMenu({ className }: Props) {
   const topicTrans = useTranslations("Topic");
 
   const indexMenuUsecase = new IndexMenuUsecase();
-  const indexMenuViewModel = new IndexMenuViewModel(indexMenuUsecase);
 
   return (
     <div className={className}>
       <div className="flex flex-col gap-5">
         {
-          indexMenuViewModel.getGroups().map((groupLabel) => (
-            <SideMenuGroup
-              key={groupLabel}
-              group={groupLabel}
-            />
+          indexMenuUsecase.getTopicGroups().map((group) => (
+            <SideMenuGroup key={group.label} group={group} />
           ))
         }
       </div>
     </div>
   )
 
-  function SideMenuGroup({ group }: { group: string }) {
+  function SideMenuGroup({ group }: { group: TopicGroupEntity }) {
     return (
       <Card>
         <div className="flex flex-col items-center py-4 px-6 gap-2">
-          <h4>{topicTrans(group)}</h4>
+          <h4>{topicTrans(group.label)}</h4>
           <hr className="w-full" />
           {
-            indexMenuViewModel.getTopicsInGroup(group).map((topicLabel) => (
-              <Button key={topicLabel} className="text-yellow-900">
-                <Link href={`/page/${topicLabel}`}>{topicTrans(topicLabel)}</Link>
+            group.topics.map((topic) => (
+              <Button key={topic.label} className="text-yellow-900">
+                <Link href={`/page/${topic.label}`}>{topicTrans(topic.label)}</Link>
               </Button>
             ))
           }

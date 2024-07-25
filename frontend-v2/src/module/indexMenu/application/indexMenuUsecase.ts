@@ -5,7 +5,7 @@ import TopicGroupEnum from "../domain/topicGroupEnum";
 
 
 export default class IndexMenuUsecase {
-    getTopics(): TopicGroupEntity[] {
+    getTopicGroups(): TopicGroupEntity[] {
         return [
             new TopicGroupEntity({
                 label: TopicGroupEnum.About,
@@ -63,5 +63,13 @@ export default class IndexMenuUsecase {
                 ],
             }),
         ];
+    }
+
+    getTopicGroupsExcept(topics: TopicEnum[]) {
+        const groups = this.getTopicGroups();
+        groups.map((group) => {
+            group.topics = group.topics.filter((topic) => !topics.includes(topic.label));
+        });
+        return groups.filter((group) => group.topics.length > 0);
     }
 }

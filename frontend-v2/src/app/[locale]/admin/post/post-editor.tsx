@@ -1,6 +1,6 @@
 "use client";
 
-import AttachmentPreview from "@/components/attachment-preview";
+import AdminAttachmentPreview from "@/components/admin-attachment-preview";
 import Button from "@/components/button";
 import DropdownButton from "@/components/dropdown-button";
 import QuillEditor from "@/components/quill-editor";
@@ -9,10 +9,11 @@ import AttachmentUsecase from "@/module/attachment/application/attachmentUsecase
 import AttachmentEntity from "@/module/attachment/domain/attachmentEntity";
 import UploadingAttachmentEntity from "@/module/attachment/domain/uploadingAttachmentEntity";
 import UploadingPregressMap from "@/module/attachment/domain/uploadingProgressMap";
+import AttachmentFetchAction from "@/module/attachment/presenter/attachmentFetchAction";
 import AttachmentRepoImpl from "@/module/attachment/presenter/attachmentRepoImpl";
 import AttachmentUploadAction from "@/module/attachment/presenter/attachmentUploadAction";
 import NormalPostUsecase from "@/module/post/application/normalPostUsecase";
-import { PostRequest } from "@/module/post/application/postDto";
+import { NormalPostRequest } from "@/module/post/application/postDto";
 import PostColumnEnum from "@/module/post/domain/postColumnEnum";
 import PostRepoImpl from "@/module/post/presenter/postRepoImpl";
 import ImportanceEnum from "@/module/status/doamin/importanceEnum";
@@ -103,16 +104,11 @@ export default function PostEditor({
   }
 
   useEffect(() => {
-    async function fetchAllAttachments() {
-      const buffer: AttachmentEntity[] = [];
-      for (var attachmentId of defaultAttachmentIds) {
-        await attachmentUsecase.getAttachmentInfo(attachmentId)
-          .then((entity) => buffer.push(entity))
-          .catch((err) => console.error("Fetching attachment failed:", err));
-      }
-      if (buffer.length > 0) setAttachments(buffer);
-    }
-    fetchAllAttachments();
+    const attachmentFetchAction = new AttachmentFetchAction({
+      usecase: attachmentUsecase,
+      setAttachments: setAttachments,
+    });
+    attachmentFetchAction.invoke(defaultAttachmentIds);
   }, []);
 
   // If all the values in `isValidationPassed` are true, then the post will be created or updated
@@ -120,7 +116,7 @@ export default function PostEditor({
     if (isValidationPassed.length < 2 ||
       isValidationPassed.filter((value) => !value).length > 0) return;
 
-    const postRequest = new PostRequest({
+    const postRequest = new NormalPostRequest({
       title: chineseTitle,
       titleEn: englishTitle,
       content: chineseContent.toString(),
@@ -189,7 +185,7 @@ export default function PostEditor({
           <QuillEditor label={trans("english_content")} value={englishContent} onChange={setEnglishContent} />
         </div>
         <div>
-          <AttachmentPreview
+          <AdminAttachmentPreview
             label={attachmentTrans("preview")}
             attachments={attachments}
             uploadingAttachments={uploadingAttachments}

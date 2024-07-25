@@ -3,7 +3,7 @@ import PostColumnEnum from "../domain/postColumnEnum";
 import PostEntity from "../domain/postEntity";
 import PostRepo from "../domain/postRepo";
 import axios from "axios";
-import { PostRequest, PostResponse } from "../application/postDto";
+import { NormalPostRequest, PostResponse } from "../application/postDto";
 import PagerEntity from "@/module/pager/domain/pagerEntity";
 import { PagerResponse } from "@/module/pager/application/pagerDto";
 
@@ -53,9 +53,9 @@ export default class PostRepoImpl implements PostRepo {
     }
 
     async create(post: PostEntity): Promise<void> {
-        console.debug("POST /api/post with body:", new PostRequest(post));
+        console.debug("POST /api/post with body:", new NormalPostRequest(post));
         const response = await axios.post(new URL("/api/post", BACKEND_HOST).href,
-            new PostRequest(post).toJson(),
+            new NormalPostRequest(post).toJson(),
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -68,9 +68,9 @@ export default class PostRepoImpl implements PostRepo {
     }
 
     async update(id: number, post: PostEntity): Promise<void> {
-        console.debug(`PATCH /api/post/${id} with body:`, new PostRequest(post));
+        console.debug(`PATCH /api/post/${id} with body:`, new NormalPostRequest(post));
         const response = await axios.patch(new URL(`/api/post/${id}`, BACKEND_HOST).href,
-            new PostRequest(post).toJson(),
+            new NormalPostRequest(post).toJson(),
             {
                 headers: {
                     "Content-Type": "application/json",

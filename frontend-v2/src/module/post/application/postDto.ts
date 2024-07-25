@@ -1,7 +1,8 @@
+import TopicEnum from "@/module/indexMenu/domain/topicEnum";
 import PostColumnEnum from "../domain/postColumnEnum";
 import PostEntity from "../domain/postEntity";
 
-export class PostRequest extends PostEntity {
+export class NormalPostRequest extends PostEntity {
     constructor({
         title,
         titleEn,
@@ -47,6 +48,31 @@ export class PostRequest extends PostEntity {
             attachments: this.attachments,
             importance: this.importance,
             visibility: this.visibility,
+        });
+    }
+}
+
+export class StaticPostRequest extends NormalPostRequest {
+    constructor({
+        label,
+        content,
+        contentEn,
+        attachments,
+    }: {
+        label: TopicEnum,
+        content: string,
+        contentEn: string,
+        attachments: number[],
+    }) {
+        super({
+            title: label,
+            titleEn: label,
+            content: content,
+            contentEn: contentEn,
+            column: PostColumnEnum.Static,
+            attachments: attachments,
+            importance: false,
+            visibility: true,
         });
     }
 }

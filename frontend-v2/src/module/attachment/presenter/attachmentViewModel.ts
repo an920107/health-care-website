@@ -10,6 +10,10 @@ export default class AttachmentViewModel extends AttachmentEntity {
         return this.createdTime.toISOString().substring(0, 19).replace("T", " ");
     }
 
+    get uploadedDate(): string {
+        return this.createdTime.toISOString().substring(0, 10);
+    }
+
     get url(): string {
         return new URL(`/api/attachment/${this.id}`, BACKEND_HOST).href;
     }

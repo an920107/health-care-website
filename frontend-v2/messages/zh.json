@@ -72,6 +72,17 @@
         "table_delete": "刪除",
         "not_found": "找不到附件！"
     },
+    "Static": {
+        "title": "靜態文章",
+        "edit": "編輯 {name}",
+        "save": "儲存文章",
+        "chinese_content": "中文內容",
+        "english_content": "英文內容",
+        "table_group": "群組",
+        "table_topic": "主題",
+        "table_date": "更新日期",
+        "table_edit": "編輯"
+    },
     "Post": {
         "title": "NEWS",
         "all": "所有公告",
