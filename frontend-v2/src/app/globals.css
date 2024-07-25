@@ -18,6 +18,18 @@ h4 {
   @apply text-lg font-bold;
 }
 
+blockquote {
+  @apply text-gray-400;
+}
+
+blockquote::before {
+  content: " ";
+  margin-right: 0.75rem;
+  background-color: #9ca3af;
+  width: 0.25rem;
+  height: 100%;
+}
+
 .label {
   @apply block mb-1 text-sm font-medium text-gray-700;
 }

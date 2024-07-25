@@ -10,6 +10,7 @@ import { faArrowDown, faArrowUp, faClose } from "@fortawesome/free-solid-svg-ico
 import UploadingAttachmentViewModel from "@/module/attachment/presenter/uploadingAttachmentViewModel";
 import AttachmentViewModel from "@/module/attachment/presenter/attachmentViewModel";
 import { useTranslations } from "next-intl";
+import { Link } from "@/navigation";
 
 type Props = {
   className?: string;
@@ -77,9 +78,9 @@ export default function AttachmentPreview({
                   attachments.map((entity, index) => {
                     const vm = new AttachmentViewModel(entity);
                     return (
-                      <Table.Row align="center">
+                      <Table.Row key={index} align="center">
                         <Table.RowHeaderCell>{index + 1}</Table.RowHeaderCell>
-                        <Table.Cell>{vm.filename}</Table.Cell>
+                        <Table.Cell><Link href={vm.url} className="link">{vm.filename}</Link></Table.Cell>
                         <Table.Cell>{vm.uploadedTime}</Table.Cell>
                         <Table.Cell>
                           <div className="flex flex-row">
@@ -101,10 +102,10 @@ export default function AttachmentPreview({
                   })
                 }
                 {
-                  uploadingAttachments.map((entity) => {
+                  uploadingAttachments.map((entity, index) => {
                     const vm = new UploadingAttachmentViewModel(entity, uploadingProgressMap);
                     return (
-                      <Table.Row>
+                      <Table.Row key={`_${index}`}>
                         <Table.RowHeaderCell>-</Table.RowHeaderCell>
                         <Table.Cell>{vm.filename}</Table.Cell>
                         <Table.Cell>{`${vm.pregress.toFixed(2)} %`}</Table.Cell>

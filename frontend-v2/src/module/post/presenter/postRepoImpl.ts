@@ -45,6 +45,7 @@ export default class PostRepoImpl implements PostRepo {
     async get(id: number): Promise<PostEntity> {
         const response = await axios.get(new URL(`/api/post/${id}`, BACKEND_HOST).href);
 
+        console.debug(`GET /api/post/${id}`);
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));
 
@@ -66,8 +67,9 @@ export default class PostRepoImpl implements PostRepo {
             return Promise.reject(new Error(response.data));
     }
 
-    async update(post: PostEntity): Promise<void> {
-        const response = await axios.patch(new URL("/api/post", BACKEND_HOST).href,
+    async update(id: number, post: PostEntity): Promise<void> {
+        console.debug(`PATCH /api/post/${id} with body:`, new PostRequest(post));
+        const response = await axios.patch(new URL(`/api/post/${id}`, BACKEND_HOST).href,
             new PostRequest(post).toJson(),
             {
                 headers: {
@@ -81,6 +83,7 @@ export default class PostRepoImpl implements PostRepo {
     }
 
     async delete(id: number): Promise<void> {
+        console.debug(`DELETE /api/post/${id}`);
         const response = await axios.delete(new URL(`/api/post/${id}`, BACKEND_HOST).href);
 
         if (response.status !== 204)

@@ -42,8 +42,8 @@ export default class NormalPostUsecase {
         return this._repo.create(post);
     }
 
-    async updatePost(post: PostRequest): Promise<void> {
-        return this._repo.update(post);
+    async updatePost(id: number, post: PostRequest): Promise<void> {
+        return this._repo.update(id, post);
     }
 
     async deletePost(id: number): Promise<void> {

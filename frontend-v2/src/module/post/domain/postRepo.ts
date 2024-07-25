@@ -14,7 +14,7 @@ export default interface PostRepo {
 
     create(post: PostEntity): Promise<void>;
 
-    update(post: PostEntity): Promise<void>;
+    update(id: number, post: PostEntity): Promise<void>;
 
     delete(id: number): Promise<void>;
 }
