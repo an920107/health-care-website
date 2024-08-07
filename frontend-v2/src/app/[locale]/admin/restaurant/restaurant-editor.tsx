@@ -168,7 +168,7 @@ export default function RestaurantEditor({
             onChange={(index) => setReleaseStatus(releaseStatusOptions[index])}
           />
           <DropdownButton
-            label={trans("inspection_status")}
+            label={trans("result")}
             options={inspectionStatusOptions.map((option) => statusTrans(option))}
             className="h-10"
             onChange={(index) => setInspectionStatus(inspectionStatusOptions[index])}

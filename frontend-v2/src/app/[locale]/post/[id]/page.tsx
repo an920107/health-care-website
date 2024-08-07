@@ -1,4 +1,5 @@
 import AttachmentPreview from "@/components/attachment-preview";
+import HeadInfo from "@/components/head-info";
 import QuillViewer from "@/components/quill-viewer";
 import AttachmentUsecase from "@/module/attachment/application/attachmentUsecase";
 import AttachmentEntity from "@/module/attachment/domain/attachmentEntity";
@@ -26,10 +27,9 @@ export default async function PostPage({ params }: Props) {
   const idNum = Number.parseInt(params.id);
   if (idNum === Number.NaN) notFound();
 
-  const usecase = new NormalPostUsecase(new PostRepoImpl());
   var entity: PostEntity;
   try {
-    entity = await usecase.getPostById(idNum);
+    entity = await postUsecase.getPostById(idNum);
   } catch {
     notFound();
   }
@@ -47,16 +47,7 @@ export default async function PostPage({ params }: Props) {
     <div>
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
         <h1>{isEn ? viewModel.titleEn : viewModel.title}</h1>
-        <div className="flex flex-col text-sm">
-          <span className="inline-flex items-center">
-            <FontAwesomeIcon icon={faEye} className="size-4 me-2" />
-            <span>{viewModel.view}</span>
-          </span>
-          <span className="inline-flex items-center">
-            <FontAwesomeIcon icon={faClock} className="size-4 me-2" />
-            <span>{viewModel.releasedDate}</span>
-          </span>
-        </div>
+        <HeadInfo view={viewModel.view} datetime={viewModel.releasedDate} />
       </div>
       <hr className="my-3" />
       <QuillViewer value={isEn ? viewModel.contentEn : viewModel.content} />
