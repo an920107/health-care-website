@@ -43,9 +43,9 @@ export default class PostRepoImpl implements PostRepo {
     }
 
     async get(id: number): Promise<PostEntity> {
+        console.debug(`GET /api/post/${id}`);
         const response = await axios.get(new URL(`/api/post/${id}`, BACKEND_HOST).href);
 
-        console.debug(`GET /api/post/${id}`);
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));
 

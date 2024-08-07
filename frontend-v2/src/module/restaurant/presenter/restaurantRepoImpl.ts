@@ -4,8 +4,10 @@ import axios from "axios";
 import RestaurantRepo from "../domain/restaurantRepo";
 import RestaurantInspectCategoryEnum from "../domain/restaurantInspectCategoryEnum";
 import { RestaurantRequest, RestaurantResponse } from "../application/restaurantDto";
+import { PagerResponse } from "@/module/pager/application/pagerDto";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 
-export default class RestaurantRepoImpl implements RestaurantRepo{
+export default class RestaurantRepoImpl implements RestaurantRepo {
     async query({
         page,
         category,
@@ -16,16 +18,17 @@ export default class RestaurantRepoImpl implements RestaurantRepo{
         category?: RestaurantInspectCategoryEnum[],
         visibility?: boolean,
         search?: string,
-    }): Promise<RestaurantEntity[]> {
+    }): Promise<[RestaurantEntity[], PagerEntity]> {
         const params: any = {};
 
         if (page) params.page = page;
         if (category) params.category = category.join("+");
-        if (visibility !== undefined) params.visibility = visibility;
+        if (visibility === true) params.visibility = visibility;
         if ((search ?? "").trim().length > 0) {
             params.search = search;
         }
 
+        console.debug("GET /api/restaurant with params:", params);
         const response = await axios.get(new URL("/api/restaurant", BACKEND_HOST).href, {
             params: params
         });
@@ -33,8 +36,10 @@ export default class RestaurantRepoImpl implements RestaurantRepo{
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));
 
-        return (response.data["data"] as Array<any>)
-            .map((restaurant) => new RestaurantResponse(restaurant));
+        return [
+            (response.data["data"] as Array<any>).map((restaurant) => new RestaurantResponse(restaurant)),
+            new PagerResponse(response.data)
+        ];
     }
 
     async get(id: number): Promise<RestaurantEntity> {
@@ -60,8 +65,8 @@ export default class RestaurantRepoImpl implements RestaurantRepo{
             return Promise.reject(new Error(response.data));
     }
 
-    async update(restaurant: RestaurantEntity): Promise<void> {
-        const response = await axios.patch(new URL("/api/restaurant", BACKEND_HOST).href,
+    async update(id: number, restaurant: RestaurantEntity): Promise<void> {
+        const response = await axios.patch(new URL(`/api/restaurant/${id}`, BACKEND_HOST).href,
             new RestaurantRequest(restaurant).toJson(),
             {
                 headers: {

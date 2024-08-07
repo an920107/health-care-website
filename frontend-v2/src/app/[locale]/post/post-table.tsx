@@ -12,7 +12,6 @@ import GroupedButton from "@/components/grouped-button";
 import Card from "@/components/card";
 import SearchBar from "@/components/search-bar";
 import Pager from "@/components/pager";
-import Button from "@/components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 
@@ -45,6 +44,7 @@ export default function PostTable({
   }
 
   function handleSearchSubmit(text: string) {
+    setCurrentPage(1);
     setSearchText(text);
   }
 
@@ -105,9 +105,8 @@ export default function PostTable({
         .then(([posts, pager]) => {
           setPosts(posts);
           setTotalPage(pager.totalPage);
-          console.debug("Posts fetched:", posts, ", and with pager:", pager);
         })
-        .catch(err => console.error("Failed to fetch posts", err));
+        .catch(err => console.error("Fetching posts failed:", err));
     }, [columnSelected, searchText, currentPage]);
 
     return posts.length === 0
@@ -135,27 +134,27 @@ export default function PostTable({
             </thead>
             <tbody>
               {
-                posts.map((post) => {
-                  const postVM = new PostViewModel(post);
+                posts.map((entity) => {
+                  const viewModel = new PostViewModel(entity);
                   return (
-                    <tr key={postVM.id} className="border-t">
+                    <tr key={viewModel.id} className="border-t">
                       <td className="px-3 md:px-6 py-3 md:ps-10 ps-5 text-nowrap">
-                        {trans(postVM.column)}
+                        {trans(viewModel.column)}
                       </td>
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">
-                        <Link href={`/post/${postVM.id}`} className="link">
-                          {locale === "en" ? postVM.titleEn : postVM.title}
+                        <Link href={`/post/${viewModel.id}`} className="link">
+                          {locale === "en" ? viewModel.titleEn : viewModel.title}
                         </Link>
                       </td>
                       <td className={`px-3 md:px-6 py-3 ${isAdmin ? "max-md:pe-5" : "md:pe-10"} max-md:hidden text-nowrap`}>
-                        {postVM.releasedDate}
+                        {viewModel.releasedDate}
                       </td>
                       {
                         isAdmin &&
                         <>
-                          <td className={`px-3 md:px-6 py-3 max-md:pe-5 text-nowrap`}>{statusTrans(postVM.releaseStatus)}</td>
+                          <td className={`px-3 md:px-6 py-3 max-md:pe-5 text-nowrap`}>{statusTrans(viewModel.releaseStatus)}</td>
                           <td className="px-3 md:px-6 py-3 md:pe-10 text-nowrap">
-                            <Link href={`/admin/post/edit/${postVM.id}`}>
+                            <Link href={`/admin/post/edit/${viewModel.id}`}>
                               <FontAwesomeIcon icon={faPen} className="size-4" />
                             </Link>
                           </td>

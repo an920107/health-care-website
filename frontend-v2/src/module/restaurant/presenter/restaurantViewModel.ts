@@ -1,3 +1,4 @@
+import { formatDate } from "date-fns";
 import RestaurantEntity from "../domain/restaurantEntity";
 
 export default class RestaurantViewModel extends RestaurantEntity {
@@ -6,6 +7,6 @@ export default class RestaurantViewModel extends RestaurantEntity {
     }
 
     get inspectedDate(): string {
-        return this.inspectedTime.toISOString().substring(0, 10);
+        return formatDate(this.inspectedTime, "yyyy-MM-dd");
     }
 }

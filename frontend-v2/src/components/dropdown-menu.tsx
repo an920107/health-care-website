@@ -19,7 +19,9 @@ export default function DropdownMenu({
 
   useEffect(() => {
     setRnd(Math.random());
+  }, []);
 
+  useEffect(() => {
     const dropdownMenuElement = document.getElementById(`dropdown-menu-${rnd}`);
 
     // Set width for fixed element: `dropdown-menu-inner`
@@ -41,8 +43,17 @@ export default function DropdownMenu({
 
     // Close dropdown menu when click outside
     const clickHandler = (event: MouseEvent) => {
-      if (!dropdownMenuElement?.contains(event.target as Node))
+      const dropdownMenuBox = dropdownMenuInnerElement?.getBoundingClientRect();
+      if (dropdownMenuBox === undefined) return;
+
+      if (
+        event.clientX < dropdownMenuBox.left ||
+        event.clientX > dropdownMenuBox.right ||
+        event.clientY < dropdownMenuBox.top ||
+        event.clientY > dropdownMenuBox.bottom
+      ) {
         onCancel?.();
+      }
     };
 
     if (isOpen) {

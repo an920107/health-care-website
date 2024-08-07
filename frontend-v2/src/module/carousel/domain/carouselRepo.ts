@@ -9,3 +9,4 @@ export default interface CarouselRepo {
 
     delete(id: number): Promise<void>;
 }
+

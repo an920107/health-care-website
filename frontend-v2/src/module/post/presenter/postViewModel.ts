@@ -2,6 +2,7 @@ import ReleaseStatusEnum from "@/module/status/doamin/releaseStatusEnum";
 import PostColumnEnum from "../domain/postColumnEnum";
 import PostEntity from "../domain/postEntity";
 import ImportanceEnum from "@/module/status/doamin/importanceEnum";
+import { formatDate } from "date-fns";
 
 export default class PostViewModel extends PostEntity {
     constructor(post: PostEntity) {
@@ -9,7 +10,7 @@ export default class PostViewModel extends PostEntity {
     }
 
     get releasedDate(): string {
-        return this.createdTime.toISOString().substring(0, 10);
+        return formatDate(this.createdTime, "yyyy-MM-dd");
     }
 
     get releaseStatus(): ReleaseStatusEnum {

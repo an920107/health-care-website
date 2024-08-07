@@ -309,6 +309,9 @@
 .ql-editor .ql-video.ql-align-right {
   margin: 0 0 0 auto;
 }
+.ql-editor img {
+  cursor: default;
+}
 .ql-editor .ql-bg-black {
   background-color: #000;
 }

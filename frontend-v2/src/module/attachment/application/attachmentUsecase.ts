@@ -16,7 +16,7 @@ export default class AttachmentUsecase {
     async uploadFile(
         file: File,
         onProgress?: (progress: number) => void
-    ): Promise<AttachmentEntity> {
+    ): Promise<AttachmentResponse> {
         return this._repo.upload(file, onProgress);
     }
 

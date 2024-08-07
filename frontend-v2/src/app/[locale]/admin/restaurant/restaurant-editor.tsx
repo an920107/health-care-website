@@ -2,8 +2,8 @@
 
 import AdminAttachmentPreview from "@/components/admin-attachment-preview";
 import Button from "@/components/button";
+import DateField from "@/components/date-field";
 import DropdownButton from "@/components/dropdown-button";
-import QuillEditor from "@/components/quill-editor";
 import TextField from "@/components/text-field";
 import AttachmentUsecase from "@/module/attachment/application/attachmentUsecase";
 import AttachmentEntity from "@/module/attachment/domain/attachmentEntity";
@@ -12,11 +12,11 @@ import UploadingPregressMap from "@/module/attachment/domain/uploadingProgressMa
 import AttachmentFetchAction from "@/module/attachment/presenter/attachmentFetchAction";
 import AttachmentRepoImpl from "@/module/attachment/presenter/attachmentRepoImpl";
 import AttachmentUploadAction from "@/module/attachment/presenter/attachmentUploadAction";
-import NormalPostUsecase from "@/module/post/application/normalPostUsecase";
-import { NormalPostRequest } from "@/module/post/application/postDto";
-import PostColumnEnum from "@/module/post/domain/postColumnEnum";
-import PostRepoImpl from "@/module/post/presenter/postRepoImpl";
-import ImportanceEnum from "@/module/status/doamin/importanceEnum";
+import { RestaurantRequest } from "@/module/restaurant/application/restaurantDto";
+import RestaurantUsecase from "@/module/restaurant/application/restaurantUsecase";
+import RestaurantInspectCategoryEnum from "@/module/restaurant/domain/restaurantInspectCategoryEnum";
+import RestaurantRepoImpl from "@/module/restaurant/presenter/restaurantRepoImpl";
+import InspectionStatusEnum from "@/module/status/doamin/inspectionStatusEnum";
 import ReleaseStatusEnum from "@/module/status/doamin/releaseStatusEnum";
 import LengthValidationUsecase from "@/module/validation/application/lengthValidationUsecase";
 import NotEmptyValidationUsecase from "@/module/validation/application/notEmptyValidationUsecase";
@@ -25,51 +25,55 @@ import { faSave, faTrash, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
 
 type Props = {
+  locale?: string;
   updateId?: number;
-  defaultColumn?: PostColumnEnum;
+  defaultCategory?: RestaurantInspectCategoryEnum;
   defaultReleaseStatus?: ReleaseStatusEnum;
-  defaultImportance?: ImportanceEnum;
+  defaultInspectionStatus?: InspectionStatusEnum;
+  defaultInspectedDate?: Date;
   defaultTitle?: string;
   defaultTitleEn?: string;
-  defaultContent?: string;
-  defaultContentEn?: string;
+  defaultItem?: string;
+  defaultItemEn?: string;
   defaultAttachmentIds?: number[];
-};
+}
 
-export default function PostEditor({
+export default function RestaurantEditor({
+  locale,
   updateId,
-  defaultColumn = PostColumnEnum.Latest,
+  defaultCategory = RestaurantInspectCategoryEnum.Water,
   defaultReleaseStatus = ReleaseStatusEnum.Draft,
-  defaultImportance = ImportanceEnum.Normal,
+  defaultInspectionStatus = InspectionStatusEnum.Passed,
+  defaultInspectedDate,
   defaultTitle = "",
   defaultTitleEn = "",
-  defaultContent = "",
-  defaultContentEn = "",
+  defaultItem = "",
+  defaultItemEn = "",
   defaultAttachmentIds = [],
 }: Props) {
-  const trans = useTranslations("Post");
+  const trans = useTranslations("Restaurant");
   const statusTrans = useTranslations("Status");
   const attachmentTrans = useTranslations("Attachment");
 
   const router = useRouter();
 
-  const [column, setColumn] = useState<PostColumnEnum>(defaultColumn);
+  const [category, setCategory] = useState<RestaurantInspectCategoryEnum>(defaultCategory);
   const [releaseStatus, setReleaseStatus] = useState<ReleaseStatusEnum>(defaultReleaseStatus);
-  const [importance, setImportance] = useState<ImportanceEnum>(defaultImportance);
+  const [inspectionStatus, setInspectionStatus] = useState<InspectionStatusEnum>(defaultInspectionStatus);
+  const [inspectedDate, setInspectedDate] = useState<Date | undefined>(defaultInspectedDate);
   const [chineseTitle, setChineseTitle] = useState<string>(defaultTitle);
   const [englishTitle, setEnglishTitle] = useState<string>(defaultTitleEn);
-  const [chineseContent, setChineseContent] = useState<ReactQuill.Value>(defaultContent);
-  const [englishContent, setEnglishContent] = useState<ReactQuill.Value>(defaultContentEn);
+  const [chineseItem, setChineseItem] = useState<string>(defaultItem);
+  const [englishItem, setEnglishItem] = useState<string>(defaultItemEn);
   const [attachments, setAttachments] = useState<AttachmentEntity[]>([]);
   const [uploadingAttachments, setUploadingAttachments] = useState<UploadingAttachmentEntity[]>([]);
   const [uploadingProgressMap, setUploadingProgressMap] = useState<UploadingPregressMap>({});
   const [toValidate, setToValidate] = useState<boolean>(false);
   const [isValidationPassed, setIsValidationPassed] = useState<boolean[]>([]);
 
-  const postUsecase = new NormalPostUsecase(new PostRepoImpl());
+  const restaurantUsecase = new RestaurantUsecase(new RestaurantRepoImpl());
   const attachmentUsecase = new AttachmentUsecase(new AttachmentRepoImpl());
   const attachmentUploadAction = new AttachmentUploadAction({
     usecase: attachmentUsecase,
@@ -78,9 +82,18 @@ export default function PostEditor({
     setUploadingProgressMap: setUploadingProgressMap,
   });
 
+  const inspectedDateValidations = [
+    new NotEmptyValidationUsecase(trans("validate_empty")),
+  ];
+
   const titleValidations = [
     new NotEmptyValidationUsecase(trans("validate_empty")),
     new LengthValidationUsecase(40, trans("validate_length", { length: 40 })),
+  ];
+
+  const itemValidations = [
+    new NotEmptyValidationUsecase(trans("validate_empty")),
+    new LengthValidationUsecase(8, trans("validate_length", { length: 8 })),
   ];
 
   function handleValidate(result: boolean) {
@@ -90,9 +103,9 @@ export default function PostEditor({
 
   function handleDelete() {
     if (updateId === undefined) return;
-    postUsecase.deletePost(updateId)
-      .then(() => router.push("/admin/post"))
-      .catch((err) => console.error("Deleting post failed:", err));
+    restaurantUsecase.deleteRestaurant(updateId)
+      .then(() => router.push("/admin/restaurant"))
+      .catch((err) => console.error("Deleting restaurant failed:", err));
   }
 
   // To validate and change the values in `isValidationPassed` to invoke useEffect
@@ -111,28 +124,29 @@ export default function PostEditor({
 
   // If all the values in `isValidationPassed` are true, then the post will be created or updated
   useEffect(() => {
-    if (isValidationPassed.length < 2 ||
+    if (isValidationPassed.length < 5 ||
       isValidationPassed.filter((value) => !value).length > 0) return;
 
-    const postRequest = new NormalPostRequest({
+    const restaurantRequest = new RestaurantRequest({
+      category: category,
       title: chineseTitle,
       titleEn: englishTitle,
-      content: chineseContent.toString(),
-      contentEn: englishContent.toString(),
-      attachments: attachments.map((attachment) => attachment.id),
-      column: column,
+      item: chineseItem,
+      itemEn: englishItem,
+      valid: inspectionStatus === InspectionStatusEnum.Passed,
       visibility: releaseStatus === ReleaseStatusEnum.Released,
-      importance: importance === ImportanceEnum.Important,
+      inspectedTime: inspectedDate!,
+      attachments: attachments.map((attachment) => attachment.id),
     });
 
     (
       updateId === undefined
-        ? postUsecase.createPost(postRequest)
-        : postUsecase.updatePost(updateId, postRequest)
+        ? restaurantUsecase.createRestaurant(restaurantRequest)
+        : restaurantUsecase.updateRestaurant(updateId, restaurantRequest)
     ).then(
-      () => router.push("/admin/post")
+      () => router.push("/admin/restaurant")
     ).catch(
-      (err) => console.error(`${updateId === undefined ? "Creating" : "Updating"} post failed:`, err)
+      (err) => console.error(`${updateId === undefined ? "Creating" : "Updating"} restaurant failed:`, err)
     );
   }, [isValidationPassed]);
 
@@ -142,10 +156,10 @@ export default function PostEditor({
       <form className="mt-6 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row gap-4">
           <DropdownButton
-            label={trans("column")}
-            options={columnOptions.map((option) => trans(option))}
+            label={trans("category")}
+            options={categoryOptions.map((option) => trans(option))}
             className="h-10"
-            onChange={(index) => setColumn(columnOptions[index])}
+            onChange={(index) => setCategory(categoryOptions[index])}
           />
           <DropdownButton
             label={statusTrans("status")}
@@ -154,10 +168,19 @@ export default function PostEditor({
             onChange={(index) => setReleaseStatus(releaseStatusOptions[index])}
           />
           <DropdownButton
-            label={statusTrans("importance")}
-            options={importanceOptions.map((option) => statusTrans(option))}
+            label={trans("inspection_status")}
+            options={inspectionStatusOptions.map((option) => statusTrans(option))}
             className="h-10"
-            onChange={(index) => setImportance(importanceOptions[index])}
+            onChange={(index) => setInspectionStatus(inspectionStatusOptions[index])}
+          />
+          <DateField
+            label={trans("inspected_date")}
+            locale={locale}
+            value={inspectedDate}
+            onChange={setInspectedDate}
+            onValidate={handleValidate}
+            validations={inspectedDateValidations}
+            toValidate={toValidate}
           />
         </div>
         <div className="flex flex-col md:flex-row gap-4">
@@ -178,9 +201,23 @@ export default function PostEditor({
             toValidate={toValidate}
           />
         </div>
-        <div className="flex flex-col gap-4">
-          <QuillEditor label={trans("chinese_content")} value={chineseContent} onChange={setChineseContent} />
-          <QuillEditor label={trans("english_content")} value={englishContent} onChange={setEnglishContent} />
+        <div className="flex flex-col md:flex-row gap-4">
+          <TextField
+            label={trans("chinese_item")}
+            value={chineseItem}
+            onChange={setChineseItem}
+            onValidate={handleValidate}
+            validations={itemValidations}
+            toValidate={toValidate}
+          />
+          <TextField
+            label={trans("english_item")}
+            value={englishItem}
+            onChange={setEnglishItem}
+            onValidate={handleValidate}
+            validations={itemValidations}
+            toValidate={toValidate}
+          />
         </div>
         <AdminAttachmentPreview
           label={attachmentTrans("preview")}
@@ -213,11 +250,12 @@ export default function PostEditor({
   );
 }
 
-const columnOptions = [
-  PostColumnEnum.Latest,
-  PostColumnEnum.Activity,
-  PostColumnEnum.Health,
-  PostColumnEnum.Nutrition,
+const categoryOptions = [
+  RestaurantInspectCategoryEnum.Water,
+  RestaurantInspectCategoryEnum.Food,
+  RestaurantInspectCategoryEnum.Drink,
+  RestaurantInspectCategoryEnum.Ice,
+  RestaurantInspectCategoryEnum.Others,
 ];
 
 const releaseStatusOptions = [
@@ -225,7 +263,7 @@ const releaseStatusOptions = [
   ReleaseStatusEnum.Released,
 ];
 
-const importanceOptions = [
-  ImportanceEnum.Normal,
-  ImportanceEnum.Important,
+const inspectionStatusOptions = [
+  InspectionStatusEnum.Passed,
+  InspectionStatusEnum.Failed,
 ];

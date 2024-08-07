@@ -59,7 +59,9 @@
         "released": "Released",
         "draft": "Draft",
         "normal": "Normal",
-        "important": "Important"
+        "important": "Important",
+        "passed": "Passed",
+        "failed": "Failed"
     },
     "Attachment": {
         "upload": "Upload Attachments",
@@ -121,6 +123,19 @@
         "table_valid": "Result",
         "table_date": "Inspected Date",
         "more": "See more...",
+        "new": "New Merchant",
+        "edit": "Edit Merchant",
+        "category": "Category",
+        "inspection_status": "Inspection Result",
+        "inspected_date": "Inspected Date",
+        "chinese_title": "Chinese Title",
+        "english_title": "English Title",
+        "chinese_item": "Chinese Item",
+        "english_item": "English Item",
+        "delete": "Delete Merchant",
+        "save": "Save Merchant",
+        "validate_empty": "The field cannot be empty",
+        "validate_length": "The length shouldn't be more than {length}",
         "not_found": "There is no merchant found!"
     }
 }

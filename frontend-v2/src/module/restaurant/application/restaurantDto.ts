@@ -3,17 +3,21 @@ import RestaurantInspectCategoryEnum from "../domain/restaurantInspectCategoryEn
 
 export class RestaurantRequest extends RestaurantEntity {
     constructor({
-        title,
         category,
+        title,
+        titleEn,
         item,
+        itemEn,
         attachments,
         valid,
         visibility,
         inspectedTime,
     }: {
-        title: string,
         category: RestaurantInspectCategoryEnum,
+        title: string,
+        titleEn: string,
         item: string,
+        itemEn: string,
         attachments: number[],
         valid: boolean,
         visibility: boolean,
@@ -21,9 +25,11 @@ export class RestaurantRequest extends RestaurantEntity {
     }) {
         super({
             id: -1,
-            title: title,
             category: category,
+            title: title,
+            titleEn: titleEn,
             item: item,
+            itemEn: itemEn,
             attachments: attachments,
             view: -1,
             valid: valid,
@@ -36,9 +42,11 @@ export class RestaurantRequest extends RestaurantEntity {
 
     toJson(): string {
         return JSON.stringify({
-            title: this.title,
             category: this.category,
+            title: this.title,
+            title_en: this.titleEn,
             item: this.item,
+            item_en: this.itemEn,
             attachments: this.attachments,
             valid: this.valid,
             visibility: this.visibility,
@@ -51,9 +59,11 @@ export class RestaurantResponse extends RestaurantEntity {
     constructor(json: any) {
         super({
             id: json.id,
-            title: json.title,
             category: json.category,
+            title: json.title,
+            titleEn: json.title_en,
             item: json.item,
+            itemEn: json.item_en,
             attachments: json.attachments,
             view: json.view,
             valid: json.valid,

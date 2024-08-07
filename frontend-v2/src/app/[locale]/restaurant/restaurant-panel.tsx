@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBullhorn, faSquareCaretRight } from "@fortawesome/free-solid-svg-icons";
-import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
-import PostTable from "./post-table";
+import { faSquareCaretRight, faStore } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslations } from "next-intl";
+import RestaurantTable from "./restaurant-table";
 
 type Props = {
   locale: string;
@@ -14,43 +14,43 @@ type Props = {
   actions?: Readonly<React.ReactNode>;
 };
 
-export default function PostPanel({
+export default function RestaurantPanel({
   locale,
   isEnableTitle = false,
   isEnableMore = false,
   isEnableSearch = false,
   isEnablePager = false,
   isAdmin = false,
-  actions,
+  actions = [],
 }: Props) {
-  const trans = useTranslations("Post");
+  const trans = useTranslations("Restaurant");
 
   return (
     <div>
-      {isEnableTitle && <PostTitle />}
-      <PostTable
+      {isEnableTitle && <RestaurantTitle />}
+      <RestaurantTable
         locale={locale}
         isEnableSearch={isEnableSearch}
         isEnablePager={isEnablePager}
         isAdmin={isAdmin}
-        actions={actions}
+        actions = {actions}
       />
-      {isEnableMore && <PostMore />}
+      {isEnableMore && <RestaurantMore />}
     </div>
   );
 
-  function PostTitle() {
+  function RestaurantTitle() {
     return (
       <div className="flex flex-row items-center">
-        <FontAwesomeIcon icon={faBullhorn} className="size-6 me-4" />
+        <FontAwesomeIcon icon={faStore} className="size-6 me-4" />
         <h2>{trans("title")}</h2>
       </div>
     );
   }
 
-  function PostMore() {
+  function RestaurantMore() {
     return (
-      <Link href="/post" className="link">
+      <Link href="/restaurant" className="link">
         <div className="flex flex-row items-center justify-end mt-4">
           <FontAwesomeIcon icon={faSquareCaretRight} className="size-4 me-2" />
           {trans("more")}

@@ -1,3 +1,4 @@
+import { PagerResponse } from "@/module/pager/application/pagerDto";
 import RestaurantInspectCategoryEnum from "../domain/restaurantInspectCategoryEnum";
 import RestaurantRepo from "../domain/restaurantRepo";
 import { RestaurantRequest, RestaurantResponse } from "./restaurantDto";
@@ -25,7 +26,7 @@ export default class RestaurantUsecase {
         category?: RestaurantInspectCategoryEnum[],
         visibility?: boolean,
         search?: string,
-    }): Promise<RestaurantResponse[]> {
+    }): Promise<[RestaurantResponse[], PagerResponse]> {
         return this._repo.query({
             page: page,
             category: category,
@@ -42,8 +43,8 @@ export default class RestaurantUsecase {
         return this._repo.create(post);
     }
 
-    async updateRestaurant(post: RestaurantRequest): Promise<void> {
-        return this._repo.update(post);
+    async updateRestaurant(id: number, post: RestaurantRequest): Promise<void> {
+        return this._repo.update(id, post);
     }
 
     async deleteRestaurant(id: number): Promise<void> {

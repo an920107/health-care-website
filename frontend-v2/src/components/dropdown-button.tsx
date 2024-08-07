@@ -31,7 +31,10 @@ export default function DropdownButton({
   return (
     <div className="w-fit text-nowrap">
       {label && <label htmlFor={label} className="label">{label}</label>}
-      <div className={`rounded-lg border py-1 px-2 flex flex-row items-center gap-1.5 cursor-pointer ${className ?? ""}`} onClick={() => setIsDropdownOpen(true)}>
+      <div
+        className={`rounded-lg border py-1 px-2 flex flex-row items-center gap-1.5 cursor-pointer ${className ?? ""}`}
+        onClick={() => setIsDropdownOpen(true)}
+      >
         {options[selectedOptionIndex]}
         <FontAwesomeIcon icon={faCaretDown} className="mt-[-0.2rem] size-4" />
       </div>

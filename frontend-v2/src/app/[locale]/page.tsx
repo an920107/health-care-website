@@ -1,8 +1,8 @@
 import IndexMenu from "./index-menu";
 import NotFoundRedirect from "./redirect";
 import Carousel from "./carousel";
-import Restaurant from "./restaurant";
 import PostPanel from "./post/post-panel";
+import RestaurantPanel from "./restaurant/restaurant-panel";
 
 type Props = {
   params: { locale: string };
@@ -25,7 +25,7 @@ export default function HomePage({ params }: Props) {
             ]
           } />
           <PostPanel locale={params.locale} isEnableTitle={true} isEnableMore={true} />
-          <Restaurant />
+          <RestaurantPanel locale={params.locale} isEnableTitle={true} isEnableMore={true} />
         </div>
       </div>
     </>

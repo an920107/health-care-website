@@ -2,9 +2,11 @@ import RestaurantInspectCategoryEnum from "./restaurantInspectCategoryEnum";
 
 export default class RestaurantEntity {
     id: number;
-    title: string;
     category: RestaurantInspectCategoryEnum;
+    title: string;
+    titleEn: string
     item: string;
+    itemEn: string;
     attachments: number[];
     view: number;
     valid: boolean;
@@ -15,9 +17,11 @@ export default class RestaurantEntity {
 
     constructor({
         id,
-        title,
         category,
+        title,
+        titleEn,
         item,
+        itemEn,
         attachments,
         view,
         valid,
@@ -27,9 +31,11 @@ export default class RestaurantEntity {
         updatedTime,
     }: RestaurantEntity) {
         this.id = id;
-        this.title = title;
         this.category = category;
+        this.title = title;
+        this.titleEn = titleEn;
         this.item = item;
+        this.itemEn = itemEn;
         this.attachments = attachments;
         this.view = view;
         this.valid = valid;

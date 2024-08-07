@@ -12,6 +12,9 @@ type Props = {
   value?: string;
   onChange?(text: string): void;
   onValidate?(result: boolean): void;
+  onFocus?(): void;
+  onBlur?(): void;
+  onClick?(): void;
   toValidate?: boolean;
   validations?: ValidationInterface<string>[];
 };
@@ -23,6 +26,9 @@ export default function TextField({
   value = "",
   onChange,
   onValidate,
+  onFocus,
+  onBlur,
+  onClick,
   toValidate = false,
   validations = [],
 }: Props) {
@@ -65,6 +71,9 @@ export default function TextField({
           ${shouldShowValidationError() ? "ring-2 ring-red-300" : "ring-1 ring-gray-200"}`}
         value={value}
         onChange={(event) => onChange && onChange(event.target.value)}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onClick={onClick}
       />
       {shouldShowValidationError() && <p className="text-red-500 text-sm font-medium mt-1">{validationResult}</p>}
     </div>

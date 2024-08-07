@@ -1,3 +1,4 @@
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 import RestaurantEntity from "./restaurantEntity";
 import RestaurantInspectCategoryEnum from "./restaurantInspectCategoryEnum";
 
@@ -7,13 +8,13 @@ export default interface RestaurantRepo {
         category?: RestaurantInspectCategoryEnum[],
         visibility?: boolean,
         search?: string,
-    }): Promise<RestaurantEntity[]>;
+    }): Promise<[RestaurantEntity[], PagerEntity]>;
 
     get(id: number): Promise<RestaurantEntity>;
 
     create(restaurant: RestaurantEntity): Promise<void>;
 
-    update(restaurant: RestaurantEntity): Promise<void>;
+    update(id: number, restaurant: RestaurantEntity): Promise<void>;
 
     delete(id: number): Promise<void>;
 }

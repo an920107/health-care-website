@@ -22,3 +22,4 @@ export default class CarouselEntity {
         this.updatedTime = updatedTime;
     }
 }
+
