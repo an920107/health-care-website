@@ -35,7 +35,7 @@ export default function Footer() {
           </p>
         </div>
         <div>
-          <p><Link href="/" className="link">{trans("privacy")}</Link></p>
+          <p><Link href="/privacy" className="link">{trans("privacy")}</Link></p>
           <p>{trans("copyright")} © 國立中央大學衛生保健組</p>
           <p>National Central University - Health Center</p>
         </div>
