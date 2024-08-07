@@ -28,7 +28,7 @@ export default function Carousel({ className, images, interval = 3000 }: Props) 
             <Image
               key={index} alt="carousel" src={image} fill={true} priority={true} sizes="50vw"
               className={`object-cover transform transition-all duration-500 ease-in-out overflow-hidden
-          ${index > currentIndex ? "translate-x-full opacity-50" : (index < currentIndex ? "-translate-x-full opacity-50" : "translate-x-0 opacity-100")}`}
+              ${index > currentIndex ? "translate-x-full opacity-50" : (index < currentIndex ? "-translate-x-full opacity-50" : "translate-x-0 opacity-100")}`}
             />
           ))
         }

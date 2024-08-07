@@ -104,7 +104,7 @@ export default function RestaurantTable({
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">{viewModel.title}</td>
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">{viewModel.item}</td>
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">{viewModel.valid}</td>
-                      <td className="px-3 md:px-6 py-3 md:pe-10 max-md:hidden text-nowrap">{viewModel.inspectedDate}</td>
+                      <td className="px-3 md:px-6 py-3 md:pe-10 max-md:hidden text-nowrap">{viewModel.inspectedDateString}</td>
                     </tr>
                   );
                 })
