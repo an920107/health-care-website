@@ -78,7 +78,7 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        title: "Health Care Website",
+        title: "中央大學衛保組",
         localizationsDelegates: const [
           MonthYearPickerLocalizations.delegate,
         ],
