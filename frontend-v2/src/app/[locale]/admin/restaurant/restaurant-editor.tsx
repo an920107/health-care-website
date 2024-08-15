@@ -193,21 +193,21 @@ export default function RestaurantEditor({
             toValidate={toValidate}
           />
           <TextField
-            label={trans("english_title")}
-            value={englishTitle}
-            onChange={setEnglishTitle}
-            onValidate={handleValidate}
-            validations={titleValidations}
-            toValidate={toValidate}
-          />
-        </div>
-        <div className="flex flex-col md:flex-row gap-4">
-          <TextField
             label={trans("chinese_item")}
             value={chineseItem}
             onChange={setChineseItem}
             onValidate={handleValidate}
             validations={itemValidations}
+            toValidate={toValidate}
+          />
+        </div>
+        <div className="flex flex-col md:flex-row gap-4">
+          <TextField
+            label={trans("english_title")}
+            value={englishTitle}
+            onChange={setEnglishTitle}
+            onValidate={handleValidate}
+            validations={titleValidations}
             toValidate={toValidate}
           />
           <TextField
