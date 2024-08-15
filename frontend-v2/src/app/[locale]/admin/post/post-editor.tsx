@@ -160,7 +160,7 @@ export default function PostEditor({
             onChange={(index) => setImportance(importanceOptions[index])}
           />
         </div>
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col gap-4">
           <TextField
             label={trans("chinese_title")}
             value={chineseTitle}
@@ -169,6 +169,7 @@ export default function PostEditor({
             validations={titleValidations}
             toValidate={toValidate}
           />
+          <QuillEditor label={trans("chinese_content")} value={chineseContent} onChange={setChineseContent} />
           <TextField
             label={trans("english_title")}
             value={englishTitle}
@@ -177,9 +178,6 @@ export default function PostEditor({
             validations={titleValidations}
             toValidate={toValidate}
           />
-        </div>
-        <div className="flex flex-col gap-4">
-          <QuillEditor label={trans("chinese_content")} value={chineseContent} onChange={setChineseContent} />
           <QuillEditor label={trans("english_content")} value={englishContent} onChange={setEnglishContent} />
         </div>
         <AdminAttachmentPreview
