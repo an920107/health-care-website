@@ -2,8 +2,9 @@ from helpers.CustomResponse import CustomResponse
 
 from models.post_model import Post, db
 from flask import Blueprint, request
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 import math
+
 post_blueprint = Blueprint('post', __name__)
 
 
@@ -73,7 +74,7 @@ def get_posts():
     ---
     tags:
       - post
-    parameter:
+    parameters:
       - in: query
         name: column
         type: string
@@ -83,7 +84,7 @@ def get_posts():
         type: integer
         required: false
       - in: query
-        name: title
+        name: search
         type: string
         required: false
       - in: query
@@ -108,14 +109,12 @@ def get_posts():
             Post.column.in_(request.args['column'].split('+'))
         )
 
-    if "title" in request.args:
-        posts = posts.filter(
-            Post.column_en.in_(request.args['title'].split('+'))
-        )
+    if "search" in request.args:
+        posts = posts.filter(or_(*[Post.title.like(f'%{term}%') for term in request.args['search'].split('+')]))
 
     if "visibility" in request.args:
         posts = posts.filter(
-            Post.visibility == bool(request.args['visibility'])
+            Post.visibility == (False if request.args['visibility'] == 'false' else True)
         )
 
     posts = posts.order_by(desc(Post.importance), desc(Post.created_time)).all()
