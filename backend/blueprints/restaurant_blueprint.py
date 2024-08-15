@@ -5,7 +5,7 @@ from helpers.CustomResponse import CustomResponse
 
 from models.restaurant_model import Restaurant, db
 from flask import Blueprint, request
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 
 restaurant_blueprint = Blueprint('restaurant', __name__)
 
@@ -35,7 +35,7 @@ class RestaurantContainer:
             "attachments": json_request['attachments'],
             "valid": json_request['valid'],
             "visibility": json_request['visibility'],
-            "inspected_time": datetime.fromisoformat(json_request['inspected_time'])
+            "inspected_time": datetime.fromisoformat('2020-01-06T00:00:00.000Z')
         }
 
     def get_data(self):
@@ -84,6 +84,10 @@ def get_restaurants():
         type: string
         require: false
       - in: query
+        name: search
+        type: string
+        require: false
+      - in: query
         name: visibility
         type: boolean
         require: false
@@ -99,14 +103,18 @@ def get_restaurants():
 
     restaurants = db.session.query(Restaurant)
 
+    if "search" in request.args:
+        restaurants = restaurants.filter(
+            or_(*[Restaurant.title.like(f'%{term}%') for term in request.args['search'].split('+')]))
+
     if "category" in request.args:
         restaurants = restaurants.filter(
-            Restaurant.category.in_(request.args['column'].split('+'))
+            Restaurant.category.in_(request.args['category'].split('+'))
         )
 
     if "visibility" in request.args:
         restaurants = restaurants.filter(
-            Restaurant.visibility == bool(request.args['visibility'])
+            Restaurant.visibility == (False if request.args['visibility'] == 'false' else True)
         )
 
     restaurants = restaurants.order_by(desc(Restaurant.created_time)).all()
@@ -114,6 +122,7 @@ def get_restaurants():
     restaurants = [post.to_dict() for post in restaurants][(page - 1) * 10:page * 10]
 
     return {'message': "get posts success", 'data': restaurants, "total_page": total_page}, 200
+
 
 @restaurant_blueprint.route('', methods=['POST'])
 def post_restaurant():

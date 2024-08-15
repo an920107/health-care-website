@@ -18,8 +18,9 @@ class Post(SchemaMixin, db.Model):
     attachments = db.Column(MutableList.as_mutable(JSON), nullable=False, default=[])
     importance = db.Column(db.Boolean, default=False)
     visibility = db.Column(db.Boolean, default=False)
+    view = db.Column(db.Integer, default=0)
 
     def __repr__(self):
-        return f'<Carousel {self.title}>'
+        return f'<Post {self.title}>'
 
 
