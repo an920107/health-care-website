@@ -2,3 +2,4 @@ backend/.idea/
 backend/.instance/
 backend/.venv/
 backend/.log/
+backend/.static/
