@@ -7,3 +7,4 @@ backend/.instance/
 backend/.venv/
 backend/.test/static/
 backend/.log/
+backend/.static/
