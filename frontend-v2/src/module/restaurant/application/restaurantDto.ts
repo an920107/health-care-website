@@ -50,7 +50,7 @@ export class RestaurantRequest extends RestaurantEntity {
             attachments: this.attachments,
             valid: this.valid,
             visibility: this.visibility,
-            inspectedTime: this.inspectedTime,
+            inspected_time: this.inspectedTime.toISOString(),
         });
     }
 }
