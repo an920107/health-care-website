@@ -109,6 +109,8 @@ export default function PostTable({
         .catch(err => console.error("Fetching posts failed:", err));
     }, [columnSelected, searchText, currentPage]);
 
+    const isEn = locale === "en";
+
     return posts.length === 0
       ? (
         <p className="py-12 text-center">
@@ -143,7 +145,7 @@ export default function PostTable({
                       </td>
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">
                         <Link href={`/post/${viewModel.id}`} className="link">
-                          {locale === "en" ? viewModel.titleEn : viewModel.title}
+                          {isEn ? viewModel.titleEn : viewModel.title}
                         </Link>
                       </td>
                       <td className={`px-3 md:px-6 py-3 ${isAdmin ? "max-md:pe-5" : "md:pe-10"} max-md:hidden text-nowrap`}>
