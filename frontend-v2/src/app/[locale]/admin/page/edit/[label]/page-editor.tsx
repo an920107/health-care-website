@@ -71,12 +71,16 @@ export default function PageEditor({
   }
 
   useEffect(() => {
+    router.refresh();
+  }, []);
+
+  useEffect(() => {
     const attachmentFetchAction = new AttachmentFetchAction({
       usecase: attachmentUsecase,
       setAttachments: setAttachments,
     });
     attachmentFetchAction.invoke(defaultAttachmentIds);
-  }, []);
+  }, [defaultAttachmentIds]);
 
   return (
     <div>

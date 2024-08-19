@@ -102,6 +102,10 @@ export default function PostEditor({
   }
 
   useEffect(() => {
+    router.refresh();
+  }, []);
+
+  useEffect(() => {
     const attachmentFetchAction = new AttachmentFetchAction({
       usecase: attachmentUsecase,
       setAttachments: setAttachments,

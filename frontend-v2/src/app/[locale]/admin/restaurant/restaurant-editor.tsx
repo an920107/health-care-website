@@ -115,6 +115,10 @@ export default function RestaurantEditor({
   }
 
   useEffect(() => {
+    router.refresh();
+  }, []);
+
+  useEffect(() => {
     const attachmentFetchAction = new AttachmentFetchAction({
       usecase: attachmentUsecase,
       setAttachments: setAttachments,
