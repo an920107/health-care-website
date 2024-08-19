@@ -10,8 +10,8 @@ const fontSans = Noto_Sans_TC({
 });
 
 export const metadata: Metadata = {
-  title: "衛生保健組",
-  description: "中央大學衛生保健組 NCU Health Center",
+  title: "中央大學衛生保健組",
+  description: "健康檢查、緊急醫療、健康服務、健康職場、教育訓練、餐飲衛生、下載專區",
 };
 
 export default function RootLayout({
