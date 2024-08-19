@@ -140,6 +140,17 @@
         "validate_length": "The length shouldn't be more than {length}",
         "not_found": "There is no merchant found!"
     },
+    "Carousel": {
+        "title": "Carousel",
+        "new": "New Carousel"
+    },
+    "Admin": {
+        "title": "Admin",
+        "post": "Post",
+        "page": "Static Page",
+        "restaurant": "Merchant Inspection Report",
+        "carousel": "Carousel"
+    },
     "Privacy": {
         "title": "Privacy Policy Statement",
         "p_0": "This website respects and protects the privacy of all users. To ensure that you can use the various services and information on this website with peace of mind, we hereby explain our privacy protection policy to help you understand how this website collects, uses, and protects the personal information you provide. Dear friends, thank you for visiting National Central University (hereinafter referred to as this website). We absolutely respect and protect your personal privacy. To allow you to use the various services provided by this website with more confidence, we hereby explain our privacy protection policy.",
