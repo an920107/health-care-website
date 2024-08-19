@@ -107,7 +107,7 @@ export default function PostEditor({
       setAttachments: setAttachments,
     });
     attachmentFetchAction.invoke(defaultAttachmentIds);
-  }, []);
+  }, [defaultAttachmentIds]);
 
   // If all the values in `isValidationPassed` are true, then the post will be created or updated
   useEffect(() => {
