@@ -142,7 +142,10 @@
     },
     "Carousel": {
         "title": "首頁橫幅",
-        "new": "新增橫幅"
+        "new": "新增橫幅",
+        "table_id": "編號",
+        "table_image": "圖片預覽",
+        "table_edit": "編輯"
     },
     "Admin": {
         "title": "網站管理",

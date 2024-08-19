@@ -11,6 +11,10 @@ export default withNextIntl({
             {
                 protocol: "https",
                 hostname: "**",
+            },
+            {
+                protocol: "http",
+                hostname: "**",
             }
         ]
     }

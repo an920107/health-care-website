@@ -142,7 +142,10 @@
     },
     "Carousel": {
         "title": "Carousel",
-        "new": "New Carousel"
+        "new": "New Carousel",
+        "table_id": "Number",
+        "table_image": "Image Preview",
+        "table_edit": "Edit"
     },
     "Admin": {
         "title": "Admin",
