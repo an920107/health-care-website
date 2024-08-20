@@ -8,13 +8,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MouseEventHandler, useEffect, useState } from "react";
 import Image from "next/image";
 import CarouselViewModel from "@/module/carousel/presenter/carouselViewModel";
+import { Link } from "@/navigation";
 
 type Props = {
   className?: string;
+  locale: string;
 };
 
 export default function Carousel({
-  className
+  className,
+  locale,
 }: Props) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [carousels, setCarousels] = useState<CarouselEntity[]>([]);
@@ -33,6 +36,8 @@ export default function Carousel({
   const goNext = () => setCurrentIndex(getNextIndex);
   const goPrevious = () => setCurrentIndex(getPreviousIndex);
 
+  const isEn = locale === "en";
+
   return (
     <div className={`${className ?? ""} ${carousels.length === 0 ? "hidden" : ""} relative rounded-xl aspect-video w-full h-auto overflow-hidden`}>
       {
@@ -40,7 +45,12 @@ export default function Carousel({
           const viewModel = new CarouselViewModel(entity);
           return (
             <Image
-              key={index} alt="carousel" src={viewModel.imageUrl} fill={true} priority={true} sizes="50vw"
+              key={index}
+              alt={isEn ? viewModel.titleEn : viewModel.title}
+              src={viewModel.imageUrl}
+              fill={true}
+              priority={true}
+              sizes="50vw"
               className={`object-cover transform transition-all duration-500 ease-in-out overflow-hidden
               ${index > currentIndex ? "translate-x-full opacity-50" : (index < currentIndex ? "-translate-x-full opacity-50" : "translate-x-0 opacity-100")}`}
             />
@@ -63,6 +73,10 @@ export default function Carousel({
 
     return (
       <div id="carousel-control" className="absolute inset-0">
+        {
+          carousels[currentIndex] &&
+          <Link href={`/carousel/${carousels[currentIndex].id}`} className="absolute inset-0" />
+        }
         <FontAwesomeIcon
           id="carousel-left-button"
           icon={faAngleLeft}

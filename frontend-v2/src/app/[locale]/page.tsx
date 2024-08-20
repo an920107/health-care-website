@@ -15,7 +15,7 @@ export default function HomePage({ params }: Props) {
       <div className="flex flex-row gap-10">
         <IndexMenu className="max-md:hidden" />
         <div className="flex flex-col flex-1 gap-10">
-          <Carousel />
+          <Carousel locale={params.locale} />
           <PostPanel locale={params.locale} isEnableTitle={true} isEnableMore={true} />
           <RestaurantPanel locale={params.locale} isEnableTitle={true} isEnableMore={true} />
         </div>

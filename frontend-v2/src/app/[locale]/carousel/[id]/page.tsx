@@ -32,7 +32,7 @@ export default async function CarouselPage({ params }: Props) {
         <Link href={viewModel.imageUrl} target="_blank">
           <Image
             src={viewModel.imageUrl}
-            alt={viewModel.title}
+            alt={isEn ? viewModel.titleEn : viewModel.title}
             width={960}
             height={540}
           />
