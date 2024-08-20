@@ -2,7 +2,7 @@ import { BACKEND_HOST } from "@/module/config/config";
 import CarouselEntity from "../domain/carouselEntity";
 import CarouselRepo from "../domain/carouselRepo";
 import axios from "axios";
-import { CarouselRequest } from "../application/carouselDto";
+import { CarouselRequest, CarouselResponse } from "../application/carouselDto";
 
 export default class CarouselRepoImpl implements CarouselRepo {
     async query({
@@ -30,7 +30,7 @@ export default class CarouselRepoImpl implements CarouselRepo {
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));
 
-        return new CarouselEntity(response.data["data"]);
+        return new CarouselResponse(response.data["data"]);
     }
 
     async create(
