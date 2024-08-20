@@ -16,8 +16,13 @@ export default async function CarouselPage({ params }: Props) {
   if (idNum === Number.NaN) notFound();
 
   const usecase = new CarouselUsecase(new CarouselRepoImpl());
-  const entity = await usecase.getCarouselInfo(idNum);
-  const viewModel = new CarouselViewModel(entity);
+  var viewModel: CarouselViewModel;
+  try {
+    const entity = await usecase.getCarouselInfo(idNum);
+    viewModel = new CarouselViewModel(entity);
+  } catch (err) {
+    notFound();
+  }
 
   const isEn = params.locale === "en";
 
