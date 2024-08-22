@@ -3,7 +3,7 @@
 import NormalPostUsecase from "@/module/post/application/normalPostUsecase";
 import PostEntity from "@/module/post/domain/postEntity";
 import PostRepoImpl from "@/module/post/presenter/postRepoImpl";
-import PostViewModel, { ColumnSelectionType } from "@/module/post/presenter/postViewModel";
+import PostViewModel from "@/module/post/presenter/postViewModel";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -14,12 +14,14 @@ import SearchBar from "@/components/search-bar";
 import Pager from "@/components/pager";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { ColumnSelectionType, normalPostColumnSelections } from "@/module/post/presenter/columnSelection";
 
 type Props = {
   locale: string;
   isEnableSearch?: boolean;
   isEnablePager?: boolean;
   isAdmin?: boolean;
+  columnSelections: ColumnSelectionType[];
   actions?: Readonly<React.ReactNode>;
 };
 
@@ -28,6 +30,7 @@ export default function PostTable({
   isEnableSearch = false,
   isEnablePager = false,
   isAdmin = false,
+  columnSelections,
   actions,
 }: Props) {
   const trans = useTranslations("Post");
@@ -37,10 +40,10 @@ export default function PostTable({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
   const [columnSelected, setColumnSelected] =
-    useState<ColumnSelectionType>(PostViewModel.columnSelections[0]);
+    useState<ColumnSelectionType>(columnSelections[0]);
 
   function handleColumnSelectionChange(index: number) {
-    setColumnSelected(PostViewModel.columnSelections[index]);
+    setColumnSelected(columnSelections[index]);
   }
 
   function handleSearchSubmit(text: string) {
@@ -57,7 +60,7 @@ export default function PostTable({
       <div className="md:hidden mt-3 flex flex-row items-center gap-2">
         <DropdownButton
           className={isEnableSearch ? "h-[2.625rem]" : ""}
-          options={PostViewModel.columnSelections.map((e) => (trans(e.label)))}
+          options={columnSelections.map((e) => (trans(e.label)))}
           onChange={handleColumnSelectionChange}
         />
         {
@@ -69,7 +72,7 @@ export default function PostTable({
         <GroupedButton
           className="w-full rounded-t-md overflow-hidden max-md:hidden border-b-2"
           textClassName="font-bold"
-          options={PostViewModel.columnSelections.map((e) => (trans(e.label)))}
+          options={columnSelections.map((e) => (trans(e.label)))}
           onChange={handleColumnSelectionChange}
         />
         <Card className="w-full rounded-b-xl overflow-hidden" isRounded={false} isBorder={false}>

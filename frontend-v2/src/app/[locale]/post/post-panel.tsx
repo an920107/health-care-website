@@ -3,6 +3,7 @@ import { faBullhorn, faSquareCaretRight } from "@fortawesome/free-solid-svg-icon
 import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
 import PostTable from "./post-table";
+import { ColumnSelectionType } from "@/module/post/presenter/columnSelection";
 
 type Props = {
   locale: string;
@@ -11,6 +12,7 @@ type Props = {
   isEnableSearch?: boolean;
   isEnablePager?: boolean;
   isAdmin?: boolean;
+  columnSelections: ColumnSelectionType[];
   actions?: Readonly<React.ReactNode>;
 };
 
@@ -21,6 +23,7 @@ export default function PostPanel({
   isEnableSearch = false,
   isEnablePager = false,
   isAdmin = false,
+  columnSelections,
   actions,
 }: Props) {
   const trans = useTranslations("Post");
@@ -33,6 +36,7 @@ export default function PostPanel({
         isEnableSearch={isEnableSearch}
         isEnablePager={isEnablePager}
         isAdmin={isAdmin}
+        columnSelections={columnSelections}
         actions={actions}
       />
       {isEnableMore && <PostMore />}

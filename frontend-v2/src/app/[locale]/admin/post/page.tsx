@@ -4,6 +4,7 @@ import Button from "@/components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "@/navigation";
+import { normalPostColumnSelections } from "@/module/post/presenter/columnSelection";
 
 type Props = {
   params: { locale: string };
@@ -22,7 +23,14 @@ export default function AdminPostPage({ params }: Props) {
   return (
     <div>
       <h1>{trans("title")}</h1>
-      <PostPanel locale={params.locale} isAdmin={true} isEnableSearch={true} isEnablePager={true} actions={actions} />
+      <PostPanel
+        locale={params.locale}
+        isAdmin={true}
+        isEnableSearch={true}
+        isEnablePager={true}
+        columnSelections={normalPostColumnSelections}
+        actions={actions}
+      />
     </div>
   );
 }

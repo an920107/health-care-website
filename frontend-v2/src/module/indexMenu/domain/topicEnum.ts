@@ -14,9 +14,9 @@ enum TopicEnum {
     OnCampusService = "on_site_occupational_health_service",
     WorkplaceServicePlan = "workplace_health_service_plan",
     Cpr = "freshman_cpr",
-    TabaccoPrevention = "campus_tobacco_control_education",
-    AidsPrevention = "campus_aids_prevention_education",
-    DiseasePrevension = "campus_infectious_disease_prevention",
+    TabaccoPrevention = "tobacco_prevention",
+    AidsPrevention = "aids_prevention",
+    DiseasePrevension = "disease_prevention",
     DownloadArea = "download_area",
     Regulation = "regulation",
 }

@@ -89,11 +89,16 @@
     },
     "Post": {
         "title": "NEWS",
+        "title_disease": "Disease Prevention",
         "all": "All Announcements",
         "latest": "Latest News",
         "activity": "Event Updates",
         "health": "Health Focus",
         "nutrition": "Nutrition News",
+        "influenza": "Influenza",
+        "dengue": "Dengue",
+        "tuberculosis": "Tuberculosis",
+        "chickenpox": "Chickenpox",
         "table_column": "Column",
         "table_title": "Title",
         "table_date": "Released Date",
@@ -203,7 +208,8 @@
         "carousel": "Carousel",
         "permission": "Permission",
         "dengue": "Dengue Management",
-        "insurance": "Student Insurance"
+        "insurance": "Student Insurance",
+        "disease_prevention": "Disease Prevention"
     },
     "Privacy": {
         "title": "Privacy Policy Statement",

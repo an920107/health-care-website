@@ -89,11 +89,16 @@
     },
     "Post": {
         "title": "NEWS",
+        "title_disease": "校園傳染病防治",
         "all": "所有公告",
         "latest": "最新消息",
         "activity": "活動快訊",
         "health": "健康焦點",
         "nutrition": "營養報報",
+        "influenza": "流感",
+        "dengue": "登革熱",
+        "tuberculosis": "肺結核",
+        "chickenpox": "水痘",
         "table_column": "訊息類別",
         "table_title": "標題",
         "table_date": "發布日期",
@@ -196,7 +201,8 @@
         "carousel": "首頁橫幅",
         "permission": "權限管理",
         "dengue": "登革熱管理",
-        "insurance": "學生團體保險"
+        "insurance": "學生團體保險",
+        "disease_prevention": "校園傳染病防治"
     },
     "Permission": {
         "title": "權限管理",
