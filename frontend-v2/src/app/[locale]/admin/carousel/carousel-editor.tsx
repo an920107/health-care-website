@@ -126,6 +126,7 @@ export default function CarouselEditor({
           options={releaseStatusOptions.map((option) => statusTrans(option))}
           className="h-10"
           onChange={(index) => setReleaseStatus(releaseStatusOptions[index])}
+          deafultIndex={releaseStatusOptions.indexOf(defaultReleaseStatus)}
         />
         <div>
           <label htmlFor={trans("upload")} className="label">{trans("upload")}</label>

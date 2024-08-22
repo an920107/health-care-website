@@ -10,6 +10,7 @@ type Props = {
   label?: string;
   options: string[];
   onChange?(index: number): void;
+  deafultIndex?: number;
 };
 
 export default function DropdownButton({
@@ -17,9 +18,10 @@ export default function DropdownButton({
   label,
   options,
   onChange,
+  deafultIndex = 0,
 }: Props) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(0);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(deafultIndex);
 
   const handleOptionClick = (index: number) => {
     setSelectedOptionIndex(index);

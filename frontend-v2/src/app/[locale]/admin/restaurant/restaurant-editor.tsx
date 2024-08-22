@@ -164,18 +164,21 @@ export default function RestaurantEditor({
             options={categoryOptions.map((option) => trans(option))}
             className="h-10"
             onChange={(index) => setCategory(categoryOptions[index])}
+            deafultIndex={categoryOptions.indexOf(defaultCategory)}
           />
           <DropdownButton
             label={statusTrans("status")}
             options={releaseStatusOptions.map((option) => statusTrans(option))}
             className="h-10"
             onChange={(index) => setReleaseStatus(releaseStatusOptions[index])}
+            deafultIndex={releaseStatusOptions.indexOf(defaultReleaseStatus)}
           />
           <DropdownButton
             label={trans("result")}
             options={inspectionStatusOptions.map((option) => statusTrans(option))}
             className="h-10"
             onChange={(index) => setInspectionStatus(inspectionStatusOptions[index])}
+            deafultIndex={inspectionStatusOptions.indexOf(defaultInspectionStatus)}
           />
           <DateField
             label={trans("inspected_date")}
