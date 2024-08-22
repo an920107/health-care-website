@@ -9,23 +9,23 @@ export default class InsuranceUsecase {
         this._repo = repo;
     }
 
-    async query({ page }: { page: number }): Promise<[InsuranceEntity[], PagerEntity]> {
+    async getAllInsurance({ page }: { page: number }): Promise<[InsuranceEntity[], PagerEntity]> {
         return this._repo.query({ page });
     }
 
-    async get(id: number): Promise<InsuranceEntity> {
+    async getInsuranceById(id: number): Promise<InsuranceEntity> {
         return this._repo.get(id);
     }
 
-    async create(insurance: InsuranceEntity): Promise<void> {
+    async createInsurance(insurance: InsuranceEntity): Promise<void> {
         return this._repo.create(insurance);
     }
 
-    async update(id: number, insurance: InsuranceEntity): Promise<void> {
+    async updateInsurance(id: number, insurance: InsuranceEntity): Promise<void> {
         return this._repo.update(id, insurance);
     }
 
-    async delete(id: number): Promise<void> {
+    async deleteInsurance(id: number): Promise<void> {
         return this._repo.delete(id);
     }
 }

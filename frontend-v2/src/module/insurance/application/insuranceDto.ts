@@ -37,8 +37,8 @@ export class InsuranceRequest extends InsuranceEntity {
 
     toJson() {
         return {
-            application_date: this.applicationDate,
-            incident_date: this.incidentDate,
+            application_date: this.applicationDate.toISOString(),
+            incident_date: this.incidentDate.toISOString(),
             name: this.name,
             student_id: this.studentId,
             id_number: this.idNumber,
@@ -55,7 +55,7 @@ export class InsuranceRequest extends InsuranceEntity {
             x_ray: this.xRay,
             application_amount: this.applicationAmount,
             claim_amount: this.claimAmount,
-            claim_date: this.claimDate,
+            claim_date: this.claimDate.toISOString(),
             remarks: this.remarks,
             insurance_company_stamp: this.insuranceCompanyStamp,
         }

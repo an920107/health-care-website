@@ -29,7 +29,7 @@ export default function InsurancePanel({
   const [totalPage, setTotalPage] = useState<number>(1);
 
   useEffect(() => {
-    usecase.query({ page: currentPage }).then(([insurances, pager]) => {
+    usecase.getAllInsurance({ page: currentPage }).then(([insurances, pager]) => {
       setInsurances(insurances.map((insurance) => new InsuranceViewModel(insurance)));
       setTotalPage(pager.totalPage);
     });

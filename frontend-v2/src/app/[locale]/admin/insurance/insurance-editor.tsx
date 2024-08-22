@@ -6,16 +6,21 @@ import Button from "@/components/button";
 import DateField from "@/components/date-field";
 import DropdownButton from "@/components/dropdown-button";
 import TextField from "@/components/text-field";
+import { InsuranceRequest } from "@/module/insurance/application/insuranceDto";
+import InsuranceUsecase from "@/module/insurance/application/insuranceUsecase";
 import ClaimDetailsEnum from "@/module/insurance/doamin/claimDetailsEnum";
 import LocationEnum from "@/module/insurance/doamin/locationEnum";
 import PaymentTypeEnum from "@/module/insurance/doamin/paymentTypeEnum";
+import InsuranceRepoImpl from "@/module/insurance/presenter/insuranceRepoImpl";
 import EmailValidationUsecase from "@/module/validation/application/emailValidationUsecase";
 import NotEmptyValidationUsecase from "@/module/validation/application/notEmptyValidationUsecase";
 import NumberValidationUsecase from "@/module/validation/application/numberValidationUsecase";
+import { useRouter } from "@/navigation";
 import { faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { set } from "date-fns";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   updateId?: number;
@@ -52,6 +57,8 @@ export default function InsuranceEditor({
 }: Props) {
   const trans = useTranslations("Insurance");
 
+  const router = useRouter();
+
   const [applicationDate, setApplicationDate] = useState<Date | undefined>(defaultValues?.applicationDate);
   const [incidentDate, setIncidentDate] = useState<Date | undefined>(defaultValues?.incidentDate);
   const [name, setName] = useState<string>(defaultValues?.name ?? "");
@@ -76,11 +83,58 @@ export default function InsuranceEditor({
   const [toValidate, setToValidate] = useState<boolean>(false);
   const [isValidationPassed, setIsValidationPassed] = useState<boolean[]>([]);
 
-  function handleValidate() { }
+  const usecase = new InsuranceUsecase(new InsuranceRepoImpl());
 
-  function handleDelete() { }
+  function handleValidate(result: boolean) {
+    setToValidate(false);
+    setIsValidationPassed((prev) => [...prev, result]);
+  }
 
-  function handleSave() { }
+  function handleDelete() {
+    if (updateId === undefined) return;
+
+    usecase.deleteInsurance(updateId)
+      .then(() => router.push("/admin/insurance"));
+  }
+
+  function handleSave() {
+    setIsValidationPassed([]);
+    setToValidate(true);
+  }
+
+  useEffect(() => {
+    if (isValidationPassed.length < 14 ||
+      isValidationPassed.some((result) => !result)) return;
+
+    const request = new InsuranceRequest({
+      applicationDate: applicationDate!,
+      incidentDate: incidentDate!,
+      name,
+      studentId,
+      idNumber,
+      address,
+      phoneNumber,
+      email,
+      claimDetails,
+      paymentType,
+      location,
+      incidentCause,
+      receipt,
+      diagnosisCertificate,
+      bankbook,
+      xRay,
+      applicationAmount: Number.parseInt(applicationAmount),
+      claimAmount: Number.parseInt(claimAmount),
+      claimDate: claimDate!,
+      remarks,
+      insuranceCompanyStamp,
+    });
+
+    (updateId === undefined
+      ? usecase.createInsurance(request)
+      : usecase.updateInsurance(updateId, request)
+    ).then(() => router.push("/admin/restaurant"));
+  }, [isValidationPassed]);
 
   return (
     <>

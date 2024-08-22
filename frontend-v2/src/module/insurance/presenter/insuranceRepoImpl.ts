@@ -52,7 +52,7 @@ export default class InsuranceRepoImpl implements InsuranceRepo {
     }
 
     async update(id: number, insurance: InsuranceEntity): Promise<void> {
-        const response = await axios.put(new URL(`/api/insurance/${id}`, BACKEND_HOST).href,
+        const response = await axios.patch(new URL(`/api/insurance/${id}`, BACKEND_HOST).href,
             new InsuranceRequest(insurance).toJson(),
             {
                 headers: {
