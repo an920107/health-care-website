@@ -145,7 +145,17 @@
         "new": "New Carousel",
         "table_id": "Number",
         "table_image": "Image Preview",
-        "table_edit": "Edit"
+        "table_edit": "Edit",
+        "upload": "Upload Image",
+        "chinese_title": "Chinese Title",
+        "english_title": "English Title",
+        "chinese_content": "Chinese Content",
+        "english_content": "English Content",
+        "delete": "Delete Carousel",
+        "save": "Save Carousel",
+        "validate_empty": "The field cannot be empty",
+        "validate_length": "The length shouldn't be more than {length}",
+        "not_found": "There is no carousel found!"
     },
     "Admin": {
         "title": "Admin",

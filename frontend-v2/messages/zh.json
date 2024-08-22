@@ -145,7 +145,17 @@
         "new": "新增橫幅",
         "table_id": "編號",
         "table_image": "圖片預覽",
-        "table_edit": "編輯"
+        "table_edit": "編輯",
+        "upload": "上傳圖片",
+        "chinese_title": "中文標題",
+        "english_title": "英文標題",
+        "chinese_content": "中文內容",
+        "english_content": "英文內容",
+        "delete": "刪除橫幅",
+        "save": "儲存橫幅",
+        "validate_empty": "此欄位不得為空",
+        "validate_length": "長度不得超過 {length}",
+        "not_found": "找不到橫幅！"
     },
     "Admin": {
         "title": "網站管理",

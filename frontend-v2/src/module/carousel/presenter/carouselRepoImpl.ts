@@ -39,9 +39,11 @@ export default class CarouselRepoImpl implements CarouselRepo {
         onProgress?: (progress: number) => void,
     ): Promise<void> {
         const formData = new FormData();
-        formData.append("blob", file);
+        formData.append("image", file);
         formData.append("title", carousel.title);
+        formData.append("title_en", carousel.titleEn);
         formData.append("content", carousel.content);
+        formData.append("content_en", carousel.contentEn);
         formData.append("visibility", carousel.visibility ? "true" : "false");
 
         const response = await axios.post(new URL("/api/carousel", BACKEND_HOST).href,
@@ -60,7 +62,7 @@ export default class CarouselRepoImpl implements CarouselRepo {
     }
 
     async update(id: number, carousel: CarouselEntity): Promise<void> {
-        const response = await axios.patch(new URL(`/api/carousel/${id}`, BACKEND_HOST).href,
+        const response = await axios.put(new URL(`/api/carousel/${id}`, BACKEND_HOST).href,
             new CarouselRequest(carousel).toJson(),
             {
                 headers: {
@@ -68,6 +70,9 @@ export default class CarouselRepoImpl implements CarouselRepo {
                 }
             }
         );
+
+        if (response.status !== 204)
+            return Promise.reject(new Error(response.data));
     }
 
     async delete(id: number): Promise<void> {
