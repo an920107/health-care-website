@@ -10,7 +10,7 @@
     },
     "Home": {
         "homepage": "首頁",
-        "dangue": "登革熱填報",
+        "dengue": "登革熱填報",
         "admin": "網站管理",
         "ncu_homepage": "中大首頁",
         "language": "Language",
@@ -42,9 +42,9 @@
         "on_site_occupational_health_service": "職業醫師臨校服務",
         "workplace_health_service_plan": "職場健康服務計畫",
         "freshman_cpr": "大一 CPR",
-        "campus_tobacco_control_education": "校園菸害防制教育",
-        "campus_aids_prevention_education": "校園愛滋防治教育",
-        "campus_infectious_disease_prevention": "校園傳染病防治",
+        "tobacco_prevention": "校園菸害防制教育",
+        "aids_prevention": "校園愛滋防治教育",
+        "disease_prevention": "校園傳染病防治",
         "download_area": "下載專區",
         "regulation": "相關法規",
         "about": "關於我們",
@@ -160,7 +160,7 @@
         "validate_length": "長度不得超過 {length}",
         "not_found": "找不到橫幅！"
     },
-    "Dangue": {
+    "Dengue": {
         "title": "登革熱填報"
     },
     "Insurance": {
@@ -176,7 +176,7 @@
         "delete": "刪除保險記錄",
         "save": "儲存保險記錄"
     },
-    "AdminDangue": {
+    "AdminDengue": {
         "title": "登革熱管理",
         "prompt_create": "輸入建物名稱",
         "prompt_edit_user": "輸入建物管理員 ID（留空並按下確認以取消指派）",
@@ -195,7 +195,7 @@
         "restaurant": "商家檢查報告",
         "carousel": "首頁橫幅",
         "permission": "權限管理",
-        "dangue": "登革熱管理",
+        "dengue": "登革熱管理",
         "insurance": "學生團體保險"
     },
     "Permission": {

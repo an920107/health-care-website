@@ -20,7 +20,7 @@ type Props = {
 export default function BuildingPanel({
   className,
 }: Props) {
-  const trans = useTranslations("AdminDangue");
+  const trans = useTranslations("AdminDengue");
 
   const usecase = new BuildingUsecase(new BuildingRepoImpl());
 
@@ -123,7 +123,7 @@ export default function BuildingPanel({
         </Button>
         <Button className="border">
           <FontAwesomeIcon icon={faFileLines} className="size-4 me-2" />
-          <Link href={new URL("/api/dangue/report", BACKEND_HOST)} target="_blank" className="py-1">
+          <Link href={new URL("/api/dengue/report", BACKEND_HOST)} target="_blank" className="py-1">
             {trans("report")}
           </Link>
         </Button>

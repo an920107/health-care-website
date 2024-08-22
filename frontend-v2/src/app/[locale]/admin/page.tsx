@@ -51,11 +51,11 @@ export default function AdminPage() {
             </div>
           </Card>
         </Link>
-        <Link href="/admin/dangue">
+        <Link href="/admin/dengue">
           <Card>
             <div className="px-6 py-4 flex flex-row items-center">
               <FontAwesomeIcon icon={faMosquito} className="size-4 me-4" />
-              <p>{trans("dangue")}</p>
+              <p>{trans("dengue")}</p>
             </div>
           </Card>
         </Link>

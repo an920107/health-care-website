@@ -10,7 +10,7 @@
     },
     "Home": {
         "homepage": "Home",
-        "dangue": "Dangue Report",
+        "dengue": "Dengue Report",
         "admin": "Admin Panel",
         "ncu_homepage": "NCU Website",
         "language": "Language",
@@ -42,9 +42,9 @@
         "on_site_occupational_health_service": "Occupational Physician Service",
         "workplace_health_service_plan": "Workplace Health Service Plan",
         "freshman_cpr": "Freshmen CPR",
-        "campus_tobacco_control_education": "Tabacco Prevention",
-        "campus_aids_prevention_education": "AIDS Prevention",
-        "campus_infectious_disease_prevention": "Disease Prevention",
+        "tobacco_prevention": "Tabacco Prevention",
+        "aids_prevention": "AIDS Prevention",
+        "disease_prevention": "Disease Prevention",
         "download_area": "Downloads",
         "regulation": "Regulation",
         "about": "About Us",
@@ -167,8 +167,8 @@
         "table_edit": "Edit (Effective Immediately)",
         "table_delete": "Delete (Effective Immediately)"
     },
-    "Dangue": {
-        "title": "Dangue Report"
+    "Dengue": {
+        "title": "Dengue Report"
     },
     "Insurance": {
         "title": "Student Insurance",
@@ -183,8 +183,8 @@
         "delete": "Delete Insurance Record",
         "save": "Save Insurance Record"
     },
-    "AdminDangue": {
-        "title": "Dangue Management",
+    "AdminDengue": {
+        "title": "Dengue Management",
         "prompt_create": "Enter the name of the building",
         "prompt_edit_user": "Enter the building manager's ID (leave blank and press confirm to cancel the assignment)",
         "alert_empty": "Input cannot be empty",
@@ -202,7 +202,7 @@
         "restaurant": "Merchant Inspection Report",
         "carousel": "Carousel",
         "permission": "Permission",
-        "dangue": "Dangue Management",
+        "dengue": "Dengue Management",
         "insurance": "Student Insurance"
     },
     "Privacy": {

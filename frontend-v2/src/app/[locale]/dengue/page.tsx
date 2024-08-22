@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 
-export default async function DanguePage() {
-  const trans = await getTranslations("Dangue");
+export default async function DenguePage() {
+  const trans = await getTranslations("Dengue");
 
   return (
     <>

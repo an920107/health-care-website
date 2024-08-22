@@ -25,10 +25,10 @@ export default function NavigationBar() {
     <div>
       {/* Social links */}
       <div className="flex items-center justify-end bg-amber-400 py-1 px-2 gap-2 text-gray-800 max-md:hidden">
-        <Link href="/dangue">
+        <Link href="/dengue">
           <Button>
             <FontAwesomeIcon icon={faMosquito} className="size-5 me-2" />
-            {homeTrans("dangue")}
+            {homeTrans("dengue")}
           </Button>
         </Link>
         <Link href="/admin">
