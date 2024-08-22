@@ -1,6 +1,6 @@
 enum LocationEnum {
-    InSchool = "in_school",
-    OutSchool = "out_school",
+    OnCampus = "on_campus",
+    OffCampus= "off_campus",
 }
 
 export default LocationEnum;

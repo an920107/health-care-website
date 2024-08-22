@@ -170,6 +170,19 @@
     "Dangue": {
         "title": "Dangue Report"
     },
+    "Insurance": {
+        "title": "Student Insurance",
+        "table_id": "Number",
+        "table_name": "Name",
+        "table_student_id": "Student ID",
+        "table_application_date": "Application Date",
+        "table_incident_date": "Incident Date",
+        "table_edit": "Edit",
+        "new": "Create Insurance Record",
+        "edit": "Edit Insurance Record",
+        "delete": "Delete Insurance Record",
+        "save": "Save Insurance Record"
+    },
     "AdminDangue": {
         "title": "Dangue Management",
         "prompt_create": "Enter the name of the building",
@@ -189,7 +202,8 @@
         "restaurant": "Merchant Inspection Report",
         "carousel": "Carousel",
         "permission": "Permission",
-        "dangue": "Dangue Management"
+        "dangue": "Dangue Management",
+        "insurance": "Student Insurance"
     },
     "Privacy": {
         "title": "Privacy Policy Statement",

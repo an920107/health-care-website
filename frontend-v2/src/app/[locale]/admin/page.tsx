@@ -1,6 +1,6 @@
 import Card from "@/components/card";
 import { Link } from "@/navigation";
-import { faBullhorn, faFileLines, faImage, faMosquito, faStore, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBullhorn, faFileLines, faFileShield, faImage, faMosquito, faStore, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslations } from "next-intl";
 
@@ -56,6 +56,14 @@ export default function AdminPage() {
             <div className="px-6 py-4 flex flex-row items-center">
               <FontAwesomeIcon icon={faMosquito} className="size-4 me-4" />
               <p>{trans("dangue")}</p>
+            </div>
+          </Card>
+        </Link>
+        <Link href="/admin/insurance">
+          <Card>
+            <div className="px-6 py-4 flex flex-row items-center">
+              <FontAwesomeIcon icon={faFileShield} className="size-4 me-4" />
+              <p>{trans("insurance")}</p>
             </div>
           </Card>
         </Link>

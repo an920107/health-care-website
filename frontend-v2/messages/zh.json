@@ -163,6 +163,19 @@
     "Dangue": {
         "title": "登革熱填報"
     },
+    "Insurance": {
+        "title": "學生團體保險",
+        "table_id": "編號",
+        "table_name": "姓名",
+        "table_student_id": "學號",
+        "table_application_date": "申請日期",
+        "table_incident_date": "事故日期",
+        "table_edit": "編輯",
+        "new": "新增保險記錄",
+        "edit": "編輯保險記錄",
+        "delete": "刪除保險記錄",
+        "save": "儲存保險記錄"
+    },
     "AdminDangue": {
         "title": "登革熱管理",
         "prompt_create": "輸入建物名稱",
@@ -182,7 +195,8 @@
         "restaurant": "商家檢查報告",
         "carousel": "首頁橫幅",
         "permission": "權限管理",
-        "dangue": "登革熱管理"
+        "dangue": "登革熱管理",
+        "insurance": "學生團體保險"
     },
     "Permission": {
         "title": "權限管理",

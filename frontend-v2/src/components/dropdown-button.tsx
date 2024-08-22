@@ -8,9 +8,9 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 type Props = {
   className?: string;
   label?: string;
-  options: string[];
+  options: string[] | number[];
   onChange?(index: number): void;
-  deafultIndex?: number;
+  index?: number;
 };
 
 export default function DropdownButton({
@@ -18,7 +18,7 @@ export default function DropdownButton({
   label,
   options,
   onChange,
-  deafultIndex = 0,
+  index: deafultIndex = 0,
 }: Props) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(deafultIndex);

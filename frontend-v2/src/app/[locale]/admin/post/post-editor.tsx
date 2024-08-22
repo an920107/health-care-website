@@ -150,21 +150,21 @@ export default function PostEditor({
             options={columnOptions.map((option) => trans(option))}
             className="h-10"
             onChange={(index) => setColumn(columnOptions[index])}
-            deafultIndex={columnOptions.indexOf(defaultColumn)}
+            index={columnOptions.indexOf(defaultColumn)}
           />
           <DropdownButton
             label={statusTrans("status")}
             options={releaseStatusOptions.map((option) => statusTrans(option))}
             className="h-10"
             onChange={(index) => setReleaseStatus(releaseStatusOptions[index])}
-            deafultIndex={releaseStatusOptions.indexOf(defaultReleaseStatus)}
+            index={releaseStatusOptions.indexOf(defaultReleaseStatus)}
           />
           <DropdownButton
             label={statusTrans("importance")}
             options={importanceOptions.map((option) => statusTrans(option))}
             className="h-10"
             onChange={(index) => setImportance(importanceOptions[index])}
-            deafultIndex={importanceOptions.indexOf(defaultImportance)}
+            index={importanceOptions.indexOf(defaultImportance)}
           />
         </div>
         <div className="flex flex-col gap-4">

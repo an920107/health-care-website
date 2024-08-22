@@ -1,6 +1,6 @@
 enum ClaimDetailsEnum {
     Accident = "accident",
-    Disease = "disease",
+    Illness = "illness",
 }
 
 export default ClaimDetailsEnum;
