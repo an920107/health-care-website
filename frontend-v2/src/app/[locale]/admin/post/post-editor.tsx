@@ -37,11 +37,13 @@ type Props = {
   defaultContent?: string;
   defaultContentEn?: string;
   defaultAttachmentIds?: number[];
+  backUrl: string;
+  columnOptions: PostColumnEnum[];
 };
 
 export default function PostEditor({
   updateId,
-  defaultColumn = PostColumnEnum.Latest,
+  defaultColumn,
   defaultReleaseStatus = ReleaseStatusEnum.Draft,
   defaultImportance = ImportanceEnum.Normal,
   defaultTitle = "",
@@ -49,6 +51,8 @@ export default function PostEditor({
   defaultContent = "",
   defaultContentEn = "",
   defaultAttachmentIds = [],
+  backUrl,
+  columnOptions,
 }: Props) {
   const trans = useTranslations("Post");
   const statusTrans = useTranslations("Status");
@@ -56,7 +60,7 @@ export default function PostEditor({
 
   const router = useRouter();
 
-  const [column, setColumn] = useState<PostColumnEnum>(defaultColumn);
+  const [column, setColumn] = useState<PostColumnEnum>(defaultColumn ?? columnOptions[0]);
   const [releaseStatus, setReleaseStatus] = useState<ReleaseStatusEnum>(defaultReleaseStatus);
   const [importance, setImportance] = useState<ImportanceEnum>(defaultImportance);
   const [chineseTitle, setChineseTitle] = useState<string>(defaultTitle);
@@ -91,7 +95,7 @@ export default function PostEditor({
   function handleDelete() {
     if (updateId === undefined) return;
     postUsecase.deletePost(updateId)
-      .then(() => router.push("/admin/post"))
+      .then(() => router.push(backUrl))
       .catch((err) => console.error("Deleting post failed:", err));
   }
 
@@ -100,10 +104,6 @@ export default function PostEditor({
     setIsValidationPassed([]);
     setToValidate(true);
   }
-
-  useEffect(() => {
-    router.refresh();
-  }, []);
 
   useEffect(() => {
     const attachmentFetchAction = new AttachmentFetchAction({
@@ -129,12 +129,11 @@ export default function PostEditor({
       importance: importance === ImportanceEnum.Important,
     });
 
-    (
-      updateId === undefined
-        ? postUsecase.createPost(postRequest)
-        : postUsecase.updatePost(updateId, postRequest)
+    (updateId === undefined
+      ? postUsecase.createPost(postRequest)
+      : postUsecase.updatePost(updateId, postRequest)
     ).then(
-      () => router.push("/admin/post")
+      () => router.push(backUrl)
     ).catch(
       (err) => console.error(`${updateId === undefined ? "Creating" : "Updating"} post failed:`, err)
     );
@@ -150,7 +149,7 @@ export default function PostEditor({
             options={columnOptions.map((option) => trans(option))}
             className="h-10"
             onChange={(index) => setColumn(columnOptions[index])}
-            index={columnOptions.indexOf(defaultColumn)}
+            index={columnOptions.indexOf(column)}
           />
           <DropdownButton
             label={statusTrans("status")}
@@ -217,13 +216,6 @@ export default function PostEditor({
     </div>
   );
 }
-
-const columnOptions = [
-  PostColumnEnum.Latest,
-  PostColumnEnum.Activity,
-  PostColumnEnum.Health,
-  PostColumnEnum.Nutrition,
-];
 
 const releaseStatusOptions = [
   ReleaseStatusEnum.Draft,

@@ -14,7 +14,7 @@ import SearchBar from "@/components/search-bar";
 import Pager from "@/components/pager";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
-import { ColumnSelectionType, normalPostColumnSelections } from "@/module/post/presenter/columnSelection";
+import { ColumnSelectionType } from "@/module/post/presenter/columnSelection";
 
 type Props = {
   locale: string;
@@ -22,6 +22,7 @@ type Props = {
   isEnablePager?: boolean;
   isAdmin?: boolean;
   columnSelections: ColumnSelectionType[];
+  editBaseUrl?: string;
   actions?: Readonly<React.ReactNode>;
 };
 
@@ -31,6 +32,7 @@ export default function PostTable({
   isEnablePager = false,
   isAdmin = false,
   columnSelections,
+  editBaseUrl,
   actions,
 }: Props) {
   const trans = useTranslations("Post");
@@ -159,7 +161,7 @@ export default function PostTable({
                         <>
                           <td className={`px-3 md:px-6 py-3 max-md:pe-5 text-nowrap`}>{statusTrans(viewModel.releaseStatus)}</td>
                           <td className="px-3 md:px-6 py-3 md:pe-10 text-nowrap">
-                            <Link href={`/admin/post/edit/${viewModel.id}`}>
+                            <Link href={`${editBaseUrl}/${viewModel.id}`}>
                               <FontAwesomeIcon icon={faPen} className="size-4" />
                             </Link>
                           </td>

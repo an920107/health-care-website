@@ -29,6 +29,7 @@ export default function AdminPostPage({ params }: Props) {
         isEnableSearch={true}
         isEnablePager={true}
         columnSelections={normalPostColumnSelections}
+        editBaseUrl="/admin/post/edit"
         actions={actions}
       />
     </div>

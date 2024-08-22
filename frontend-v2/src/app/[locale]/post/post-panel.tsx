@@ -13,6 +13,7 @@ type Props = {
   isEnablePager?: boolean;
   isAdmin?: boolean;
   columnSelections: ColumnSelectionType[];
+  editBaseUrl?: string;
   actions?: Readonly<React.ReactNode>;
 };
 
@@ -24,6 +25,7 @@ export default function PostPanel({
   isEnablePager = false,
   isAdmin = false,
   columnSelections,
+  editBaseUrl,
   actions,
 }: Props) {
   const trans = useTranslations("Post");
@@ -37,6 +39,7 @@ export default function PostPanel({
         isEnablePager={isEnablePager}
         isAdmin={isAdmin}
         columnSelections={columnSelections}
+        editBaseUrl={editBaseUrl}
         actions={actions}
       />
       {isEnableMore && <PostMore />}

@@ -2,9 +2,9 @@ import NormalPostUsecase from "@/module/post/application/normalPostUsecase";
 import PostRepoImpl from "@/module/post/presenter/postRepoImpl";
 import PostViewModel from "@/module/post/presenter/postViewModel";
 import { notFound } from "next/navigation";
-import PostEditor from "../../post-editor";
 import PostEntity from "@/module/post/domain/postEntity";
 import PostColumnEnum from "@/module/post/domain/postColumnEnum";
+import PostEditor from "../../../post/post-editor";
 
 type Props = {
   params: { id: string };
@@ -34,13 +34,14 @@ export default async function EditPostPage({ params }: Props) {
       defaultContent={viewModel.content}
       defaultContentEn={viewModel.contentEn}
       defaultAttachmentIds={viewModel.attachments}
-      backUrl="/admin/post"
+      backUrl="/admin/disease_prevention"
       columnOptions={[
-        PostColumnEnum.Latest,
-        PostColumnEnum.Activity,
-        PostColumnEnum.Health,
-        PostColumnEnum.Nutrition,
+        PostColumnEnum.Influenza,
+        PostColumnEnum.Dengue,
+        PostColumnEnum.Tuberculosis,
+        PostColumnEnum.Chickenpox,
       ]}
     />
   );
 }
+
