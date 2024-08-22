@@ -15,32 +15,32 @@ export default function AdminPage() {
         <Link href="/admin/post">
           <Card className="w-full">
             <div className="px-6 py-4 flex flex-row items-center">
-              <FontAwesomeIcon icon={faBullhorn} className="size-6 me-4" />
-              <h3>{trans("post")}</h3>
+              <FontAwesomeIcon icon={faBullhorn} className="size-4 me-4" />
+              <p>{trans("post")}</p>
             </div>
           </Card>
         </Link>
         <Link href="/admin/page">
           <Card>
             <div className="px-6 py-4 flex flex-row items-center">
-              <FontAwesomeIcon icon={faFileLines} className="size-6 me-4" />
-              <h3>{trans("page")}</h3>
+              <FontAwesomeIcon icon={faFileLines} className="size-4 me-4" />
+              <p>{trans("page")}</p>
             </div>
           </Card>
         </Link>
         <Link href="/admin/restaurant">
           <Card>
             <div className="px-6 py-4 flex flex-row items-center">
-              <FontAwesomeIcon icon={faStore} className="size-6 me-4" />
-              <h3>{trans("restaurant")}</h3>
+              <FontAwesomeIcon icon={faStore} className="size-4 me-4" />
+              <p>{trans("restaurant")}</p>
             </div>
           </Card>
         </Link>
         <Link href="/admin/carousel">
           <Card>
             <div className="px-6 py-4 flex flex-row items-center">
-              <FontAwesomeIcon icon={faImage} className="size-6 me-4" />
-              <h3>{trans("carousel")}</h3>
+              <FontAwesomeIcon icon={faImage} className="size-4 me-4" />
+              <p>{trans("carousel")}</p>
             </div>
           </Card>
         </Link>
