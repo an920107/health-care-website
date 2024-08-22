@@ -6,6 +6,7 @@ from helpers.CustomResponse import CustomResponse
 
 from models.carousel_model import Carousel, db
 from flask import Blueprint, request, send_file, current_app
+from sqlalchemy import desc, or_
 
 carousel_blueprint = Blueprint('carousel', __name__)
 
@@ -17,11 +18,30 @@ def get_carousels():
     ---
     tags:
       - carousel
+    parameters:
+      - in: query
+        name: search
+        type: string
+        required: false
+      - in: query
+        name: visibility
+        type: boolean
+        required: false
     responses:
       200:
         description: get carousels success
     """
-    carousels = Carousel.query.all()
+    carousels = db.session.query(Carousel)
+
+    if "visibility" in request.args:
+        carousels = carousels.filter(
+            Carousel.visibility == (False if request.args['visibility'] == 'false' else True)
+        )
+
+    if "search" in request.args:
+        carousels = carousels.filter(
+            or_(*[Carousel.title.like(f'%{term}%') for term in request.args['search'].split('+')]))
+
     return CustomResponse.success("get carousels success", [carousel.to_dict() for carousel in carousels])
 
 
@@ -95,7 +115,15 @@ def post_carousel():
         in: formData
         type: string
         required: true
+      - name: title_en
+        in: formData
+        type: string
+        required: true
       - name: content
+        in: formData
+        type: string
+        required: true
+      - name: content_en
         in: formData
         type: string
         required: true
@@ -117,8 +145,12 @@ def post_carousel():
     """
     if "title" not in request.form:
         return CustomResponse.unprocessable_content("Title is required", {})
+    if "title_en" not in request.form:
+        return CustomResponse.unprocessable_content("Title_en is required", {})
     if "content" not in request.form:
         return CustomResponse.unprocessable_content("Content is required", {})
+    if "content_en" not in request.form:
+        return CustomResponse.unprocessable_content("Content_en is required", {})
     if "visibility" not in request.form:
         return CustomResponse.unprocessable_content("Visible is required", {})
     if "image" not in request.files:
@@ -126,7 +158,9 @@ def post_carousel():
 
     try:
         title = request.form["title"]
+        title_en = request.form["title_en"]
         content = request.form["content"]
+        content_en = request.form["content_en"]
         visibility = bool(request.form["visibility"])
         image = request.files['image']
     except Exception as e:
@@ -139,7 +173,9 @@ def post_carousel():
 
     carousel = Carousel(
         title=title,
+        title_en=title_en,
         content=content,
+        content_en=content_en,
         visibility=visibility,
         filepath=str(new_file_path)
     )
@@ -149,7 +185,7 @@ def post_carousel():
     return CustomResponse.created('post carousel success', carousel.to_dict())
 
 
-@carousel_blueprint.route('<int:id_>', methods=['PUT'])
+@carousel_blueprint.route('<int:id_>', methods=['PATCH'])
 def put_carousel(id_):
     """
     put carousel
@@ -164,7 +200,13 @@ def put_carousel(id_):
       - name: title
         in: formData
         type: string
+      - name: title_en
+        in: formData
+        type: string
       - name: content
+        in: formData
+        type: string
+      - name: content_en
         in: formData
         type: string
       - name: visibility
@@ -193,8 +235,12 @@ def put_carousel(id_):
     try:
         if "title" in request.form:
             carousel.title = request.form["title"]
+        if "title_en" in request.form:
+            carousel.title_en = request.form["title_en"]
         if "content" in request.form:
             carousel.content = request.form["content"]
+        if "content_en" in request.form:
+            carousel.content_en = request.form["content_en"]
         if "visibility" in request.form:
             carousel.visibility = bool(request.form["visibility"])
         if "image" in request.files:
