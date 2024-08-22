@@ -158,13 +158,26 @@
         "validate_length": "長度不得超過 {length}",
         "not_found": "找不到橫幅！"
     },
+    "Dangue": {
+        "title": "登革熱管理",
+        "prompt_create": "輸入建物名稱",
+        "prompt_edit_user": "輸入建物管理員 ID（留空並按下確認以取消指派）",
+        "alert_empty": "輸入不得為空",
+        "table_name": "建物名稱",
+        "table_user": "建物管理員",
+        "table_status": "填報狀態",
+        "table_delete": "刪除（立即生效）",
+        "new": "新增建物",
+        "report": "下載報表"
+    },
     "Admin": {
         "title": "網站管理",
         "post": "貼文公告",
         "page": "靜態文章",
         "restaurant": "商家檢查報告",
         "carousel": "首頁橫幅",
-        "permission": "權限管理"
+        "permission": "權限管理",
+        "dangue": "登革熱管理"
     },
     "Permission": {
         "title": "權限管理",

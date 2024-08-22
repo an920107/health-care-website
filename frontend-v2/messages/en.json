@@ -165,13 +165,26 @@
         "table_edit": "Edit (Effective Immediately)",
         "table_delete": "Delete (Effective Immediately)"
     },
+    "Dangue": {
+        "title": "Dangue Management",
+        "prompt_create": "Enter the name of the building",
+        "prompt_edit_user": "Enter the building manager's ID (leave blank and press confirm to cancel the assignment)",
+        "alert_empty": "Input cannot be empty",
+        "table_name": "Building Name",
+        "table_user": "Manager",
+        "table_status": "Status",
+        "table_delete": "Delete (Effective Immediately)",
+        "new": "New Building",
+        "report": "Download Report"
+    },
     "Admin": {
         "title": "Admin",
         "post": "Post",
         "page": "Static Page",
         "restaurant": "Merchant Inspection Report",
         "carousel": "Carousel",
-        "permission": "Permission"
+        "permission": "Permission",
+        "dangue": "Dangue Management"
     },
     "Privacy": {
         "title": "Privacy Policy Statement",
