@@ -10,6 +10,8 @@
     },
     "Home": {
         "homepage": "Home",
+        "dangue": "Dangue Report",
+        "admin": "Admin Panel",
         "ncu_homepage": "NCU Website",
         "language": "Language",
         "about_us": "About Us",
@@ -166,6 +168,9 @@
         "table_delete": "Delete (Effective Immediately)"
     },
     "Dangue": {
+        "title": "Dangue Report"
+    },
+    "AdminDangue": {
         "title": "Dangue Management",
         "prompt_create": "Enter the name of the building",
         "prompt_edit_user": "Enter the building manager's ID (leave blank and press confirm to cancel the assignment)",

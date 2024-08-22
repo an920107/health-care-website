@@ -3,7 +3,7 @@
 import Button from "@/components/button"
 import Logo from "@/components/logo";
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons"
-import { faBars, faGlobe, faGraduationCap, faHouse } from "@fortawesome/free-solid-svg-icons"
+import { faBars, faGlobe, faGraduationCap, faHouse, faMosquito, faScrewdriver, faScrewdriverWrench } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
 import Drawer from "./drawer";
@@ -25,6 +25,18 @@ export default function NavigationBar() {
     <div>
       {/* Social links */}
       <div className="flex items-center justify-end bg-amber-400 py-1 px-2 gap-2 text-gray-800 max-md:hidden">
+        <Link href="/dangue">
+          <Button>
+            <FontAwesomeIcon icon={faMosquito} className="size-5 me-2" />
+            {homeTrans("dangue")}
+          </Button>
+        </Link>
+        <Link href="/admin">
+          <Button>
+            <FontAwesomeIcon icon={faScrewdriverWrench} className="size-5 me-2" />
+            {homeTrans("admin")}
+          </Button>
+        </Link>
         <Link href="/">
           <Button>
             <FontAwesomeIcon icon={faHouse} className="size-5 me-2" />

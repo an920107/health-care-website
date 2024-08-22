@@ -10,6 +10,8 @@
     },
     "Home": {
         "homepage": "首頁",
+        "dangue": "登革熱填報",
+        "admin": "網站管理",
         "ncu_homepage": "中大首頁",
         "language": "Language",
         "about_us": "關於我們",
@@ -159,6 +161,9 @@
         "not_found": "找不到橫幅！"
     },
     "Dangue": {
+        "title": "登革熱填報"
+    },
+    "AdminDangue": {
         "title": "登革熱管理",
         "prompt_create": "輸入建物名稱",
         "prompt_edit_user": "輸入建物管理員 ID（留空並按下確認以取消指派）",

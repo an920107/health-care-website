@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import BuildingPanel from "./building-panel";
 
 export default function AdminDanguePage() {
-  const trans = useTranslations("Dangue");
+  const trans = useTranslations("AdminDangue");
 
   return (
     <div>

@@ -20,7 +20,7 @@ type Props = {
 export default function BuildingPanel({
   className,
 }: Props) {
-  const trans = useTranslations("Dangue");
+  const trans = useTranslations("AdminDangue");
 
   const usecase = new BuildingUsecase(new BuildingRepoImpl());
 
