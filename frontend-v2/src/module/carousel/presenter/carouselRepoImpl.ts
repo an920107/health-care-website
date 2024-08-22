@@ -62,7 +62,7 @@ export default class CarouselRepoImpl implements CarouselRepo {
     }
 
     async update(id: number, carousel: CarouselEntity): Promise<void> {
-        const response = await axios.put(new URL(`/api/carousel/${id}`, BACKEND_HOST).href,
+        const response = await axios.patch(new URL(`/api/carousel/${id}`, BACKEND_HOST).href,
             new CarouselRequest(carousel).toJson(),
             {
                 headers: {

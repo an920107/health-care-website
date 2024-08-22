@@ -77,7 +77,7 @@ export default function CarouselEditor({
   function handleDelete() {
     if (updateId === undefined) return;
     usecase.deleteCarousel(updateId)
-      .then(() => router.push("/admin/post"))
+      .then(() => router.push("/admin/carousel"))
   }
 
   // To validate and change the values in `isValidationPassed` to invoke useEffect
