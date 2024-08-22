@@ -15,6 +15,7 @@ type Props = {
 
 export default async function AdminCarouselPage({ params }: Props) {
   const trans = await getTranslations("Carousel");
+  const statusTrans = await getTranslations("Status");
 
   const usecase = new CarouselUsecase(new CarouselRepoImpl());
   const entities = await usecase.getAllCarousels({ visibility: true });
@@ -29,6 +30,7 @@ export default async function AdminCarouselPage({ params }: Props) {
             <Table.Row>
               <Table.ColumnHeaderCell>{trans("table_id")}</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>{trans("table_image")}</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>{statusTrans("status")}</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>{trans("table_edit")}</Table.ColumnHeaderCell>
             </Table.Row>
           </Table.Header>
@@ -48,6 +50,9 @@ export default async function AdminCarouselPage({ params }: Props) {
                       style={{ objectFit: "cover" }}
                       className="w-[320px] h-[180px] min-w-[320px] min-h-[180px]"
                     />
+                  </Table.Cell>
+                  <Table.Cell>
+                    {statusTrans(viewModel.releaseStatus)}
                   </Table.Cell>
                   <Table.Cell>
                     <Link href={`/admin/carousel/edit/${viewModel.id}`}>

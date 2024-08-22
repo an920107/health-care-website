@@ -25,6 +25,7 @@ type Props = {
   defaultContent?: string;
   defaultContentEn?: string;
   defaultReleaseStatus?: ReleaseStatusEnum;
+  defaultImageUrl?: string;
 };
 
 export default function CarouselEditor({
@@ -34,6 +35,7 @@ export default function CarouselEditor({
   defaultContent = "",
   defaultContentEn = "",
   defaultReleaseStatus = ReleaseStatusEnum.Draft,
+  defaultImageUrl,
 }: Props) {
   const trans = useTranslations("Carousel");
   const statusTrans = useTranslations("Status");
@@ -46,7 +48,7 @@ export default function CarouselEditor({
   const [englishContent, setEnglishContent] = useState<ReactQuill.Value>(defaultContentEn);
   const [releaseStatus, setReleaseStatus] = useState<ReleaseStatusEnum>(defaultReleaseStatus);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imageFileUrl, setImageFileUrl] = useState<string | null>(null);
+  const [imageFileUrl, setImageFileUrl] = useState<string | null>(defaultImageUrl ?? null);
   const [toValidate, setToValidate] = useState<boolean>(false);
   const [isValidationPassed, setIsValidationPassed] = useState<boolean[]>([]);
 
@@ -93,7 +95,7 @@ export default function CarouselEditor({
     if (isValidationPassed.length < 2 ||
       isValidationPassed.filter((value) => !value).length > 0) return;
 
-    if (imageFile === null) {
+    if (imageFile === null && imageFileUrl === null) {
       alert("Please upload an image file.");
       return;
     }
@@ -108,7 +110,7 @@ export default function CarouselEditor({
 
     (
       updateId === undefined
-        ? usecase.createCarousel(imageFile, carouselRequest)
+        ? usecase.createCarousel(imageFile!, carouselRequest)
         : usecase.updateCarousel(updateId, carouselRequest)
     ).then(
       () => router.push("/admin/carousel")
@@ -127,7 +129,7 @@ export default function CarouselEditor({
         />
         <div>
           <label htmlFor={trans("upload")} className="label">{trans("upload")}</label>
-          <input type="file" accept="image/*" onChange={handleFileChange} />
+          <input type="file" accept="image/*" onChange={handleFileChange} disabled={defaultImageUrl !== undefined} />
         </div>
         {
           imageFileUrl !== null &&
