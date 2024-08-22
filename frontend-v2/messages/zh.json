@@ -163,7 +163,15 @@
         "post": "貼文公告",
         "page": "靜態文章",
         "restaurant": "商家檢查報告",
-        "carousel": "首頁橫幅"
+        "carousel": "首頁橫幅",
+        "permission": "權限管理"
+    },
+    "Permission": {
+        "title": "權限管理",
+        "table_name": "姓名",
+        "table_uid": "UID",
+        "table_edit": "編輯（立即生效）",
+        "table_delete": "刪除（立即生效）"
     },
     "Privacy": {
         "title": "隱私權政策聲明",

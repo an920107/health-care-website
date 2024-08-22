@@ -1,7 +1,7 @@
 import Button from "@/components/button";
 import Card from "@/components/card";
 import { Link } from "@/navigation";
-import { faBullhorn, faFileLines, faImage, faStore } from "@fortawesome/free-solid-svg-icons";
+import { faBullhorn, faFileLines, faImage, faStore, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslations } from "next-intl";
 
@@ -41,6 +41,14 @@ export default function AdminPage() {
             <div className="px-6 py-4 flex flex-row items-center">
               <FontAwesomeIcon icon={faImage} className="size-4 me-4" />
               <p>{trans("carousel")}</p>
+            </div>
+          </Card>
+        </Link>
+        <Link href="/admin/permission">
+          <Card>
+            <div className="px-6 py-4 flex flex-row items-center">
+              <FontAwesomeIcon icon={faUser} className="size-4 me-4" />
+              <p>{trans("permission")}</p>
             </div>
           </Card>
         </Link>

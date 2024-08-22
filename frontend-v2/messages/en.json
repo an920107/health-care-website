@@ -158,12 +158,20 @@
         "validate_length": "The length shouldn't be more than {length}",
         "not_found": "There is no carousel found!"
     },
+    "Permission": {
+        "title": "Permission",
+        "table_name": "Name",
+        "table_uid": "UID",
+        "table_edit": "Edit (Effective Immediately)",
+        "table_delete": "Delete (Effective Immediately)"
+    },
     "Admin": {
         "title": "Admin",
         "post": "Post",
         "page": "Static Page",
         "restaurant": "Merchant Inspection Report",
-        "carousel": "Carousel"
+        "carousel": "Carousel",
+        "permission": "Permission"
     },
     "Privacy": {
         "title": "Privacy Policy Statement",
