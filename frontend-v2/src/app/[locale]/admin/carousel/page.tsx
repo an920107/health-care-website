@@ -18,7 +18,7 @@ export default async function AdminCarouselPage({ params }: Props) {
   const statusTrans = await getTranslations("Status");
 
   const usecase = new CarouselUsecase(new CarouselRepoImpl());
-  const entities = await usecase.getAllCarousels({ visibility: true });
+  const entities = await usecase.getAllCarousels({ visibility: false });
   const viewModels = entities.map((entity) => (new CarouselViewModel(entity)));
 
   return (

@@ -25,7 +25,7 @@ export default function Carousel({
   const usecase = new CarouselUsecase(new CarouselRepoImpl());
 
   useEffect(() => {
-    usecase.getAllCarousels({ visibility: false })
+    usecase.getAllCarousels({ visibility: true})
       .then((entities) => setCarousels(entities))
       .catch((err) => console.error("Fetching carousel failed:", err));
   }, []);
