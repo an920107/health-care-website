@@ -186,7 +186,7 @@ def post_carousel():
 
 
 @carousel_blueprint.route('<int:id_>', methods=['PATCH'])
-def put_carousel(id_):
+def patch_carousel(id_):
     """
     put carousel
     ---
@@ -197,24 +197,10 @@ def put_carousel(id_):
         in: path
         type: integer
         required: true
-      - name: title
-        in: formData
-        type: string
-      - name: title_en
-        in: formData
-        type: string
-      - name: content
-        in: formData
-        type: string
-      - name: content_en
-        in: formData
-        type: string
-      - name: visibility
-        in: formData
-        type: boolean
-      - name: image
-        in: formData
-        type: file
+      - in: body
+        name: json
+        schema:
+          id: CarouselInput
     responses:
       200:
         description: get carousels success
@@ -233,25 +219,17 @@ def put_carousel(id_):
         return CustomResponse.not_found("Carousel not found", {})
 
     try:
-        if "title" in request.form:
-            carousel.title = request.form["title"]
-        if "title_en" in request.form:
-            carousel.title_en = request.form["title_en"]
-        if "content" in request.form:
-            carousel.content = request.form["content"]
-        if "content_en" in request.form:
-            carousel.content_en = request.form["content_en"]
-        if "visibility" in request.form:
-            carousel.visibility = bool(request.form["visibility"])
-        if "image" in request.files:
-            os.remove(carousel.filepath)
+        if "title" in request.json:
+            carousel.title = request.json["title"]
+        if "title_en" in request.json:
+            carousel.title_en = request.json["title_en"]
+        if "content" in request.json:
+            carousel.content = request.json["content"]
+        if "content_en" in request.json:
+            carousel.content_en = request.json["content_en"]
+        if "visibility" in request.json:
+            carousel.visibility = bool(request.json["visibility"])
 
-            image = request.files['image']
-            file_name = image.filename
-            new_file_name = f"{uuid4()}.{file_name.split('.')[-1]}"
-            new_file_path = Path(current_app.config['CAROUSEL']) / Path(new_file_name)
-            image.save(new_file_path)
-            carousel.filepath = str(new_file_path)
     except Exception as e:
         return CustomResponse.unprocessable_content("Invalid data type", {})
 

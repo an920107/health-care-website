@@ -9,3 +9,4 @@ class Image(SchemaMixin, db.Model):
 
     def __repr__(self):
         return f'<Image {self.filename}>'
+
