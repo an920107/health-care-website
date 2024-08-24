@@ -19,6 +19,7 @@ from blueprints.download_blueprint import download_blueprint
 from blueprints.building_blueprint import building_blueprint
 from blueprints.restaurant_blueprint import restaurant_blueprint
 from blueprints.insurance_blueprint import insurance_blueprint
+from blueprints.dengue_blueprint import dengue_blueprint
 
 swagger_template = json.loads(open('docs/swagger_template.json', 'r').read())
 
@@ -66,6 +67,7 @@ def create_app(status='development'):
     app.register_blueprint(building_blueprint, url_prefix='/api/building')
     app.register_blueprint(restaurant_blueprint, url_prefix='/api/restaurant')
     app.register_blueprint(insurance_blueprint, url_prefix='/api/insurance')
+    app.register_blueprint(dengue_blueprint, url_prefix='/api/dengue')
 
 
     return app

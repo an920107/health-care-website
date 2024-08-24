@@ -85,7 +85,7 @@ class InsuranceContainer:
 @insurance_blueprint.route('<int:id_>', methods=['GET'])
 def get_insurance(id_):
     """
-    get insurances
+    get insurance
     ---
     tags:
       - insurance
@@ -130,7 +130,7 @@ def get_insurances():
       200:
         description: get insurances success
         schema:
-          id: Insurance
+          id: InsuranceQuery
     """
     page = int(request.args['page']) \
         if "page" in request.args and int(request.args['page']) > 1 \
@@ -264,6 +264,12 @@ def delete_insurance(id_):
     ---
     tags:
       - insurance
+    parameter:
+      - in: path
+        name: id_
+        type: integer
+        required: true
+        description: The insurance
     responses:
       204:
         description: delete insurance success
