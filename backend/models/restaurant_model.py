@@ -9,8 +9,10 @@ class Restaurant(SchemaMixin, db.Model):
     __tablename__ = 'restaurant'
 
     title = db.Column(db.String(255), nullable=False)
+    title_en = db.Column(db.String(255), nullable=False)
     category = db.Column(db.Text, nullable=False)
     item = db.Column(db.String(255), nullable=False)
+    item_en = db.Column(db.String(255), nullable=False)
     attachments = db.Column(MutableList.as_mutable(JSON), nullable=False, default=[])
     valid = db.Column(db.Boolean, default=False)
     visibility = db.Column(db.Boolean, default=False)

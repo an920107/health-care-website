@@ -5,8 +5,10 @@ class Config:
     LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     ATTACHMENT_DIR = 'statics/attachments'
     IMAGE_DIR = 'statics/images'
-    CAROUSEL = 'statics/carousel'
+    DOWNLOAD = 'statics/downloads'
+    CAROUSEL = 'statics/carousels'
     LOGGING_LEVEL = logging.DEBUG
+    PORT = 5004
 
 
 class DevelopmentConfig(Config):

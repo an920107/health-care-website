@@ -13,9 +13,9 @@ building_blueprint = Blueprint('building', __name__)
 class BuildingContainer:
     def __init__(self, json_request):
         if "name" not in json_request:
-            raise "Title is required."
+            raise "name is required."
         if "user_id" not in json_request:
-            raise "Content is required."
+            raise "user id is required."
 
         self.data = {
             "name": json_request["name"],

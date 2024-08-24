@@ -30,8 +30,10 @@ class RestaurantContainer:
 
         self.data = {
             "title": json_request['title'],
+            "title_en": json_request['title_en'],
             "category": json_request['category'],
             "item": json_request['item'],
+            "item_en": json_request['item_en'],
             "attachments": json_request['attachments'],
             "valid": json_request['valid'],
             "visibility": json_request['visibility'],

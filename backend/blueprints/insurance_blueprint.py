@@ -4,6 +4,7 @@ from helpers.CustomResponse import CustomResponse
 from models.insurance_model import Insurance, db
 from flask import Blueprint, request
 from sqlalchemy import desc
+import math
 
 insurance_blueprint = Blueprint('insurance', __name__)
 
@@ -137,9 +138,10 @@ def get_insurances():
 
     insurances = db.session.query(Insurance)
     insurances = insurances.order_by(desc(Insurance.created_time)).all()
+    total_page = math.ceil(len(insurances) / 10)
     insurances = [insurance.to_dict() for insurance in insurances][(page - 1) * 10:page * 10]
 
-    return CustomResponse.success("get insurances success", insurances)
+    return {'message': 'get insurances success', 'data': insurances, 'total_page': total_page}, 200
 
 
 @insurance_blueprint.route('', methods=['POST'])

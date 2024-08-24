@@ -107,12 +107,370 @@
           "example": {
             "id": 1,
             "title": "title",
+            "title_en": "title_en",
             "content": "content",
+            "content_en": "content_en",
             "visibility": false,
             "filepath": "file/uuid",
             "created_time": "2024-01-01T00:00:00.000000",
             "updated_time": "2024-01-01T00:00:00.000000"
           }
+        }
+      }
+    },
+    "CarouselInput": {
+      "type": "object",
+      "example": {
+        "title": "title",
+        "title_en": "content",
+        "content": "title_en",
+        "content_en": "content_en",
+        "visibility": false
+      }
+    },
+    "PostInput": {
+      "type": "object",
+      "example": {
+        "title": "title",
+        "content": "content",
+        "title_en": "title_en",
+        "content_en": "content_en",
+        "column": "column",
+        "attachments": [
+          "attachments"
+        ],
+        "importance": true,
+        "visibility": true
+      }
+    },
+    "Post": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get post success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "title": "title",
+            "content": "content",
+            "title_en": "title_en",
+            "content_en": "content_en",
+            "column": "column",
+            "attachments": [
+              "attachments"
+            ],
+            "importance": true,
+            "visibility": true,
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "PostQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get posts success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": 1,
+              "title": "title",
+              "content": "content",
+              "title_en": "title_en",
+              "content_en": "content_en",
+              "column": "column",
+              "attachments": [
+                "attachments"
+              ],
+              "importance": true,
+              "visibility": true,
+              "created_time": "2024-01-01T00:00:00.000000",
+              "updated_time": "2024-01-01T00:00:00.000000"
+            }
+          ]
+        }
+      }
+    },
+    "DownloadInput": {
+      "type": "object",
+      "example": {
+        "title": "title",
+        "column": "column",
+        "visibility": true
+      }
+    },
+    "Download": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get post success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "title": "title",
+            "column": "column",
+            "visibility": true,
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "DownloadQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get posts success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": 1,
+              "title": "title",
+              "column": "column",
+              "visibility": true,
+              "created_time": "2024-01-01T00:00:00.000000",
+              "updated_time": "2024-01-01T00:00:00.000000"
+            }
+          ]
+        }
+      }
+    },
+    "BuildingInput": {
+      "type": "object",
+      "example": {
+        "name": "title",
+        "user_id": "user_id"
+      }
+    },
+    "Building": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get post success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "name": "name",
+            "user_id": "user_id",
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "BuildingQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get posts success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": 1,
+              "name": "name",
+              "user_id": "user_id",
+              "created_time": "2024-01-01T00:00:00.000000",
+              "updated_time": "2024-01-01T00:00:00.000000"
+            }
+          ]
+        }
+      }
+    },
+    "RestaurantInput": {
+      "type": "object",
+      "example": {
+        "title": "title",
+        "category": "category",
+        "item": "item",
+        "attachments": [
+          "attachment1",
+          "attachment2",
+          "attachment3"
+        ],
+        "inspected_time": "2024-01-01T00:00:00.000000",
+        "valid": true,
+        "visibility": true
+      }
+    },
+    "Restaurant": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get post success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "title": "title",
+            "category": "category",
+            "item": "item",
+            "attachments": [
+              "attachment1",
+              "attachment2",
+              "attachment3"
+            ],
+            "inspected_time": "2024-01-01T00:00:00.000000",
+            "valid": true,
+            "visibility": true,
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "RestaurantQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get posts success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": 1,
+              "title": "title",
+              "category": "category",
+              "item": "item",
+              "attachments": [
+                "attachment1",
+                "attachment2",
+                "attachment3"
+              ],
+              "inspected_time": "2024-01-01T00:00:00",
+              "valid": true,
+              "visibility": true,
+              "created_time": "2024-01-01T00:00:00",
+              "updated_time": "2024-01-01T00:00:00"
+            }
+          ]
+        }
+      }
+    },
+    "InsuranceInput": {
+      "type": "object",
+      "example": {
+        "application_date": "2024-01-01T00:00:00",
+        "incident_date": "2024-01-01T00:00:00",
+        "name": "name",
+        "student_id": "112000000",
+        "id_number": "A123456789",
+        "address": "address",
+        "phone_number": "phone_number",
+        "email": "email",
+        "claim_details": "claim_details",
+        "payment_type": "payment_type",
+        "location": "location",
+        "incident_cause": "incident_cause",
+        "receipt": "receipt",
+        "diagnosis_certificate": "diagnosis_certificate",
+        "bankbook": 1,
+        "x_ray": 1,
+        "application_amount": 100,
+        "claim_amount": 100,
+        "claim_date": "2024-01-01T00:00:00",
+        "remarks": "remarks",
+        "insurance_company_stamp": true
+      }
+    },
+    "Insurance": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get post success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "application_date": "2024-01-01T00:00:00",
+            "incident_date": "2024-01-01T00:00:00",
+            "name": "name",
+            "student_id": "112000000",
+            "id_number": "A123456789",
+            "address": "address",
+            "phone_number": "phone_number",
+            "email": "email",
+            "claim_details": "claim_details",
+            "payment_type": "payment_type",
+            "location": "location",
+            "incident_cause": "incident_cause",
+            "receipt": "receipt",
+            "diagnosis_certificate": "diagnosis_certificate",
+            "bankbook": 1,
+            "x_ray": 1,
+            "application_amount": 100,
+            "claim_amount": 100,
+            "claim_date": "2024-01-01T00:00:00",
+            "remarks": "remarks",
+            "insurance_company_stamp": true,
+            "created_time": "2024-01-01T00:00:00",
+            "updated_time": "2024-01-01T00:00:00"
+          }
+        }
+      }
+    },
+    "InsuranceQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get posts success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": 1,
+              "application_date": "2024-01-01T00:00:00",
+              "incident_date": "2024-01-01T00:00:00",
+              "name": "name",
+              "student_id": "112000000",
+              "id_number": "A123456789",
+              "address": "address",
+              "phone_number": "phone_number",
+              "email": "email",
+              "claim_details": "claim_details",
+              "payment_type": "payment_type",
+              "location": "location",
+              "incident_cause": "incident_cause",
+              "receipt": "receipt",
+              "diagnosis_certificate": "diagnosis_certificate",
+              "bankbook": 1,
+              "x_ray": 1,
+              "application_amount": 100,
+              "claim_amount": 100,
+              "claim_date": "2024-01-01T00:00:00",
+              "remarks": "remarks",
+              "insurance_company_stamp": true,
+              "created_time": "2024-01-01T00:00:00",
+              "updated_time": "2024-01-01T00:00:00"
+            }
+          ]
         }
       }
     }
