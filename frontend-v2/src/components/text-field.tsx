@@ -8,6 +8,7 @@ export type ValidateCallback = (text: string) => string;
 type Props = {
   className?: string;
   label?: string;
+  labelText?: string;
   placeholder?: string;
   value?: string;
   onChange?(text: string): void;
@@ -22,6 +23,7 @@ type Props = {
 export default function TextField({
   className,
   label,
+  labelText,
   placeholder,
   value = "",
   onChange,
@@ -63,7 +65,7 @@ export default function TextField({
 
   return (
     <div className={`${className ?? ""} block w-full`}>
-      {label && <label htmlFor={label} className="label">{label}</label>}
+      {label && <label htmlFor={label} className="label">{labelText ?? label}</label>}
       <input
         type="text"
         placeholder={placeholder}
