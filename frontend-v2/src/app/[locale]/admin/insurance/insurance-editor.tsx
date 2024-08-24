@@ -133,7 +133,7 @@ export default function InsuranceEditor({
     (updateId === undefined
       ? usecase.createInsurance(request)
       : usecase.updateInsurance(updateId, request)
-    ).then(() => router.push("/admin/restaurant"));
+    ).then(() => router.push("/admin/insurance"));
   }, [isValidationPassed]);
 
   return (
