@@ -18,7 +18,7 @@ export default class UserRepoImpl implements UserRepo {
             params.search = search;
         }
 
-        const response = await axios.get(new URL("/api/user", BACKEND_HOST).href, {
+        const response = await axios.get(new URL("/api/user/all", BACKEND_HOST).href, {
             params: params,
         });
 
@@ -28,8 +28,8 @@ export default class UserRepoImpl implements UserRepo {
         return (response.data["data"] as Array<any>).map((user) => new UserResponse(user));
     }
 
-    async get(id: number): Promise<UserResponse> {
-        const response = await axios.get(new URL(`/api/user/${id}`, BACKEND_HOST).href);
+    async get(): Promise<UserResponse> {
+        const response = await axios.get(new URL("/api/user", BACKEND_HOST).href);
 
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));

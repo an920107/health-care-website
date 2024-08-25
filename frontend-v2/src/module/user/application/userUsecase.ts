@@ -18,8 +18,8 @@ export default class UserUsecase {
         return this._repo.query({ role, search });
     }
 
-    async getUserById(id: number) {
-        return this._repo.get(id);
+    async getCurrentUser() {
+        return this._repo.get();
     }
 
     async updateUser(id: number, user: UserRoleEnum) {

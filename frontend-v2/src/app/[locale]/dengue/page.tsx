@@ -1,5 +1,4 @@
 // TODO: make lables and messages translatable
-// TODO: change the user id to the actual user id
 
 "use client";
 
@@ -9,13 +8,16 @@ import BuildingRepoImpl from "@/module/building/presenter/buildingRepoImpl";
 import DengueUsecase from "@/module/dengue/application/dengueUsecase";
 import DengueRepoImpl from "@/module/dengue/presenter/dengueRepoImpl";
 import DengueViewModel from "@/module/dengue/presenter/dengueViewModel";
+import UserUsecase from "@/module/user/application/userUsecase";
+import UserRepoImpl from "@/module/user/presenter/userRepoImpl";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Table } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 
 export default function DenguePage() {
-  const usecase = new DengueUsecase(new DengueRepoImpl());
+  const dangueUsecase = new DengueUsecase(new DengueRepoImpl());
+  const userUsecase = new UserUsecase(new UserRepoImpl());
 
   const [dengues, setDengues] = useState<DengueViewModel[]>([]);
   const [buildingIdNameMap, setBuildingIdNameMap] = useState<Map<number, string>>(new Map());
@@ -23,7 +25,8 @@ export default function DenguePage() {
   const [totalPage, setTotalPage] = useState<number>(1);
 
   async function fetchAll() {
-    const [dengues, pager] = await usecase.getAllDengues({ page: currentPage, userId: "J123456789" });
+    const userId = (await userUsecase.getCurrentUser()).id;
+    const [dengues, pager] = await dangueUsecase.getAllDengues({ page: currentPage, userId: userId });
     if (dengues.length === 0) {
       alert("你沒有權限");
       return;
@@ -43,7 +46,7 @@ export default function DenguePage() {
   }, []);
 
   function handleDelete(id: number) {
-    usecase.deleteDengue(id).then(() => fetchAll());
+    dangueUsecase.deleteDengue(id).then(() => fetchAll());
   }
 
   return (

@@ -7,7 +7,7 @@ export default interface UserRepo {
         search?: string,
     }): Promise<UserEntity[]>;
 
-    get(id: number): Promise<UserEntity>;
+    get(): Promise<UserEntity>;
 
     update(id: number, role: UserRoleEnum): Promise<void>;
 }

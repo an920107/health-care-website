@@ -1,5 +1,4 @@
 // TODO: make lables and messages translatable
-// TODO: change the user id to the actual user id
 
 "use client";
 
@@ -14,6 +13,8 @@ import BuildingViewModel from "@/module/building/presenter/buildingViewModel";
 import { DengueRequestFactory } from "@/module/dengue/application/dengueDto";
 import DengueUsecase from "@/module/dengue/application/dengueUsecase";
 import DengueRepoImpl from "@/module/dengue/presenter/dengueRepoImpl";
+import UserUsecase from "@/module/user/application/userUsecase";
+import UserRepoImpl from "@/module/user/presenter/userRepoImpl";
 import NotEmptyValidationUsecase from "@/module/validation/application/notEmptyValidationUsecase";
 import { useRouter } from "@/navigation";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
@@ -25,8 +26,12 @@ type Props = {
 };
 
 export default function NewDenguePage({ params }: Props) {
+  const buildingUsecase = new BuildingUsecase(new BuildingRepoImpl());
+  const userUsecase = new UserUsecase(new UserRepoImpl());
+
   const router = useRouter();
 
+  const [userId, setUserId] = useState<string>("");
   const [buildings, setBuildings] = useState<BuildingViewModel[]>([]);
   const [selectedBuildingIndex, setSelectedBuildingIndex] = useState<number>(0);
   const [inspectionDate, setInspectionDate] = useState<Date | undefined>(undefined);
@@ -36,17 +41,19 @@ export default function NewDenguePage({ params }: Props) {
   const [toValidate, setToValidate] = useState<boolean>(false);
   const [isValidationPassed, setIsValidationPassed] = useState<boolean[]>([]);
 
+  async function fetchAll() {
+    const userId = (await userUsecase.getCurrentUser()).id;
+    setUserId(userId);
+    const entities = await buildingUsecase.getAllBuildings(userId);
+    if (entities.length === 0) {
+      alert("你沒有權限");
+      router.push("/");
+    }
+    setBuildings(entities.map((building) => new BuildingViewModel(building)));
+  }
+
   useEffect(() => {
-    const usecase = new BuildingUsecase(new BuildingRepoImpl());
-    usecase.getAllBuildings("J123456789").then(
-      (buildings) => {
-        if (buildings.length === 0) {
-          alert("你沒有權限");
-          router.push("/");
-        }
-        setBuildings(buildings.map((building) => new BuildingViewModel(building)));
-      }
-    );
+    fetchAll();
   }, []);
 
   function mainSelection(index: number): number {
@@ -87,7 +94,7 @@ export default function NewDenguePage({ params }: Props) {
     if (isValidationPassed.length < 1 || isValidationPassed.includes(false)) return;
 
     const request = DengueRequestFactory.fromAnswerSet({
-      userId: "J123456789",
+      userId: userId,
       buildingId: buildings[selectedBuildingIndex].id,
       inspectionTime: new Date(),
       answerSet: answerSet.map(([main, sub]) => [main === 0, sub === 0]),

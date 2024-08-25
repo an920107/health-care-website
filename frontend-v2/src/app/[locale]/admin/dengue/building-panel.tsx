@@ -6,6 +6,8 @@ import BuildingUsecase from "@/module/building/application/buildingUsecase";
 import BuildingRepoImpl from "@/module/building/presenter/buildingRepoImpl";
 import BuildingViewModel from "@/module/building/presenter/buildingViewModel";
 import { BACKEND_HOST } from "@/module/config/config";
+import UserUsecase from "@/module/user/application/userUsecase";
+import UserRepoImpl from "@/module/user/presenter/userRepoImpl";
 import { Link } from "@/navigation";
 import { faAdd, faFileLines, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,7 +24,8 @@ export default function BuildingPanel({
 }: Props) {
   const trans = useTranslations("AdminDengue");
 
-  const usecase = new BuildingUsecase(new BuildingRepoImpl());
+  const buildingUsecase = new BuildingUsecase(new BuildingRepoImpl());
+  const userUsecase = new UserUsecase(new UserRepoImpl());
 
   const [buildings, setBuildings] = useState<BuildingViewModel[]>([]);
 
@@ -30,10 +33,11 @@ export default function BuildingPanel({
     fetchAll();
   }, []);
 
-  function fetchAll() {
-    usecase.getAllBuildings().then((entities) => {
-      setBuildings(entities.map((entity) => new BuildingViewModel(entity)));
-    });
+  async function fetchAll() {
+    const userId = (await userUsecase.getCurrentUser()).id;
+    if (!userId) return;
+    const entities = await buildingUsecase.getAllBuildings(userId);
+    setBuildings(entities.map((entity) => new BuildingViewModel(entity)));
   }
 
   return (
@@ -54,11 +58,11 @@ export default function BuildingPanel({
         userId: newUserId,
       });
 
-      usecase.updateBuilding(buildings[index].id, request).then(() => fetchAll());
+      buildingUsecase.updateBuilding(buildings[index].id, request).then(() => fetchAll());
     }
 
     function handleDelete(index: number) {
-      usecase.deleteBuilding(buildings[index].id).then(() => fetchAll());
+      buildingUsecase.deleteBuilding(buildings[index].id).then(() => fetchAll());
     }
 
     return (
@@ -112,7 +116,7 @@ export default function BuildingPanel({
       }
 
       const request = new BuildingRequest({ name: newBuildingName });
-      usecase.createBuilding(request).then(() => fetchAll());
+      buildingUsecase.createBuilding(request).then(() => fetchAll());
     }
 
     return (
