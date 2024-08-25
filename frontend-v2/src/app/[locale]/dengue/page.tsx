@@ -1,11 +1,83 @@
-import { getTranslations } from "next-intl/server";
+// TODO: make lables and messages translatable
+// TODO: change the user id to the actual user id
 
-export default async function DenguePage() {
-  const trans = await getTranslations("Dengue");
+"use client";
+
+import Pager from "@/components/pager";
+import BuildingUsecase from "@/module/building/application/buildingUsecase";
+import BuildingRepoImpl from "@/module/building/presenter/buildingRepoImpl";
+import DengueUsecase from "@/module/dengue/application/dengueUsecase";
+import DengueRepoImpl from "@/module/dengue/presenter/dengueRepoImpl";
+import DengueViewModel from "@/module/dengue/presenter/dengueViewModel";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Table } from "@radix-ui/themes";
+import { useEffect, useState } from "react";
+
+export default function DenguePage() {
+  const usecase = new DengueUsecase(new DengueRepoImpl());
+
+  const [dengues, setDengues] = useState<DengueViewModel[]>([]);
+  const [buildingIdNameMap, setBuildingIdNameMap] = useState<Map<number, string>>(new Map());
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
+
+  async function fetchAll() {
+    const [dengues, pager] = await usecase.getAllDengues({ page: currentPage, userId: "J123456789" });
+    if (dengues.length === 0) {
+      alert("你沒有權限");
+      return;
+    }
+    setDengues(dengues.map((dengue) => new DengueViewModel(dengue)));
+    setTotalPage(pager.totalPage);
+
+    const buildingUsecase = new BuildingUsecase(new BuildingRepoImpl());
+    for (const dengue of dengues) {
+      const entity = await buildingUsecase.getBuildingById(dengue.buildingId);
+      setBuildingIdNameMap((prev) => new Map(prev.set(dengue.buildingId, entity.name)));
+    }
+  }
+
+  useEffect(() => {
+    fetchAll();
+  }, []);
+
+  function handleDelete(id: number) {
+    usecase.deleteDengue(id).then(() => fetchAll());
+  }
 
   return (
     <>
-      <h1>{trans("title")}</h1>
+      <h1>歷史填報紀錄</h1>
+      <Table.Root className="mt-6" variant="surface">
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeaderCell>建物名稱</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>檢查月份</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>填表日期</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>刪除（立即生效）</Table.ColumnHeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {
+            dengues.map((dengue) => (
+              <Table.Row key={dengue.id}>
+                <Table.Cell>{buildingIdNameMap.get(dengue.buildingId)}</Table.Cell>
+                <Table.Cell>{dengue.inspectionMonthString}</Table.Cell>
+                <Table.Cell>{dengue.filledDateString}</Table.Cell>
+                <Table.Cell>
+                  <button onClick={() => handleDelete(dengue.id)}>
+                    <FontAwesomeIcon icon={faTrash} className="size-4 text-red-600" />
+                  </button>
+                </Table.Cell>
+              </Table.Row>
+            ))
+          }
+        </Table.Body>
+      </Table.Root>
+      <div className="flex flex-row justify-end mt-4">
+        <Pager totalPage={totalPage} onChange={setCurrentPage} />
+      </div>
     </>
   );
 }
