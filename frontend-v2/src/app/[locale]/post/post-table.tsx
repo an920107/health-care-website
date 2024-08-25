@@ -13,7 +13,7 @@ import Card from "@/components/card";
 import SearchBar from "@/components/search-bar";
 import Pager from "@/components/pager";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faFire, faPen } from "@fortawesome/free-solid-svg-icons";
 import { ColumnSelectionType } from "@/module/post/presenter/columnSelection";
 
 type Props = {
@@ -149,9 +149,15 @@ export default function PostTable({
                         {trans(viewModel.column)}
                       </td>
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">
-                        <Link href={`/post/${viewModel.id}`} className="link">
-                          {isEn ? viewModel.titleEn : viewModel.title}
-                        </Link>
+                        <span className="flex flex-row items-center">
+                          {
+                            viewModel.importance &&
+                            <FontAwesomeIcon icon={faFire} className="size-3 me-2 text-red-600" />
+                          }
+                          <Link href={`/post/${viewModel.id}`} className="link">
+                            {isEn ? viewModel.titleEn : viewModel.title}
+                          </Link>
+                        </span>
                       </td>
                       <td className={`px-3 md:px-6 py-3 ${isAdmin ? "max-md:pe-5" : "md:pe-10"} max-md:hidden text-nowrap`}>
                         {viewModel.releasedDate}
