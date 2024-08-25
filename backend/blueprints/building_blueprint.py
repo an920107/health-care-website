@@ -33,14 +33,22 @@ def get_buildings():
     ---
     tags:
       - building
+    parameters:
+      - name: user_id
+        in: query
+        type: string
     responses:
       200:
         description: get building success
         schema:
           id: BuildingQuery
     """
-    buildings = Building.query.all()
-    return CustomResponse.success("get buildings success", [building.to_dict() for building in buildings])
+    buildings = db.session.query(Building)
+
+    if "user_id" in request.args:
+        buildings = buildings.filter_by(user_id=request.args["user_id"])
+
+    return CustomResponse.success("get buildings success", [building.to_dict() for building in buildings.all()])
 
 
 @building_blueprint.route('<int:id_>', methods=['GET'])

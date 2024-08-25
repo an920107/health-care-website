@@ -1,10 +1,17 @@
+import logging
+import math
+import io
+
 from datetime import datetime
+from unittest.mock import inplace
+
 from helpers.CustomResponse import CustomResponse
 
 from models.dengue_model import Dengue, db
-from flask import Blueprint, request
+from models.building_model import Building
+from flask import Blueprint, request, send_file
 from sqlalchemy import desc
-import math
+import pandas as pd
 
 dengue_blueprint = Blueprint('dengue', __name__)
 
@@ -43,13 +50,150 @@ class DengueContainer:
         'indoor_water_storage',
         'indoor_appliance_trays',
         'indoor_other_containers',
+        'inspection_time'
     ]
+
+    COLUMNS_MAPPER = {
+        'user_id': {
+            "chinese_title": "填寫者ID",
+            "problem": ""
+        },
+        'building': {
+            "chinese_title": "建築物名稱",
+            "problem": ""
+        },
+        'outdoor_bottles_cans': {
+            "chinese_title": "空瓶、空罐",
+            "problem": "未馬上動手清除"
+        },
+        'outdoor_urns_tanks': {
+            "chinese_title": "陶甕、水缸",
+            "problem": "未馬上動手清除"
+        },
+        'outdoor_tableware': {
+            "chinese_title": "杯子、碟子、盤子、碗",
+            "problem": "未馬上動手清除"
+        },
+        'outdoor_pots_kettles': {
+            "chinese_title": "鍋、壺",
+            "problem": "未馬上動手清除"
+        },
+        'outdoor_disposable_items': {
+            "chinese_title": "保麗龍製品或塑膠製品、免洗餐具",
+            "problem": "未馬上動手清除"
+        },
+        'outdoor_barrels': {
+            "chinese_title": "桶子（木桶、鐵桶、塑膠桶等）",
+            "problem": "未馬上動手清除"
+        },
+        'outdoor_coconut_shells': {
+            "chinese_title": "椰子殼",
+            "problem": "未馬上動手清除"
+        },
+        'outdoor_tires_helmets': {
+            "chinese_title": "廢輪胎、廢安全帽",
+            "problem": "未移除或以土填滿並種小花等植物"
+        },
+        'outdoor_drainage_covers': {
+            "chinese_title": "屋簷旁排水管、帆布、遮雨棚",
+            "problem": "未立即疏通"
+        },
+        'outdoor_abandoned_appliances': {
+            "chinese_title": "廢棄冰箱、洗衣機、馬桶或水族箱",
+            "problem": "有開口。有積水。不倒置或密封保持乾燥。"
+        },
+        'outdoor_unused_water_towers': {
+            "chinese_title": "不使用或未加蓋的水塔（蓄水塔）",
+            "problem": "有開口。有積水。不倒置或密封保持乾燥。"
+        },
+        'outdoor_unused_cooling_equipment': {
+            "chinese_title": "未使用中的冷氣、冷卻水塔、冷飲櫃",
+            "problem": "有開口。有積水。不倒置或密封保持乾燥。"
+        },
+        'outdoor_large_water_containers': {
+            "chinese_title": "大型儲水桶有無加蓋或蓋細紗網",
+            "problem": "無蓋或蓋細紗網，尚未倒置。"
+        },
+        'outdoor_pet_water_containers': {
+            "chinese_title": "寵物水盤、雞、鴨、家禽、鳥籠或鴿舍內飲水槽、馬槽水",
+            "problem": "未一週換水一次並刷洗乾淨"
+        },
+        'outdoor_flooded_basement': {
+            "chinese_title": "積水地下室",
+            "problem": "水尚未清除"
+        },
+        'outdoor_basement_sump': {
+            "chinese_title": "地下室內的集水井",
+            "problem": "有孑孓孳生"
+        },
+        'outdoor_utility_meters': {
+            "chinese_title": "自來水表或瓦斯表",
+            "problem": "內部漏水或積水，未保持乾燥"
+        },
+        'outdoor_mailbox': {
+            "chinese_title": "門外信箱",
+            "problem": "內部漏水或積水，未保持乾燥"
+        },
+        'outdoor_incense_burner': {
+            "chinese_title": "燒金紙的桶子",
+            "problem": "內部漏水或積水，未保持乾燥"
+        },
+        'outdoor_rain_gear': {
+            "chinese_title": "雨鞋、雨衣",
+            "problem": "內部漏水或積水，未保持乾燥"
+        },
+        'outdoor_natural_water_containers': {
+            "chinese_title": "天然積水容器（竹籬笆竹節頂端、竹筒、樹幹上的樹洞、大型樹葉）",
+            "problem": "尚未以土填滿並種小花等植物？"
+        },
+        'outdoor_flagpole_drains': {
+            "chinese_title": "旗座水泥樁上及其他可積水之水管",
+            "problem": "尚未把水倒掉，若暫不使用也未封住開口"
+        },
+        'outdoor_decorative_ponds': {
+            "chinese_title": "假山造型水池（凹槽處）、冷氣機滴水",
+            "problem": "有阻塞"
+        },
+        'outdoor_stagnant_gutter': {
+            "chinese_title": "水溝積水有孑孓孳生",
+            "problem": "有孑孓孳生"
+        },
+        'outdoor_other_containers': {
+            "chinese_title": "其他（任何容器或雜物）",
+            "problem": ""
+        },
+        'indoor_plant_containers': {
+            "chinese_title": "花盤、花瓶、插水生植物容器（如：萬年青、黃金葛等）",
+            "problem": "未一週換水一次，未洗刷乾淨"
+        },
+        'indoor_gardening_containers': {
+            "chinese_title": "澆花灑水桶、花盆盆栽底盤",
+            "problem": "未洗刷乾淨，不用時未倒置？"
+        },
+        'indoor_water_storage': {
+            "chinese_title": "貯水容器（水缸、水泥槽、水桶、陶甕等或盛裝寵物飲水容器）",
+            "problem": "未一週換水一次，未洗刷乾淨，加蓋密封"
+        },
+        'indoor_appliance_trays': {
+            "chinese_title": "冰箱底盤、烘碗機底盤、開飲機底盤、泡茶用水盤",
+            "problem": "未一週換水一次，未洗刷乾淨"
+        },
+        'indoor_other_containers': {
+            "chinese_title": "其他",
+            "problem": ""
+        },
+        'inspection_time': {
+            "chinese_title": "檢查時間",
+            "problem": ""
+        }
+    }
 
     def __init__(self, json_request):
         for column in self.COLUMNS:
             assert column in json_request, f'{column} is required'
 
         self.data = {column: json_request[column] for column in self.COLUMNS}
+        self.data['inspection_time'] = datetime.fromisoformat(self.data['inspection_time'])
 
     def get_data(self):
         return self.data
@@ -98,7 +242,12 @@ def get_dengues():
         name: page
         type: integer
         required: false
-        description: The page
+        description: The page number
+      - in: query
+        name: user_id
+        type: string
+        required: false
+        description: The page user_id
     responses:
       200:
         description: get dengue success
@@ -110,11 +259,97 @@ def get_dengues():
         else 1
 
     dengues = db.session.query(Dengue)
+
+    if "user_id" in request.args:
+        dengues = dengues.filter(
+            Dengue.user_id.in_(request.args['user_id'].split('+'))
+        )
+
     dengues = dengues.order_by(desc(Dengue.created_time)).all()
     total_page = math.ceil(len(dengues) / 10)
     dengues = [dengue.to_dict() for dengue in dengues][(page - 1) * 10:page * 10]
 
     return {'message': 'get dengues success', 'data': dengues, 'total_page': total_page}, 200
+
+
+@dengue_blueprint.route('report', methods=['GET'])
+def get_dengue_report():
+    """
+    get dengue report
+    ---
+    tags:
+      - dengue
+    parameters:
+      - in: query
+        name: from
+        type: string
+        required: true
+        example: 2021-01
+        description: The start time
+      - in: query
+        name: to
+        type: string
+        required: true
+        example: 2021-01
+        description: The end time
+    responses:
+      200:
+        description: get dengue report success
+    """
+    from_time = datetime.strptime(request.args['from'], '%Y-%m')
+    to_time = datetime.strptime(request.args['to'], '%Y-%m') + pd.DateOffset(months=1)
+
+    if from_time > to_time:
+        return CustomResponse.unprocessable_content('from time should be less than to time', {})
+    year_months = [year_month.strftime('%Y-%m') for year_month in pd.date_range(from_time, to_time, freq='ME')]
+
+    buildings = db.session.query(Building).all()
+    buildings_df = pd.DataFrame(
+        [building.name for building in buildings],
+        columns=['building'],
+        index=[building.id for building in buildings]
+    )
+
+    dengues = db.session.query(Dengue).all()
+    dengues_df = pd.DataFrame(
+        [dengue.to_dict() for dengue in dengues],
+        index=[dengue.inspection_time for dengue in dengues],
+        columns=DengueContainer.COLUMNS
+    )
+    dengues_df.index = dengues_df['inspection_time'].apply(lambda x: x.strftime('%Y-%m'))
+
+    dataframes = {}
+    for year_month in year_months:
+        year_month_df = dengues_df[dengues_df.index == year_month]
+
+        year_month_df = year_month_df.set_index('building_id')
+        year_month_df = pd.concat([buildings_df, year_month_df], axis=1, join='outer')
+
+        for column_name, column_des in DengueContainer.COLUMNS_MAPPER.items():
+            if column_name in [
+                'user_id', 'building', 'inspection_time', 'outdoor_other_containers', 'indoor_other_containers']:
+                continue
+
+            year_month_df[column_name] = year_month_df[column_name].apply(lambda x: '合格' if x == 0 else x)
+            year_month_df[column_name] = year_month_df[column_name].apply(lambda x: '已改善' if x == 1 else x)
+            year_month_df[column_name] = year_month_df[column_name].apply(lambda x: column_des['problem'] if x == 2 else x)
+
+        year_month_df.columns = [
+            DengueContainer.COLUMNS_MAPPER[column]['chinese_title'] for column in year_month_df.columns
+        ]
+        dataframes[year_month] = year_month_df
+
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        for sheet_name, df in dataframes.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    output.seek(0)
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name='登革熱報表.xlsx'
+    )
 
 
 @dengue_blueprint.route('', methods=['POST'])
@@ -185,7 +420,10 @@ def patch_dengue(id_):
 
     for column in DengueContainer.COLUMNS:
         if column in request.json:
-            setattr(dengue, column, request.json[column])
+            if column == 'inspection_time':
+                dengue.inspection_time = datetime.fromisoformat(request.json[column])
+            else:
+                setattr(dengue, column, request.json[column])
 
     db.session.commit()
     return CustomResponse.success('patch dengue success', dengue.to_dict())
