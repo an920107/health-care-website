@@ -5,11 +5,17 @@
 import Button from "@/components/button";
 import RadioField from "@/components/radio-field";
 import TextField from "@/components/text-field";
-import { faPaperPlane} from "@fortawesome/free-solid-svg-icons";
+import { DengueRequestFactory } from "@/module/dengue/application/dengueDto";
+import DengueUsecase from "@/module/dengue/application/dengueUsecase";
+import DengueRepoImpl from "@/module/dengue/presenter/dengueRepoImpl";
+import { useRouter } from "@/navigation";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 export default function NewDenguePage() {
+  const router = useRouter();
+
   const [answerSet, setAnswerSet] = useState<Array<[number, number]>>(Array(questionSet.length).fill([-1, -1]));
   const [main25, setMain25] = useState<string>("");
   const [main30, setMain30] = useState<string>("");
@@ -39,9 +45,17 @@ export default function NewDenguePage() {
   }
 
   function handleSave() {
-    console.log("main25", main25);
-    console.log("main30", main30);
-    console.log("answerSet", answerSet);
+    const request = DengueRequestFactory.fromAnswerSet({
+      userId: "OOO",
+      buildingId: 1,
+      inspectionTime: new Date(),
+      answerSet: answerSet.map(([main, sub]) => [main === 0, sub === 0]),
+      outdoorOtherContainers: main25,
+      indoorOtherContainers: main30,
+    });
+
+    const usecase = new DengueUsecase(new DengueRepoImpl());
+    usecase.createDengue(request).then(() => router.push("/dengue"));
   }
 
   return (
