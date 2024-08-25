@@ -10,7 +10,7 @@ type Props = {
   attachments?: AttachmentEntity[];
 };
 
-export default async function ({
+export default async function AttachmentPreview ({
   className,
   label,
   attachments = [],
