@@ -1,12 +1,13 @@
 import UserEntity from "./userEntity";
+import UserRoleEnum from "./userRoleEnum";
 
 export default interface UserRepo {
     query({ }: {
-        role?: number,
+        role?: UserRoleEnum,
         search?: string,
     }): Promise<UserEntity[]>;
 
     get(id: number): Promise<UserEntity>;
 
-    update(user: UserEntity): Promise<void>;
+    update(id: number, role: UserRoleEnum): Promise<void>;
 }

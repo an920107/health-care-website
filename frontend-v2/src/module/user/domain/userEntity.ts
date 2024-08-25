@@ -1,7 +1,9 @@
+import UserRoleEnum from "./userRoleEnum";
+
 export default class UserEntity {
     id: number;
     chineseName: string;
-    role: number;
+    role: UserRoleEnum;
     createdTime: Date;
     updatedTime: Date;
 
