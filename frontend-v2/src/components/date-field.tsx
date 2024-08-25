@@ -12,6 +12,7 @@ type Props = {
   className?: string;
   locale?: string;
   label?: string;
+  labelText?: string;
   value?: Date;
   onChange?(date?: Date): void;
   onValidate?(result: boolean): void;
@@ -23,6 +24,7 @@ export default function DateField({
   className,
   locale,
   label,
+  labelText,
   value,
   onChange,
   onValidate,
@@ -41,6 +43,7 @@ export default function DateField({
     <div className={`${className ?? ""} w-36 text-nowrap`}>
       <TextField
         label={label}
+        labelText={labelText}
         value={value !== undefined ? formatDate(value, "yyyy-MM-dd") : ""}
         onClick={() => setIsDropdownOpen(true)}
         onValidate={onValidate}

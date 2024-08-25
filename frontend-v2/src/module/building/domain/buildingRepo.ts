@@ -1,7 +1,7 @@
 import BuildingEntity from "./buildingEntity";
 
 export default interface BuildingRepo {
-    query(): Promise<BuildingEntity[]>;
+    query(userId: string): Promise<BuildingEntity[]>;
 
     get(id: number): Promise<BuildingEntity>;
 

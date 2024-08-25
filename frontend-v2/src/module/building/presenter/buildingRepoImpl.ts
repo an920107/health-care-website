@@ -5,8 +5,12 @@ import BuildingEntity from "../domain/buildingEntity";
 import { BuildingRequest, BuildingResponse } from "../application/buildingDto";
 
 export default class BuildingRepoImpl implements BuildingRepo {
-    async query(): Promise<BuildingEntity[]> {
-        const response = await axios.get(new URL("/api/building", BACKEND_HOST).href);
+    async query(userId: string): Promise<BuildingEntity[]> {
+        const params = { user_id: userId };
+
+        const response = await axios.get(new URL("/api/building", BACKEND_HOST).href, {
+            params: params,
+        });
 
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));

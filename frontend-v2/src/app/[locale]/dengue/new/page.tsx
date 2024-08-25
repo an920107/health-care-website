@@ -1,24 +1,53 @@
 // TODO: make lables and messages translatable
+// TODO: change the user id to the actual user id
 
 "use client";
 
 import Button from "@/components/button";
+import DateField from "@/components/date-field";
+import DropdownButton from "@/components/dropdown-button";
 import RadioField from "@/components/radio-field";
 import TextField from "@/components/text-field";
+import BuildingUsecase from "@/module/building/application/buildingUsecase";
+import BuildingRepoImpl from "@/module/building/presenter/buildingRepoImpl";
+import BuildingViewModel from "@/module/building/presenter/buildingViewModel";
 import { DengueRequestFactory } from "@/module/dengue/application/dengueDto";
 import DengueUsecase from "@/module/dengue/application/dengueUsecase";
 import DengueRepoImpl from "@/module/dengue/presenter/dengueRepoImpl";
+import NotEmptyValidationUsecase from "@/module/validation/application/notEmptyValidationUsecase";
 import { useRouter } from "@/navigation";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function NewDenguePage() {
+type Props = {
+  params: { locale: string };
+};
+
+export default function NewDenguePage({ params }: Props) {
   const router = useRouter();
 
+  const [buildings, setBuildings] = useState<BuildingViewModel[]>([]);
+  const [selectedBuildingIndex, setSelectedBuildingIndex] = useState<number>(0);
+  const [inspectionDate, setInspectionDate] = useState<Date | undefined>(undefined);
   const [answerSet, setAnswerSet] = useState<Array<[number, number]>>(Array(questionSet.length).fill([-1, -1]));
   const [main25, setMain25] = useState<string>("");
   const [main30, setMain30] = useState<string>("");
+  const [toValidate, setToValidate] = useState<boolean>(false);
+  const [isValidationPassed, setIsValidationPassed] = useState<boolean[]>([]);
+
+  useEffect(() => {
+    const usecase = new BuildingUsecase(new BuildingRepoImpl());
+    usecase.getAllBuildings("J123456789").then(
+      (buildings) => {
+        if (buildings.length === 0) {
+          alert("你沒有權限");
+          router.push("/");
+        }
+        setBuildings(buildings.map((building) => new BuildingViewModel(building)));
+      }
+    );
+  }, []);
 
   function mainSelection(index: number): number {
     return answerSet[index][0];
@@ -44,10 +73,22 @@ export default function NewDenguePage() {
     ]);
   }
 
+  function handleValidate(result: boolean) {
+    setToValidate(false);
+    setIsValidationPassed((prev) => [...prev, result]);
+  }
+
   function handleSave() {
+    setIsValidationPassed([]);
+    setToValidate(true);
+  }
+
+  useEffect(() => {
+    if (isValidationPassed.length < 1 || isValidationPassed.includes(false)) return;
+
     const request = DengueRequestFactory.fromAnswerSet({
-      userId: "OOO",
-      buildingId: 1,
+      userId: "J123456789",
+      buildingId: buildings[selectedBuildingIndex].id,
       inspectionTime: new Date(),
       answerSet: answerSet.map(([main, sub]) => [main === 0, sub === 0]),
       outdoorOtherContainers: main25,
@@ -56,12 +97,29 @@ export default function NewDenguePage() {
 
     const usecase = new DengueUsecase(new DengueRepoImpl());
     usecase.createDengue(request).then(() => router.push("/dengue"));
-  }
+  }, [isValidationPassed]);
 
   return (
     <>
       <h1>登革熱填報</h1>
       <form className="mt-6 flex flex-col gap-4">
+        <DateField
+          locale={params.locale}
+          label="inspection_date"
+          labelText="檢查日期"
+          value={inspectionDate}
+          onChange={setInspectionDate}
+          validations={[new NotEmptyValidationUsecase("欄位不得為空")]}
+          toValidate={toValidate}
+          onValidate={handleValidate}
+        />
+        <DropdownButton
+          className="h-10"
+          label="building_id"
+          labelText="建築物"
+          options={buildings.map((building) => building.name)}
+          onChange={setSelectedBuildingIndex}
+        />
         <h2>您的住家屋外或周圍環境是否有下列容器？</h2>
         <Question start={0} end={24} diff={0} skipped={0} />
         <TextField
