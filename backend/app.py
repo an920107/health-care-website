@@ -69,7 +69,6 @@ def create_app(status='development'):
     app.register_blueprint(insurance_blueprint, url_prefix='/api/insurance')
     app.register_blueprint(dengue_blueprint, url_prefix='/api/dengue')
 
-
     return app
 
 

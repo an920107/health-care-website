@@ -39,5 +39,7 @@ class Dengue(SchemaMixin, db.Model):
     indoor_appliance_trays = db.Column(db.Integer)
     indoor_other_containers = db.Column(db.TEXT)
 
+    inspection_time = db.Column(db.DateTime)
+
     def __repr__(self):
         return f'<Dengue {self.name}>'

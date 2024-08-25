@@ -480,7 +480,7 @@
     "DengueInput": {
       "type": "object",
       "example": {
-        "user_id": 0,
+        "user_id": "user_id",
         "building_id": 0,
         "outdoor_bottles_cans": 0,
         "outdoor_urns_tanks": 0,
@@ -511,7 +511,8 @@
         "indoor_gardening_containers": 0,
         "indoor_water_storage": 0,
         "indoor_appliance_trays": 0,
-        "indoor_other_containers": "other_containers"
+        "indoor_other_containers": "other_containers",
+        "inspection_time": "2024-01-01T00:00:00"
       }
     },
     "Dengue": {
@@ -525,7 +526,7 @@
           "type": "object",
           "example": {
             "id": 1,
-            "user_id": 0,
+            "user_id": "user_id",
             "building_id": 0,
             "outdoor_bottles_cans": 0,
             "outdoor_urns_tanks": 0,
@@ -557,6 +558,7 @@
             "indoor_water_storage": 0,
             "indoor_appliance_trays": 0,
             "indoor_other_containers": "other_containers",
+            "inspection_time": "2024-01-01T00:00:00",
             "created_time": "2024-01-01T00:00:00",
             "updated_time": "2024-01-01T00:00:00"
           }
@@ -575,7 +577,7 @@
           "example": [
             {
               "id": 1,
-              "user_id": 0,
+              "user_id": "user_id",
               "building_id": 0,
               "outdoor_bottles_cans": 0,
               "outdoor_urns_tanks": 0,
@@ -607,6 +609,7 @@
               "indoor_water_storage": 0,
               "indoor_appliance_trays": 0,
               "indoor_other_containers": "other_containers",
+              "inspection_time": "2024-01-01T00:00:00",
               "created_time": "2024-01-01T00:00:00",
               "updated_time": "2024-01-01T00:00:00"
             }
