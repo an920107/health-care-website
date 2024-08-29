@@ -202,6 +202,8 @@
     },
     "Admin": {
         "title": "Admin",
+        "user_info": "User Information",
+        "panel": "Functions Panel",
         "post": "Post",
         "page": "Static Page",
         "restaurant": "Merchant Inspection Report",

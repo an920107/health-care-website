@@ -3,6 +3,7 @@ import { Link } from "@/navigation";
 import { faBullhorn, faFileLines, faFileShield, faImage, faMosquito, faStore, faUser, faVirusCovid } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslations } from "next-intl";
+import UserInfo from "./user-info";
 
 export default function AdminPage() {
   const trans = useTranslations("Admin");
@@ -10,7 +11,10 @@ export default function AdminPage() {
   return (
     <div>
       <h1>{trans("title")}</h1>
-      <div className="mt-6 gap-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <h2 className="mt-6">{trans("user_info")}</h2>
+      <UserInfo className="mt-3"/>
+      <h2 className="mt-6">{trans("panel")}</h2>
+      <div className="mt-3 gap-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <Link href="/admin/post">
           <Card className="w-full">
             <div className="px-6 py-4 flex flex-row items-center">

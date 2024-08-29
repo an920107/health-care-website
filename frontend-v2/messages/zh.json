@@ -195,6 +195,8 @@
     },
     "Admin": {
         "title": "網站管理",
+        "user_info": "使用者資訊",
+        "panel": "功能面板",
         "post": "貼文公告",
         "page": "靜態文章",
         "restaurant": "商家檢查報告",
