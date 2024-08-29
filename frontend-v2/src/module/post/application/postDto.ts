@@ -87,7 +87,7 @@ export class PostResponse extends PostEntity {
             contentEn: json.content_en,
             column: json.column,
             attachments: json.attachments,
-            view: json.view,
+            view: json.viewer,
             importance: json.importance,
             visibility: json.visibility,
             createdTime: new Date(json.created_time),
