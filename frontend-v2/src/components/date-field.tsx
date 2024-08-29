@@ -34,7 +34,6 @@ export default function DateField({
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   function handleOnChange(date: Date) {
-    console.log();
     setIsDropdownOpen(false);
     onChange?.(date);
   }

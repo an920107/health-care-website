@@ -1,3 +1,4 @@
+import UserEntity from "../domain/userEntity";
 import UserRepo from "../domain/userRepo";
 import UserRoleEnum from "../domain/userRoleEnum";
 
@@ -14,15 +15,19 @@ export default class UserUsecase {
     }: {
         role?: UserRoleEnum;
         search?: string;
-    }) {
+    }): Promise<UserEntity[]> {
         return this._repo.query({ role, search });
     }
 
-    async getCurrentUser() {
+    async getCurrentUser(): Promise<UserEntity> {
         return this._repo.get();
     }
 
-    async updateUser(id: number, user: UserRoleEnum) {
+    async updateUser(id: string, user: UserRoleEnum): Promise<void> {
         return this._repo.update(id, user);
+    }
+
+    async deleteUser(id: string): Promise<void> {
+        return this._repo.delete(id);
     }
 }

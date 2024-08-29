@@ -9,5 +9,7 @@ export default interface UserRepo {
 
     get(): Promise<UserEntity>;
 
-    update(id: number, role: UserRoleEnum): Promise<void>;
+    update(id: string, role: UserRoleEnum): Promise<void>;
+
+    delete(id: string): Promise<void>;
 }
