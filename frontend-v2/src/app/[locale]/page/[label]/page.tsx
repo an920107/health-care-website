@@ -1,4 +1,5 @@
 import AttachmentPreview from "@/components/attachment-preview";
+import HeadInfo from "@/components/head-info";
 import QuillViewer from "@/components/quill-viewer";
 import AttachmentUsecase from "@/module/attachment/application/attachmentUsecase";
 import AttachmentEntity from "@/module/attachment/domain/attachmentEntity";
@@ -55,16 +56,7 @@ export default async function StaticPage({ params }: Props) {
     <div>
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
         <h1>{trans(params.label)}</h1>
-        <div className="flex flex-col text-sm">
-          <span className="inline-flex items-center">
-            <FontAwesomeIcon icon={faEye} className="size-4 me-2" />
-            <span>{viewModel?.view ?? "Unknown"}</span>
-          </span>
-          <span className="inline-flex items-center">
-            <FontAwesomeIcon icon={faClock} className="size-4 me-2" />
-            <span>{viewModel?.releasedDate ?? "Unknown"}</span>
-          </span>
-        </div>
+        <HeadInfo view={viewModel?.view} datetime={viewModel?.releasedDate}/>
       </div>
       <hr className="my-3" />
       <QuillViewer value={(isEn ? viewModel?.contentEn : viewModel?.content) ?? ""} />
