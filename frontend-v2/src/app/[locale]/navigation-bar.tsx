@@ -123,7 +123,7 @@ export default function NavigationBar() {
           <Logo />
         </div>
         <div className="flex flex-row items-center max-md:hidden gap-2">
-          <Link href="/page/workteam" className="text-yellow-900 text-nowrap">
+          <Link href="/page/work_team" className="text-yellow-900 text-nowrap">
             <Button>{homeTrans("about_us")}</Button>
           </Link>
           <Link href="/page/campus_aed" className="text-yellow-900 text-nowrap">
