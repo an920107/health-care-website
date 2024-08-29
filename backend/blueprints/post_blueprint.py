@@ -64,6 +64,9 @@ def get_post(id_):
     if post is None:
         return CustomResponse.not_found("Post not found", {})
 
+    post.viewer += 1
+    db.session.commit()
+
     return CustomResponse.success("get post success", post.to_dict())
 
 

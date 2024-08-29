@@ -17,6 +17,7 @@ class Restaurant(SchemaMixin, db.Model):
     valid = db.Column(db.Boolean, default=False)
     visibility = db.Column(db.Boolean, default=False)
     inspected_time = db.Column(db.DateTime, default=False)
+    viewer = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return f'<Restaurant {self.title}>'

@@ -72,6 +72,9 @@ def get_carousel_info(id_):
     if carousel is None:
         return CustomResponse.not_found("Carousel not found", {})
 
+    carousel.viewer += 1
+    db.session.commit()
+
     return CustomResponse.success("get carousel info success", carousel.to_dict())
 
 
@@ -96,10 +99,8 @@ def get_carousel(id_):
           $ref: '#/definitions/NotFound'
     """
     carousel = Carousel.query.get(id_)
-
     if carousel is None:
         return CustomResponse.not_found("Carousel not found", {})
-
     return send_file(carousel.filepath)
 
 
