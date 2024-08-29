@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import Drawer from "./drawer";
 import { useTranslations } from "next-intl";
-import { Link, usePathname, useRouter } from "@/navigation";
+import { Link, usePathname } from "@/navigation";
 import DropdownMenu from "@/components/dropdown-menu";
 import { useSearchParams } from "next/navigation";
 import UserRoleEnum from "@/module/user/domain/userRoleEnum";
@@ -22,7 +22,6 @@ export default function NavigationBar() {
 
   const pathname = usePathname();
   const query = useSearchParams().toString();
-  const router = useRouter();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState<boolean>(false);
@@ -34,7 +33,8 @@ export default function NavigationBar() {
 
   useEffect(() => {
     userUsecase.getCurrentUser()
-      .then((user) => setUserRole(user.role));
+      .then((user) => setUserRole(user.role))
+      .catch(clearUserRole);
   }, []);
 
   return (
