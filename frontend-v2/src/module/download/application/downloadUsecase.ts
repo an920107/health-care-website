@@ -1,3 +1,4 @@
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 import DownloadColumnEnum from "../domain/downloadColumnEnum";
 import DownloadEntity from "../domain/downloadEntity";
 import DownloadRepo from "../domain/downloadRepo";
@@ -10,6 +11,7 @@ export default class DownloadUsecase {
     }
 
     async getAllDownload({
+        page = 1,
         column = [
             DownloadColumnEnum.FreshmenCheckUp,
             DownloadColumnEnum.StudentGroupInsurance,
@@ -19,18 +21,19 @@ export default class DownloadUsecase {
         ],
         visibility = false,
     }: {
+        page?: number,
         column?: DownloadColumnEnum[],
         visibility?: boolean,
-    }): Promise<DownloadEntity[]> {
-        return this._repo.query({ column, visibility });
+    }): Promise<[DownloadEntity[], PagerEntity]> {
+        return this._repo.query({ page, column, visibility });
     }
 
     async getDownloadById(id: number): Promise<DownloadEntity> {
         return this._repo.get(id);
     }
 
-    async createDownload(download: DownloadEntity): Promise<void> {
-        return this._repo.create(download);
+    async createDownload(file: File, download: DownloadEntity): Promise<void> {
+        return this._repo.create(file, download);
     }
 
     async updateDownload(id: number, download: DownloadEntity): Promise<void> {

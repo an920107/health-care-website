@@ -177,7 +177,16 @@
         "table_column": "Column",
         "table_title": "Title",
         "table_date": "Released Date",
-        "table_edit": "Edit"
+        "table_edit": "Edit",
+        "validate_empty": "The field cannot be empty",
+        "validate_length": "The length shouldn't be more than {length}",
+        "column": "Column",
+        "upload": "Upload File",
+        "chinese_title": "Chinese Title",
+        "english_title": "English Title",
+        "save": "Save Download",
+        "delete": "Delete Download",
+        "new": "New Download"
     },
     "Permission": {
         "title": "Permission",

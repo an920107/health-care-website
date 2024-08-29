@@ -177,7 +177,16 @@
         "table_column": "檔案類別",
         "table_title": "標題",
         "table_date": "發布日期",
-        "table_edit": "編輯"
+        "table_edit": "編輯",
+        "validate_empty": "此欄位不得為空",
+        "validate_length": "長度不得超過 {length}",
+        "column": "檔案類別",
+        "upload": "上傳檔案",
+        "chinese_title": "中文標題",
+        "english_title": "英文標題",
+        "save": "儲存檔案",
+        "delete": "刪除檔案",
+        "new": "新增檔案"
     },
     "Dengue": {
         "title": "登革熱填報"

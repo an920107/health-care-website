@@ -3,16 +3,21 @@ import { DownloadRequest, DownloadResponse } from "../application/downloadDto";
 import DownloadRepo from "../domain/downloadRepo";
 import { BACKEND_HOST } from "@/module/config/config";
 import DownloadColumnEnum from "../domain/downloadColumnEnum";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
+import { PagerResponse } from "@/module/pager/application/pagerDto";
 
 export default class DownloadRepoImpl implements DownloadRepo {
     async query({
+        page,
         column,
         visibility,
     }: {
+        page?: number;
         column?: DownloadColumnEnum[];
         visibility?: boolean;
-    }): Promise<DownloadResponse[]> {
+    }): Promise<[DownloadResponse[], PagerEntity]> {
         const params: any = {};
+        if (page) params.page = page;
         if (column) params.column = column.join("+");
         if (visibility === true) params.visibility = visibility;
 
@@ -23,7 +28,10 @@ export default class DownloadRepoImpl implements DownloadRepo {
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));
 
-        return (response.data["data"] as Array<any>).map((download) => new DownloadResponse(download));
+        return [
+            (response.data["data"] as Array<any>).map((download) => new DownloadResponse(download)),
+            new PagerResponse(response.data),
+        ];
     }
 
     async get(id: number): Promise<DownloadResponse> {
@@ -35,12 +43,18 @@ export default class DownloadRepoImpl implements DownloadRepo {
         return new DownloadResponse(response.data["data"]);
     }
 
-    async create(download: DownloadRequest): Promise<void> {
+    async create(file: File, download: DownloadRequest): Promise<void> {
+        const formData = new FormData();
+        const requestJson = new DownloadRequest(download).toJson();
+        for (var key in requestJson)
+            formData.append(key, requestJson[key]);
+        formData.append("file", file);
+
         const response = await axios.post(new URL("/api/download", BACKEND_HOST).href,
-            new DownloadRequest(download).toJson(),
+            formData,
             {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                 }
             }
         );
