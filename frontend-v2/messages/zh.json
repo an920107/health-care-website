@@ -204,7 +204,8 @@
         "permission": "權限管理",
         "dengue": "登革熱管理",
         "insurance": "學生團體保險",
-        "disease_prevention": "校園傳染病防治"
+        "disease_prevention": "校園傳染病防治",
+        "download_area": "下載專區"
     },
     "Permission": {
         "title": "權限管理",

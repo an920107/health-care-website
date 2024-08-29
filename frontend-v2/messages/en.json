@@ -211,7 +211,8 @@
         "permission": "Permission",
         "dengue": "Dengue Management",
         "insurance": "Student Insurance",
-        "disease_prevention": "Disease Prevention"
+        "disease_prevention": "Disease Prevention",
+        "download_area": "Downloads"
     },
     "Privacy": {
         "title": "Privacy Policy Statement",

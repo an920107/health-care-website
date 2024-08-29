@@ -1,6 +1,6 @@
 import Card from "@/components/card";
 import { Link } from "@/navigation";
-import { faBullhorn, faFileLines, faFileShield, faImage, faMosquito, faStore, faUser, faVirusCovid } from "@fortawesome/free-solid-svg-icons";
+import { faBullhorn, faDownload, faFileLines, faFileShield, faImage, faMosquito, faStore, faUser, faVirusCovid } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslations } from "next-intl";
 import UserInfo from "./user-info";
@@ -76,6 +76,14 @@ export default function AdminPage() {
             <div className="px-6 py-4 flex flex-row items-center">
               <FontAwesomeIcon icon={faVirusCovid} className="size-4 me-4" />
               <p>{trans("disease_prevention")}</p>
+            </div>
+          </Card>
+        </Link>
+        <Link href="/admin/download_area">
+          <Card>
+            <div className="px-6 py-4 flex flex-row items-center">
+              <FontAwesomeIcon icon={faDownload} className="size-4 me-4" />
+              <p>{trans("download_area")}</p>
             </div>
           </Card>
         </Link>
