@@ -165,6 +165,20 @@
         "validate_length": "長度不得超過 {length}",
         "not_found": "找不到橫幅！"
     },
+    "Download": {
+        "title": "下載專區",
+        "all": "所有檔案",
+        "freshmen_check_up": "新生健康檢查",
+        "student_group_insurance": "學生團體保險",
+        "staff_check_up": "教職員工健康檢查",
+        "medical_equipment_loan": "醫療物品借用",
+        "others": "其他",
+        "not_found": "找不到檔案！",
+        "table_column": "檔案類別",
+        "table_title": "標題",
+        "table_date": "發布日期",
+        "table_edit": "編輯"
+    },
     "Dengue": {
         "title": "登革熱填報"
     },

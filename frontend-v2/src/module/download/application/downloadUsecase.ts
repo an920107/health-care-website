@@ -1,3 +1,4 @@
+import DownloadColumnEnum from "../domain/downloadColumnEnum";
 import DownloadEntity from "../domain/downloadEntity";
 import DownloadRepo from "../domain/downloadRepo";
 
@@ -18,7 +19,7 @@ export default class DownloadUsecase {
         ],
         visibility = false,
     }: {
-        column?: string[],
+        column?: DownloadColumnEnum[],
         visibility?: boolean,
     }): Promise<DownloadEntity[]> {
         return this._repo.query({ column, visibility });

@@ -5,3 +5,5 @@ enum DownloadColumnEnum {
     MedicalEquipmentLoan = "medical_equipment_loan",
     Others = "others",
 }
+
+export default DownloadColumnEnum;

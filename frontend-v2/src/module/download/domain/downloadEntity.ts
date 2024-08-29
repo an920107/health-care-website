@@ -1,3 +1,5 @@
+import DownloadColumnEnum from "./downloadColumnEnum";
+
 export default class DownloadEntity {
     id: number;
     title: string;

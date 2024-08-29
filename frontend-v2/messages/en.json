@@ -165,6 +165,20 @@
         "validate_length": "The length shouldn't be more than {length}",
         "not_found": "There is no carousel found!"
     },
+    "Download": {
+        "title": "Download Area",
+        "all": "All Downloads",
+        "freshmen_check_up": "Freshmen Check Up",
+        "student_group_insurance": "Student Group Insurance",
+        "staff_check_up": "Staff Check Up",
+        "medical_equipment_loan": "Medical Equipment Loan",
+        "others": "Others",
+        "not_found": "There is no download found!",
+        "table_column": "Column",
+        "table_title": "Title",
+        "table_date": "Released Date",
+        "table_edit": "Edit"
+    },
     "Permission": {
         "title": "Permission",
         "table_name": "Name",

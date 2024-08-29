@@ -2,13 +2,14 @@ import axios from "axios";
 import { DownloadRequest, DownloadResponse } from "../application/downloadDto";
 import DownloadRepo from "../domain/downloadRepo";
 import { BACKEND_HOST } from "@/module/config/config";
+import DownloadColumnEnum from "../domain/downloadColumnEnum";
 
 export default class DownloadRepoImpl implements DownloadRepo {
     async query({
         column,
         visibility,
     }: {
-        column?: string[];
+        column?: DownloadColumnEnum[];
         visibility?: boolean;
     }): Promise<DownloadResponse[]> {
         const params: any = {};

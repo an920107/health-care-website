@@ -1,3 +1,4 @@
+import DownloadColumnEnum from "../domain/downloadColumnEnum";
 import DownloadEntity from "../domain/downloadEntity";
 
 export class DownloadRequest extends DownloadEntity {

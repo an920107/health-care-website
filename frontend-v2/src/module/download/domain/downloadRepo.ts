@@ -1,8 +1,9 @@
+import DownloadColumnEnum from "./downloadColumnEnum";
 import DownloadEntity from "./downloadEntity";
 
 export default interface DownloadRepo {
     query({ }: {
-        column?: string[],
+        column?: DownloadColumnEnum[],
         visibility?: boolean,
     }): Promise<DownloadEntity[]>;
 
