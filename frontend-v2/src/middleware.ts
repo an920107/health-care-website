@@ -12,21 +12,22 @@ export const config = {
 
 const userUsecase = new UserUsecase(new UserRepoImpl());
 
-export default async function middleware(request: NextRequest) {
-    var userRole: UserRoleEnum
-    try {
-        const user = await userUsecase.getCurrentUser();
-        userRole = user.role;
-    } catch {
-        userRole = UserRoleEnum.None;
-    }
+export default function middleware(request: NextRequest) {
+    // var userRole: UserRoleEnum
+    // try {
+    //     const user = await userUsecase.getCurrentUser();
+    //     userRole = user.role;
+    // } catch (err) {
+    //     userRole = UserRoleEnum.None;
+    //     console.error(err);
+    // }
 
-    const pathname = request.nextUrl.pathname;
-    if (pathname.match(/\/[^\/]+\/admin/) && userRole > UserRoleEnum.StudentB) {
-        return NextResponse.redirect(request.url.replace(/\/admin.*/, ""));
-    } else if (pathname.match(/\/[^\/]+\/dengue/) && userRole > UserRoleEnum.Normal) {
-        return NextResponse.redirect(request.url.replace(/\/dengue.*/, ""));
-    }
+    // const pathname = request.nextUrl.pathname;
+    // if (pathname.match(/\/[^\/]+\/admin/) && userRole > UserRoleEnum.StudentB) {
+    //     return NextResponse.redirect(request.url.replace(/\/admin.*/, ""));
+    // } else if (pathname.match(/\/[^\/]+\/dengue/) && userRole > UserRoleEnum.Normal) {
+    //     return NextResponse.redirect(request.url.replace(/\/dengue.*/, ""));
+    // }
 
     const handleI18nRouting = createMiddleware({
         locales: locales,
