@@ -1,7 +1,8 @@
 export default class DownloadEntity {
     id: number;
     title: string;
-    column: string;
+    titleEn: string;
+    column: DownloadColumnEnum;
     visibility: boolean;
     createdTime: Date;
     updatedTime: Date;
@@ -9,6 +10,7 @@ export default class DownloadEntity {
     constructor({
         id,
         title,
+        titleEn,
         column,
         visibility,
         createdTime,
@@ -16,6 +18,7 @@ export default class DownloadEntity {
     }: DownloadEntity) {
         this.id = id;
         this.title = title;
+        this.titleEn = titleEn;
         this.column = column;
         this.visibility = visibility;
         this.createdTime = createdTime;
