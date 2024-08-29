@@ -14,14 +14,14 @@ export default function HeadInfo({
   return (
     <div className="flex flex-col text-sm">
       {
-        view &&
+        view !== undefined &&
         <span className="inline-flex items-center">
           <FontAwesomeIcon icon={faEye} className="size-4 me-2" />
           <span>{view}</span>
         </span>
       }
       {
-        datetime &&
+        datetime !== undefined &&
         <span className="inline-flex items-center">
           <FontAwesomeIcon icon={faClock} className="size-4 me-2" />
           <span>{datetime}</span>
