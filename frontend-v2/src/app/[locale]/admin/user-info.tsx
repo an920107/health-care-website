@@ -23,7 +23,7 @@ export default function UserInfo({
     <div className={`${className ?? ""} flex flex-col`}>
       <span>{`UID: ${user?.id}`}</span>
       <span>{`Name: ${user?.chineseName}`}</span>
-      <span>{`Role: ${user?.role}`}</span>
+      <span>{`Role: ${user?.roleString}`}</span>
     </div>
   );
 }
