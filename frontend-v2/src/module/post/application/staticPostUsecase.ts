@@ -23,10 +23,10 @@ export default class StaticPostUsecase {
 
     async updateStaticPost(post: StaticPostRequest): Promise<void> {
         try {
-            await this.getStaticPost(post.title);
-        } catch (err) {
+            const postId = (await this.getStaticPost(post.title)).id;
+            return this._repo.update(postId, post);
+        } catch {
             return this._repo.create(post);
         }
-        return this._repo.update(post.id, post);
     }
 }
