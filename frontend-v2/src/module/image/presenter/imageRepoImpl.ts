@@ -3,6 +3,7 @@ import ImageEntity from "../domain/imageEntity";
 import ImageRepo from "../domain/imageRepo";
 import { BACKEND_HOST } from "@/module/config/config";
 import { AttachmentResponse } from "@/module/attachment/application/attachmentDto";
+import Cookies from "js-cookie";
 
 export default class ImageRepoImpl implements ImageRepo {
     async upload(file: File): Promise<ImageEntity> {
@@ -15,6 +16,7 @@ export default class ImageRepoImpl implements ImageRepo {
             {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    "X-CSRF-Token": Cookies.get("csrf_access_token"),
                 },
             }
         );
@@ -27,7 +29,11 @@ export default class ImageRepoImpl implements ImageRepo {
     }
 
     async delete(id: number): Promise<void> {
-        const response = await axios.delete(new URL(`/api/attachment/${id}`, BACKEND_HOST).href);
+        const response = await axios.delete(new URL(`/api/attachment/${id}`, BACKEND_HOST).href, {
+            headers: {
+                "X-CSRF-Token": Cookies.get("csrf_access_token"),
+            },
+        });
 
         if (response.status !== 204) {
             return Promise.reject(new Error(response.data));

@@ -54,7 +54,11 @@ export default class UserRepoImpl implements UserRepo {
     }
 
     async delete(id: string): Promise<void> {
-        const response = await axios.delete(new URL(`/api/auth/user/${id}`, BACKEND_HOST).href);
+        const response = await axios.delete(new URL(`/api/auth/user/${id}`, BACKEND_HOST).href, {
+            headers: {
+                "X-CSRF-Token": Cookies.get("csrf_access_token"),
+            },
+        });
 
         if (response.status !== 204)
             return Promise.reject(new Error(response.data));

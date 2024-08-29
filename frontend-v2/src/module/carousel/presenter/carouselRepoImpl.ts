@@ -3,6 +3,7 @@ import CarouselEntity from "../domain/carouselEntity";
 import CarouselRepo from "../domain/carouselRepo";
 import axios from "axios";
 import { CarouselRequest, CarouselResponse } from "../application/carouselDto";
+import Cookies from "js-cookie";
 
 export default class CarouselRepoImpl implements CarouselRepo {
     async query({
@@ -51,6 +52,7 @@ export default class CarouselRepoImpl implements CarouselRepo {
             {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    "X-CSRF-Token": Cookies.get("csrf_access_token"),
                 },
                 onUploadProgress: (event) => onProgress && onProgress(
                     event.total === undefined ? Number.NaN : event.loaded / event.total!),
@@ -67,6 +69,7 @@ export default class CarouselRepoImpl implements CarouselRepo {
             {
                 headers: {
                     "Content-Type": "application/json",
+                    "X-CSRF-Token": Cookies.get("csrf_access_token"),
                 }
             }
         );
@@ -76,7 +79,11 @@ export default class CarouselRepoImpl implements CarouselRepo {
     }
 
     async delete(id: number): Promise<void> {
-        const response = await axios.delete(new URL(`/api/carousel/${id}`, BACKEND_HOST).href);
+        const response = await axios.delete(new URL(`/api/carousel/${id}`, BACKEND_HOST).href, {
+            headers: {
+                "X-CSRF-Token": Cookies.get("csrf_access_token"),
+            },
+        });
 
         if (response.status !== 204)
             return Promise.reject(new Error(response.data));

@@ -3,6 +3,7 @@ import AttachmentEntity from "../domain/attachmentEntity";
 import axios from "axios";
 import AttachmentRepo from "../domain/attachmentRepo";
 import { AttachmentResponse } from "../application/attachmentDto";
+import Cookies from "js-cookie";
 
 export default class AttachmentRepoImpl implements AttachmentRepo {
     async get(id: number): Promise<AttachmentEntity> {
@@ -27,6 +28,7 @@ export default class AttachmentRepoImpl implements AttachmentRepo {
             {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    "X-CSRF-Token": Cookies.get("csrf_access_token"),
                 },
                 onUploadProgress: (event) => onProgress && onProgress(
                     event.total === undefined ? Number.NaN : event.loaded / event.total!),
@@ -40,7 +42,11 @@ export default class AttachmentRepoImpl implements AttachmentRepo {
     }
 
     async delete(id: number): Promise<void> {
-        const response = await axios.delete(new URL(`/api/attachment/${id}`, BACKEND_HOST).href);
+        const response = await axios.delete(new URL(`/api/attachment/${id}`, BACKEND_HOST).href, {
+            headers: {
+                "X-CSRF-Token": Cookies.get("csrf_access_token"),
+            },
+        });
 
         if (response.status !== 204)
             return Promise.reject(new Error(response.data));

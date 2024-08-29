@@ -3,6 +3,7 @@ import BuildingRepo from "../domain/buildingRepo";
 import { BACKEND_HOST } from "@/module/config/config";
 import BuildingEntity from "../domain/buildingEntity";
 import { BuildingRequest, BuildingResponse } from "../application/buildingDto";
+import Cookies from "js-cookie";
 
 export default class BuildingRepoImpl implements BuildingRepo {
     async query(userId: string): Promise<BuildingEntity[]> {
@@ -33,6 +34,7 @@ export default class BuildingRepoImpl implements BuildingRepo {
             {
                 headers: {
                     "Content-Type": "application/json",
+                    "X-CSRF-Token": Cookies.get("csrf_access_token"),
                 },
             }
         );
@@ -47,6 +49,7 @@ export default class BuildingRepoImpl implements BuildingRepo {
             {
                 headers: {
                     "Content-Type": "application/json",
+                    "X-CSRF-Token": Cookies.get("csrf_access_token"),
                 },
             }
         );
@@ -56,7 +59,11 @@ export default class BuildingRepoImpl implements BuildingRepo {
     }
 
     async delete(id: number): Promise<void> {
-        const response = await axios.delete(new URL(`/api/building/${id}`, BACKEND_HOST).href);
+        const response = await axios.delete(new URL(`/api/building/${id}`, BACKEND_HOST).href, {
+            headers: {
+                "X-CSRF-Token": Cookies.get("csrf_access_token"),
+            },
+        });
 
         if (response.status !== 204)
             return Promise.reject(new Error(response.data));

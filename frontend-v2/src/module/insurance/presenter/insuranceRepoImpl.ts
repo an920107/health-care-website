@@ -5,6 +5,7 @@ import { BACKEND_HOST } from "@/module/config/config";
 import axios from "axios";
 import { InsuranceRequest, InsuranceResponse } from "../application/insuranceDto";
 import { PagerResponse } from "@/module/pager/application/pagerDto";
+import Cookies from "js-cookie";
 
 export default class InsuranceRepoImpl implements InsuranceRepo {
     async query({
@@ -44,6 +45,7 @@ export default class InsuranceRepoImpl implements InsuranceRepo {
             {
                 headers: {
                     "Content-Type": "application/json",
+                    "X-CSRF-Token": Cookies.get("csrf_access_token"),
                 }
             }
         );
@@ -58,6 +60,7 @@ export default class InsuranceRepoImpl implements InsuranceRepo {
             {
                 headers: {
                     "Content-Type": "application/json",
+                    "X-CSRF-Token": Cookies.get("csrf_access_token"),
                 }
             }
         );
@@ -67,7 +70,11 @@ export default class InsuranceRepoImpl implements InsuranceRepo {
     }
 
     async delete(id: number): Promise<void> {
-        const response = await axios.delete(new URL(`/api/insurance/${id}`, BACKEND_HOST).href);
+        const response = await axios.delete(new URL(`/api/insurance/${id}`, BACKEND_HOST).href, {
+            headers: {
+                "X-CSRF-Token": Cookies.get("csrf_access_token"),
+            },
+        });
 
         if (response.status !== 204)
             return Promise.reject(new Error(response.data));

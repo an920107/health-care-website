@@ -16,7 +16,9 @@ export default function UserInfo({
 
   useEffect(() => {
     const usecase = new UserUsecase(new UserRepoImpl());
-    usecase.getCurrentUser().then((user) => setUser(new UserViewModel(user)));
+    usecase.getCurrentUser()
+      .then((user) => setUser(new UserViewModel(user)))
+      .catch(() => setUser(null));
   }, []);
 
   return (

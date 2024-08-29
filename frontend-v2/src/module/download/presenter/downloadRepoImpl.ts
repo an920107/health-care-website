@@ -5,6 +5,7 @@ import { BACKEND_HOST } from "@/module/config/config";
 import DownloadColumnEnum from "../domain/downloadColumnEnum";
 import PagerEntity from "@/module/pager/domain/pagerEntity";
 import { PagerResponse } from "@/module/pager/application/pagerDto";
+import Cookies from "js-cookie";
 
 export default class DownloadRepoImpl implements DownloadRepo {
     async query({
@@ -55,6 +56,7 @@ export default class DownloadRepoImpl implements DownloadRepo {
             {
                 headers: {
                     "Content-Type": "multipart/form-data",
+"X-CSRF-Token": Cookies.get("csrf_access_token"),
                 }
             }
         );
@@ -69,6 +71,7 @@ export default class DownloadRepoImpl implements DownloadRepo {
             {
                 headers: {
                     "Content-Type": "application/json",
+"X-CSRF-Token": Cookies.get("csrf_access_token"),
                 }
             }
         );
@@ -78,7 +81,11 @@ export default class DownloadRepoImpl implements DownloadRepo {
     }
 
     async delete(id: number): Promise<void> {
-        const response = await axios.delete(new URL(`/api/download/${id}`, BACKEND_HOST).href);
+        const response = await axios.delete(new URL(`/api/download/${id}`, BACKEND_HOST).href, {
+            headers: {
+                "X-CSRF-Token": Cookies.get("csrf_access_token"),
+            },
+        });
 
         if (response.status !== 204)
             return Promise.reject(new Error(response.data));

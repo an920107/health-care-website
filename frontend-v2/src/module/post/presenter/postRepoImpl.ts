@@ -6,6 +6,7 @@ import axios from "axios";
 import { NormalPostRequest, PostResponse } from "../application/postDto";
 import PagerEntity from "@/module/pager/domain/pagerEntity";
 import { PagerResponse } from "@/module/pager/application/pagerDto";
+import Cookies from "js-cookie";
 
 export default class PostRepoImpl implements PostRepo {
     async query({
@@ -59,6 +60,7 @@ export default class PostRepoImpl implements PostRepo {
             {
                 headers: {
                     "Content-Type": "application/json",
+                    "X-CSRF-Token": Cookies.get("csrf_access_token"),
                 }
             }
         );
@@ -74,6 +76,7 @@ export default class PostRepoImpl implements PostRepo {
             {
                 headers: {
                     "Content-Type": "application/json",
+                    "X-CSRF-Token": Cookies.get("csrf_access_token"),
                 }
             }
         );
@@ -84,7 +87,11 @@ export default class PostRepoImpl implements PostRepo {
 
     async delete(id: number): Promise<void> {
         console.debug(`DELETE /api/post/${id}`);
-        const response = await axios.delete(new URL(`/api/post/${id}`, BACKEND_HOST).href);
+        const response = await axios.delete(new URL(`/api/post/${id}`, BACKEND_HOST).href, {
+            headers: {
+                "X-CSRF-Token": Cookies.get("csrf_access_token"),
+            }
+        });
 
         if (response.status !== 204)
             return Promise.reject(new Error(response.data));
