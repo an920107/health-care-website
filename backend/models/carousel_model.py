@@ -10,6 +10,7 @@ class Carousel(SchemaMixin, db.Model):
     content_en = db.Column(db.Text, nullable=False)
     visibility = db.Column(db.Boolean, nullable=False, default=False)
     filepath = db.Column(db.String(255), nullable=False)
+    viewer = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):
         return f'<Carousel {self.filename}>'

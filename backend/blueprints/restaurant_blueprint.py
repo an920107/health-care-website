@@ -65,6 +65,8 @@ def get_restaurant(id_):
 
     if restaurant is None:
         return CustomResponse.not_found("Restaurant not found", {})
+    restaurant.viewer += 1
+    db.session.commit()
 
     return CustomResponse.success("get restaurant success", restaurant.to_dict())
 

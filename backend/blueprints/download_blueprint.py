@@ -93,6 +93,8 @@ def get_download_info(id_):
 
     if download is None:
         return CustomResponse.not_found("Download not found", {})
+    download.viewer += 1
+    db.session.commit()
 
     return CustomResponse.success("get download info success", download.to_dict())
 
@@ -106,6 +108,10 @@ def post_attachment():
       - download
     parameters:
       - name: title
+        in: formData
+        type: string
+        required: true
+      - name: title_en
         in: formData
         type: string
         required: true
@@ -133,6 +139,8 @@ def post_attachment():
     """
     if "title" not in request.form:
         return CustomResponse.unprocessable_content("Title is required", {})
+    if "title_en" not in request.form:
+        return CustomResponse.unprocessable_content("Title is required", {})
     if "column" not in request.form:
         return CustomResponse.unprocessable_content("Content is required", {})
     if "visibility" not in request.form:
@@ -142,6 +150,7 @@ def post_attachment():
 
     try:
         title = request.form["title"]
+        title_en = request.form["title_en"]
         column = request.form["column"]
         visibility = bool(request.form["visibility"])
         file = request.files['file']
@@ -155,6 +164,7 @@ def post_attachment():
 
     download = Download(
         title=title,
+        title_en=title_en,
         column=column,
         visibility=visibility,
         filepath=str(new_file_path)
@@ -195,12 +205,14 @@ def patch_download(id_):
     if download is None:
         return CustomResponse.not_found("Download not found", {})
 
-    if 'title' in request.form:
-        download.title = request.form['title']
-    if 'column' in request.form:
-        download.column = request.form['column']
-    if 'visibility' in request.form:
-        download.visibility = bool(request.form['visibility'])
+    if 'title' in request.json:
+        download.title = request.json['title']
+    if 'title_en' in request.json:
+        download.title_en = request.json['title_en']
+    if 'column' in request.json:
+        download.column = request.json['column']
+    if 'visibility' in request.json:
+        download.visibility = bool(request.json['visibility'])
     if "file" in request.files:
         file = request.files['file']
         file_name = file.filename

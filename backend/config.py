@@ -10,6 +10,11 @@ class Config:
     LOGGING_LEVEL = logging.DEBUG
     PORT = 5004
 
+    BASIC_AUTH = 'MjAyNDA1MjQwMDU0MTNjSDZFbjVSRlpjMzU6Y2pBODhodTFUMmlScXBydGVUeEZKT3JuMm05aGhRQk80RXhkZDNWUjNMUGN6NzFCdg=='
+    REDIRECT_URL = 'https://health-care-dev.squidspirit.com/api/auth/login'
+    HOME_PAGE_URL = 'https://health-dev.squidspirit.com/'
+
+
 
 class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///development-database.db'

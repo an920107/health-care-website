@@ -203,6 +203,7 @@
       "type": "object",
       "example": {
         "title": "title",
+        "title_en": "title_en",
         "column": "column",
         "visibility": true
       }
@@ -219,6 +220,7 @@
           "example": {
             "id": 1,
             "title": "title",
+            "title_en": "title_en",
             "column": "column",
             "visibility": true,
             "created_time": "2024-01-01T00:00:00.000000",
@@ -614,6 +616,71 @@
               "updated_time": "2024-01-01T00:00:00"
             }
           ]
+        }
+      }
+    },
+    "UserInput": {
+      "type": "object",
+      "example": {
+        "chinese_name": "chinese_name",
+        "role": 9
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get user success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": "1",
+            "chinese_name": "chinese_name",
+            "role": 9,
+            "created_time": "2024-01-01T00:00:00",
+            "updated_time": "2024-01-01T00:00:00"
+          }
+        }
+      }
+    },
+    "UserQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get users success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": "1",
+              "chinese_name": "chinese_name",
+              "role": 9,
+              "created_time": "2024-01-01T00:00:00",
+              "updated_time": "2024-01-01T00:00:00"
+            }
+          ]
+        }
+      }
+    },
+    "Viewer": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get viewer success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": "1",
+            "viewer": 1,
+            "created_time": "2024-01-01T00:00:00",
+            "updated_time": "2024-01-01T00:00:00"
+          }
         }
       }
     }
