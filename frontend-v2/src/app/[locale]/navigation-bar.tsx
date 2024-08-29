@@ -3,40 +3,72 @@
 import Button from "@/components/button"
 import Logo from "@/components/logo";
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons"
-import { faBars, faGlobe, faGraduationCap, faHouse, faMosquito, faScrewdriver, faScrewdriverWrench } from "@fortawesome/free-solid-svg-icons"
+import { faBars, faGlobe, faGraduationCap, faHouse, faMosquito, faScrewdriverWrench, faSignOut } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Drawer from "./drawer";
 import { useTranslations } from "next-intl";
-import { Link, usePathname } from "@/navigation";
+import { Link, usePathname, useRouter } from "@/navigation";
 import DropdownMenu from "@/components/dropdown-menu";
 import { useSearchParams } from "next/navigation";
+import UserRoleEnum from "@/module/user/domain/userRoleEnum";
+import UserUsecase from "@/module/user/application/userUsecase";
+import UserRepoImpl from "@/module/user/presenter/userRepoImpl";
+
+const userUsecase = new UserUsecase(new UserRepoImpl());
 
 export default function NavigationBar() {
   const homeTrans = useTranslations("Home");
 
   const pathname = usePathname();
   const query = useSearchParams().toString();
+  const router = useRouter();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState<boolean>(false);
+  const [userRole, setUserRole] = useState<UserRoleEnum>(UserRoleEnum.None);
+
+  function clearUserRole() {
+    setUserRole(UserRoleEnum.None);
+  }
+
+  useEffect(() => {
+    userUsecase.getCurrentUser()
+      .then((user) => setUserRole(user.role));
+  }, []);
 
   return (
     <div>
-      {/* Social links */}
       <div className="flex items-center justify-end bg-amber-400 py-1 px-2 gap-2 text-gray-800 max-md:hidden">
-        <Link href="/dengue">
-          <Button>
-            <FontAwesomeIcon icon={faMosquito} className="size-5 me-2" />
-            {homeTrans("dengue")}
-          </Button>
-        </Link>
-        <Link href="/admin">
-          <Button>
-            <FontAwesomeIcon icon={faScrewdriverWrench} className="size-5 me-2" />
-            {homeTrans("admin")}
-          </Button>
-        </Link>
+        {/* Admin links */}
+        {
+          userRole <= UserRoleEnum.Normal &&
+          <Link href="/dengue">
+            <Button>
+              <FontAwesomeIcon icon={faMosquito} className="size-5 me-2" />
+              {homeTrans("dengue")}
+            </Button>
+          </Link>
+        }
+        {
+          userRole <= UserRoleEnum.StudentB &&
+          <Link href="/admin">
+            <Button>
+              <FontAwesomeIcon icon={faScrewdriverWrench} className="size-5 me-2" />
+              {homeTrans("admin")}
+            </Button>
+          </Link>
+        }
+        {
+          userRole <= UserRoleEnum.Normal &&
+          <Link href="/logout" onClick={clearUserRole}>
+            <Button>
+              <FontAwesomeIcon icon={faSignOut} className="size-5 me-2" />
+              {homeTrans("logout")}
+            </Button>
+          </Link>
+        }
+        {/* Social links */}
         <Link href="/">
           <Button>
             <FontAwesomeIcon icon={faHouse} className="size-5 me-2" />
