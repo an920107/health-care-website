@@ -44,36 +44,50 @@ export default function InsurancePanel({
 
   function InsuranceTable() {
     return (
-      <Table.Root variant="surface">
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>{trans("table_id")}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>{trans("table_name")}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>{trans("table_student_id")}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>{trans("table_application_date")}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>{trans("table_incident_date")}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>{trans("table_edit")}</Table.ColumnHeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {
-            insurances.map((insurance) => (
-              <Table.Row key={insurance.id}>
-                <Table.Cell>{insurance.id}</Table.Cell>
-                <Table.Cell>{insurance.name}</Table.Cell>
-                <Table.Cell>{insurance.studentId}</Table.Cell>
-                <Table.Cell>{insurance.applicationDateString}</Table.Cell>
-                <Table.Cell>{insurance.incidentDateString}</Table.Cell>
-                <Table.Cell>
-                  <Link href={`/admin/insurance/edit/${insurance.id}`}>
-                    <FontAwesomeIcon icon={faPen} className="size-4" />
-                  </Link>
-                </Table.Cell>
-              </Table.Row>
-            ))
-          }
-        </Table.Body>
-      </Table.Root>
+      <div className="overflow-x-auto">
+        <Table.Root variant="surface">
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeaderCell className="text-nowrap">編號</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">申請日期</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">事故日期</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">姓名</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">學號</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">類型</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">給付</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">地點</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">申請金額</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">理賠金額</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">理賠日期</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell className="text-nowrap">{trans("table_edit")}</Table.ColumnHeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {
+              insurances.map((insurance) => (
+                <Table.Row key={insurance.id}>
+                  <Table.Cell>{insurance.id}</Table.Cell>
+                  <Table.Cell>{insurance.applicationDateString}</Table.Cell>
+                  <Table.Cell>{insurance.incidentDateString}</Table.Cell>
+                  <Table.Cell>{insurance.name}</Table.Cell>
+                  <Table.Cell>{insurance.studentId}</Table.Cell>
+                  <Table.Cell>{insurance.claimDetails}</Table.Cell>
+                  <Table.Cell>{insurance.paymentType}</Table.Cell>
+                  <Table.Cell>{insurance.location}</Table.Cell>
+                  <Table.Cell>{insurance.applicationAmount}</Table.Cell>
+                  <Table.Cell>{insurance.claimAmount}</Table.Cell>
+                  <Table.Cell>{insurance.claimDateString}</Table.Cell>
+                  <Table.Cell>
+                    <Link href={`/admin/insurance/edit/${insurance.id}`}>
+                      <FontAwesomeIcon icon={faPen} className="size-4" />
+                    </Link>
+                  </Table.Cell>
+                </Table.Row>
+              ))
+            }
+          </Table.Body>
+        </Table.Root>
+      </div>
     );
   }
 

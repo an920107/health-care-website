@@ -4,6 +4,7 @@ import InsuranceEntity from "../doamin/insuranceEntity";
 import { BACKEND_HOST } from "@/module/config/config";
 import axios from "axios";
 import { InsuranceRequest, InsuranceResponse } from "../application/insuranceDto";
+import { PagerResponse } from "@/module/pager/application/pagerDto";
 
 export default class InsuranceRepoImpl implements InsuranceRepo {
     async query({
@@ -24,7 +25,7 @@ export default class InsuranceRepoImpl implements InsuranceRepo {
 
         return [
             (response.data["data"] as Array<any>).map((insurance) => new InsuranceResponse(insurance)),
-            new PagerEntity(response.data),
+            new PagerResponse(response.data),
         ];
     }
 
