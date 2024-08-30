@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1 {
+  @apply text-4xl font-bold;
+}
+
+h2 {
+  @apply text-2xl font-bold;
+}
+
+h3 {
+  @apply text-xl font-bold;
+}
+
+h4 {
+  @apply text-lg font-bold;
+}
+
+blockquote {
+  @apply text-gray-400;
+}
+
+blockquote::before {
+  content: " ";
+  margin-right: 0.75rem;
+  background-color: #9ca3af;
+  width: 0.25rem;
+  height: 100%;
+}
+
+.label {
+  @apply block mb-1 text-sm font-medium text-gray-700;
+}
+
+.link {
+  @apply text-yellow-900 underline;
+}
+
+.container {
+  @apply mx-auto px-4 max-w-7xl;
+}
