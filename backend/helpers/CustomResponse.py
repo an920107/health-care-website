@@ -33,3 +33,7 @@ class CustomResponse:
     @staticmethod
     def unsupported_entity(message, data):
         return jsonify({'message': message, 'data': data}), 422
+
+    @staticmethod
+    def unauthorized(message, data):
+        return jsonify({'message': message, 'data': data}), 401

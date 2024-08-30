@@ -3,6 +3,7 @@ from datetime import datetime
 
 from helpers.CustomResponse import CustomResponse
 
+from helpers.auth_helpers import authorization_required
 from models.restaurant_model import Restaurant, db
 from flask import Blueprint, request
 from sqlalchemy import desc, or_
@@ -129,6 +130,7 @@ def get_restaurants():
 
 
 @restaurant_blueprint.route('', methods=['POST'])
+@authorization_required([0, 1, 2])
 def post_restaurant():
     """
     post restaurant
@@ -164,6 +166,7 @@ def post_restaurant():
 
 
 @restaurant_blueprint.route('<int:id_>', methods=['PATCH'])
+@authorization_required([0, 1, 2])
 def patch_restaurant(id_):
     """
     patch restaurant
@@ -215,6 +218,7 @@ def patch_restaurant(id_):
 
 
 @restaurant_blueprint.route('<int:id_>', methods=['DELETE'])
+@authorization_required([0, 1, 2])
 def delete_restaurant(id_):
     """
     delete restaurant

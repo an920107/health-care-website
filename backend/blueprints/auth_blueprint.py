@@ -61,10 +61,10 @@ def log_out():
       404:
         description: Return a client column not found message
     """
-    response = make_response(redirect(current_app.config['HOME_PAGE_URL']), 200)
+    response = make_response(redirect(current_app.config['HOME_PAGE_URL']), 302)
     unset_access_cookies(response)
     unset_refresh_cookies(response)
-    return response
+    return response, 302
 
 
 @auth_blueprint.route('/return-to', methods=['GET'])
@@ -105,7 +105,7 @@ def return_to():
 
     access_token = create_access_token(identity=user.to_dict())
     refresh_token = create_refresh_token(identity=user.to_dict())
-    response = make_response(redirect(current_app.config['HOME_PAGE_URL']), 200)
+    response = make_response(redirect(current_app.config['HOME_PAGE_URL']), 302)
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)
     return response, 302

@@ -3,9 +3,11 @@ from uuid import uuid4
 from pathlib import Path
 
 from helpers.CustomResponse import CustomResponse
-
+from helpers.auth_helpers import authorization_required
 from models.building_model import Building, db
+from models.user_model import User, db
 from flask import Blueprint, request, send_file, current_app
+from flask_jwt_extended import get_jwt_identity
 
 building_blueprint = Blueprint('building', __name__)
 
@@ -27,6 +29,7 @@ class BuildingContainer:
 
 
 @building_blueprint.route('', methods=['GET'])
+@authorization_required([0, 1, 2, 9])
 def get_buildings():
     """
     get building
@@ -45,13 +48,17 @@ def get_buildings():
     """
     buildings = db.session.query(Building)
 
-    if "user_id" in request.args:
-        buildings = buildings.filter_by(user_id=request.args["user_id"])
+    user_id = get_jwt_identity()['id']
+    user = User.query.get(user_id)
+
+    if user.role == 9:
+        buildings = buildings.filter_by(user_id=user_id)
 
     return CustomResponse.success("get buildings success", [building.to_dict() for building in buildings.all()])
 
 
 @building_blueprint.route('<int:id_>', methods=['GET'])
+@authorization_required([0, 1, 2, 9])
 def get_building(id_):
     """
     get building
@@ -78,6 +85,7 @@ def get_building(id_):
 
 
 @building_blueprint.route('', methods=['POST'])
+@authorization_required([0, 1, 2])
 def post_building():
     """
     post building
@@ -108,6 +116,7 @@ def post_building():
 
 
 @building_blueprint.route('<int:id_>', methods=['PATCH'])
+@authorization_required([0, 1, 2])
 def patch_building(id_):
     """
     patch building
@@ -150,6 +159,7 @@ def patch_building(id_):
 
 
 @building_blueprint.route('<int:id_>', methods=['DELETE'])
+@authorization_required([0, 1, 2])
 def delete_building(id_):
     """
     delete building

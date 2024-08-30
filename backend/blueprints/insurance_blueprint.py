@@ -1,6 +1,7 @@
 from datetime import datetime
 from helpers.CustomResponse import CustomResponse
 
+from helpers.auth_helpers import authorization_required
 from models.insurance_model import Insurance, db
 from flask import Blueprint, request
 from sqlalchemy import desc
@@ -145,6 +146,7 @@ def get_insurances():
 
 
 @insurance_blueprint.route('', methods=['POST'])
+@authorization_required([0, 1, 2])
 def post_insurance():
     """
     post insurance
@@ -179,6 +181,7 @@ def post_insurance():
 
 
 @insurance_blueprint.route('<int:id_>', methods=['PATCH'])
+@authorization_required([0, 1, 2])
 def patch_insurance(id_):
     """
     patch insurance
@@ -258,6 +261,7 @@ def patch_insurance(id_):
 
 
 @insurance_blueprint.route('<int:id_>', methods=['DELETE'])
+@authorization_required([0, 1, 2])
 def delete_insurance(id_):
     """
     delete insurance
