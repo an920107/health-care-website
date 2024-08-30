@@ -79,6 +79,9 @@ def create_app(status='development'):
     app.register_blueprint(dengue_blueprint, url_prefix='/api/dengue')
     app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
 
+    with app.app_context():
+        db.create_all()
+
     return app
 
 
