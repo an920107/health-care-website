@@ -222,6 +222,8 @@
         "table_status": "Status",
         "table_delete": "Delete (Effective Immediately)",
         "new": "New Building",
+        "begin_date": "Start Date",
+        "end_date": "End Date",
         "report": "Download Report"
     },
     "Admin": {

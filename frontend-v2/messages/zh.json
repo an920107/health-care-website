@@ -215,6 +215,8 @@
         "table_status": "填報狀態",
         "table_delete": "刪除（立即生效）",
         "new": "新增建物",
+        "begin_date": "開始日期",
+        "end_date": "結束日期",
         "report": "下載報表"
     },
     "Admin": {

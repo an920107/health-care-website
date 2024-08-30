@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/button";
+import DateField from "@/components/date-field";
 import { BuildingRequest } from "@/module/building/application/buildingDto";
 import BuildingUsecase from "@/module/building/application/buildingUsecase";
 import BuildingRepoImpl from "@/module/building/presenter/buildingRepoImpl";
@@ -8,18 +9,20 @@ import BuildingViewModel from "@/module/building/presenter/buildingViewModel";
 import { BACKEND_HOST } from "@/module/config/config";
 import UserUsecase from "@/module/user/application/userUsecase";
 import UserRepoImpl from "@/module/user/presenter/userRepoImpl";
-import { Link } from "@/navigation";
 import { faAdd, faFileLines, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Table } from "@radix-ui/themes";
+import { formatDate } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 type Props = {
+  locale?: string;
   className?: string;
 };
 
 export default function BuildingPanel({
+  locale,
   className,
 }: Props) {
   const trans = useTranslations("AdminDengue");
@@ -108,29 +111,60 @@ export default function BuildingPanel({
 
   function BuildingActions() {
 
+    const [beginDate, setBeginDate] = useState<Date | undefined>(undefined);
+    const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+
     function handleCreate() {
       const newBuildingName = prompt(trans("prompt_create"))?.trim();
       if (newBuildingName === undefined) return;
       if (newBuildingName.length === 0) {
         alert(trans("alert_empty"));
+        return;
       }
 
       const request = new BuildingRequest({ name: newBuildingName });
       buildingUsecase.createBuilding(request).then(() => fetchAll());
     }
 
+    function handleReport() {
+      if (beginDate === undefined || endDate === undefined) {
+        alert(trans("alert_empty"));
+        return;
+      }
+
+      const url = new URL("/api/dengue/report", BACKEND_HOST);
+      url.searchParams.append("from", formatDate(beginDate, "yyyy-MM"));
+      url.searchParams.append("to", formatDate(endDate, "yyyy-MM"));
+
+      window.open(url.href, "_blank");
+    }
+
     return (
-      <div className="flex flex-row mt-4 gap-2">
-        <Button className="border" onClick={handleCreate}>
+      <div className="flex flex-row mt-4 items-end justify-between">
+        <Button className="border h-fit" onClick={handleCreate}>
           <FontAwesomeIcon icon={faAdd} className="size-4 me-2" />
           <span className="py-1">{trans("new")}</span>
         </Button>
-        <Button className="border">
-          <FontAwesomeIcon icon={faFileLines} className="size-4 me-2" />
-          <Link href={new URL("/api/dengue/report", BACKEND_HOST)} target="_blank" className="py-1">
-            {trans("report")}
-          </Link>
-        </Button>
+        <div className="flex flex-row gap-2 items-end">
+          <DateField
+            locale={locale}
+            label="begin_date"
+            labelText={trans("begin_date")}
+            value={beginDate}
+            onChange={setBeginDate}
+          />
+          <DateField
+            locale={locale}
+            label="end_date"
+            labelText={trans("end_date")}
+            value={endDate}
+            onChange={setEndDate}
+          />
+          <Button className="border h-fit" onClick={handleReport}>
+            <FontAwesomeIcon icon={faFileLines} className="size-4 me-2" />
+            <span className="py-1">{trans("report")}</span>
+          </Button>
+        </div>
       </div>
     );
   }
