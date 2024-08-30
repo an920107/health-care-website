@@ -47,5 +47,6 @@ jobs:
             rm -rf repo-tmp
             cp -r frontend-artifact repo/frontend/docker
             cd repo
+            echo NEXT_PUBLIC_BACKEND_HOST=${{ vars.BACKEND_HOST }} > frontend-v2/.env.local
             docker compose down
             docker compose up --build -d
