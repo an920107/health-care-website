@@ -1,31 +1,45 @@
+"use client";
+
 import InsuranceUsecase from "@/module/insurance/application/insuranceUsecase";
 import InsuranceRepoImpl from "@/module/insurance/presenter/insuranceRepoImpl";
 import InsuranceViewModel from "@/module/insurance/presenter/insuranceViewModel";
-import { notFound } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import InsuranceEditor from "../../insurance-editor";
+import { useEffect, useState } from "react";
 
 type Props = {
   params: { locale: string; id: string };
 };
 
-export default async function EditInsurancePage({ params }: Props) {
-  const idNum = Number.parseInt(params.id);
-  if (idNum === Number.NaN) notFound();
+const usecase = new InsuranceUsecase(new InsuranceRepoImpl());
 
-  const usecase = new InsuranceUsecase(new InsuranceRepoImpl());
-  var viewModel: InsuranceViewModel;
-  try {
+export default async function EditInsurancePage({ params }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [insurance, setInsurance] = useState<InsuranceViewModel | undefined>(undefined);
+
+  async function fetchAll() {
+    const idNum = parseInt(params.id);
     const entity = await usecase.getInsuranceById(idNum);
-    viewModel = new InsuranceViewModel(entity);
-  } catch {
-    notFound();
+    setInsurance(new InsuranceViewModel(entity));
   }
 
-  return (
-    <InsuranceEditor
-      locale={params.locale}
-      updateId={viewModel.id}
-      defaultValues={{...viewModel}}
-    />
-  );
+  useEffect(() => {
+    fetchAll().catch((err) => {
+      console.error(err);
+      router.replace(`/${params.locale}/404?notfound=${pathname}`);
+    });
+  }, []);
+
+
+  return insurance === undefined
+    ? (<></>)
+    : (
+      <InsuranceEditor
+        locale={params.locale}
+        updateId={insurance.id}
+        defaultValues={{ ...insurance }}
+      />
+    );
 }

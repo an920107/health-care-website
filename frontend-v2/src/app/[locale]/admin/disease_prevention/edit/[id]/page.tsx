@@ -1,47 +1,58 @@
+"use client";
+
 import NormalPostUsecase from "@/module/post/application/normalPostUsecase";
 import PostRepoImpl from "@/module/post/presenter/postRepoImpl";
 import PostViewModel from "@/module/post/presenter/postViewModel";
-import { notFound } from "next/navigation";
-import PostEntity from "@/module/post/domain/postEntity";
+import { usePathname, useRouter } from "next/navigation";
 import PostColumnEnum from "@/module/post/domain/postColumnEnum";
 import PostEditor from "../../../post/post-editor";
+import { useEffect, useState } from "react";
 
 type Props = {
-  params: { id: string };
+  params: { locale: string, id: string };
 };
 
-export default async function EditPostPage({ params }: Props) {
-  const idNum = Number.parseInt(params.id);
-  if (idNum === Number.NaN) notFound();
+const usecase = new NormalPostUsecase(new PostRepoImpl());
 
-  const usecase = new NormalPostUsecase(new PostRepoImpl());
-  var entity: PostEntity;
-  try {
-    entity = await usecase.getPostById(idNum);
-  } catch {
-    notFound();
+export default function EditPostPage({ params }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [post, setPost] = useState<PostViewModel | undefined>(undefined);
+
+  async function fetchAll() {
+    const idNum = parseInt(params.id);
+    const entity = await usecase.getPostById(idNum);
+    setPost(new PostViewModel(entity));
   }
-  const viewModel = new PostViewModel(entity);
 
-  return (
-    <PostEditor
-      updateId={viewModel.id}
-      defaultColumn={viewModel.column}
-      defaultReleaseStatus={viewModel.releaseStatus}
-      defaultImportance={viewModel.importanceStatus}
-      defaultTitle={viewModel.title}
-      defaultTitleEn={viewModel.titleEn}
-      defaultContent={viewModel.content}
-      defaultContentEn={viewModel.contentEn}
-      defaultAttachmentIds={viewModel.attachments}
-      backUrl="/admin/disease_prevention"
-      columnOptions={[
-        PostColumnEnum.Influenza,
-        PostColumnEnum.Dengue,
-        PostColumnEnum.Tuberculosis,
-        PostColumnEnum.Chickenpox,
-      ]}
-    />
-  );
+  useEffect(() => {
+    fetchAll().catch((err) => {
+      console.error(err);
+      router.replace(`/${params.locale}/404?notfound=${pathname}`);
+    });
+  }, []);
+
+  return post === undefined
+    ? (<></>)
+    : (
+      <PostEditor
+        updateId={post.id}
+        defaultColumn={post.column}
+        defaultReleaseStatus={post.releaseStatus}
+        defaultImportance={post.importanceStatus}
+        defaultTitle={post.title}
+        defaultTitleEn={post.titleEn}
+        defaultContent={post.content}
+        defaultContentEn={post.contentEn}
+        defaultAttachmentIds={post.attachments}
+        backUrl="/admin/disease_prevention"
+        columnOptions={[
+          PostColumnEnum.Influenza,
+          PostColumnEnum.Dengue,
+          PostColumnEnum.Tuberculosis,
+          PostColumnEnum.Chickenpox,
+        ]}
+      />
+    );
 }
-

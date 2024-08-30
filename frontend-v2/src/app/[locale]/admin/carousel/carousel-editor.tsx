@@ -86,10 +86,6 @@ export default function CarouselEditor({
     setToValidate(true);
   }
 
-  useEffect(() => {
-    router.refresh();
-  }, []);
-
   // If all the values in `isValidationPassed` are true, then the post will be created or updated
   useEffect(() => {
     if (isValidationPassed.length < 2 ||
