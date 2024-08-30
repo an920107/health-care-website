@@ -2,6 +2,7 @@
 
 "use client";
 
+import Button from "@/components/button";
 import Pager from "@/components/pager";
 import BuildingUsecase from "@/module/building/application/buildingUsecase";
 import BuildingRepoImpl from "@/module/building/presenter/buildingRepoImpl";
@@ -10,7 +11,8 @@ import DengueRepoImpl from "@/module/dengue/presenter/dengueRepoImpl";
 import DengueViewModel from "@/module/dengue/presenter/dengueViewModel";
 import UserUsecase from "@/module/user/application/userUsecase";
 import UserRepoImpl from "@/module/user/presenter/userRepoImpl";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "@/navigation";
+import { faAdd, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Table } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
@@ -78,8 +80,14 @@ export default function DenguePage() {
           }
         </Table.Body>
       </Table.Root>
-      <div className="flex flex-row justify-end mt-4">
-        <Pager totalPage={totalPage} onChange={setCurrentPage} />
+      <div className="flex flex-row justify-between items-start md:items-center mt-4">
+        <Button className="border">
+          <FontAwesomeIcon icon={faAdd} className="size-4 me-2" />
+          <Link href={`/dengue/new`} className="py-1">建立登革熱報表</Link>
+        </Button>
+        <div className="flex flex-row justify-end mt-4">
+          <Pager totalPage={totalPage} onChange={setCurrentPage} />
+        </div>
       </div>
     </>
   );
