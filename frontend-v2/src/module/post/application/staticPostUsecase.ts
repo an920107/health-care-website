@@ -18,7 +18,8 @@ export default class StaticPostUsecase {
         });
         if (posts.length !== 1)
             return Promise.reject(new Error(`No post found for ${label}`));
-        return Promise.resolve(posts[0]);
+
+        return this._repo.get(posts[0].id);
     }
 
     async updateStaticPost(post: StaticPostRequest): Promise<void> {
