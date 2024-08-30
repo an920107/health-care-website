@@ -3,7 +3,7 @@ from uuid import uuid4
 from pathlib import Path
 
 from helpers.CustomResponse import CustomResponse
-
+from helpers.auth_helpers import authorization_required
 from models.image_model import Image, db
 from flask import Blueprint, request, send_file, current_app
 
@@ -40,6 +40,7 @@ def get_image(id_):
 
 
 @image_blueprint.route('', methods=['POST'])
+@authorization_required([0, 1, 2])
 def post_image():
     """
     post image
@@ -76,6 +77,7 @@ def post_image():
 
 
 @image_blueprint.route('<int:id_>', methods=['DELETE'])
+@authorization_required([0, 1, 2])
 def delete_image(id_):
     """
     delete image

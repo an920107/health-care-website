@@ -4,6 +4,7 @@ from pathlib import Path
 
 from helpers.CustomResponse import CustomResponse
 
+from helpers.auth_helpers import authorization_required
 from models.carousel_model import Carousel, db
 from flask import Blueprint, request, send_file, current_app
 from sqlalchemy import desc, or_
@@ -105,6 +106,7 @@ def get_carousel(id_):
 
 
 @carousel_blueprint.route('', methods=['POST'])
+@authorization_required([0, 1, 2])
 def post_carousel():
     """
     post carousel
@@ -187,6 +189,7 @@ def post_carousel():
 
 
 @carousel_blueprint.route('<int:id_>', methods=['PATCH'])
+@authorization_required([0, 1, 2])
 def patch_carousel(id_):
     """
     put carousel
@@ -239,6 +242,7 @@ def patch_carousel(id_):
 
 
 @carousel_blueprint.route('<int:id_>', methods=['DELETE'])
+@authorization_required([0, 1, 2])
 def delete_carousel(id_):
     """
     put carousel

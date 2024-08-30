@@ -1,3 +1,4 @@
+import math
 import os
 from uuid import uuid4
 from pathlib import Path
@@ -6,6 +7,7 @@ from helpers.CustomResponse import CustomResponse
 
 from models.download_model import Download, db
 from flask import Blueprint, request, send_file, current_app
+from sqlalchemy import or_
 
 download_blueprint = Blueprint('download', __name__)
 
@@ -19,10 +21,13 @@ def get_downloads():
       - download
     parameters:
       - in: query
-        name: column
+        name: search
         schema:
         type: string
         description: column name
+      - in: query
+        name: page
+        type: integer
       - in: query
         name: visibility
         schema:
@@ -35,15 +40,20 @@ def get_downloads():
           id: DownloadQuery
     """
     downloads = db.session.query(Download)
+    page = int(request.args['page']) \
+        if "page" in request.args and int(request.args['page']) > 1 \
+        else 1
 
-    if "column" in request.args:
-        downloads = downloads.filter(Download.column == request.args["column"])
+    if "search" in request.args:
+        downloads = downloads.filter(or_(*[Download.title.like(f'%{term}%') for term in request.args['search'].split('+')]))
+
     if "visibility" in request.args:
         downloads = downloads.filter(Download.visibility == bool(request.args["visibility"]))
 
-    downloads = [download.to_dict() for download in downloads.all()]
+    total_page = math.ceil(len(downloads.all()) // 10)+ 1
+    downloads = [download.to_dict() for download in downloads][(page - 1) * 10:page * 10]
 
-    return CustomResponse.success("get downloads success", downloads)
+    return {'message': "get downloads success", 'data': downloads, "total_page": total_page}, 200
 
 
 @download_blueprint.route('<int:id_>', methods=['GET'])
@@ -152,7 +162,7 @@ def post_attachment():
         title = request.form["title"]
         title_en = request.form["title_en"]
         column = request.form["column"]
-        visibility = bool(request.form["visibility"])
+        visibility = request.form["visibility"] == "true"
         file = request.files['file']
     except Exception as e:
         return CustomResponse.unprocessable_content("Invalid data type", {})

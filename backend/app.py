@@ -1,7 +1,7 @@
 import json
 import uuid
 import logging.config
-import os
+from pathlib import Path
 
 from flask import Flask
 from flasgger import Swagger
@@ -24,7 +24,7 @@ from blueprints.auth_blueprint import auth_blueprint
 
 from helpers.CustomResponse import CustomResponse
 
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, jwt_required
 
 swagger_template = json.loads(open('docs/swagger_template.json', 'r').read())
 
@@ -85,7 +85,7 @@ def create_app(status='development'):
 app = create_app()
 
 
-@app.route('/welcome', methods=['GET'])
+@app.route('/api/welcome', methods=['GET'])
 def welcome():
     """
     get the number of viewers
@@ -110,4 +110,8 @@ def welcome():
 
 
 if __name__ == '__main__':
+    for folder_name in [
+        config.Config.IMAGE_DIR, config.Config.DOWNLOAD, config.Config.CAROUSEL, config.Config.ATTACHMENT_DIR]:
+       Path(f'statics/{folder_name}').mkdir(parents=True, exist_ok=True)
+
     app.run(debug=False, host="0.0.0.0", port=config.Config.PORT)

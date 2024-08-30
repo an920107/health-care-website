@@ -5,6 +5,8 @@ from flask import Blueprint, request
 from sqlalchemy import desc, or_
 import math
 
+from helpers.auth_helpers import authorization_required
+
 post_blueprint = Blueprint('post', __name__)
 
 
@@ -121,13 +123,14 @@ def get_posts():
         )
 
     posts = posts.order_by(desc(Post.importance), desc(Post.created_time)).all()
-    total_page = math.ceil(len(posts) // 10)
+    total_page = math.ceil(len(posts) // 10) + 1
     posts = [post.to_dict() for post in posts][(page - 1) * 10:page * 10]
 
     return {'message': "get posts success", 'data': posts, "total_page": total_page}, 200
 
 
 @post_blueprint.route('', methods=['POST'])
+@authorization_required([0, 1, 2])
 def post_post():
     """
     post post
@@ -163,6 +166,7 @@ def post_post():
 
 
 @post_blueprint.route('<int:id_>', methods=['PATCH'])
+@authorization_required([0, 1, 2])
 def patch_post(id_):
     """
     patch post
@@ -216,6 +220,7 @@ def patch_post(id_):
 
 
 @post_blueprint.route('<int:id_>', methods=['DELETE'])
+@authorization_required([0, 1, 2])
 def delete_post(id_):
     """
     delete post

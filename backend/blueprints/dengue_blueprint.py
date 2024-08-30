@@ -6,11 +6,15 @@ from datetime import datetime
 
 from helpers.CustomResponse import CustomResponse
 
-from models.dengue_model import Dengue, db
+from helpers.auth_helpers import authorization_required
 from models.building_model import Building
+from models.dengue_model import Dengue, db
+from models.dengue_model import Dengue, db
+from models.user_model import User
 from flask import Blueprint, request, send_file
 from sqlalchemy import desc
 import pandas as pd
+from flask_jwt_extended import get_jwt_identity
 
 dengue_blueprint = Blueprint('dengue', __name__)
 
@@ -226,10 +230,13 @@ def get_dengue(id_):
     if dengue is None:
         return CustomResponse.not_found('Dengue not found', {})
 
+
+
     return CustomResponse.success('Dengue found', dengue.to_dict())
 
 
 @dengue_blueprint.route('', methods=['GET'])
+@authorization_required([0, 1, 2, 9])
 def get_dengues():
     """
     get dengues
@@ -253,20 +260,27 @@ def get_dengues():
         schema:
           id: DengueQuery
     """
+
+    user_id = get_jwt_identity()['id']
+    user = User.query.get(user_id)
+
     page = int(request.args['page']) \
         if "page" in request.args and int(request.args['page']) > 1 \
         else 1
 
     dengues = db.session.query(Dengue)
 
-    if "user_id" in request.args:
-        dengues = dengues.filter(
-            Dengue.user_id.in_(request.args['user_id'].split('+'))
-        )
+    if not user:
+        return CustomResponse.not_found('User not found', {})
+
+    elif user.role == 9:
+        buildings = Building.query.filter_by(user_id=user_id).all()
+        dengues = dengues.filter(Dengue.building_id.in_([building.id for building in buildings]))
 
     dengues = dengues.order_by(desc(Dengue.created_time)).all()
     total_page = math.ceil(len(dengues) / 10)
     dengues = [dengue.to_dict() for dengue in dengues][(page - 1) * 10:page * 10]
+
 
     return {'message': 'get dengues success', 'data': dengues, 'total_page': total_page}, 200
 
@@ -331,7 +345,8 @@ def get_dengue_report():
 
             year_month_df[column_name] = year_month_df[column_name].apply(lambda x: '合格' if x == 0 else x)
             year_month_df[column_name] = year_month_df[column_name].apply(lambda x: '已改善' if x == 1 else x)
-            year_month_df[column_name] = year_month_df[column_name].apply(lambda x: column_des['problem'] if x == 2 else x)
+            year_month_df[column_name] = year_month_df[column_name].apply(
+                lambda x: column_des['problem'] if x == 2 else x)
 
         year_month_df.columns = [
             DengueContainer.COLUMNS_MAPPER[column]['chinese_title'] for column in year_month_df.columns

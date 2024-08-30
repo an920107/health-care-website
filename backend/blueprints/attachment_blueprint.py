@@ -7,6 +7,8 @@ from helpers.CustomResponse import CustomResponse
 from models.attachment_model import Attachment, db
 from flask import Blueprint, request, send_file, current_app
 
+from helpers.auth_helpers import authorization_required
+
 attachment_blueprint = Blueprint('attachment', __name__)
 
 
@@ -71,6 +73,7 @@ def get_attachment_info(id_):
 
 
 @attachment_blueprint.route('', methods=['POST'])
+@authorization_required([0, 1, 2])
 def post_attachment():
     """
     post attachment info
@@ -107,6 +110,7 @@ def post_attachment():
 
 
 @attachment_blueprint.route('<int:id_>', methods=['DELETE'])
+@authorization_required([0, 1, 2])
 def delete_attachment(id_):
     """
     delete attachment info
