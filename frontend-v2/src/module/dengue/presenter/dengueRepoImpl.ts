@@ -8,10 +8,8 @@ import Cookies from "js-cookie";
 export default class DengueRepoImpl implements DengueRepo {
     async query({
         page,
-        userId,
     }: {
         page?: number;
-        userId: string;
     }): Promise<[DengueResponse[], PagerResponse]> {
         const params: any = {};
 

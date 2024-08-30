@@ -6,12 +6,8 @@ import { BuildingRequest, BuildingResponse } from "../application/buildingDto";
 import Cookies from "js-cookie";
 
 export default class BuildingRepoImpl implements BuildingRepo {
-    async query(userId: string): Promise<BuildingEntity[]> {
-        const params = { user_id: userId };
-
-        const response = await axios.get(new URL("/api/building", BACKEND_HOST).href, {
-            params: params,
-        });
+    async query(): Promise<BuildingEntity[]> {
+        const response = await axios.get(new URL("/api/building", BACKEND_HOST).href);
 
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));

@@ -9,8 +9,6 @@ import BuildingRepoImpl from "@/module/building/presenter/buildingRepoImpl";
 import DengueUsecase from "@/module/dengue/application/dengueUsecase";
 import DengueRepoImpl from "@/module/dengue/presenter/dengueRepoImpl";
 import DengueViewModel from "@/module/dengue/presenter/dengueViewModel";
-import UserUsecase from "@/module/user/application/userUsecase";
-import UserRepoImpl from "@/module/user/presenter/userRepoImpl";
 import { Link } from "@/navigation";
 import { faAdd, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,7 +17,6 @@ import { useEffect, useState } from "react";
 
 export default function DenguePage() {
   const dangueUsecase = new DengueUsecase(new DengueRepoImpl());
-  const userUsecase = new UserUsecase(new UserRepoImpl());
 
   const [dengues, setDengues] = useState<DengueViewModel[]>([]);
   const [buildingIdNameMap, setBuildingIdNameMap] = useState<Map<number, string>>(new Map());
@@ -27,8 +24,7 @@ export default function DenguePage() {
   const [totalPage, setTotalPage] = useState<number>(1);
 
   async function fetchAll() {
-    const userId = (await userUsecase.getCurrentUser()).id;
-    const [dengues, pager] = await dangueUsecase.getAllDengues({ page: currentPage, userId: userId });
+    const [dengues, pager] = await dangueUsecase.getAllDengues({ page: currentPage });
     if (dengues.length === 0) {
       alert("你沒有權限");
       return;

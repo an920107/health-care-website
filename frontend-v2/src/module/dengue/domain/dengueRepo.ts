@@ -4,7 +4,6 @@ import DengueEntity from "./dengueEntity";
 export default interface DengueRepo {
     query({ }: {
         page?: number;
-        userId: string;
     }): Promise<[DengueEntity[], PagerEntity]>;
 
     get(id: number): Promise<DengueEntity>;

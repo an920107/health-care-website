@@ -44,7 +44,7 @@ export default function NewDenguePage({ params }: Props) {
   async function fetchAll() {
     const userId = (await userUsecase.getCurrentUser()).id;
     setUserId(userId);
-    const entities = await buildingUsecase.getAllBuildings(userId);
+    const entities = await buildingUsecase.getAllBuildings();
     if (entities.length === 0) {
       alert("你沒有權限");
       router.push("/");

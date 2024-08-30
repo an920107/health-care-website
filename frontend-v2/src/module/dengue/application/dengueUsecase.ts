@@ -11,12 +11,10 @@ export default class DengueUsecase {
 
     async getAllDengues({
         page,
-        userId,
     }: {
         page: number;
-        userId: string;
     }): Promise<[DengueEntity[], PagerEntity]> {
-        return this._repo.query({ page, userId });
+        return this._repo.query({ page });
     }
 
     async getDengueById(id: number): Promise<DengueEntity> {

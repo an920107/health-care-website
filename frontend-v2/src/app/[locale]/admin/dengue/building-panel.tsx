@@ -7,8 +7,6 @@ import BuildingUsecase from "@/module/building/application/buildingUsecase";
 import BuildingRepoImpl from "@/module/building/presenter/buildingRepoImpl";
 import BuildingViewModel from "@/module/building/presenter/buildingViewModel";
 import { BACKEND_HOST } from "@/module/config/config";
-import UserUsecase from "@/module/user/application/userUsecase";
-import UserRepoImpl from "@/module/user/presenter/userRepoImpl";
 import { faAdd, faFileLines, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Table } from "@radix-ui/themes";
@@ -28,7 +26,6 @@ export default function BuildingPanel({
   const trans = useTranslations("AdminDengue");
 
   const buildingUsecase = new BuildingUsecase(new BuildingRepoImpl());
-  const userUsecase = new UserUsecase(new UserRepoImpl());
 
   const [buildings, setBuildings] = useState<BuildingViewModel[]>([]);
 
@@ -37,9 +34,7 @@ export default function BuildingPanel({
   }, []);
 
   async function fetchAll() {
-    const userId = (await userUsecase.getCurrentUser()).id;
-    if (!userId) return;
-    const entities = await buildingUsecase.getAllBuildings(userId);
+    const entities = await buildingUsecase.getAllBuildings();
     setBuildings(entities.map((entity) => new BuildingViewModel(entity)));
   }
 

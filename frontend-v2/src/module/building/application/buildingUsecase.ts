@@ -8,8 +8,8 @@ export default class BuildingUsecase {
         this._repo = repo;
     }
 
-    async getAllBuildings(userId: string): Promise<BuildingEntity[]> {
-        return this._repo.query(userId);
+    async getAllBuildings(): Promise<BuildingEntity[]> {
+        return this._repo.query();
     }
 
     async getBuildingById(id: number): Promise<BuildingEntity> {
