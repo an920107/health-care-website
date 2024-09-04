@@ -115,6 +115,6 @@ def welcome():
 if __name__ == '__main__':
     for folder_name in [
         config.Config.IMAGE_DIR, config.Config.DOWNLOAD, config.Config.CAROUSEL, config.Config.ATTACHMENT_DIR]:
-       Path(f'statics/{folder_name}').mkdir(parents=True, exist_ok=True)
+       Path(folder_name).mkdir(parents=True, exist_ok=True)
 
     app.run(debug=False, host="0.0.0.0", port=config.Config.PORT)
