@@ -13,7 +13,7 @@ type Props = {
 
 const usecase = new InsuranceUsecase(new InsuranceRepoImpl());
 
-export default async function EditInsurancePage({ params }: Props) {
+export default function EditInsurancePage({ params }: Props) {
   const router = useRouter();
   const pathname = usePathname();
 
