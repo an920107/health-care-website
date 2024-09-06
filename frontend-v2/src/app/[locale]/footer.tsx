@@ -1,13 +1,30 @@
+"use client";
+
+import ViewCountUsecase from "@/module/view/application/viewCountUsecase";
+import ViewCountRepoImpl from "@/module/view/presenter/viewCountRepoImpl";
+import ViewCountViewModel from "@/module/view/presenter/viewCountViewModel";
 import { faEnvelope, faEye, faFax, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const usecase = new ViewCountUsecase(new ViewCountRepoImpl());
 
 export default function Footer() {
   const trans = useTranslations("Home");
   const symbol = useTranslations("Symbol");
 
-  const views = 1234;
+  const [view, setView] = useState<number>(0);
+
+  async function fetchAll() {
+    const viewCount = new ViewCountViewModel(await usecase.getViewCount());
+    setView(viewCount.view);
+  }
+
+  useEffect(() => {
+    fetchAll().catch((_) => {});
+  }, []);
 
   return (
     <div className="bg-amber-400 py-8 px-4">
@@ -31,7 +48,7 @@ export default function Footer() {
           </p>
           <p className="flex items-center">
             <FontAwesomeIcon icon={faEye} className="size-4 me-2" />
-            {trans("views")}{symbol("colon")}{views}
+            {trans("views")}{symbol("colon")}{view}
           </p>
         </div>
         <div>
