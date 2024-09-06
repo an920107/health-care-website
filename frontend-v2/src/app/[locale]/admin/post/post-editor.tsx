@@ -82,9 +82,9 @@ export default function PostEditor({
     setUploadingProgressMap: setUploadingProgressMap,
   });
 
-  const titleValidations = [
+  const titleValidations = (length: number) => [
     new NotEmptyValidationUsecase(trans("validate_empty")),
-    new LengthValidationUsecase(40, trans("validate_length", { length: 40 })),
+    new LengthValidationUsecase(length, trans("validate_length", { length: length })),
   ];
 
   function handleValidate(result: boolean) {
@@ -172,7 +172,7 @@ export default function PostEditor({
             value={chineseTitle}
             onChange={setChineseTitle}
             onValidate={handleValidate}
-            validations={titleValidations}
+            validations={titleValidations(40)}
             toValidate={toValidate}
           />
           <QuillEditor label={trans("chinese_content")} value={chineseContent} onChange={setChineseContent} />
@@ -181,7 +181,7 @@ export default function PostEditor({
             value={englishTitle}
             onChange={setEnglishTitle}
             onValidate={handleValidate}
-            validations={titleValidations}
+            validations={titleValidations(100)}
             toValidate={toValidate}
           />
           <QuillEditor label={trans("english_content")} value={englishContent} onChange={setEnglishContent} />

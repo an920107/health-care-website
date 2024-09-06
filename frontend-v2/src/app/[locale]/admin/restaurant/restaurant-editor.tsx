@@ -86,9 +86,9 @@ export default function RestaurantEditor({
     new NotEmptyValidationUsecase(trans("validate_empty")),
   ];
 
-  const titleValidations = [
+  const titleValidations = (length: number) => [
     new NotEmptyValidationUsecase(trans("validate_empty")),
-    new LengthValidationUsecase(40, trans("validate_length", { length: 40 })),
+    new LengthValidationUsecase(length, trans("validate_length", { length: length })),
   ];
 
   const itemValidations = [
@@ -196,7 +196,7 @@ export default function RestaurantEditor({
             value={chineseTitle}
             onChange={setChineseTitle}
             onValidate={handleValidate}
-            validations={titleValidations}
+            validations={titleValidations(40)}
             toValidate={toValidate}
           />
           <TextField
@@ -214,7 +214,7 @@ export default function RestaurantEditor({
             value={englishTitle}
             onChange={setEnglishTitle}
             onValidate={handleValidate}
-            validations={titleValidations}
+            validations={titleValidations(100)}
             toValidate={toValidate}
           />
           <TextField
