@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 
 type Props = {
   className?: string;
-  actions?: Readonly<React.ReactNode>;
+  actions?: Readonly<React.ReactNode>[];
 };
 
 export default function InsurancePanel({
@@ -94,7 +94,7 @@ export default function InsurancePanel({
   function InsuranceButtom() {
     return (
       <div className="flex flex-row justify-between items-start md:items-center mt-4">
-        <div>{actions ?? (<></>)}</div>
+        <div className="flex flex-row gap-2">{actions ?? (<></>)}</div>
         <div className="flex flex-row justify-end">
           <Pager totalPage={totalPage} onChange={setCurrentPage} />
         </div>

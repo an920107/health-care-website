@@ -208,6 +208,7 @@
         "table_incident_date": "Incident Date",
         "table_edit": "Edit",
         "new": "Create Insurance Record",
+        "report":"Download Report",
         "edit": "Edit Insurance Record",
         "delete": "Delete Insurance Record",
         "save": "Save Insurance Record"
