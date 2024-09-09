@@ -22,9 +22,10 @@ export default class InsuranceEntity {
     xRay: number;
     applicationAmount: number;
     claimAmount: number;
-    claimDate: Date;
+    claimDate?: Date;
     remarks: string;
     insuranceCompanyStamp: boolean;
+    insuranceCompanyTime?: Date;
     createdTime: Date;
     updatedTime: Date;
 
@@ -51,6 +52,7 @@ export default class InsuranceEntity {
         claimDate,
         remarks,
         insuranceCompanyStamp,
+        insuranceCompanyTime,
         createdTime,
         updatedTime,
     }: InsuranceEntity) {
@@ -76,6 +78,7 @@ export default class InsuranceEntity {
         this.claimDate = claimDate;
         this.remarks = remarks;
         this.insuranceCompanyStamp = insuranceCompanyStamp;
+        this.insuranceCompanyTime = insuranceCompanyTime;
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
     }

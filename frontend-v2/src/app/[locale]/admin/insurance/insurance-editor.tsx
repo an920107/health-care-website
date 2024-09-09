@@ -18,7 +18,7 @@ import NumberValidationUsecase from "@/module/validation/application/numberValid
 import { useRouter } from "@/navigation";
 import { faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { set } from "date-fns";
+import { formatDate } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
@@ -47,6 +47,7 @@ type Props = {
     claimDate?: Date;
     remarks?: string;
     insuranceCompanyStamp?: boolean;
+    insuranceCompanyTime?: Date;
   };
 };
 
@@ -76,10 +77,13 @@ export default function InsuranceEditor({
   const [bankbook, setBankbook] = useState<number>(defaultValues?.bankbook ?? 0);
   const [xRay, setXRay] = useState<number>(defaultValues?.xRay ?? 0);
   const [applicationAmount, setApplicationAmount] = useState<string>(defaultValues?.applicationAmount?.toString() ?? "0");
-  const [claimAmount, setClaimAmount] = useState<string>(defaultValues?.claimAmount?.toString() ?? "0");
-  const [claimDate, setClaimDate] = useState<Date | undefined>(defaultValues?.claimDate);
   const [remarks, setRemarks] = useState<string>(defaultValues?.remarks ?? "");
+
+  const [claimAmount, setClaimAmount] = useState<string | undefined>(defaultValues?.claimAmount?.toString());
+  const [claimDate, setClaimDate] = useState<Date | undefined>(defaultValues?.claimDate);
   const [insuranceCompanyStamp, setInsuranceCompanyStamp] = useState<boolean>(defaultValues?.insuranceCompanyStamp ?? false);
+  const [insuranceCompanyTime, setInsuranceCompanyTime] = useState<Date | undefined>(defaultValues?.insuranceCompanyTime);
+
   const [toValidate, setToValidate] = useState<boolean>(false);
   const [isValidationPassed, setIsValidationPassed] = useState<boolean[]>([]);
 
@@ -123,11 +127,12 @@ export default function InsuranceEditor({
       diagnosisCertificate,
       bankbook,
       xRay,
-      applicationAmount: Number.parseInt(applicationAmount),
-      claimAmount: Number.parseInt(claimAmount),
-      claimDate: claimDate!,
+      applicationAmount: parseInt(applicationAmount),
       remarks,
+      claimAmount: claimAmount !== undefined && claimAmount !== "" ? parseInt(claimAmount) : undefined,
+      claimDate,
       insuranceCompanyStamp,
+      insuranceCompanyTime,
     });
 
     (updateId === undefined
@@ -278,7 +283,7 @@ export default function InsuranceEditor({
           value={claimAmount}
           onChange={setClaimAmount}
           onValidate={handleValidate}
-          validations={numberValidations}
+          validations={optionalNumberValidations}
           toValidate={toValidate}
         />
         <DateField
@@ -286,9 +291,6 @@ export default function InsuranceEditor({
           locale={locale}
           value={claimDate}
           onChange={setClaimDate}
-          onValidate={handleValidate}
-          validations={generalValidations}
-          toValidate={toValidate}
         />
         <TextField
           label="備註"
@@ -297,12 +299,19 @@ export default function InsuranceEditor({
         />
         <div>
           <label htmlFor="保險公司收件核章" className="label">保險公司收件核章</label>
-          <input
-            type="checkbox"
-            className="size-5"
-            defaultChecked={insuranceCompanyStamp}
-            onChange={() => setInsuranceCompanyStamp((prev) => !prev)}
-          />
+          <div className="flex flex-row gap-2 items-center">
+            <input
+              type="checkbox"
+              className="size-4 my-1"
+              defaultChecked={insuranceCompanyStamp}
+              onChange={() => setInsuranceCompanyStamp((prev) => {
+                if (prev) setInsuranceCompanyTime(undefined);
+                else setInsuranceCompanyTime(new Date());
+                return !prev;
+              })}
+            />
+            <span>{insuranceCompanyTime && formatDate(insuranceCompanyTime, "yyyy-MM-dd")}</span>
+          </div>
         </div>
         <div className="flex flex-row justify-end gap-2">
           {
@@ -328,6 +337,10 @@ const generalValidations = [
 
 const numberValidations = [
   ...generalValidations,
+  new NumberValidationUsecase("請輸入數字"),
+];
+
+const optionalNumberValidations = [
   new NumberValidationUsecase("請輸入數字"),
 ];
 
