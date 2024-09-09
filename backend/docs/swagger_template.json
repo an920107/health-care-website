@@ -395,7 +395,8 @@
         "claim_amount": 100,
         "claim_date": "2024-01-01T00:00:00",
         "remarks": "remarks",
-        "insurance_company_stamp": true
+        "insurance_company_stamp": true,
+        "insurance_company_timestamp": "2024-01-01T00:00:00"
       }
     },
     "Insurance": {
@@ -430,6 +431,7 @@
             "claim_date": "2024-01-01T00:00:00",
             "remarks": "remarks",
             "insurance_company_stamp": true,
+            "insurance_company_timestamp": "2024-01-01T00:00:00",
             "created_time": "2024-01-01T00:00:00",
             "updated_time": "2024-01-01T00:00:00"
           }
@@ -471,6 +473,7 @@
                 "claim_date": "2024-01-01T00:00:00",
                 "remarks": "remarks",
                 "insurance_company_stamp": true,
+                "insurance_company_timestamp": "2024-01-01T00:00:00",
                 "created_time": "2024-01-01T00:00:00",
                 "updated_time": "2024-01-01T00:00:00"
               }
