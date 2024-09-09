@@ -54,8 +54,6 @@ class InsuranceContainer:
             raise "Remarks is required."
         if "insurance_company_stamp" not in json_request:
             raise "Insurance_Company_Stamp is required."
-        if "insurance_company_timestamp" not in json_request:
-            raise "Insurance_Company_Timestamp is required."
 
         self.data = {
             "application_date": datetime.fromisoformat(json_request["application_date"]),
@@ -79,8 +77,11 @@ class InsuranceContainer:
             "claim_date": datetime.fromisoformat(json_request["claim_date"]),
             "remarks": json_request["remarks"],
             "insurance_company_stamp": json_request["insurance_company_stamp"],
-            "insurance_company_timestamp": json_request["insurance_company_timestamp"]
+
         }
+
+        if "insurance_company_timestamp" in json_request:
+            self.data["insurance_company_timestamp"] = datetime.fromisoformat(json_request["insurance_company_timestamp"])
 
     def get_data(self):
         return self.data
@@ -259,7 +260,7 @@ def patch_insurance(id_):
     if "insurance_company_stamp" in request.json:
         insurance.insurance_company_stamp = request.json["insurance_company_stamp"]
     if "insurance_company_timestamp" in request.json:
-        insurance.insurance_company_stamp = request.json["insurance_company_timestamp"]
+        insurance.insurance_company_stamp = datetime.fromisoformat(request.json["insurance_company_timestamp"])
 
     db.session.commit()
     return CustomResponse.no_content("patch insurance success", insurance.to_dict())
