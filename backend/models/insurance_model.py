@@ -29,6 +29,7 @@ class Insurance(SchemaMixin, db.Model):
     claim_date = db.Column(db.DateTime)
     remarks = db.Column(db.TEXT)
     insurance_company_stamp = db.Column(db.Boolean)
+    insurance_company_timestamp = db.Column(db.DateTime)
 
     def __repr__(self):
         return f'<Insurance {self.name}>'

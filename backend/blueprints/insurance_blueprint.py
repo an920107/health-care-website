@@ -54,6 +54,8 @@ class InsuranceContainer:
             raise "Remarks is required."
         if "insurance_company_stamp" not in json_request:
             raise "Insurance_Company_Stamp is required."
+        if "insurance_company_timestamp" not in json_request:
+            raise "Insurance_Company_Timestamp is required."
 
         self.data = {
             "application_date": datetime.fromisoformat(json_request["application_date"]),
@@ -76,7 +78,8 @@ class InsuranceContainer:
             "claim_amount": json_request["claim_amount"],
             "claim_date": datetime.fromisoformat(json_request["claim_date"]),
             "remarks": json_request["remarks"],
-            "insurance_company_stamp": json_request["insurance_company_stamp"]
+            "insurance_company_stamp": json_request["insurance_company_stamp"],
+            "insurance_company_timestamp": json_request["insurance_company_timestamp"]
         }
 
     def get_data(self):
@@ -255,6 +258,8 @@ def patch_insurance(id_):
         insurance.remarks = request.json["remarks"]
     if "insurance_company_stamp" in request.json:
         insurance.insurance_company_stamp = request.json["insurance_company_stamp"]
+    if "insurance_company_timestamp" in request.json:
+        insurance.insurance_company_stamp = request.json["insurance_company_timestamp"]
 
     db.session.commit()
     return CustomResponse.no_content("patch insurance success", insurance.to_dict())
@@ -293,3 +298,30 @@ def delete_insurance(id_):
     db.session.commit()
 
     return CustomResponse.no_content("delete insurance success", {})
+
+
+@insurance_blueprint.route('report', methods=['GET'])
+def get_insurance_report():
+    """
+    get insurance report
+    ---
+    tags:
+      - insurance
+    parameters:
+      - in: query
+        name: from
+        type: string
+        required: true
+        example: 2021-01
+        description: The start time
+      - in: query
+        name: to
+        type: string
+        required: true
+        example: 2021-01
+        description: The end time
+    responses:
+      200:
+        description: get dengue report success
+    """
+    return 'okay', 200
