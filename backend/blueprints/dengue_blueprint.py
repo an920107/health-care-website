@@ -160,6 +160,7 @@ class DengueContainer:
         'outdoor_stagnant_gutter': {
             "chinese_title": "水溝積水有孑孓孳生",
             "problem": "有孑孓孳生"
+
         },
         'outdoor_other_containers': {
             "chinese_title": "其他（任何容器或雜物）",
