@@ -25,11 +25,11 @@ class Insurance(SchemaMixin, db.Model):
     bankbook = db.Column(db.Integer)
     x_ray = db.Column(db.Integer)
     application_amount = db.Column(db.Integer)
-    claim_amount = db.Column(db.Integer)
-    claim_date = db.Column(db.DateTime)
-    remarks = db.Column(db.TEXT)
-    insurance_company_stamp = db.Column(db.Boolean)
-    insurance_company_timestamp = db.Column(db.DateTime)
+    claim_amount = db.Column(db.Integer, nullable=True)
+    claim_date = db.Column(db.DateTime, nullable=True)
+    remarks = db.Column(db.TEXT, nullable=True)
+    insurance_company_stamp = db.Column(db.Boolean, nullable=True)
+    insurance_company_timestamp = db.Column(db.DateTime, nullable=True)
 
     def __repr__(self):
         return f'<Insurance {self.name}>'
