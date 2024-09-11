@@ -154,7 +154,7 @@ def get_insurances():
 
 
 @insurance_blueprint.route('', methods=['POST'])
-# @authorization_required([0, 1, 2])
+@authorization_required([0, 1, 2])
 def post_insurance():
     """
     post insurance
@@ -189,7 +189,7 @@ def post_insurance():
 
 
 @insurance_blueprint.route('<int:id_>', methods=['PATCH'])
-# @authorization_required([0, 1, 2])
+@authorization_required([0, 1, 2])
 def patch_insurance(id_):
     """
     patch insurance
@@ -271,7 +271,7 @@ def patch_insurance(id_):
 
 
 @insurance_blueprint.route('<int:id_>', methods=['DELETE'])
-# @authorization_required([0, 1, 2])
+@authorization_required([0, 1, 2])
 def delete_insurance(id_):
     """
     delete insurance
