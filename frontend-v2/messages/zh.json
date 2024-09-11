@@ -201,6 +201,8 @@
         "table_incident_date": "事故日期",
         "table_edit": "編輯",
         "report": "下載報表",
+        "begin_date": "開始日期",
+        "end_date": "結束日期",
         "new": "新增保險記錄",
         "edit": "編輯保險記錄",
         "delete": "刪除保險記錄",
