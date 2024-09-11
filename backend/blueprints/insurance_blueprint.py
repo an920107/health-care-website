@@ -16,48 +16,39 @@ insurance_blueprint = Blueprint('insurance', __name__)
 class InsuranceContainer:
     def __init__(self, json_request):
         if "application_date" not in json_request:
-            raise "Application_Date is required."
+            raise ValueError("Application_Date is required.")
         if "incident_date" not in json_request:
-            raise "Incident_Date is required."
+            raise ValueError("Incident_Date is required.")
         if "name" not in json_request:
-            raise "Name is required."
+            raise ValueError("Name is required.")
         if "student_id" not in json_request:
-            raise "Student_ID is required."
+            raise ValueError("Student_ID is required.")
         if "id_number" not in json_request:
-            raise "ID_Number is required."
+            raise ValueError("ID_Number is required.")
         if "address" not in json_request:
-            raise "Address is required."
+            raise ValueError("Address is required.")
         if "phone_number" not in json_request:
-            raise "Phone_Number is required."
+            raise ValueError("Phone_Number is required.")
         if "email" not in json_request:
-            raise "Email is required."
+            raise ValueError("Email is required.")
         if "claim_details" not in json_request:
-            raise "Claim_Details is required."
+            raise ValueError("Claim_Details is required.")
         if "payment_type" not in json_request:
-            raise "Payment_Type is required."
+            raise ValueError("Payment_Type is required.")
         if "location" not in json_request:
-            raise "Location is required."
+            raise ValueError("Location is required.")
         if "incident_cause" not in json_request:
-            raise "Incident_Cause is required."
+            raise ValueError("Incident_Cause is required.")
         if "receipt" not in json_request:
-            raise "Receipt is required."
+            raise ValueError("Receipt is required.")
         if "diagnosis_certificate" not in json_request:
-            raise "Diagnosis_Certificate is required."
+            raise ValueError("Diagnosis_Certificate is required.")
         if "bankbook" not in json_request:
-            raise "Bankbook is required."
+            raise ValueError("Bankbook is required.")
         if "x_ray" not in json_request:
-            raise "X_Ray is required."
+            raise ValueError("X_Ray is required.")
         if "application_amount" not in json_request:
-            raise "Application_Amount is required."
-        if "claim_amount" not in json_request:
-            raise "Claim_Amount is required."
-        if "claim_date" not in json_request:
-            raise "Claim_Date is required."
-        if "remarks" not in json_request:
-            raise "Remarks is required."
-        if "insurance_company_stamp" not in json_request:
-            raise "Insurance_Company_Stamp is required."
-
+            raise ValueError("Application_Amount is required.")
         self.data = {
             "application_date": datetime.fromisoformat(json_request["application_date"]),
             "incident_date": datetime.fromisoformat(json_request["incident_date"]),
@@ -76,12 +67,12 @@ class InsuranceContainer:
             "bankbook": json_request["bankbook"],
             "x_ray": json_request["x_ray"],
             "application_amount": json_request["application_amount"],
-            "claim_amount": json_request["claim_amount"],
-            "claim_date": datetime.fromisoformat(json_request["claim_date"]),
-            "remarks": json_request["remarks"],
-            "insurance_company_stamp": json_request["insurance_company_stamp"],
-
+            "claim_amount": json_request.get("claim_amount", None),
+            "remarks": json_request.get("remarks", None),
+            "insurance_company_stamp": json_request.get("insurance_company_stamp", None),
         }
+        if "claim_date" in json_request:
+            self.data["claim_date"] = datetime.fromisoformat(json_request["claim_date"])
 
         if "insurance_company_timestamp" in json_request:
             self.data["insurance_company_timestamp"] = datetime.fromisoformat(
