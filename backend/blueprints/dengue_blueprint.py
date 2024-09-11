@@ -194,7 +194,7 @@ class DengueContainer:
 
     def __init__(self, json_request):
         for column in self.COLUMNS:
-            assert column in json_request, f'{column} is required'
+            assert column in json_request, ValueError(f'{column} is required')
 
         self.data = {column: json_request[column] for column in self.COLUMNS}
         self.data['inspection_time'] = datetime.fromisoformat(self.data['inspection_time'])
