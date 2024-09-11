@@ -1,4 +1,5 @@
 import os
+from multiprocessing.managers import Value
 from uuid import uuid4
 from pathlib import Path
 
@@ -15,9 +16,9 @@ building_blueprint = Blueprint('building', __name__)
 class BuildingContainer:
     def __init__(self, json_request):
         if "name" not in json_request:
-            raise "name is required."
+            raise ValueError("name is required.")
         if "user_id" not in json_request:
-            raise "user id is required."
+            raise ValueError("user id is required.")
 
         self.data = {
             "name": json_request["name"],

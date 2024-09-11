@@ -13,21 +13,21 @@ post_blueprint = Blueprint('post', __name__)
 class PostContainer:
     def __init__(self, json_request):
         if "title" not in json_request:
-            raise "Title is required."
+            raise ValueError("Title is required.")
         if "content" not in json_request:
-            raise "Content is required."
+            raise ValueError("Content is required.")
         if "title_en" not in json_request:
-            raise "Title_En is required."
+            raise ValueError("Title_En is required.")
         if "content_en" not in json_request:
-            raise "Content_En is required."
+            raise ValueError("Content_En is required.")
         if "column" not in json_request:
-            raise "Column is required."
+            raise ValueError("Column is required.")
         if "attachments" not in json_request:
-            raise "Attachments is required."
+            raise ValueError("Attachments is required.")
         if "importance" not in json_request:
-            raise "Importance is required."
+            raise ValueError("Importance is required.")
         if "visibility" not in json_request:
-            raise "Visibility is required."
+            raise ValueError("Visibility is required.")
 
         self.data = {
             "title": json_request["title"],
