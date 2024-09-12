@@ -107,7 +107,7 @@ export default function InsuranceEditor({
   }
 
   useEffect(() => {
-    if (isValidationPassed.length < 14 ||
+    if (isValidationPassed.length < 13 ||
       isValidationPassed.some((result) => !result)) return;
 
     const request = new InsuranceRequest({
