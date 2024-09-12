@@ -4,6 +4,7 @@ import InsuranceEntity from "./insuranceEntity";
 export default interface InsuranceRepo {
     query({ }: {
         page: number,
+        search: string,
     }): Promise<[InsuranceEntity[], PagerEntity]>;
 
     get(id: number): Promise<InsuranceEntity>;

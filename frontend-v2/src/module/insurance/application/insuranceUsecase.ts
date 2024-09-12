@@ -10,8 +10,14 @@ export default class InsuranceUsecase {
         this._repo = repo;
     }
 
-    async getAllInsurance({ page }: { page: number }): Promise<[InsuranceEntity[], PagerEntity]> {
-        return this._repo.query({ page });
+    async getAllInsurance({
+        page = 1,
+        search = "",
+    }: {
+        page?: number;
+        search?: string;
+    }): Promise<[InsuranceEntity[], PagerEntity]> {
+        return this._repo.query({ page, search });
     }
 
     async getInsuranceById(id: number): Promise<InsuranceEntity> {
