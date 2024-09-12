@@ -49,9 +49,9 @@ export default function DownloadEditor({
     setReleaseStatus(download?.releaseStatus ?? ReleaseStatusEnum.Draft);
   }, [download]);
 
-  const titleValidations = [
+  const titleValidations = (length: number) => [
     new NotEmptyValidationUsecase(trans("validate_empty")),
-    new LengthValidationUsecase(40, trans("validate_length", { length: 40 })),
+    new LengthValidationUsecase(length, trans("validate_length", { length: length })),
   ];
 
   function handleValidate(result: boolean) {
@@ -127,7 +127,7 @@ export default function DownloadEditor({
         value={title}
         onChange={setTitle}
         onValidate={handleValidate}
-        validations={titleValidations}
+        validations={titleValidations(40)}
         toValidate={toValidate}
       />
       <TextField
@@ -135,7 +135,7 @@ export default function DownloadEditor({
         value={titleEn}
         onChange={setTitleEn}
         onValidate={handleValidate}
-        validations={titleValidations}
+        validations={titleValidations(100)}
         toValidate={toValidate}
       />
       <div className="flex flex-row justify-end gap-2">
