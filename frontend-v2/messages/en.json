@@ -207,6 +207,7 @@
         "table_application_date": "Application Date",
         "table_incident_date": "Incident Date",
         "table_edit": "Edit",
+        "search": "Search by Student ID",
         "new": "Create Insurance Record",
         "begin_date": "Start Date",
         "end_date": "End Date",

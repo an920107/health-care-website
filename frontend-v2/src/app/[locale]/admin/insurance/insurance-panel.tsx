@@ -1,6 +1,7 @@
 "use client";
 
 import Pager from "@/components/pager";
+import SearchBar from "@/components/search-bar";
 import InsuranceUsecase from "@/module/insurance/application/insuranceUsecase";
 import InsuranceRepoImpl from "@/module/insurance/presenter/insuranceRepoImpl";
 import InsuranceViewModel from "@/module/insurance/presenter/insuranceViewModel";
@@ -24,19 +25,38 @@ export default function InsurancePanel({
 
   const usecase = new InsuranceUsecase(new InsuranceRepoImpl());
 
+  const [searchText, setSearchText] = useState<string>("");
   const [insurances, setInsurances] = useState<InsuranceViewModel[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
 
-  useEffect(() => {
-    usecase.getAllInsurance({ page: currentPage }).then(([insurances, pager]) => {
+  function fetchAll() {
+    usecase.getAllInsurance({ page: currentPage, search: searchText }).then(([insurances, pager]) => {
       setInsurances(insurances.map((insurance) => new InsuranceViewModel(insurance)));
       setTotalPage(pager.totalPage);
     });
+  }
+
+  useEffect(() => {
+    fetchAll();
   }, []);
+
+  useEffect(() => {
+    fetchAll();
+  }, [currentPage, searchText]);
+
+  function handleSearchSubmit(text: string) {
+    setCurrentPage(1);
+    setSearchText(text);
+  }
 
   return (
     <div className={className}>
+      <SearchBar
+        className="mt-6 mb-3"
+        placeholder={trans("search")}
+        onSubmit={handleSearchSubmit}
+      />
       <InsuranceTable />
       <InsuranceButtom />
     </div>

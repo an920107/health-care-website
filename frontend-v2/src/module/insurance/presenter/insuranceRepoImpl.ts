@@ -10,12 +10,15 @@ import Cookies from "js-cookie";
 export default class InsuranceRepoImpl implements InsuranceRepo {
     async query({
         page,
+        search,
     }: {
-        page?: number;
+        page: number;
+        search: string;
     }): Promise<[InsuranceEntity[], PagerEntity]> {
         const params: any = {};
 
         if (page) params.page = page;
+        if (search.trim().length > 0) params.search = search;
 
         const response = await axios.get(new URL("/api/insurance", BACKEND_HOST).href, {
             params: params
