@@ -204,6 +204,7 @@ class DengueContainer:
 
 
 @dengue_blueprint.route('<int:id_>', methods=['GET'])
+# @authorization_required([0, 1, 2, 9])
 def get_dengue(id_):
     """
     get dengue
@@ -227,12 +228,8 @@ def get_dengue(id_):
           id: NotFound
     """
     dengue = db.session.query(Dengue).get(id_)
-
     if dengue is None:
         return CustomResponse.not_found('Dengue not found', {})
-
-
-
     return CustomResponse.success('Dengue found', dengue.to_dict())
 
 
@@ -287,6 +284,7 @@ def get_dengues():
 
 
 @dengue_blueprint.route('report', methods=['GET'])
+@authorization_required([0, 1, 2, 9])
 def get_dengue_report():
     """
     get dengue report
@@ -368,6 +366,7 @@ def get_dengue_report():
 
 
 @dengue_blueprint.route('', methods=['POST'])
+@authorization_required([0, 1, 2, 9])
 def post_dengue():
     """
     post dengue
@@ -402,6 +401,7 @@ def post_dengue():
 
 
 @dengue_blueprint.route('<int:id_>', methods=['PATCH'])
+@authorization_required([0, 1, 2, 9])
 def patch_dengue(id_):
     """
     patch dengue
@@ -445,6 +445,7 @@ def patch_dengue(id_):
 
 
 @dengue_blueprint.route('<int:id_>', methods=['DELETE'])
+@authorization_required([0, 1, 2, 9])
 def delete_dengue(id_):
     """
     delete dengue
