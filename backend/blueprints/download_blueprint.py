@@ -4,7 +4,7 @@ from uuid import uuid4
 from pathlib import Path
 
 from helpers.CustomResponse import CustomResponse
-
+from helpers.auth_helpers import authorization_required
 from models.download_model import Download, db
 from flask import Blueprint, request, send_file, current_app
 from sqlalchemy import or_
@@ -45,12 +45,13 @@ def get_downloads():
         else 1
 
     if "search" in request.args:
-        downloads = downloads.filter(or_(*[Download.title.like(f'%{term}%') for term in request.args['search'].split('+')]))
+        downloads = downloads.filter(
+            or_(*[Download.title.like(f'%{term}%') for term in request.args['search'].split('+')]))
 
     if "visibility" in request.args:
         downloads = downloads.filter(Download.visibility == bool(request.args["visibility"]))
 
-    total_page = math.ceil(len(downloads.all()) // 10)+ 1
+    total_page = math.ceil(len(downloads.all()) // 10) + 1
     downloads = [download.to_dict() for download in downloads][(page - 1) * 10:page * 10]
 
     return {'message': "get downloads success", 'data': downloads, "total_page": total_page}, 200
@@ -68,13 +69,17 @@ def get_download(id_):
         name: id_
         type: integer
         required: true
+    responses:
+      200:
+        description: get download success
     """
     download = Download.query.get(id_)
 
     if download is None:
         return CustomResponse.not_found("Download not found", {})
 
-    return send_file(download.filepath, as_attachment=True, download_name=download.title)
+    filepath = download.filepath
+    return send_file(download.filepath, as_attachment=True, download_name=f"{download.title}.{filepath.split('.')[-1]}")
 
 
 @download_blueprint.route('<int:id_>/info', methods=['GET'])
@@ -110,6 +115,7 @@ def get_download_info(id_):
 
 
 @download_blueprint.route('', methods=['POST'])
+@authorization_required([0, 1, 2])
 def post_attachment():
     """
     post download
@@ -186,6 +192,7 @@ def post_attachment():
 
 
 @download_blueprint.route('<int:id_>', methods=['PATCH'])
+@authorization_required([0, 1, 2])
 def patch_download(id_):
     """
     patch download
@@ -200,7 +207,7 @@ def patch_download(id_):
       - in: body
         name: json
         schema:
-        id: DownloadInput
+          id: DownloadInput
     responses:
       204:
         description: patch download success
@@ -238,6 +245,7 @@ def patch_download(id_):
 
 
 @download_blueprint.route('<int:id_>', methods=['DELETE'])
+@authorization_required([0, 1, 2])
 def delete_download(id_):
     """
     delete download

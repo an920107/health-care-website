@@ -8,7 +8,7 @@ from flasgger import Swagger
 from flask_cors import CORS
 
 import config
-from config import DevelopmentConfig, TestingConfig
+from config import DevelopmentConfig
 from models.viewer_model import db, Viewer
 
 from blueprints.attachment_blueprint import attachment_blueprint
@@ -46,10 +46,6 @@ def configure_logging(app):
 def get_config(status):
     if status == 'development':
         return DevelopmentConfig
-    elif status == 'testing':
-        return TestingConfig
-    else:
-        raise ValueError(f"Unknown status: {status}")
 
 
 def create_app(status='development'):

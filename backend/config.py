@@ -25,15 +25,3 @@ class DevelopmentConfig(Config):
             'formatter': 'default',
         },
     }
-
-
-class TestingConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///testing-database.db'
-    LOGGING_HANDLERS = {
-        'file': {
-            'level': Config.LOGGING_LEVEL,
-            'class': 'logging.FileHandler',
-            'filename': 'logs/TestingLogs.log',
-            'formatter': 'default',
-        },
-    }

@@ -4,11 +4,13 @@ from datetime import datetime
 
 from helpers.CustomResponse import CustomResponse
 
+from sqlalchemy import or_
 from helpers.auth_helpers import authorization_required
 from models.insurance_model import Insurance, db
 from flask import Blueprint, request, send_file
 from sqlalchemy import desc
 import math
+
 
 insurance_blueprint = Blueprint('insurance', __name__)
 
@@ -113,7 +115,7 @@ def get_insurance(id_):
     return CustomResponse.success("get insurance success", insurance.to_dict())
 
 
-@insurance_blueprint.route('', methods=['GET'])
+@insurance_blueprint.route('',  methods=['GET'])
 def get_insurances():
     """
     get insurances
@@ -125,7 +127,10 @@ def get_insurances():
         name: page
         type: integer
         required: false
-        description: The page
+      - in: query
+        name: search
+        type: string
+        required: false
     responses:
       200:
         description: get insurances success
@@ -137,6 +142,10 @@ def get_insurances():
         else 1
 
     insurances = db.session.query(Insurance)
+
+    if "search" in request.args:
+        insurances = insurances.filter(or_(*[Insurance.student_id.like(f'%{term}%') for term in request.args['search'].split('+')]))
+
     insurances = insurances.order_by(desc(Insurance.created_time)).all()
     total_page = math.ceil(len(insurances) / 10)
     insurances = [insurance.to_dict() for insurance in insurances][(page - 1) * 10:page * 10]
@@ -362,8 +371,8 @@ def get_insurance_report():
         insurances_df.columns = chinese_title_mapping.values()
         insurances_df['申請日期'] = insurances_df['申請日期'].dt.strftime('%Y-%m-%d')
         insurances_df['事故日期'] = insurances_df['事故日期'].dt.strftime('%Y-%m-%d')
-        insurances_df['理賠日期'] = insurances_df['理賠日期'].dt.strftime('%Y-%m-%d')
-        insurances_df['核章日期'] = insurances_df['核章日期'].dt.strftime('%Y-%m-%d')
+        insurances_df['理賠日期'] = insurances_df['理賠日期'].apply(lambda x: x.strftime('%Y-%m-%d') if x else None)
+        insurances_df['核章日期'] = insurances_df['核章日期'].apply(lambda x: x.strftime('%Y-%m-%d') if x else None)
 
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:

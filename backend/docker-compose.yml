@@ -1,7 +1,7 @@
 version: '1.0'
 
 services:
-  web:
+  health-care-website-backend-beta:
     build:
       context: .
     ports:
@@ -9,3 +9,4 @@ services:
     volumes:
       - ./instance:/app/instance
       - ./statics:/app/statics
+    restart: always
