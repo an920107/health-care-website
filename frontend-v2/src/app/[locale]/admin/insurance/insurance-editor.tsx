@@ -1,5 +1,3 @@
-// TODO: make lables and messages translatable
-
 "use client";
 
 import Button from "@/components/button";
@@ -146,7 +144,8 @@ export default function InsuranceEditor({
       <h1>{updateId === undefined ? trans("new") : trans("edit")}</h1>
       <form className="mt-6 flex flex-col gap-4">
         <DateField
-          label="申請日期"
+          label="application_date"
+          labelText={trans("application_date")}
           locale={locale}
           value={applicationDate}
           onChange={setApplicationDate}
@@ -155,7 +154,8 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <DateField
-          label="事故日期"
+          label="incident_date"
+          labelText={trans("incident_date")}
           locale={locale}
           value={incidentDate}
           onChange={setIncidentDate}
@@ -164,7 +164,8 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <TextField
-          label="姓名"
+          label="name"
+          labelText={trans("name")}
           value={name}
           onChange={setName}
           onValidate={handleValidate}
@@ -172,7 +173,8 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <TextField
-          label="學號"
+          label="student_id"
+          labelText={trans("student_id")}
           value={studentId}
           onChange={setStudentId}
           onValidate={handleValidate}
@@ -180,7 +182,8 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <TextField
-          label="身份證字號"
+          label="id_number"
+          labelText={trans("id_number")}
           value={idNumber}
           onChange={setIdNumber}
           onValidate={handleValidate}
@@ -188,7 +191,8 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <TextField
-          label="地址"
+          label="address"
+          labelText={trans("address")}
           value={address}
           onChange={setAddress}
           onValidate={handleValidate}
@@ -196,7 +200,8 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <TextField
-          label="電話"
+          label="phone_number"
+          labelText={trans("phone_number")}
           value={phoneNumber}
           onChange={setPhoneNumber}
           onValidate={handleValidate}
@@ -204,7 +209,8 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <TextField
-          label="Email"
+          label="email"
+          labelText={trans("email")}
           value={email}
           onChange={setEmail}
           onValidate={handleValidate}
@@ -212,28 +218,32 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <DropdownButton
-          label="理賠內容"
+          label="claim_detail"
+          labelText={trans("claim_detail")}
           options={claimDetailsOptions}
           className="h-10"
           onChange={(index) => setClaimDetails(claimDetailsOptions[index])}
           index={claimDetailsOptions.indexOf(claimDetails)}
         />
         <DropdownButton
-          label="給付類別"
+          label="payment_type"
+          labelText={trans("payment_type")}
           options={paymentTypeOptions}
           className="h-10"
           onChange={(index) => setPaymentType(paymentTypeOptions[index])}
           index={paymentTypeOptions.indexOf(paymentType)}
         />
         <DropdownButton
-          label="地點"
+          label="location"
+          labelText={trans("location")}
           options={locationOptions}
           className="h-10"
           onChange={(index) => setLocation(locationOptions[index])}
           index={locationOptions.indexOf(location)}
         />
         <TextField
-          label="事故原因（簡述）"
+          label="incident_cause"
+          labelText={trans("incident_cause")}
           value={incidentCause}
           onChange={setIncidentCause}
           onValidate={handleValidate}
@@ -241,7 +251,8 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <TextField
-          label="收據（醫院名稱 + 份數）"
+          label="receipt"
+          labelText={trans("receipt")}
           value={receipt}
           onChange={setReceipt}
           onValidate={handleValidate}
@@ -249,7 +260,8 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <TextField
-          label="診斷書（醫院名稱 + 份數）"
+          label="certificate"
+          labelText={trans("certificate")}
           value={diagnosisCertificate}
           onChange={setDiagnosisCertificate}
           onValidate={handleValidate}
@@ -257,21 +269,24 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <DropdownButton
-          label="存摺"
+          label="bankbook"
+          labelText={trans("bankbook")}
           options={numberOptions}
           className="h-10"
           onChange={(index) => setBankbook(numberOptions[index])}
           index={numberOptions.indexOf(bankbook)}
         />
         <DropdownButton
-          label="X 光"
+          label="x_ray"
+          labelText={trans("x_ray")}
           options={numberOptions}
           className="h-10"
           onChange={(index) => setXRay(numberOptions[index])}
           index={numberOptions.indexOf(xRay)}
         />
         <TextField
-          label="申請金額"
+          label="application_amount"
+          labelText={trans("application_amount")}
           value={applicationAmount}
           onChange={setApplicationAmount}
           onValidate={handleValidate}
@@ -279,7 +294,8 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <TextField
-          label="理賠金額"
+          label="claim_amount"
+          labelText={trans("claim_amount")}
           value={claimAmount}
           onChange={setClaimAmount}
           onValidate={handleValidate}
@@ -287,18 +303,20 @@ export default function InsuranceEditor({
           toValidate={toValidate}
         />
         <DateField
-          label="理賠日期"
+          label="claim_date"
+          labelText={trans("claim_date")}
           locale={locale}
           value={claimDate}
           onChange={setClaimDate}
         />
         <TextField
-          label="備註"
+          label="remarks"
+          labelText={trans("remarks")}
           value={remarks}
           onChange={setRemarks}
         />
         <div>
-          <label htmlFor="保險公司收件核章" className="label">保險公司收件核章</label>
+          <label htmlFor="insurance_company_stamp" className="label">{trans("insurance_company_stamp")}</label>
           <div className="flex flex-row gap-2 items-center">
             <input
               type="checkbox"
