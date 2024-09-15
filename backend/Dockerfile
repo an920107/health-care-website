@@ -1,4 +1,4 @@
-FROM docker.io/library/python:3.11 AS install-base
+FROM docker.io/library/python:3.12 AS install-base
 
 RUN apt-get update -y
 
