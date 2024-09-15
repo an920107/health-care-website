@@ -7,7 +7,7 @@ from helpers.CustomResponse import CustomResponse
 from helpers.auth_helpers import authorization_required
 from models.download_model import Download, db
 from flask import Blueprint, request, send_file, current_app
-from sqlalchemy import or_
+from sqlalchemy import or_, desc
 
 download_blueprint = Blueprint('download', __name__)
 
@@ -56,7 +56,7 @@ def get_downloads():
         downloads = downloads.filter(Download.visibility == bool(request.args["visibility"]))
 
     total_page = math.ceil(len(downloads.all()) // 10) + 1
-    downloads = [download.to_dict() for download in downloads][(page - 1) * 10:page * 10]
+    downloads = [download.to_dict() for download in downloads.order_by(desc(Download.created_time))][(page - 1) * 10:page * 10]
 
     return {'message': "get downloads success", 'data': downloads, "total_page": total_page}, 200
 
