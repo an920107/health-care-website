@@ -96,7 +96,7 @@ export default function NewDenguePage({ params }: Props) {
     const request = DengueRequestFactory.fromAnswerSet({
       userId: userId,
       buildingId: buildings[selectedBuildingIndex].id,
-      inspectionTime: new Date(),
+      inspectionTime: inspectionDate!,
       answerSet: answerSet.map(([main, sub]) => [main === 0, sub === 0]),
       outdoorOtherContainers: main25,
       indoorOtherContainers: main30,
