@@ -44,6 +44,10 @@ def get_downloads():
         if "page" in request.args and int(request.args['page']) > 1 \
         else 1
 
+    if "column" in request.args:
+        downloads = downloads.filter(
+            or_(*[Download.column.like(f'%{term}%') for term in request.args['column'].split('+')]))
+
     if "search" in request.args:
         downloads = downloads.filter(
             or_(*[Download.title.like(f'%{term}%') for term in request.args['search'].split('+')]))

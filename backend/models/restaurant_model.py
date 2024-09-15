@@ -1,4 +1,4 @@
-from werkzeug.exceptions import BadRequest
+from datetime import datetime
 
 from models.database import SchemaMixin, db
 from sqlalchemy.dialects.postgresql import JSON
@@ -22,4 +22,18 @@ class Restaurant(SchemaMixin, db.Model):
     def __repr__(self):
         return f'<Restaurant {self.title}>'
 
-
+    def to_dict(self):
+        return {
+            'title': self.title,
+            'title_en': self.title_en,
+            'category': self.category,
+            'item': self.item,
+            'item_en': self.item_en,
+            'attachments': self.attachments,
+            'valid': self.valid,
+            'visibility': self.visibility,
+            'inspected_time': datetime.isoformat(self.inspected_time),
+            'viewer': self.viewer,
+            'updated_time': self.updated_time,
+            'created_time': self.created_time
+        }
