@@ -87,7 +87,7 @@ export default function RestaurantTable({
         </p>
       )
       : (
-        <div className="overflow-x-scroll">
+        <div className="overflow-x-auto">
           <table className="table-auto w-full text-left border-collapse">
             <thead>
               <tr className="border-b-2">
