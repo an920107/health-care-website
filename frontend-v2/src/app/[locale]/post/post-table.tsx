@@ -123,7 +123,7 @@ export default function PostTable({
         </p>
       )
       : (
-        <div>
+        <div className="overflow-x-auto">
           <table className="table-auto w-full text-left border-collapse">
             <thead>
               <tr className="border-b-2">
