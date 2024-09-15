@@ -264,7 +264,7 @@ def patch_insurance(id_):
     if "insurance_company_stamp" in request.json:
         insurance.insurance_company_stamp = request.json["insurance_company_stamp"]
     if "insurance_company_timestamp" in request.json:
-        insurance.insurance_company_stamp = datetime.fromisoformat(request.json["insurance_company_timestamp"])
+        insurance.insurance_company_timestamp = datetime.fromisoformat(request.json["insurance_company_timestamp"])
 
     db.session.commit()
     return CustomResponse.no_content("patch insurance success", insurance.to_dict())

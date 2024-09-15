@@ -38,7 +38,7 @@ class RestaurantContainer:
             "attachments": json_request['attachments'],
             "valid": json_request['valid'],
             "visibility": json_request['visibility'],
-            "inspected_time": datetime.fromisoformat('2020-01-06T00:00:00.000Z')
+            "inspected_time": datetime.fromisoformat(json_request['inspected_time'])
         }
 
     def get_data(self):

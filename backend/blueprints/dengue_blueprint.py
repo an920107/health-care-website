@@ -1,14 +1,14 @@
 import logging
 import math
 import io
+from base64 import encode
 
 from datetime import datetime
-
+from operator import index
 from helpers.CustomResponse import CustomResponse
 
 from helpers.auth_helpers import authorization_required
 from models.building_model import Building
-from models.dengue_model import Dengue, db
 from models.dengue_model import Dengue, db
 from models.user_model import User
 from flask import Blueprint, request, send_file
@@ -279,12 +279,11 @@ def get_dengues():
     total_page = math.ceil(len(dengues) / 10)
     dengues = [dengue.to_dict() for dengue in dengues][(page - 1) * 10:page * 10]
 
-
     return {'message': 'get dengues success', 'data': dengues, 'total_page': total_page}, 200
 
 
 @dengue_blueprint.route('report', methods=['GET'])
-@authorization_required([0, 1, 2, 9])
+# @authorization_required([0, 1, 2, 9])
 def get_dengue_report():
     """
     get dengue report
@@ -309,53 +308,46 @@ def get_dengue_report():
         description: get dengue report success
     """
     from_time = datetime.strptime(request.args['from'], '%Y-%m')
-    to_time = datetime.strptime(request.args['to'], '%Y-%m') + pd.DateOffset(months=1)
+    to_time = datetime.strptime(request.args['to'], '%Y-%m')
 
     if from_time > to_time:
         return CustomResponse.unprocessable_content('from time should be less than to time', {})
-    year_months = [year_month.strftime('%Y-%m') for year_month in pd.date_range(from_time, to_time, freq='ME')]
-
+    year_months = [
+        year_month.strftime('%Y-%m')
+        for year_month in pd.date_range(from_time, to_time + pd.DateOffset(months=1), freq='ME')]
     buildings = db.session.query(Building).all()
-    buildings_df = pd.DataFrame(
-        [building.name for building in buildings],
-        columns=['building'],
-        index=[building.id for building in buildings]
-    )
+    buildings_mapper = {building.id: building.name for building in buildings}
+
+    pivot_table = pd.DataFrame([], index=[building.name for building in buildings], columns=[year_months])
+    pivot_table = pivot_table.fillna("尚未填報")
 
     dengues = db.session.query(Dengue).all()
-    dengues_df = pd.DataFrame(
-        [dengue.to_dict() for dengue in dengues],
-        index=[dengue.inspection_time for dengue in dengues],
-        columns=DengueContainer.COLUMNS
-    )
-    dengues_df.index = dengues_df['inspection_time'].apply(lambda x: x.strftime('%Y-%m'))
 
-    dataframes = {}
-    for year_month in year_months:
-        year_month_df = dengues_df[dengues_df.index == year_month]
-
-        year_month_df = year_month_df.set_index('building_id')
-        year_month_df = pd.concat([buildings_df, year_month_df], axis=1, join='outer')
-
-        for column_name, column_des in DengueContainer.COLUMNS_MAPPER.items():
-            if column_name in [
-                'user_id', 'building', 'inspection_time', 'outdoor_other_containers', 'indoor_other_containers']:
+    for dengue in dengues:
+        dengue = dengue.to_dict()
+        building = buildings_mapper[dengue['building_id']]
+        inspection_time = dengue['inspection_time'].strftime('%Y-%m')
+        error_msg = ""
+        for key, value in dengue.items():
+            if key in ['id', 'user_id', 'building_id', 'inspection_time', 'created_time', 'updated_time']:
                 continue
 
-            year_month_df[column_name] = year_month_df[column_name].apply(lambda x: '合格' if x == 0 else x)
-            year_month_df[column_name] = year_month_df[column_name].apply(lambda x: '已改善' if x == 1 else x)
-            year_month_df[column_name] = year_month_df[column_name].apply(
-                lambda x: column_des['problem'] if x == 2 else x)
+            elif key in ['outdoor_other_containers', 'indoor_other_containers']:
+                if value:
+                    error_msg += f"{value}\n"
+                continue
 
-        year_month_df.columns = [
-            DengueContainer.COLUMNS_MAPPER[column]['chinese_title'] for column in year_month_df.columns
-        ]
-        dataframes[year_month] = year_month_df
+            if value != 0:
+                error_msg += f"{DengueContainer.COLUMNS_MAPPER[key]['chinese_title']}：{DengueContainer.COLUMNS_MAPPER[key]['problem']}\n"
+
+        error_msg = error_msg or "完成"
+        pivot_table.loc[building, inspection_time] = error_msg
+    pivot_table = pivot_table.T.reset_index().T.reset_index()
+    pivot_table.iloc[0, 0] = ''
 
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
-        for sheet_name, df in dataframes.items():
-            df.to_excel(writer, sheet_name=sheet_name, index=False)
+        pivot_table.to_excel(writer, index=False, header=False)
 
     output.seek(0)
     return send_file(
