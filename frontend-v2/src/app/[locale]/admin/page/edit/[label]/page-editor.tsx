@@ -22,16 +22,16 @@ import { useEffect, useState } from "react";
 
 type Props = {
   label: TopicEnum;
-  defaultContent: string;
-  defaultContentEn: string;
-  defaultAttachmentIds: number[];
+  defaultContent?: string;
+  defaultContentEn?: string;
+  defaultAttachmentIds?: number[];
 }
 
 export default function PageEditor({
   label,
-  defaultContent,
-  defaultContentEn,
-  defaultAttachmentIds,
+  defaultContent = "",
+  defaultContentEn = "",
+  defaultAttachmentIds = [],
 }: Props) {
   const trans = useTranslations("Static");
   const topicTrans = useTranslations("Topic");

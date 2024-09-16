@@ -45,7 +45,7 @@ export default function EditStaticPostPage({ params }: Props) {
 
   return post === undefined
     ? (
-      <></>
+      <PageEditor label={params.label as TopicEnum} />
     )
     : (
       <PageEditor
