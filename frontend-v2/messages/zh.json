@@ -198,7 +198,7 @@
         "name": "姓名",
         "student_id": "學號",
         "application_date": "申請日期",
-        "incident_date": "發生日期",
+        "incident_date": "事故日期",
         "id_number": "身分證字號（居留證或護照號碼）",
         "phone_number": "電話號碼",
         "address": "地址",
