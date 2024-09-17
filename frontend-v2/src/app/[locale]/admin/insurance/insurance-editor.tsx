@@ -220,7 +220,7 @@ export default function InsuranceEditor({
         <DropdownButton
           label="claim_detail"
           labelText={trans("claim_detail")}
-          options={claimDetailsOptions}
+          options={claimDetailsOptions.map(label => trans(label))}
           className="h-10"
           onChange={(index) => setClaimDetails(claimDetailsOptions[index])}
           index={claimDetailsOptions.indexOf(claimDetails)}
@@ -228,7 +228,7 @@ export default function InsuranceEditor({
         <DropdownButton
           label="payment_type"
           labelText={trans("payment_type")}
-          options={paymentTypeOptions}
+          options={paymentTypeOptions.map(label => trans(label))}
           className="h-10"
           onChange={(index) => setPaymentType(paymentTypeOptions[index])}
           index={paymentTypeOptions.indexOf(paymentType)}
@@ -236,7 +236,7 @@ export default function InsuranceEditor({
         <DropdownButton
           label="location"
           labelText={trans("location")}
-          options={locationOptions}
+          options={locationOptions.map(label => trans(label))}
           className="h-10"
           onChange={(index) => setLocation(locationOptions[index])}
           index={locationOptions.indexOf(location)}
