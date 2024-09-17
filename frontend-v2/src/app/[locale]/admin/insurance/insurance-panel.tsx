@@ -107,8 +107,8 @@ export default function InsurancePanel({
                   {/* <Table.Cell className="text-nowrap">{insurance.phoneNumber}</Table.Cell> */}
                   {/* <Table.Cell className="text-nowrap">{insurance.address}</Table.Cell> */}
                   {/* <Table.Cell className="text-nowrap">{insurance.email}</Table.Cell> */}
-                  <Table.Cell className="text-nowrap">{insurance.claimDetails}</Table.Cell>
-                  <Table.Cell className="text-nowrap">{insurance.paymentType}</Table.Cell>
+                  <Table.Cell className="text-nowrap">{trans(insurance.claimDetails)}</Table.Cell>
+                  <Table.Cell className="text-nowrap">{trans(insurance.paymentType)}</Table.Cell>
                   {/* <Table.Cell className="text-nowrap">{insurance.location}</Table.Cell> */}
                   {/* <Table.Cell className="text-nowrap">{insurance.incidentCause}</Table.Cell> */}
                   {/* <Table.Cell className="text-nowrap">{insurance.receipt}</Table.Cell> */}
