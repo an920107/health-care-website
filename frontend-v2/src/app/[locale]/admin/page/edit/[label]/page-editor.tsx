@@ -14,6 +14,7 @@ import TopicEnum from "@/module/indexMenu/domain/topicEnum";
 import { StaticPostRequest } from "@/module/post/application/postDto";
 import StaticPostUsecase from "@/module/post/application/staticPostUsecase";
 import PostRepoImpl from "@/module/post/presenter/postRepoImpl";
+import PostViewModel from "@/module/post/presenter/postViewModel";
 import { useRouter } from "@/navigation";
 import { faSave, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,16 +23,12 @@ import { useEffect, useState } from "react";
 
 type Props = {
   label: TopicEnum;
-  defaultContent?: string;
-  defaultContentEn?: string;
-  defaultAttachmentIds?: number[];
+  post?: PostViewModel;
 }
 
 export default function PageEditor({
   label,
-  defaultContent = "",
-  defaultContentEn = "",
-  defaultAttachmentIds = [],
+  post,
 }: Props) {
   const trans = useTranslations("Static");
   const topicTrans = useTranslations("Topic");
@@ -39,8 +36,8 @@ export default function PageEditor({
 
   const router = useRouter();
 
-  const [chineseContent, setChineseContent] = useState<string>(defaultContent);
-  const [englishContent, setEnglishContent] = useState<string>(defaultContentEn);
+  const [chineseContent, setChineseContent] = useState<string>(post?.content ?? "");
+  const [englishContent, setEnglishContent] = useState<string>(post?.contentEn ?? "");
   const [attachments, setAttachments] = useState<AttachmentEntity[]>([]);
   const [uploadingAttachments, setUploadingAttachments] = useState<UploadingAttachmentEntity[]>([]);
   const [uploadingProgressMap, setUploadingProgressMap] = useState<UploadingPregressMap>({});
@@ -71,16 +68,15 @@ export default function PageEditor({
   }
 
   useEffect(() => {
-    router.refresh();
-  }, []);
+    setChineseContent(post?.content ?? "");
+    setEnglishContent(post?.contentEn ?? "");
 
-  useEffect(() => {
     const attachmentFetchAction = new AttachmentFetchAction({
       usecase: attachmentUsecase,
       setAttachments: setAttachments,
     });
-    attachmentFetchAction.invoke(defaultAttachmentIds);
-  }, [defaultAttachmentIds]);
+    attachmentFetchAction.invoke(post?.attachments ?? []);
+  }, [post?.attachments, post?.content, post?.contentEn]);
 
   return (
     <div>
