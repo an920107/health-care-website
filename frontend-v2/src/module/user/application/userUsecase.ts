@@ -1,3 +1,4 @@
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 import UserEntity from "../domain/userEntity";
 import UserRepo from "../domain/userRepo";
 import UserRoleEnum from "../domain/userRoleEnum";
@@ -12,11 +13,13 @@ export default class UserUsecase {
     async getAllUsers({
         role,
         search,
+        page,
     }: {
         role?: UserRoleEnum;
         search?: string;
-    }): Promise<UserEntity[]> {
-        return this._repo.query({ role, search });
+        page?: number;
+    }): Promise<[UserEntity[], PagerEntity]> {
+        return this._repo.query({ role, search, page });
     }
 
     async getCurrentUser(): Promise<UserEntity> {

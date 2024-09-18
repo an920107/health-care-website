@@ -4,17 +4,21 @@ import UserRoleEnum from "../domain/userRoleEnum";
 import { BACKEND_HOST } from "@/module/config/config";
 import { UserResponse } from "../application/userDto";
 import Cookies from "js-cookie";
+import { PagerResponse } from "@/module/pager/application/pagerDto";
 
 export default class UserRepoImpl implements UserRepo {
     async query({
         role,
         search,
+        page,
     }: {
         role?: UserRoleEnum;
         search?: string;
-    }): Promise<UserResponse[]> {
+        page?: number;
+    }): Promise<[UserResponse[], PagerResponse]> {
         const params: any = {};
         if (role) params.role = role;
+        if (page) params.page = page;
         if ((search ?? "").trim().length > 0) {
             params.search = search;
         }
@@ -26,7 +30,10 @@ export default class UserRepoImpl implements UserRepo {
         if (response.status !== 200)
             return Promise.reject(new Error(response.data));
 
-        return (response.data["data"] as Array<any>).map((user) => new UserResponse(user));
+        return [
+            (response.data["data"] as Array<any>).map((user) => new UserResponse(user)),
+            new PagerResponse(response.data),
+        ];
     }
 
     async get(): Promise<UserResponse> {

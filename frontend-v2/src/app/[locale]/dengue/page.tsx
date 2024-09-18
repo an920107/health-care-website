@@ -9,6 +9,7 @@ import BuildingRepoImpl from "@/module/building/presenter/buildingRepoImpl";
 import DengueUsecase from "@/module/dengue/application/dengueUsecase";
 import DengueRepoImpl from "@/module/dengue/presenter/dengueRepoImpl";
 import DengueViewModel from "@/module/dengue/presenter/dengueViewModel";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 import UserUsecase from "@/module/user/application/userUsecase";
 import UserRepoImpl from "@/module/user/presenter/userRepoImpl";
 import { Link, useRouter } from "@/navigation";
@@ -25,8 +26,7 @@ export default function DenguePage() {
 
   const [dengues, setDengues] = useState<DengueViewModel[]>([]);
   const [buildingIdNameMap, setBuildingIdNameMap] = useState<Map<number, string>>(new Map());
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(1);
+  const [pagerEntity, setPagerEntity] = useState(new PagerEntity({ currentPage: 1, totalPage: 1 }));
 
   async function fetchAll() {
     try {
@@ -36,10 +36,10 @@ export default function DenguePage() {
       router.push("/");
       return;
     }
-    const [dengues, pager] = await dangueUsecase.getAllDengues({ page: currentPage });
+    const [dengues, pager] = await dangueUsecase.getAllDengues({ page: pagerEntity.currentPage });
 
     setDengues(dengues.map((dengue) => new DengueViewModel(dengue)));
-    setTotalPage(pager.totalPage);
+    setPagerEntity((prev) => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage }));
 
     const buildingUsecase = new BuildingUsecase(new BuildingRepoImpl());
     for (const dengue of dengues) {
@@ -51,6 +51,10 @@ export default function DenguePage() {
   useEffect(() => {
     fetchAll();
   }, []);
+
+  useEffect(() => {
+    fetchAll();
+  }, [pagerEntity.currentPage]);
 
   function handleDelete(id: number) {
     dangueUsecase.deleteDengue(id).then(() => fetchAll());
@@ -91,7 +95,7 @@ export default function DenguePage() {
           <Link href={`/dengue/new`} className="py-1">建立登革熱報表</Link>
         </Button>
         <div className="flex flex-row justify-end mt-4">
-          <Pager totalPage={totalPage} onChange={setCurrentPage} />
+          <Pager entity={pagerEntity} onChange={setPagerEntity} />
         </div>
       </div>
     </>

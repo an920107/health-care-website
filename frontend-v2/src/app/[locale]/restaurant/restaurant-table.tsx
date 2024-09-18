@@ -3,6 +3,7 @@
 import Card from "@/components/card";
 import Pager from "@/components/pager";
 import SearchBar from "@/components/search-bar";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 import RestaurantUsecase from "@/module/restaurant/application/restaurantUsecase";
 import RestaurantEntity from "@/module/restaurant/domain/restaurantEntity";
 import RestaurantRepoImpl from "@/module/restaurant/presenter/restaurantRepoImpl";
@@ -32,11 +33,10 @@ export default function RestaurantTable({
   const statusTrans = useTranslations("Status");
 
   const [searchText, setSearchText] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(1);
+  const [pagerEntity, setPagerEntity] = useState(new PagerEntity({ currentPage: 1, totalPage: 1 }));
 
   function handleSearchSubmit(text: string) {
-    setCurrentPage(1);
+    setPagerEntity(prev => new PagerEntity({ currentPage: 1, totalPage: prev.totalPage }));
     setSearchText(text);
   }
 
@@ -55,7 +55,7 @@ export default function RestaurantTable({
         {
           isEnablePager &&
           <div className="flex flex-row justify-end">
-            <Pager totalPage={totalPage} onChange={setCurrentPage} />
+            <Pager entity={pagerEntity} onChange={setPagerEntity} />
           </div>
         }
       </div>
@@ -69,16 +69,16 @@ export default function RestaurantTable({
 
     useEffect(() => {
       restaurantUsecase.getAllRestaurants({
-        page: currentPage,
+        page: pagerEntity.currentPage,
         visibility: !isAdmin,
         search: searchText,
       })
         .then(([restaurants, pager]) => {
           setRestaurants(restaurants);
-          setTotalPage(pager.totalPage);
+          setPagerEntity(prev => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage }));
         })
         .catch((err) => console.error("Fetching restaurants failed:", err))
-    }, [searchText, currentPage]);
+    }, [searchText, pagerEntity.currentPage]);
 
     return restaurants.length === 0
       ? (
