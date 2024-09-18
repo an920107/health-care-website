@@ -15,6 +15,7 @@ import Pager from "@/components/pager";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFire, faPen } from "@fortawesome/free-solid-svg-icons";
 import { ColumnSelectionType } from "@/module/post/presenter/columnSelection";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 
 type Props = {
   locale: string;
@@ -39,8 +40,7 @@ export default function PostTable({
   const statusTrans = useTranslations("Status");
 
   const [searchText, setSearchText] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(1);
+  const [pagerEntity, setPagerEntity] = useState(new PagerEntity({ currentPage: 1, totalPage: 1 }));
   const [columnSelected, setColumnSelected] =
     useState<ColumnSelectionType>(columnSelections[0]);
 
@@ -49,7 +49,7 @@ export default function PostTable({
   }
 
   function handleSearchSubmit(text: string) {
-    setCurrentPage(1);
+    setPagerEntity(prev => new PagerEntity({ currentPage: 1, totalPage: prev.totalPage }));
     setSearchText(text);
   }
 
@@ -86,7 +86,7 @@ export default function PostTable({
         {
           isEnablePager &&
           <div className="flex flex-row justify-end">
-            <Pager totalPage={totalPage} onChange={setCurrentPage} />
+            <Pager entity={pagerEntity} onChange={setPagerEntity} />
           </div>
         }
       </div>
@@ -102,17 +102,17 @@ export default function PostTable({
 
     useEffect(() => {
       postUsecase.getAllPosts({
-        page: currentPage,
+        page: pagerEntity.currentPage,
         column: columnSelected.value,
         visibility: !isAdmin,
         search: searchText
       })
         .then(([posts, pager]) => {
           setPosts(posts);
-          setTotalPage(pager.totalPage);
+          setPagerEntity(prev => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage}))
         })
         .catch(err => console.error("Fetching posts failed:", err));
-    }, [columnSelected, searchText, currentPage]);
+    }, [columnSelected, searchText, pagerEntity.currentPage]);
 
     const isEn = locale === "en";
 

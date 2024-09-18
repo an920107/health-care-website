@@ -8,6 +8,7 @@ import DownloadUsecase from "@/module/download/application/downloadUsecase";
 import { ColumnSelectionType, downloadColumnSelections } from "@/module/download/presenter/columnSelection";
 import DownloadRepoImpl from "@/module/download/presenter/downloadRepoImpl";
 import DownloadViewModel from "@/module/download/presenter/downloadViewModel";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 import { Link } from "@/navigation";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,19 +34,18 @@ export default function DownloadPanel({
 
   const [downloads, setDownloads] = useState<DownloadViewModel[]>([]);
   const [columnSelected, setColumnSelected] = useState<ColumnSelectionType>(downloadColumnSelections[0]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(1);
+  const [pagerEntity, setPagerEntity] = useState(new PagerEntity({ currentPage: 1, totalPage: 1 }));
 
   async function fetchAll() {
     const usecase = new DownloadUsecase(new DownloadRepoImpl());
     try {
       const [entities, pager] = await usecase.getAllDownload({
-        page: currentPage,
+        page: pagerEntity.currentPage,
         column: columnSelected.value,
         visibility: !isAdmin,
       });
       setDownloads(entities.map((entity) => new DownloadViewModel(entity)));
-      setTotalPage(pager.totalPage);
+      setPagerEntity(prev => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage }));
     } catch (err) {
       console.error(err);
     }
@@ -57,7 +57,7 @@ export default function DownloadPanel({
 
   useEffect(() => {
     fetchAll();
-  }, [columnSelected]);
+  }, [columnSelected, pagerEntity.currentPage]);
 
   return (
     <div className={className}>
@@ -80,7 +80,7 @@ export default function DownloadPanel({
       <div className="flex flex-row justify-between items-start md:items-center mt-4">
         <div>{actions ?? (<></>)}</div>
         <div className="flex flex-row justify-end">
-          <Pager totalPage={totalPage} onChange={setCurrentPage} />
+          <Pager entity={pagerEntity} onChange={setPagerEntity} />
         </div>
       </div>
     </div>

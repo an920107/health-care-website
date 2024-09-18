@@ -5,6 +5,7 @@ import SearchBar from "@/components/search-bar";
 import InsuranceUsecase from "@/module/insurance/application/insuranceUsecase";
 import InsuranceRepoImpl from "@/module/insurance/presenter/insuranceRepoImpl";
 import InsuranceViewModel from "@/module/insurance/presenter/insuranceViewModel";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 import { Link } from "@/navigation";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,13 +28,12 @@ export default function InsurancePanel({
 
   const [searchText, setSearchText] = useState<string>("");
   const [insurances, setInsurances] = useState<InsuranceViewModel[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(1);
+  const [pagerEntity, setPagerEntity] = useState(new PagerEntity({ currentPage: 1, totalPage: 1 }));
 
   function fetchAll() {
-    usecase.getAllInsurance({ page: currentPage, search: searchText }).then(([insurances, pager]) => {
+    usecase.getAllInsurance({ page: pagerEntity.currentPage, search: searchText }).then(([insurances, pager]) => {
       setInsurances(insurances.map((insurance) => new InsuranceViewModel(insurance)));
-      setTotalPage(pager.totalPage);
+      setPagerEntity(prev => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage }));
     });
   }
 
@@ -43,10 +43,10 @@ export default function InsurancePanel({
 
   useEffect(() => {
     fetchAll();
-  }, [currentPage, searchText]);
+  }, [pagerEntity.currentPage, searchText]);
 
   function handleSearchSubmit(text: string) {
-    setCurrentPage(1);
+    setPagerEntity(prev => new PagerEntity({ currentPage: 1, totalPage: prev.totalPage }));
     setSearchText(text);
   }
 
@@ -140,7 +140,7 @@ export default function InsurancePanel({
       <div className="flex flex-row justify-between items-start md:items-center mt-4">
         {actions ?? (<></>)}
         <div className="flex flex-row justify-end">
-          <Pager totalPage={totalPage} onChange={setCurrentPage} />
+          <Pager entity={pagerEntity} onChange={setPagerEntity} />
         </div>
       </div>
     );
