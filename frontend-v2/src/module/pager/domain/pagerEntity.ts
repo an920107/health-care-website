@@ -4,13 +4,13 @@ export default class PagerEntity {
 
     constructor({
         currentPage = 1,
-        totalPage,
+        totalPage = 1,
     }: {
         currentPage?: number,
-        totalPage: number,
+        totalPage?: number,
     }) {
-        this.currentPage = currentPage;
-        this.totalPage = totalPage;
+        this.currentPage = currentPage < 1 ? 1 : currentPage;
+        this.totalPage = totalPage < 1 ? 1 : totalPage;
     }
 
     get hasPrevious(): boolean {
