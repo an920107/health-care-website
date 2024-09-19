@@ -22,6 +22,8 @@ type Props = {
   actions?: Readonly<React.ReactNode>;
 };
 
+const restaurantUsecase = new RestaurantUsecase(new RestaurantRepoImpl());
+
 export default function RestaurantTable({
   locale,
   isEnableSearch = false,
@@ -32,8 +34,22 @@ export default function RestaurantTable({
   const trans = useTranslations("Restaurant");
   const statusTrans = useTranslations("Status");
 
+  const [restaurants, setRestaurants] = useState<RestaurantEntity[]>([]);
   const [searchText, setSearchText] = useState<string>("");
   const [pagerEntity, setPagerEntity] = useState(new PagerEntity({ currentPage: 1, totalPage: 1 }));
+
+  useEffect(() => {
+    restaurantUsecase.getAllRestaurants({
+      page: pagerEntity.currentPage,
+      visibility: !isAdmin,
+      search: searchText,
+    })
+      .then(([restaurants, pager]) => {
+        setRestaurants(restaurants);
+        setPagerEntity(prev => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage }));
+      })
+      .catch((err) => console.error("Fetching restaurants failed:", err))
+  }, [searchText, pagerEntity.currentPage]);
 
   function handleSearchSubmit(text: string) {
     setPagerEntity(prev => new PagerEntity({ currentPage: 1, totalPage: prev.totalPage }));
@@ -47,7 +63,7 @@ export default function RestaurantTable({
       {isEnableSearch && <SearchBar className="mt-6" onSubmit={handleSearchSubmit} />}
       <div className="mt-4 border shadow-md rounded-xl overflow-hidden">
         <Card className="w-full rounded-b-xl overflow-hidden" isRounded={false} isBorder={false}>
-          <Table></Table>
+          <Table />
         </Card>
       </div>
       <div className="flex flex-row justify-between items-start md:items-center mt-4">
@@ -63,23 +79,6 @@ export default function RestaurantTable({
   );
 
   function Table() {
-    const [restaurants, setRestaurants] = useState<RestaurantEntity[]>([]);
-
-    const restaurantUsecase = new RestaurantUsecase(new RestaurantRepoImpl());
-
-    useEffect(() => {
-      restaurantUsecase.getAllRestaurants({
-        page: pagerEntity.currentPage,
-        visibility: !isAdmin,
-        search: searchText,
-      })
-        .then(([restaurants, pager]) => {
-          setRestaurants(restaurants);
-          setPagerEntity(prev => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage }));
-        })
-        .catch((err) => console.error("Fetching restaurants failed:", err))
-    }, [searchText, pagerEntity.currentPage]);
-
     return restaurants.length === 0
       ? (
         <p className="py-12 text-center">

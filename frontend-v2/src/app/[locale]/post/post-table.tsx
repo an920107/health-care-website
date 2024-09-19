@@ -27,6 +27,8 @@ type Props = {
   actions?: Readonly<React.ReactNode>;
 };
 
+const postUsecase = new NormalPostUsecase(new PostRepoImpl());
+
 export default function PostTable({
   locale,
   isEnableSearch = false,
@@ -39,10 +41,25 @@ export default function PostTable({
   const trans = useTranslations("Post");
   const statusTrans = useTranslations("Status");
 
+  const [posts, setPosts] = useState<PostEntity[]>([]);
   const [searchText, setSearchText] = useState<string>("");
   const [pagerEntity, setPagerEntity] = useState(new PagerEntity({ currentPage: 1, totalPage: 1 }));
   const [columnSelected, setColumnSelected] =
     useState<ColumnSelectionType>(columnSelections[0]);
+
+  useEffect(() => {
+    postUsecase.getAllPosts({
+      page: pagerEntity.currentPage,
+      column: columnSelected.value,
+      visibility: !isAdmin,
+      search: searchText
+    })
+      .then(([posts, pager]) => {
+        setPosts(posts);
+        setPagerEntity(prev => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage }))
+      })
+      .catch(err => console.error("Fetching posts failed:", err));
+  }, [columnSelected, searchText, pagerEntity.currentPage]);
 
   function handleColumnSelectionChange(index: number) {
     setColumnSelected(columnSelections[index]);
@@ -94,26 +111,6 @@ export default function PostTable({
   )
 
   function Table() {
-
-    const [posts, setPosts] = useState<PostEntity[]>([]);
-
-    const postRepo = new PostRepoImpl();
-    const postUsecase = new NormalPostUsecase(postRepo);
-
-    useEffect(() => {
-      postUsecase.getAllPosts({
-        page: pagerEntity.currentPage,
-        column: columnSelected.value,
-        visibility: !isAdmin,
-        search: searchText
-      })
-        .then(([posts, pager]) => {
-          setPosts(posts);
-          setPagerEntity(prev => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage}))
-        })
-        .catch(err => console.error("Fetching posts failed:", err));
-    }, [columnSelected, searchText]);
-
     const isEn = locale === "en";
 
     return posts.length === 0
