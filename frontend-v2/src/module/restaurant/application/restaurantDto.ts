@@ -65,7 +65,7 @@ export class RestaurantResponse extends RestaurantEntity {
             item: json.item,
             itemEn: json.item_en,
             attachments: json.attachments,
-            view: json.view,
+            view: json.viewer,
             valid: json.valid,
             visibility: json.visibility,
             inspectedTime: json.inspected_time,
