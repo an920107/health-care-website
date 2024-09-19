@@ -112,7 +112,7 @@ export default function PostTable({
           setPagerEntity(prev => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage}))
         })
         .catch(err => console.error("Fetching posts failed:", err));
-    }, [columnSelected, searchText, pagerEntity.currentPage]);
+    }, [columnSelected, searchText]);
 
     const isEn = locale === "en";
 
