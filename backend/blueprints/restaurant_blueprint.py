@@ -1,3 +1,4 @@
+import io
 import math
 from datetime import datetime
 
@@ -5,8 +6,9 @@ from helpers.CustomResponse import CustomResponse
 
 from helpers.auth_helpers import authorization_required
 from models.restaurant_model import Restaurant, db
-from flask import Blueprint, request
+from flask import Blueprint, request, send_file
 from sqlalchemy import desc, or_
+import pandas as pd
 
 restaurant_blueprint = Blueprint('restaurant', __name__)
 
@@ -247,3 +249,75 @@ def delete_restaurant(id_):
     db.session.commit()
 
     return CustomResponse.no_content("delete restaurant success", {})
+
+
+@restaurant_blueprint.route('report', methods=['GET'])
+def get_restaurant_stats():
+    """
+    get restaurant report
+    ---
+    tags:
+      - restaurant
+    parameters:
+      - in: query
+        name: from
+        type: string
+        required: true
+        example: "2021-01-01"
+        description: The start time
+      - in: query
+        name: to
+        type: string
+        required: true
+        example: "2021-01-01"
+        description: The end time
+    responses:
+      200:
+        description: get dengue report success
+    """
+    from_time = datetime.fromisoformat(request.args['from'])
+    to_time = datetime.fromisoformat(request.args['to'])
+
+    if from_time > to_time:
+        return CustomResponse.unprocessable_content('from time should be less than to time', {})
+
+    restaurants = Restaurant.query.filter(
+        Restaurant.inspected_time >= from_time, Restaurant.inspected_time <= to_time).all()
+
+    category_validation_count = {
+        'water': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0},
+        'food': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0},
+        'drink': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0},
+        'ice': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0},
+        'others': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0},
+        'total': {'total': 0, '1': 0, '0': 0, 'valid_rate': 0}
+    }
+
+    for post in restaurants:
+        category_validation_count[post.category][str(int(post.valid))] += 1
+        category_validation_count[post.category]['total'] += 1
+        category_validation_count['total'][str(int(post.valid))] += 1
+        category_validation_count['total']['total'] += 1
+
+    for category, count in category_validation_count.items():
+        if count['total'] != 0:
+            count['valid_rate'] = count['1'] / count['total']
+
+    df = pd.DataFrame(category_validation_count).T
+    df.columns = ['總件數', '合格幾件', '不合格幾件', '合格率']
+    df['類別'] = ['飲用水', '熟食', '飲料', '冰塊', '其他', '總和']
+    df = df[['類別', '總件數', '合格幾件', '不合格幾件', '合格率']]
+
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df = df.T.reset_index().T.reset_index()
+        df.loc[len(df)] = [
+            None, None, '開始日期', from_time.strftime('%Y-%m-%d'), '結束日期', to_time.strftime('%Y-%m-%d')]
+        df.to_excel(writer, index=False, header=False, sheet_name="總表")
+
+    output.seek(0)
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name='登革熱報表.xlsx'
+    )

@@ -85,6 +85,7 @@ class InsuranceContainer:
 
 
 @insurance_blueprint.route('<int:id_>', methods=['GET'])
+@authorization_required([0, 1])
 def get_insurance(id_):
     """
     get insurance
@@ -116,6 +117,7 @@ def get_insurance(id_):
 
 
 @insurance_blueprint.route('',  methods=['GET'])
+@authorization_required([0, 1])
 def get_insurances():
     """
     get insurances
@@ -154,7 +156,7 @@ def get_insurances():
 
 
 @insurance_blueprint.route('', methods=['POST'])
-@authorization_required([0, 1, 2])
+@authorization_required([0, 1])
 def post_insurance():
     """
     post insurance
@@ -189,7 +191,7 @@ def post_insurance():
 
 
 @insurance_blueprint.route('<int:id_>', methods=['PATCH'])
-@authorization_required([0, 1, 2])
+@authorization_required([0, 1])
 def patch_insurance(id_):
     """
     patch insurance
@@ -271,7 +273,7 @@ def patch_insurance(id_):
 
 
 @insurance_blueprint.route('<int:id_>', methods=['DELETE'])
-@authorization_required([0, 1, 2])
+@authorization_required([0, 1])
 def delete_insurance(id_):
     """
     delete insurance
@@ -306,6 +308,7 @@ def delete_insurance(id_):
 
 
 @insurance_blueprint.route('report', methods=['GET'])
+@authorization_required([0, 1])
 def get_insurance_report():
     """
     get insurance report
@@ -367,8 +370,9 @@ def get_insurance_report():
         insurances_df = pd.DataFrame([], columns=chinese_title_mapping.values())
     else:
         insurances_df = pd.DataFrame([insurance.to_dict() for insurance in insurances])
-        insurances_df = insurances_df[chinese_title_mapping.keys()]
-        insurances_df.columns = chinese_title_mapping.values()
+        insurances_df = pd.concat([insurances_df[['id']], insurances_df[chinese_title_mapping.keys()]], axis=1)
+        insurances_df.columns = ['id'] + list(chinese_title_mapping.values())
+
         insurances_df['申請日期'] = insurances_df['申請日期'].dt.strftime('%Y-%m-%d')
         insurances_df['事故日期'] = insurances_df['事故日期'].dt.strftime('%Y-%m-%d')
         insurances_df['理賠日期'] = insurances_df['理賠日期'].apply(lambda x: x.strftime('%Y-%m-%d') if x else None)

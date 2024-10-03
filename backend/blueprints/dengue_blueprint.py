@@ -1,10 +1,7 @@
-import logging
 import math
 import io
-from base64 import encode
 
 from datetime import datetime
-from operator import index
 from helpers.CustomResponse import CustomResponse
 
 from helpers.auth_helpers import authorization_required
@@ -204,7 +201,7 @@ class DengueContainer:
 
 
 @dengue_blueprint.route('<int:id_>', methods=['GET'])
-# @authorization_required([0, 1, 2, 9])
+@authorization_required([0, 1, 2, 9])
 def get_dengue(id_):
     """
     get dengue
@@ -283,7 +280,7 @@ def get_dengues():
 
 
 @dengue_blueprint.route('report', methods=['GET'])
-# @authorization_required([0, 1, 2, 9])
+@authorization_required([0, 1])
 def get_dengue_report():
     """
     get dengue report
@@ -312,42 +309,59 @@ def get_dengue_report():
 
     if from_time > to_time:
         return CustomResponse.unprocessable_content('from time should be less than to time', {})
+
+    # list all year_months
     year_months = [
         year_month.strftime('%Y-%m')
         for year_month in pd.date_range(from_time, to_time + pd.DateOffset(months=1), freq='ME')]
+
+    # list all building
     buildings = db.session.query(Building).all()
     buildings_mapper = {building.id: building.name for building in buildings}
 
     pivot_table = pd.DataFrame([], index=[building.name for building in buildings], columns=[year_months])
     pivot_table = pivot_table.fillna("尚未填報")
 
-    dengues = db.session.query(Dengue).all()
-
-    for dengue in dengues:
+    error_tables = {}  # {'month': {'place': {'key': 'value'}}}
+    for dengue in db.session.query(Dengue).all():
         dengue = dengue.to_dict()
-        building = buildings_mapper[dengue['building_id']]
-        inspection_time = dengue['inspection_time'].strftime('%Y-%m')
-        error_msg = ""
+        building_name = buildings_mapper[dengue['building_id']]
+        year_month = dengue['inspection_time'].strftime('%Y-%m')
+        if year_month not in year_months:
+            continue
+        error_tables[year_month] = error_tables.get(year_month, {})
+        error_tables[year_month][building_name] = error_tables[year_month].get(building_name, {})
+
+        pivot_table.loc[building_name, year_month] = '完成'
         for key, value in dengue.items():
             if key in ['id', 'user_id', 'building_id', 'inspection_time', 'created_time', 'updated_time']:
                 continue
 
-            elif key in ['outdoor_other_containers', 'indoor_other_containers']:
-                if value:
-                    error_msg += f"{value}\n"
+            error_tables[year_month][building_name][key] = None
+            if key in ['outdoor_other_containers', 'indoor_other_containers'] and value and value != '無':
+                pivot_table.loc[building_name, year_month] = '有狀況'
+                error_tables[year_month][building_name][key] = value
                 continue
 
-            if value != 0:
-                error_msg += f"{DengueContainer.COLUMNS_MAPPER[key]['chinese_title']}：{DengueContainer.COLUMNS_MAPPER[key]['problem']}\n"
+            if value == 1 and pivot_table.loc[building_name, year_month].iloc[0] != '有狀況':
+                pivot_table.loc[building_name, year_month] = '已改善'
 
-        error_msg = error_msg or "完成"
-        pivot_table.loc[building, inspection_time] = error_msg
+            if value == 2:
+                pivot_table.loc[building_name, year_month] = '有狀況'
+                error_tables[year_month][building_name][key] = DengueContainer.COLUMNS_MAPPER[key]['problem']
+
     pivot_table = pivot_table.T.reset_index().T.reset_index()
     pivot_table.iloc[0, 0] = ''
 
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
-        pivot_table.to_excel(writer, index=False, header=False)
+        pivot_table.to_excel(writer, index=False, header=False, sheet_name="總表")
+
+        for year_month, table in error_tables.items():
+            table = pd.DataFrame(table).reset_index().dropna(axis=1, how='all')
+            table['index'] = table['index'].apply(
+                lambda x: DengueContainer.COLUMNS_MAPPER.get(x, {'chinese_title': x})['chinese_title'])
+            table.T.reset_index().T.to_excel(writer, index=False, header=False, sheet_name=year_month)
 
     output.seek(0)
     return send_file(
@@ -358,7 +372,7 @@ def get_dengue_report():
 
 
 @dengue_blueprint.route('', methods=['POST'])
-@authorization_required([0, 1, 2, 9])
+@authorization_required([0, 1])
 def post_dengue():
     """
     post dengue
@@ -393,7 +407,7 @@ def post_dengue():
 
 
 @dengue_blueprint.route('<int:id_>', methods=['PATCH'])
-@authorization_required([0, 1, 2, 9])
+@authorization_required([0, 1])
 def patch_dengue(id_):
     """
     patch dengue
