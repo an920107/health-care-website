@@ -1,5 +1,3 @@
-from werkzeug.exceptions import BadRequest
-
 from models.database import SchemaMixin, db
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.ext.mutable import MutableList
