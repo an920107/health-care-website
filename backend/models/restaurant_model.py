@@ -24,6 +24,7 @@ class Restaurant(SchemaMixin, db.Model):
 
     def to_dict(self):
         return {
+            'id': self.id,
             'title': self.title,
             'title_en': self.title_en,
             'category': self.category,

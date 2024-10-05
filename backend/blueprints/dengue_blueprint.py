@@ -1,7 +1,7 @@
 import math
 import io
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from helpers.CustomResponse import CustomResponse
 
 from helpers.auth_helpers import authorization_required
@@ -326,7 +326,7 @@ def get_dengue_report():
     for dengue in db.session.query(Dengue).all():
         dengue = dengue.to_dict()
         building_name = buildings_mapper[dengue['building_id']]
-        year_month = dengue['inspection_time'].strftime('%Y-%m')
+        year_month = (dengue['inspection_time'] + timedelta(hours=8)).strftime('%Y-%m')
         if year_month not in year_months:
             continue
         error_tables[year_month] = error_tables.get(year_month, {})

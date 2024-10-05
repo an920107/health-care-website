@@ -1,5 +1,6 @@
 import io
 import pandas as pd
+import numpy as np
 from datetime import datetime
 
 from helpers.CustomResponse import CustomResponse
@@ -82,6 +83,53 @@ class InsuranceContainer:
 
     def get_data(self):
         return self.data
+
+    @staticmethod
+    def get_chinese_mapper():
+        chinese_mapping = {
+            "title": "學生團體保險",
+            "id": "編號",
+            "name": "姓名",
+            "student_id": "學號",
+            "application_date": "申請日期",
+            "incident_date": "事故日期",
+            "id_number": "身分證字號（居留證或護照號碼）",
+            "phone_number": "電話號碼",
+            "address": "地址",
+            "email": "電子郵件",
+            "claim_details": "理賠詳情",
+            "payment_type": "理賠類別",
+            "location": "地點",
+            "incident_cause": "事故原因（簡述）",
+            "diagnosis_certificate": "收據（醫院名稱 + 份數）",
+            "certificate": "診斷書（醫院名稱 + 份數）",
+            "bankbook": "存摺影本",
+            "x_ray": "X 光",
+            "application_amount": "申請金額",
+            "remarks": "備註",
+            "claim_amount": "理賠金額",
+            "claim_date": "理賠日期",
+            "insurance_company_stamp": "保險公司收件核章",
+            "insurance_company_timestamp": "保險公司收件核章日期",
+            "table_edit": "編輯",
+            "accident": "事故",
+            "illness": "疾病",
+            "on_campus": "校內",
+            "off_campus": "校外",
+            "medical": "醫療",
+            "disablement": "失能",
+            "cancer": "初次罹癌",
+            "death": "身故",
+            "search": "搜尋學號",
+            "report": "下載報表",
+            "begin_date": "開始日期",
+            "end_date": "結束日期",
+            "new": "新增保險記錄",
+            "edit": "編輯保險記錄",
+            "delete": "刪除保險記錄",
+            "save": "儲存保險記錄"
+        }
+        return np.vectorize(lambda x: chinese_mapping.get(x, x))
 
 
 @insurance_blueprint.route('<int:id_>', methods=['GET'])
@@ -332,31 +380,7 @@ def get_insurance_report():
       200:
         description: get dengue report success
     """
-
-    chinese_title_mapping = {
-        "application_date": "申請日期",
-        "incident_date": "事故日期",
-        "name": "姓名",
-        "student_id": "學號",
-        "id_number": "身份證字號",
-        "address": "地址",
-        "phone_number": "電話",
-        "email": "email",
-        "claim_details": "理賠內容",
-        "payment_type": "給付類別",
-        "location": "地點",
-        "incident_cause": "事故原因（簡述）",
-        "receipt": "收據（醫院名稱 + 份數）",
-        "diagnosis_certificate": "診斷書（醫院名稱 + 份數）",
-        "bankbook": "存摺",
-        "x_ray": "X 光",
-        "application_amount": "申請金額",
-        "claim_amount": "理賠金額",
-        "claim_date": "理賠日期",
-        "remarks": "備註",
-        "insurance_company_stamp": "保險公司收件核章",
-        "insurance_company_timestamp": "核章日期"
-    }
+    chinese_mapper = InsuranceContainer.get_chinese_mapper()
 
     from_date = datetime.fromisoformat(request.args['from'])
     to_date = datetime.fromisoformat(request.args['to'])
@@ -367,16 +391,19 @@ def get_insurance_report():
 
     insurances_df = None
     if len(insurances) == 0:
-        insurances_df = pd.DataFrame([], columns=chinese_title_mapping.values())
+        insurances_df = pd.DataFrame([])
     else:
         insurances_df = pd.DataFrame([insurance.to_dict() for insurance in insurances])
-        insurances_df = pd.concat([insurances_df[['id']], insurances_df[chinese_title_mapping.keys()]], axis=1)
-        insurances_df.columns = ['id'] + list(chinese_title_mapping.values())
+        insurances_df.columns = chinese_mapper(insurances_df.columns)
 
         insurances_df['申請日期'] = insurances_df['申請日期'].dt.strftime('%Y-%m-%d')
         insurances_df['事故日期'] = insurances_df['事故日期'].dt.strftime('%Y-%m-%d')
         insurances_df['理賠日期'] = insurances_df['理賠日期'].apply(lambda x: x.strftime('%Y-%m-%d') if x else None)
-        insurances_df['核章日期'] = insurances_df['核章日期'].apply(lambda x: x.strftime('%Y-%m-%d') if x else None)
+        insurances_df['保險公司收件核章日期'] = insurances_df['保險公司收件核章日期'].apply(lambda x: x.strftime('%Y-%m-%d') if x else None)
+
+        insurances_df['理賠詳情'] = chinese_mapper(insurances_df['理賠詳情'])
+        insurances_df['理賠類別'] = chinese_mapper(insurances_df['理賠類別'])
+        insurances_df['地點'] = chinese_mapper(insurances_df['地點'])
 
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:

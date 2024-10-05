@@ -252,7 +252,8 @@ def delete_restaurant(id_):
 
 
 @restaurant_blueprint.route('report', methods=['GET'])
-def get_restaurant_stats():
+@authorization_required([0, 1, 2])
+def get_restaurant_report():
     """
     get restaurant report
     ---
