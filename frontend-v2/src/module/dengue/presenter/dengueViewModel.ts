@@ -11,6 +11,6 @@ export default class DengueViewModel extends DengueEntity {
     }
 
     get filledDateString(): string {
-        return formatDate(this.inspectionTime, "yyyy-MM-dd");
+        return formatDate(this.createdTime, "yyyy-MM-dd");
     }
 }
