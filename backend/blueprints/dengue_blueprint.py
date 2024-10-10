@@ -372,7 +372,7 @@ def get_dengue_report():
 
 
 @dengue_blueprint.route('', methods=['POST'])
-@authorization_required([0, 1])
+@authorization_required([0, 1, 9])
 def post_dengue():
     """
     post dengue

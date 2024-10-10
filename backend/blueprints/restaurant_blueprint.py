@@ -125,7 +125,7 @@ def get_restaurants():
         )
 
     restaurants = restaurants.order_by(desc(Restaurant.created_time)).all()
-    total_page = math.ceil(len(restaurants) // 10)
+    total_page = math.ceil(len(restaurants) // 10) + 1
     restaurants = [post.to_dict() for post in restaurants][(page - 1) * 10:page * 10]
 
     return {'message': "get posts success", 'data': restaurants, "total_page": total_page}, 200
@@ -320,5 +320,5 @@ def get_restaurant_report():
     return send_file(
         output,
         as_attachment=True,
-        download_name='登革熱報表.xlsx'
+        download_name='商家檢查報告.xlsx'
     )
