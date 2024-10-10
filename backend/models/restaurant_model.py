@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from models.database import SchemaMixin, db
 from sqlalchemy.dialects.postgresql import JSON
@@ -33,7 +33,7 @@ class Restaurant(SchemaMixin, db.Model):
             'attachments': self.attachments,
             'valid': self.valid,
             'visibility': self.visibility,
-            'inspected_time': datetime.isoformat(self.inspected_time),
+            'inspected_time': datetime.isoformat(self.inspected_time.replace(tzinfo=timezone.utc)),
             'viewer': self.viewer,
             'updated_time': self.updated_time,
             'created_time': self.created_time

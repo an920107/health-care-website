@@ -398,12 +398,19 @@ def get_insurance_report():
 
         insurances_df['申請日期'] = insurances_df['申請日期'].dt.strftime('%Y-%m-%d')
         insurances_df['事故日期'] = insurances_df['事故日期'].dt.strftime('%Y-%m-%d')
-        insurances_df['理賠日期'] = insurances_df['理賠日期'].apply(lambda x: x.strftime('%Y-%m-%d') if x else None)
-        insurances_df['保險公司收件核章日期'] = insurances_df['保險公司收件核章日期'].apply(lambda x: x.strftime('%Y-%m-%d') if x else None)
+        insurances_df['理賠日期'] = insurances_df['理賠日期'].apply(
+            lambda x: x.strftime('%Y-%m-%d') if pd.notnull(x) and not pd.isna(x) else None)
+        insurances_df['保險公司收件核章日期'] = insurances_df['保險公司收件核章日期'].apply(
+            lambda x: x.strftime('%Y-%m-%d') if pd.notnull(x) and not pd.isna(x) else None)
 
         insurances_df['理賠詳情'] = chinese_mapper(insurances_df['理賠詳情'])
         insurances_df['理賠類別'] = chinese_mapper(insurances_df['理賠類別'])
         insurances_df['地點'] = chinese_mapper(insurances_df['地點'])
+
+        insurances_df = pd.concat([
+            insurances_df[['編號']],
+            insurances_df.drop('編號', axis=1)
+        ], axis=1)
 
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
