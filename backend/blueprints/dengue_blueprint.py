@@ -152,7 +152,7 @@ class DengueContainer:
         },
         'outdoor_decorative_ponds': {
             "chinese_title": "假山造型水池（凹槽處）、冷氣機滴水",
-            "problem": "有阻塞"
+            "problem": "有孑孓孳生"
         },
         'outdoor_stagnant_gutter': {
             "chinese_title": "水溝積水有孑孓孳生",
@@ -343,12 +343,23 @@ def get_dengue_report():
                 error_tables[year_month][building_name][key] = value
                 continue
 
-            if value == 1 and pivot_table.loc[building_name, year_month].iloc[0] != '有狀況':
-                pivot_table.loc[building_name, year_month] = '已改善'
+            if key in ['outdoor_drainage_covers', 'outdoor_basement_sump', 'outdoor_decorative_ponds',
+                       'outdoor_stagnant_gutter']:
 
-            if value == 2:
-                pivot_table.loc[building_name, year_month] = '有狀況'
-                error_tables[year_month][building_name][key] = DengueContainer.COLUMNS_MAPPER[key]['problem']
+                if value == 2 and pivot_table.loc[building_name, year_month].iloc[0] != '有狀況':
+                    pivot_table.loc[building_name, year_month] = '已改善'
+
+                if value == 1:
+                    pivot_table.loc[building_name, year_month] = '有狀況'
+                    error_tables[year_month][building_name][key] = DengueContainer.COLUMNS_MAPPER[key]['problem']
+
+            else:
+                if value == 1 and pivot_table.loc[building_name, year_month].iloc[0] != '有狀況':
+                    pivot_table.loc[building_name, year_month] = '已改善'
+
+                if value == 2:
+                    pivot_table.loc[building_name, year_month] = '有狀況'
+                    error_tables[year_month][building_name][key] = DengueContainer.COLUMNS_MAPPER[key]['problem']
 
     pivot_table = pivot_table.T.reset_index().T.reset_index()
     pivot_table.iloc[0, 0] = ''
