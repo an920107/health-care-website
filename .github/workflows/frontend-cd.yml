@@ -14,8 +14,14 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            git clone https://github.com/${{ github.repository }} repo --depth=1
+            if [ -d repo ]; then
+              cd repo
+              docker compose down
+              cd ..
+            fi
+            git clone https://github.com/${{ github.repository }} repo-tmp --depth=1
+            mkdir -p repo
+            cp -r repo-tmp/* repo/
             cd repo
             echo NEXT_PUBLIC_BACKEND_HOST=${{ vars.BACKEND_HOST }} > frontend-v2/.env.local
-            docker compose down
             docker compose up --build -d
