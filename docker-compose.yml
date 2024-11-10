@@ -2,7 +2,7 @@ version: "3.0"
 
 services:
   frontend:
-    build: frontend-v2
+    build: frontend
     image: health-care-website-frontend
     container_name: health-care-website-frontend
     networks:
