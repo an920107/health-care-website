@@ -3,6 +3,7 @@
 import Card from "@/components/card";
 import Pager from "@/components/pager";
 import SearchBar from "@/components/search-bar";
+import PagerEntity from "@/module/pager/domain/pagerEntity";
 import RestaurantUsecase from "@/module/restaurant/application/restaurantUsecase";
 import RestaurantEntity from "@/module/restaurant/domain/restaurantEntity";
 import RestaurantRepoImpl from "@/module/restaurant/presenter/restaurantRepoImpl";
@@ -21,6 +22,8 @@ type Props = {
   actions?: Readonly<React.ReactNode>;
 };
 
+const restaurantUsecase = new RestaurantUsecase(new RestaurantRepoImpl());
+
 export default function RestaurantTable({
   locale,
   isEnableSearch = false,
@@ -31,12 +34,25 @@ export default function RestaurantTable({
   const trans = useTranslations("Restaurant");
   const statusTrans = useTranslations("Status");
 
+  const [restaurants, setRestaurants] = useState<RestaurantEntity[]>([]);
   const [searchText, setSearchText] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(1);
+  const [pagerEntity, setPagerEntity] = useState(new PagerEntity({ currentPage: 1, totalPage: 1 }));
+
+  useEffect(() => {
+    restaurantUsecase.getAllRestaurants({
+      page: pagerEntity.currentPage,
+      visibility: !isAdmin,
+      search: searchText,
+    })
+      .then(([restaurants, pager]) => {
+        setRestaurants(restaurants);
+        setPagerEntity(prev => new PagerEntity({ currentPage: prev.currentPage, totalPage: pager.totalPage }));
+      })
+      .catch((err) => console.error("Fetching restaurants failed:", err))
+  }, [searchText, pagerEntity.currentPage]);
 
   function handleSearchSubmit(text: string) {
-    setCurrentPage(1);
+    setPagerEntity(prev => new PagerEntity({ currentPage: 1, totalPage: prev.totalPage }));
     setSearchText(text);
   }
 
@@ -47,7 +63,7 @@ export default function RestaurantTable({
       {isEnableSearch && <SearchBar className="mt-6" onSubmit={handleSearchSubmit} />}
       <div className="mt-4 border shadow-md rounded-xl overflow-hidden">
         <Card className="w-full rounded-b-xl overflow-hidden" isRounded={false} isBorder={false}>
-          <Table></Table>
+          <Table />
         </Card>
       </div>
       <div className="flex flex-row justify-between items-start md:items-center mt-4">
@@ -55,7 +71,7 @@ export default function RestaurantTable({
         {
           isEnablePager &&
           <div className="flex flex-row justify-end">
-            <Pager totalPage={totalPage} onChange={setCurrentPage} />
+            <Pager entity={pagerEntity} onChange={setPagerEntity} />
           </div>
         }
       </div>
@@ -63,23 +79,6 @@ export default function RestaurantTable({
   );
 
   function Table() {
-    const [restaurants, setRestaurants] = useState<RestaurantEntity[]>([]);
-
-    const restaurantUsecase = new RestaurantUsecase(new RestaurantRepoImpl());
-
-    useEffect(() => {
-      restaurantUsecase.getAllRestaurants({
-        page: currentPage,
-        visibility: !isAdmin,
-        search: searchText,
-      })
-        .then(([restaurants, pager]) => {
-          setRestaurants(restaurants);
-          setTotalPage(pager.totalPage);
-        })
-        .catch((err) => console.error("Fetching restaurants failed:", err))
-    }, [searchText, currentPage]);
-
     return restaurants.length === 0
       ? (
         <p className="py-12 text-center">
@@ -87,7 +86,7 @@ export default function RestaurantTable({
         </p>
       )
       : (
-        <div className="overflow-x-scroll">
+        <div className="overflow-x-auto">
           <table className="table-auto w-full text-left border-collapse">
             <thead>
               <tr className="border-b-2">
@@ -111,7 +110,7 @@ export default function RestaurantTable({
                   const viewModel = new RestaurantViewModel(entity);
                   return (
                     <tr key={viewModel.id} className="border-t">
-                      <td className="px-3 md:px-6 py-3 md:ps-10 ps-5 text-nowrap"><Link href={`/restaurant/${viewModel.title}`} className="link">{isEn ? viewModel.titleEn : viewModel.title}</Link></td>
+                      <td className="px-3 md:px-6 py-3 md:ps-10 ps-5 text-nowrap"><Link href={`/restaurant/${viewModel.id}`} className="link">{isEn ? viewModel.titleEn : viewModel.title}</Link></td>
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">{isEn ? viewModel.itemEn : viewModel.item}</td>
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">{trans(viewModel.category)}</td>
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">{statusTrans(viewModel.valid ? "passed" : "failed")}</td>

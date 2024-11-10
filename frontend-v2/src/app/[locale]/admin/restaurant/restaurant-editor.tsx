@@ -86,14 +86,14 @@ export default function RestaurantEditor({
     new NotEmptyValidationUsecase(trans("validate_empty")),
   ];
 
-  const titleValidations = [
+  const titleValidations = (length: number) => [
     new NotEmptyValidationUsecase(trans("validate_empty")),
-    new LengthValidationUsecase(40, trans("validate_length", { length: 40 })),
+    new LengthValidationUsecase(length, trans("validate_length", { length: length })),
   ];
 
-  const itemValidations = [
+  const itemValidations = (length: number) => [
     new NotEmptyValidationUsecase(trans("validate_empty")),
-    new LengthValidationUsecase(8, trans("validate_length", { length: 8 })),
+    new LengthValidationUsecase(length, trans("validate_length", { length: length })),
   ];
 
   function handleValidate(result: boolean) {
@@ -196,7 +196,7 @@ export default function RestaurantEditor({
             value={chineseTitle}
             onChange={setChineseTitle}
             onValidate={handleValidate}
-            validations={titleValidations}
+            validations={titleValidations(40)}
             toValidate={toValidate}
           />
           <TextField
@@ -204,7 +204,7 @@ export default function RestaurantEditor({
             value={chineseItem}
             onChange={setChineseItem}
             onValidate={handleValidate}
-            validations={itemValidations}
+            validations={itemValidations(8)}
             toValidate={toValidate}
           />
         </div>
@@ -214,7 +214,7 @@ export default function RestaurantEditor({
             value={englishTitle}
             onChange={setEnglishTitle}
             onValidate={handleValidate}
-            validations={titleValidations}
+            validations={titleValidations(100)}
             toValidate={toValidate}
           />
           <TextField
@@ -222,7 +222,7 @@ export default function RestaurantEditor({
             value={englishItem}
             onChange={setEnglishItem}
             onValidate={handleValidate}
-            validations={itemValidations}
+            validations={itemValidations(100)}
             toValidate={toValidate}
           />
         </div>

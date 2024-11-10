@@ -15,6 +15,10 @@ export default class InsuranceViewModel extends InsuranceEntity {
     }
 
     get claimDateString(): string {
-        return formatDate(this.claimDate, "yyyy-MM-dd");
+        return this.claimDate ? formatDate(this.claimDate, "yyyy-MM-dd") : "";
+    }
+
+    get insuranceCompanyTimeString(): string {
+        return this.insuranceCompanyTime ? formatDate(this.insuranceCompanyTime, "yyyy-MM-dd") : "";
     }
 }

@@ -37,7 +37,11 @@ export default function DownloadEditPage({ params }: Props) {
   return (
     <>
       <h1>編輯下載</h1>
-      <DownloadEditor className="mt-6" download={download} />
+      {
+        download === undefined
+          ? <></>
+          : <DownloadEditor className="mt-6" download={download} />
+      }
     </>
   );
 }

@@ -40,19 +40,13 @@ export default function EditStaticPostPage({ params }: Props) {
     if (topicGroups.filter(
       (group) => group.topics.map((topic) => topic.label).includes(params.label as TopicEnum)
     ).length === 0) notFound();
-
-    fetchAll().catch((err) => {
-      console.error(err);
-      notFound();
-    });
+    fetchAll().catch((err) => console.error(err));
   }, []);
 
   return (
     <PageEditor
       label={params.label as TopicEnum}
-      defaultContent={post?.content ?? ""}
-      defaultContentEn={post?.contentEn ?? ""}
-      defaultAttachmentIds={post?.attachments ?? []}
+      post={post}
     />
   );
 }

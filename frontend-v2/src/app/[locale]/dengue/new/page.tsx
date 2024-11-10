@@ -96,7 +96,7 @@ export default function NewDenguePage({ params }: Props) {
     const request = DengueRequestFactory.fromAnswerSet({
       userId: userId,
       buildingId: buildings[selectedBuildingIndex].id,
-      inspectionTime: new Date(),
+      inspectionTime: inspectionDate!,
       answerSet: answerSet.map(([main, sub]) => [main === 0, sub === 0]),
       outdoorOtherContainers: main25,
       indoorOtherContainers: main30,
@@ -221,18 +221,18 @@ const questionSet = [
   ],
   [
     "廢棄冰箱、洗衣機、馬桶或水族箱",
-    "是否有開口？內部是否有積水？是否倒置或密封保持乾燥？"
+    "是否倒置或密封保持乾燥？"
   ],
   [
     "不使用或未加蓋的水塔（蓄水塔）",
-    "是否有開口？內部是否有積水？是否倒置或密封保持乾燥？"
+    "是否倒置或密封保持乾燥？"
   ],
   [
     "未使用中的冷氣、冷卻水塔、冷飲櫃",
-    "是否有開口？內部是否有積水？是否倒置或密封保持乾燥？"
+    "是否倒置或密封保持乾燥？"
   ],
   [
-    "大型儲水桶有無加蓋或蓋細紗網",
+    "無加蓋或無蓋細紗網的大型儲水桶",
     "儲水容器請記得加蓋或蓋細紗網，不用時倒置。"
   ],
   [
@@ -249,19 +249,19 @@ const questionSet = [
   ],
   [
     "自來水表或瓦斯表",
-    "內部是否漏水或積水？是否倒置保持乾燥？"
+    "是否保持乾燥？"
   ],
   [
     "門外信箱",
-    "內部是否漏水或積水？是否倒置保持乾燥？"
+    "是否保持乾燥？"
   ],
   [
     "燒金紙的桶子",
-    "內部是否漏水或積水？是否倒置保持乾燥？"
+    "是否保持乾燥？"
   ],
   [
     "雨鞋、雨衣",
-    "內部是否漏水或積水？是否倒置保持乾燥？"
+    "是否保持乾燥？"
   ],
   [
     "天然積水容器（竹籬笆竹節頂端、竹筒、樹幹上的樹洞、大型樹葉）",

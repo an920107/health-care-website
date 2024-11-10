@@ -1,6 +1,7 @@
 import PagerEntity from "@/module/pager/domain/pagerEntity";
 import InsuranceEntity from "../doamin/insuranceEntity";
 import InsuranceRepo from "../doamin/insuranceRepo";
+import { InsuranceRequest } from "./insuranceDto";
 
 export default class InsuranceUsecase {
     private _repo: InsuranceRepo;
@@ -9,19 +10,25 @@ export default class InsuranceUsecase {
         this._repo = repo;
     }
 
-    async getAllInsurance({ page }: { page: number }): Promise<[InsuranceEntity[], PagerEntity]> {
-        return this._repo.query({ page });
+    async getAllInsurance({
+        page = 1,
+        search = "",
+    }: {
+        page?: number;
+        search?: string;
+    }): Promise<[InsuranceEntity[], PagerEntity]> {
+        return this._repo.query({ page, search });
     }
 
     async getInsuranceById(id: number): Promise<InsuranceEntity> {
         return this._repo.get(id);
     }
 
-    async createInsurance(insurance: InsuranceEntity): Promise<void> {
+    async createInsurance(insurance: InsuranceRequest): Promise<void> {
         return this._repo.create(insurance);
     }
 
-    async updateInsurance(id: number, insurance: InsuranceEntity): Promise<void> {
+    async updateInsurance(id: number, insurance: InsuranceRequest): Promise<void> {
         return this._repo.update(id, insurance);
     }
 

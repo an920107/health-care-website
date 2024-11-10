@@ -1,20 +1,10 @@
 version: "3.0"
 
 services:
-
   frontend:
-    build: frontend/docker
+    build: frontend-v2
     image: health-care-website-frontend
     container_name: health-care-website-frontend
-    networks:
-      - health-care-website
-    ports:
-      - 127.0.0.1:8000:80
-
-  frontend-beta:
-    build: frontend-v2
-    image: health-care-website-frontend-beta
-    container_name: health-care-website-frontend-beta
     networks:
       - health-care-website
     ports:

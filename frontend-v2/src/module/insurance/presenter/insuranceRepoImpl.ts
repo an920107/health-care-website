@@ -10,12 +10,15 @@ import Cookies from "js-cookie";
 export default class InsuranceRepoImpl implements InsuranceRepo {
     async query({
         page,
+        search,
     }: {
-        page?: number;
+        page: number;
+        search: string;
     }): Promise<[InsuranceEntity[], PagerEntity]> {
         const params: any = {};
 
         if (page) params.page = page;
+        if (search.trim().length > 0) params.search = search;
 
         const response = await axios.get(new URL("/api/insurance", BACKEND_HOST).href, {
             params: params
@@ -39,9 +42,9 @@ export default class InsuranceRepoImpl implements InsuranceRepo {
         return new InsuranceResponse(response.data["data"]);
     }
 
-    async create(insurance: InsuranceEntity): Promise<void> {
+    async create(insurance: InsuranceRequest): Promise<void> {
         const response = await axios.post(new URL("/api/insurance", BACKEND_HOST).href,
-            new InsuranceRequest(insurance).toJson(),
+            JSON.stringify(insurance.toJson()),
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -54,9 +57,9 @@ export default class InsuranceRepoImpl implements InsuranceRepo {
             return Promise.reject(new Error(response.data));
     }
 
-    async update(id: number, insurance: InsuranceEntity): Promise<void> {
+    async update(id: number, insurance: InsuranceRequest): Promise<void> {
         const response = await axios.patch(new URL(`/api/insurance/${id}`, BACKEND_HOST).href,
-            new InsuranceRequest(insurance).toJson(),
+            JSON.stringify(insurance.toJson()),
             {
                 headers: {
                     "Content-Type": "application/json",

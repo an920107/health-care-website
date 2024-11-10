@@ -69,7 +69,6 @@ export default function BuildingPanel({
           <Table.Row>
             <Table.ColumnHeaderCell>{trans("table_name")}</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>{trans("table_user")}</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>{trans("table_status")}</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>{trans("table_delete")}</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
@@ -88,7 +87,6 @@ export default function BuildingPanel({
                     />
                   </span>
                 </Table.Cell>
-                <Table.Cell>{"IN_DEVELOPMENT"}</Table.Cell>
                 <Table.Cell>
                   <FontAwesomeIcon
                     icon={faTrash}
