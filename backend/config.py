@@ -1,54 +1,27 @@
+import logging
+
+
 class Config:
-    FRONTEND_URL = 'https://31db-140-115-205-70.ngrok-free.app'
-    ALLOW_IMAGE_ENDSWITH = ['.png', '.jpg', '.jpeg']
-    ALLOW_FILE_ENDSWITH = ['.doc', '.docx', '.ppt', '.pptx', '.pdf', '.xls', '.xlsx', '.csv', '.odt']
-    PAGE_SIZE = 10
+    LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    ATTACHMENT_DIR = 'statics/attachments'
+    IMAGE_DIR = 'statics/images'
+    DOWNLOAD = 'statics/downloads'
+    CAROUSEL = 'statics/carousels'
+    LOGGING_LEVEL = logging.DEBUG
+    PORT = 5004
     MAX_CONTENT_LENGTH = 500 * 1024 * 1024
-    Basic_Auth = 'MjAyNDA1MjQwMDU0MTNjSDZFbjVSRlpjMzU6Y2pBODhodTFUMmlScXBydGVUeEZKT3JuMm05aGhRQk80RXhkZDNWUjNMUGN6NzFCdg=='
 
-    POST_COLUMN = ['activity', 'health', 'restaurant_post', 'nutrition', 'carousel']
-    STATIC_POST_COLUMN = [
-        # about us
-        'work_team', 'service_hours', 'traffic_map',
+    BASIC_AUTH = 'MjAyNDA1MjQwMDU0MTNjSDZFbjVSRlpjMzU6Y2pBODhodTFUMmlScXBydGVUeEZKT3JuMm05aGhRQk80RXhkZDNWUjNMUGN6NzFCdg=='
+    REDIRECT_URL = 'https://health-care-dev.squidspirit.com/api/auth/login'
+    HOME_PAGE_URL = 'https://health-dev.squidspirit.com/'
 
-        # health care
-        'freshman_health_check', 'new_employee_physical_exam', 'regular_health_check',
 
-        # emergency response
-        'emergency_hotline', 'campus_injury_treatment', 'campus_aed',
-
-        # health service
-        'student_group_insurance', 'medical_equipmentLoan', 'health_management_facilities',
-
-        # health promotion
-        'on_site_occupational_health_service', 'workplace_health_service_plan',
-
-        # health education
-        'freshman_cpr', 'campus_tobacco_control_education', 'campus_aids_prevention_education',
-        'campus_infectious_disease_prevention',
-
-        # others
-        'regulation', 'download_area'
-    ]
-
-    STATIC_POST_CONFIG = {
-        'ATTACHMENT_DIR': './statics/static_post/attachments',
-        'IMAGE_DIR': './statics/static_post/images',
-        'POST_DIR': './statics/static_post/posts',
+class DevelopmentConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///development-database.db'
+    LOGGING_HANDLERS = {
+        'console': {
+            'level': Config.LOGGING_LEVEL,
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
     }
-
-    RESTAURANT_CONFIG = {
-        'ATTACHMENT_DIR': './statics/restaurant_post/attachments',
-    }
-
-    POST_CONFIG = {
-        'ATTACHMENT_DIR': './statics/post/attachments',
-        'IMAGE_DIR': './statics/post/images',
-    }
-
-    CAROUSEL_CONFIG = {
-        'IMAGE_DIR': './statics/carousel/images',
-    }
-
-    JWT_SECRET_KEY = 'health-care-backend'
-

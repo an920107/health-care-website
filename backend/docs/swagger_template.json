@@ -1,0 +1,691 @@
+{
+  "info": {
+    "title": "Healthcare API",
+    "description": "This is a simple API for NCU healthcare",
+    "version": "2.0.0"
+  },
+  "definitions": {
+    "NotFound": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Resource not found"
+        },
+        "data": {
+          "type": "object",
+          "example": {}
+        }
+      }
+    },
+    "UnprocessableContent": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Resource not found"
+        },
+        "data": {
+          "type": "object",
+          "example": {}
+        }
+      }
+    },
+    "Success": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "do something success"
+        },
+        "data": {
+          "type": "object",
+          "example": {}
+        }
+      }
+    },
+    "BadRequest": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Users have a bad request"
+        },
+        "data": {
+          "type": "object",
+          "example": {}
+        }
+      }
+    },
+    "AttachmentInfo": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get attachment info success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "filename": "filename",
+            "filepath": "file/uuid",
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "ImageInfo": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get Image info success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "filename": "filename",
+            "filepath": "file/uuid",
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "CarouselInfo": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get carousel info success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "title": "title",
+            "title_en": "title_en",
+            "content": "content",
+            "content_en": "content_en",
+            "visibility": false,
+            "filepath": "file/uuid",
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "CarouselInput": {
+      "type": "object",
+      "example": {
+        "title": "title",
+        "title_en": "content",
+        "content": "title_en",
+        "content_en": "content_en",
+        "visibility": false
+      }
+    },
+    "PostInput": {
+      "type": "object",
+      "example": {
+        "title": "title",
+        "content": "content",
+        "title_en": "title_en",
+        "content_en": "content_en",
+        "column": "column",
+        "attachments": [
+          "attachments"
+        ],
+        "importance": true,
+        "visibility": true
+      }
+    },
+    "Post": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get post success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "title": "title",
+            "content": "content",
+            "title_en": "title_en",
+            "content_en": "content_en",
+            "column": "column",
+            "attachments": [
+              "attachments"
+            ],
+            "importance": true,
+            "visibility": true,
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "PostQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get posts success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": 1,
+              "title": "title",
+              "content": "content",
+              "title_en": "title_en",
+              "content_en": "content_en",
+              "column": "column",
+              "attachments": [
+                "attachments"
+              ],
+              "importance": true,
+              "visibility": true,
+              "created_time": "2024-01-01T00:00:00.000000",
+              "updated_time": "2024-01-01T00:00:00.000000"
+            }
+          ]
+        }
+      }
+    },
+    "DownloadInput": {
+      "type": "object",
+      "example": {
+        "title": "title",
+        "title_en": "title_en",
+        "column": "column",
+        "visibility": true
+      }
+    },
+    "Download": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get post success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "title": "title",
+            "title_en": "title_en",
+            "column": "column",
+            "visibility": true,
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "DownloadQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get posts success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": 1,
+              "title": "title",
+              "column": "column",
+              "visibility": true,
+              "created_time": "2024-01-01T00:00:00.000000",
+              "updated_time": "2024-01-01T00:00:00.000000"
+            }
+          ]
+        }
+      }
+    },
+    "BuildingInput": {
+      "type": "object",
+      "example": {
+        "name": "title",
+        "user_id": "user_id"
+      }
+    },
+    "Building": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get post success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "name": "name",
+            "user_id": "user_id",
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "BuildingQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get posts success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": 1,
+              "name": "name",
+              "user_id": "user_id",
+              "created_time": "2024-01-01T00:00:00.000000",
+              "updated_time": "2024-01-01T00:00:00.000000"
+            }
+          ]
+        }
+      }
+    },
+    "RestaurantInput": {
+      "type": "object",
+      "example": {
+        "title": "title",
+        "category": "category",
+        "item": "item",
+        "attachments": [
+          "attachment1",
+          "attachment2",
+          "attachment3"
+        ],
+        "inspected_time": "2024-01-01T00:00:00.000000",
+        "valid": true,
+        "visibility": true
+      }
+    },
+    "Restaurant": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get post success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "title": "title",
+            "category": "category",
+            "item": "item",
+            "attachments": [
+              "attachment1",
+              "attachment2",
+              "attachment3"
+            ],
+            "inspected_time": "2024-01-01T00:00:00.000000",
+            "valid": true,
+            "visibility": true,
+            "created_time": "2024-01-01T00:00:00.000000",
+            "updated_time": "2024-01-01T00:00:00.000000"
+          }
+        }
+      }
+    },
+    "RestaurantQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get posts success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": 1,
+              "title": "title",
+              "category": "category",
+              "item": "item",
+              "attachments": [
+                "attachment1",
+                "attachment2",
+                "attachment3"
+              ],
+              "inspected_time": "2024-01-01T00:00:00",
+              "valid": true,
+              "visibility": true,
+              "created_time": "2024-01-01T00:00:00",
+              "updated_time": "2024-01-01T00:00:00"
+            }
+          ]
+        }
+      }
+    },
+    "InsuranceInput": {
+      "type": "object",
+      "example": {
+        "application_date": "2024-01-01T00:00:00",
+        "incident_date": "2024-01-01T00:00:00",
+        "name": "name",
+        "student_id": "112000000",
+        "id_number": "A123456789",
+        "address": "address",
+        "phone_number": "phone_number",
+        "email": "email",
+        "claim_details": "claim_details",
+        "payment_type": "payment_type",
+        "location": "location",
+        "incident_cause": "incident_cause",
+        "receipt": "receipt",
+        "diagnosis_certificate": "diagnosis_certificate",
+        "bankbook": 1,
+        "x_ray": 1,
+        "application_amount": 100,
+        "claim_amount": 100,
+        "claim_date": "2024-01-01T00:00:00",
+        "remarks": "remarks",
+        "insurance_company_stamp": true,
+        "insurance_company_timestamp": "2024-01-01T00:00:00"
+      }
+    },
+    "Insurance": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get post success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "application_date": "2024-01-01T00:00:00",
+            "incident_date": "2024-01-01T00:00:00",
+            "name": "name",
+            "student_id": "112000000",
+            "id_number": "A123456789",
+            "address": "address",
+            "phone_number": "phone_number",
+            "email": "email",
+            "claim_details": "claim_details",
+            "payment_type": "payment_type",
+            "location": "location",
+            "incident_cause": "incident_cause",
+            "receipt": "receipt",
+            "diagnosis_certificate": "diagnosis_certificate",
+            "bankbook": 1,
+            "x_ray": 1,
+            "application_amount": 100,
+            "claim_amount": 100,
+            "claim_date": "2024-01-01T00:00:00",
+            "remarks": "remarks",
+            "insurance_company_stamp": true,
+            "insurance_company_timestamp": "2024-01-01T00:00:00",
+            "created_time": "2024-01-01T00:00:00",
+            "updated_time": "2024-01-01T00:00:00"
+          }
+        }
+      }
+    },
+    "InsuranceQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get posts success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "type": "object",
+              "example": {
+                "id": 1,
+                "application_date": "2024-01-01T00:00:00",
+                "incident_date": "2024-01-01T00:00:00",
+                "name": "name",
+                "student_id": "112000000",
+                "id_number": "A123456789",
+                "address": "address",
+                "phone_number": "phone_number",
+                "email": "email",
+                "claim_details": "claim_details",
+                "payment_type": "payment_type",
+                "location": "location",
+                "incident_cause": "incident_cause",
+                "receipt": "receipt",
+                "diagnosis_certificate": "diagnosis_certificate",
+                "bankbook": 1,
+                "x_ray": 1,
+                "application_amount": 100,
+                "claim_amount": 100,
+                "claim_date": "2024-01-01T00:00:00",
+                "remarks": "remarks",
+                "insurance_company_stamp": true,
+                "insurance_company_timestamp": "2024-01-01T00:00:00",
+                "created_time": "2024-01-01T00:00:00",
+                "updated_time": "2024-01-01T00:00:00"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "DengueInput": {
+      "type": "object",
+      "example": {
+        "user_id": "user_id",
+        "building_id": 0,
+        "outdoor_bottles_cans": 0,
+        "outdoor_urns_tanks": 0,
+        "outdoor_tableware": 0,
+        "outdoor_pots_kettles": 0,
+        "outdoor_disposable_items": 0,
+        "outdoor_barrels": 0,
+        "outdoor_coconut_shells": 0,
+        "outdoor_tires_helmets": 0,
+        "outdoor_drainage_covers": 0,
+        "outdoor_abandoned_appliances": 0,
+        "outdoor_unused_water_towers": 0,
+        "outdoor_unused_cooling_equipment": 0,
+        "outdoor_large_water_containers": 0,
+        "outdoor_pet_water_containers": 0,
+        "outdoor_flooded_basement": 0,
+        "outdoor_basement_sump": 0,
+        "outdoor_utility_meters": 0,
+        "outdoor_mailbox": 0,
+        "outdoor_incense_burner": 0,
+        "outdoor_rain_gear": 0,
+        "outdoor_natural_water_containers": 0,
+        "outdoor_flagpole_drains": 0,
+        "outdoor_decorative_ponds": 0,
+        "outdoor_stagnant_gutter": 0,
+        "outdoor_other_containers": "other_containers",
+        "indoor_plant_containers": 0,
+        "indoor_gardening_containers": 0,
+        "indoor_water_storage": 0,
+        "indoor_appliance_trays": 0,
+        "indoor_other_containers": "other_containers",
+        "inspection_time": "2024-01-01T00:00:00"
+      }
+    },
+    "Dengue": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get dengue success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": 1,
+            "user_id": "user_id",
+            "building_id": 0,
+            "outdoor_bottles_cans": 0,
+            "outdoor_urns_tanks": 0,
+            "outdoor_tableware": 0,
+            "outdoor_pots_kettles": 0,
+            "outdoor_disposable_items": 0,
+            "outdoor_barrels": 0,
+            "outdoor_coconut_shells": 0,
+            "outdoor_tires_helmets": 0,
+            "outdoor_drainage_covers": 0,
+            "outdoor_abandoned_appliances": 0,
+            "outdoor_unused_water_towers": 0,
+            "outdoor_unused_cooling_equipment": 0,
+            "outdoor_large_water_containers": 0,
+            "outdoor_pet_water_containers": 0,
+            "outdoor_flooded_basement": 0,
+            "outdoor_basement_sump": 0,
+            "outdoor_utility_meters": 0,
+            "outdoor_mailbox": 0,
+            "outdoor_incense_burner": 0,
+            "outdoor_rain_gear": 0,
+            "outdoor_natural_water_containers": 0,
+            "outdoor_flagpole_drains": 0,
+            "outdoor_decorative_ponds": 0,
+            "outdoor_stagnant_gutter": 0,
+            "outdoor_other_containers": "other_containers",
+            "indoor_plant_containers": 0,
+            "indoor_gardening_containers": 0,
+            "indoor_water_storage": 0,
+            "indoor_appliance_trays": 0,
+            "indoor_other_containers": "other_containers",
+            "inspection_time": "2024-01-01T00:00:00",
+            "created_time": "2024-01-01T00:00:00",
+            "updated_time": "2024-01-01T00:00:00"
+          }
+        }
+      }
+    },
+    "DengueQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get dengues success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": 1,
+              "user_id": "user_id",
+              "building_id": 0,
+              "outdoor_bottles_cans": 0,
+              "outdoor_urns_tanks": 0,
+              "outdoor_tableware": 0,
+              "outdoor_pots_kettles": 0,
+              "outdoor_disposable_items": 0,
+              "outdoor_barrels": 0,
+              "outdoor_coconut_shells": 0,
+              "outdoor_tires_helmets": 0,
+              "outdoor_drainage_covers": 0,
+              "outdoor_abandoned_appliances": 0,
+              "outdoor_unused_water_towers": 0,
+              "outdoor_unused_cooling_equipment": 0,
+              "outdoor_large_water_containers": 0,
+              "outdoor_pet_water_containers": 0,
+              "outdoor_flooded_basement": 0,
+              "outdoor_basement_sump": 0,
+              "outdoor_utility_meters": 0,
+              "outdoor_mailbox": 0,
+              "outdoor_incense_burner": 0,
+              "outdoor_rain_gear": 0,
+              "outdoor_natural_water_containers": 0,
+              "outdoor_flagpole_drains": 0,
+              "outdoor_decorative_ponds": 0,
+              "outdoor_stagnant_gutter": 0,
+              "outdoor_other_containers": "other_containers",
+              "indoor_plant_containers": 0,
+              "indoor_gardening_containers": 0,
+              "indoor_water_storage": 0,
+              "indoor_appliance_trays": 0,
+              "indoor_other_containers": "other_containers",
+              "inspection_time": "2024-01-01T00:00:00",
+              "created_time": "2024-01-01T00:00:00",
+              "updated_time": "2024-01-01T00:00:00"
+            }
+          ]
+        }
+      }
+    },
+    "UserInput": {
+      "type": "object",
+      "example": {
+        "chinese_name": "chinese_name",
+        "role": 9
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get user success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": "1",
+            "chinese_name": "chinese_name",
+            "role": 9,
+            "created_time": "2024-01-01T00:00:00",
+            "updated_time": "2024-01-01T00:00:00"
+          }
+        }
+      }
+    },
+    "UserQuery": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get users success"
+        },
+        "data": {
+          "type": "object",
+          "example": [
+            {
+              "id": "1",
+              "chinese_name": "chinese_name",
+              "role": 9,
+              "created_time": "2024-01-01T00:00:00",
+              "updated_time": "2024-01-01T00:00:00"
+            }
+          ]
+        }
+      }
+    },
+    "Viewer": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Get viewer success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "id": "1",
+            "viewer": 1,
+            "created_time": "2024-01-01T00:00:00",
+            "updated_time": "2024-01-01T00:00:00"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,13 @@
 version: '1.0'
 
 services:
-  web:
+  health-care-website-backend-beta:
     build:
       context: .
+    container_name: health-care-website-backend-beta
+    ports:
+      - "5004:5004"
     volumes:
       - ./instance:/app/instance
       - ./statics:/app/statics
-    ports:
-      - "5001:5001"
+    restart: always

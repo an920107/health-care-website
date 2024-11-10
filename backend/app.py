@@ -1,140 +1,116 @@
-# -*- coding: utf-8 -*-
-import logging
+import json
+import uuid
+import logging.config
+from pathlib import Path
 
-from config import Config
-
-from models.models import db, TotalViewer
-from models.extensions import jwt
-from models.responses import Response
-
-from routes.post_blueprint import post_blueprint
-from routes.image_blueprint import image_blueprint
-from routes.attachment_blueprint import attachment_blueprint
-from routes.static_post_blueprint import static_post_blueprint
-from routes.carousel_blueprint import carousel_blueprint
-from routes.auth_blueprint import auth_blueprint
-from routes.restaurant_post_blueprint import restaurant_post_blueprint
-from routes.user_blueprint import user_blueprint
-from routes.insurance_plueprint import insurance_blueprint
-from routes.dengue_blueprint import dengue_blueprint
-
-from flask import Flask, request, send_file, redirect
-from flask_cors import CORS
+from flask import Flask
 from flasgger import Swagger
+from flask_cors import CORS
+
+import config
+from config import DevelopmentConfig
+from models.viewer_model import db, Viewer
+
+from blueprints.attachment_blueprint import attachment_blueprint
+from blueprints.image_blueprint import image_blueprint
+from blueprints.carousel_blueprint import carousel_blueprint
+from blueprints.post_blueprint import post_blueprint
+from blueprints.download_blueprint import download_blueprint
+from blueprints.building_blueprint import building_blueprint
+from blueprints.restaurant_blueprint import restaurant_blueprint
+from blueprints.insurance_blueprint import insurance_blueprint
+from blueprints.dengue_blueprint import dengue_blueprint
+from blueprints.auth_blueprint import auth_blueprint
+
+from helpers.CustomResponse import CustomResponse
+
+from flask_jwt_extended import JWTManager, jwt_required
+
+swagger_template = json.loads(open('docs/swagger_template.json', 'r').read())
 
 
-def create_app():
+def configure_logging(app):
+    log_config = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': app.config['LOGGING_HANDLERS'],
+        'formatters': {
+            'default': {
+                'format': app.config['LOGGING_FORMAT'],
+            },
+        }
+    }
+    logging.config.dictConfig(log_config)
+
+
+def get_config(status):
+    if status == 'development':
+        return DevelopmentConfig
+
+
+def create_app(status='development'):
     app = Flask(__name__)
-    app.register_blueprint(post_blueprint, url_prefix='/api/post')
-    app.register_blueprint(image_blueprint, url_prefix='/api/image')
+    app.secret_key = uuid.uuid4().hex
+
+    app.config.from_object(get_config(status))
+    configure_logging(app)
+    db.init_app(app)
+
+    Swagger(app, template=swagger_template)
+    CORS(
+        app,
+        resources={r"/*": {"origins": "*", "allow_headers": "*", "expose_headers": "*"}},
+        supports_credentials=True
+    )
+    JWTManager(app)
+
     app.register_blueprint(attachment_blueprint, url_prefix='/api/attachment')
-    app.register_blueprint(static_post_blueprint, url_prefix='/api/static_post')
+    app.register_blueprint(image_blueprint, url_prefix='/api/image')
     app.register_blueprint(carousel_blueprint, url_prefix='/api/carousel')
-    app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
-    app.register_blueprint(restaurant_post_blueprint, url_prefix='/api/restaurant_post')
-    app.register_blueprint(user_blueprint, url_prefix='/api/user')
+    app.register_blueprint(post_blueprint, url_prefix='/api/post')
+    app.register_blueprint(download_blueprint, url_prefix='/api/download')
+    app.register_blueprint(building_blueprint, url_prefix='/api/building')
+    app.register_blueprint(restaurant_blueprint, url_prefix='/api/restaurant')
     app.register_blueprint(insurance_blueprint, url_prefix='/api/insurance')
     app.register_blueprint(dengue_blueprint, url_prefix='/api/dengue')
+    app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
 
-    app.config.from_mapping({
-        'SQLALCHEMY_DATABASE_URI': 'sqlite:///health-care-website.db',
-        'SWAGGER': {
-            "title": "health-care-backend",
-            "description": "Nation Central University Health Care Backend Development",
-            "version": "2.0.0",
-        },
-        'JWT_SECRET_KEY': Config.JWT_SECRET_KEY
-    })
-
-    db.init_app(app)
-    swagger = Swagger(
-        app,
-        template={
-            "securityDefinitions": {
-                "BearerAuth": {
-                    "type": "apiKey",
-                    "name": "Authorization",
-                    "in": "header"
-                }
-            }
-        }
-    )
-    CORS(app)
-    jwt.init_app(app)
-
-    handler = logging.FileHandler('./statics/app.log')
-    handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    app.logger.addHandler(handler)
+    with app.app_context():
+        db.create_all()
 
     return app
 
 
 app = create_app()
 
-with app.app_context():
-    # db.session.remove()
-    # db.drop_all()
-    db.create_all()
 
-
-
-@app.errorhandler(Exception)
-def error_handler(error: Exception):
-    app.logger.error(f'Error on path {request.path}: {error}')
-    return Response.sever_error(str(error))
-
-
-@app.route("/", methods=['GET'])
-def test_connection():
+@app.route('/api/welcome', methods=['GET'])
+def welcome():
     """
-    Test the connection
+    get the number of viewers
     ---
     tags:
-      - Test
+      - viewer
     responses:
       200:
-        description: connect success
+        description: Welcome to the API!
+        schema:
+          id: Viewer
     """
-    return Response.response('connect success')
-
-
-@app.route("/api/total_viewer", methods=['GET'])
-def get_total_viewer():
-    """
-    Get total viewer
-    ---
-    tags:
-      - Viewer
-    responses:
-      200:
-        description: return total viewer
-    """
-    if not TotalViewer.query.all():
-        tv = TotalViewer(viewer=1)
-        db.session.add(tv)
+    viewer = db.session.query(Viewer).first()
+    if db.session.query(Viewer).first() is None:
+        viewer = Viewer()
+        db.session.add(viewer)
         db.session.commit()
 
-    tv = TotalViewer.query.first()
-    tv.viewer += 1
+    viewer.viewer += 1
     db.session.commit()
-    return Response.response('connect success', tv.as_dict())
-
-
-@app.route("/api/allow_endswith", methods=['GET'])
-def get_allow_endswith():
-    """
-    Get allow endswith
-    ---
-    tags:
-      - Config
-    responses:
-      200:
-        description: return allow endswith
-    """
-    return Response.response('connect success', Config.ALLOW_IMAGE_ENDSWITH + Config.ALLOW_FILE_ENDSWITH)
+    return CustomResponse.success("get viewer successful", viewer.to_dict())
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host="0.0.0.0", port=5003)
+    for folder_name in [
+        config.Config.IMAGE_DIR, config.Config.DOWNLOAD, config.Config.CAROUSEL, config.Config.ATTACHMENT_DIR]:
+       Path(folder_name).mkdir(parents=True, exist_ok=True)
+
+    app.run(debug=False, host="0.0.0.0", port=config.Config.PORT)

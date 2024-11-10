@@ -1,4 +1,4 @@
-FROM docker.io/library/python:3.10 AS install-base
+FROM docker.io/library/python:3.12 AS install-base
 
 RUN apt-get update -y
 
@@ -16,5 +16,5 @@ FROM install-requirements AS release
 WORKDIR /app
 COPY . .
 
-CMD ["gunicorn" , "-b", "0.0.0.0:5001", "-w", "41", "app:app"]
-EXPOSE 5001
+CMD ["python" , "app.py"]
+EXPOSE 5004
