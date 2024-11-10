@@ -22,6 +22,7 @@ jobs:
             git clone https://github.com/${{ github.repository }} repo-tmp --depth=1
             mkdir -p repo
             cp -r repo-tmp/* repo/
+            rm -rf repo-tmp
             cd repo
             echo NEXT_PUBLIC_BACKEND_HOST=${{ vars.BACKEND_HOST }} > frontend-v2/.env.local
             docker compose up --build -d
