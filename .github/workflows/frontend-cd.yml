@@ -1,39 +1,12 @@
 name: frontend-cd
 on:
-  workflow_run:
-    workflows:
-      - frontend-ci
-    types:
-      - completed
+  push:
     branches:
       - main
-  workflow_call:
-    inputs:
-      environment:
-        type: string
-        required: true
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-artifact
-          path: frontend-artifact
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
-      - name: Copy files to host
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          source: frontend-artifact
-          target: /home/${{ secrets.SSH_USERNAME }}/
       - name: Deployment
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -41,11 +14,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            git clone https://github.com/${{ github.repository }} repo-tmp --depth=1
-            mkdir -p repo
-            cp -r repo-tmp/* repo
-            rm -rf repo-tmp
-            cp -r frontend-artifact repo/frontend/docker
+            git clone https://github.com/${{ github.repository }} repo --depth=1
             cd repo
             echo NEXT_PUBLIC_BACKEND_HOST=${{ vars.BACKEND_HOST }} > frontend-v2/.env.local
             docker compose down
