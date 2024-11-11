@@ -28,7 +28,7 @@ export default function Footer() {
 
   return (
     <div className="bg-amber-400 py-8 px-4">
-      <div className="flex flex-col lg:flex-row lg:w-[50rem] lg:mx-auto gap-x-10 gap-y-5 lg:items-center justify-between">
+      <div className="flex flex-col lg:flex-row lg:mx-auto gap-x-10 gap-y-5 lg:items-center justify-between lg:justify-center">
         <div>
           <p className="flex items-center">
             <FontAwesomeIcon icon={faPhone} className="size-4 me-2" />
@@ -44,7 +44,7 @@ export default function Footer() {
           </p>
           <p className="flex items-center">
             <FontAwesomeIcon icon={faLocationDot} className="size-4 me-2" />
-            {trans("address")}{symbol("colon")}320 桃園市中壢區中大路 300 號 中正圖書館 1 樓
+            {trans("address")}{symbol("colon")}{trans("address_content")}
           </p>
           <p className="flex items-center">
             <FontAwesomeIcon icon={faEye} className="size-4 me-2" />
@@ -53,7 +53,7 @@ export default function Footer() {
         </div>
         <div>
           <p><Link href="/privacy" className="link">{trans("privacy")}</Link></p>
-          <p>{trans("copyright")} © 國立中央大學衛生保健組</p>
+          <p>{trans("copyright")} © {trans("copyright_content")}</p>
           <p>National Central University - Health Center</p>
         </div>
       </div>

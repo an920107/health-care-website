@@ -111,8 +111,8 @@ export default function RestaurantTable({
                   return (
                     <tr key={viewModel.id} className="border-t">
                       <td className="px-3 md:px-6 py-3 md:ps-10 ps-5 text-nowrap"><Link href={`/restaurant/${viewModel.id}`} className="link">{isEn ? viewModel.titleEn : viewModel.title}</Link></td>
-                      <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">{isEn ? viewModel.itemEn : viewModel.item}</td>
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">{trans(viewModel.category)}</td>
+                      <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">{isEn ? viewModel.itemEn : viewModel.item}</td>
                       <td className="px-3 md:px-6 py-3 max-md:pe-5 text-nowrap">{statusTrans(viewModel.valid ? "passed" : "failed")}</td>
                       <td className={`px-3 md:px-6 py-3 ${isAdmin ? "max-md:pe-5" : "md:pe-10"} text-nowrap`}>{viewModel.inspectedDateString}</td>
                       {
