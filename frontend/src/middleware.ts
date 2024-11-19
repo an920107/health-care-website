@@ -39,7 +39,7 @@ export default function middleware(request: NextRequest) {
         setCookieHeader = setCookieHeader.map((cookie) => {
             const [key, val] = cookie.trim().split("=");
             if (key === "SameSite") {
-                return ` ${key}=strict; Secure`;
+                return ` ${key}=strict; Secure; HttpOnly`;
             }
             return cookie;
         });
