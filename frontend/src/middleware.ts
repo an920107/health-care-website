@@ -3,7 +3,6 @@ import { locales } from "./i18n";
 import { NextRequest, NextResponse } from "next/server";
 import UserUsecase from "./module/user/application/userUsecase";
 import UserRepoImpl from "./module/user/presenter/userRepoImpl";
-import UserRoleEnum from "./module/user/domain/userRoleEnum";
 
 export const config = {
     // Match only internationalized pathnames
@@ -34,6 +33,18 @@ export default function middleware(request: NextRequest) {
         defaultLocale: "zh",
     })
     const response = handleI18nRouting(request);
+
+    if (response.headers.getSetCookie() !== null) {
+        var setCookieHeader = response.headers.getSetCookie()[0].split(";");
+        setCookieHeader = setCookieHeader.map((cookie) => {
+            const [key, val] = cookie.trim().split("=");
+            if (key === "SameSite") {
+                return ` ${key}=strict; Secure`;
+            }
+            return cookie;
+        });
+        response.headers.set("Set-Cookie", setCookieHeader.join(";"));
+    }
 
     return response;
 }
