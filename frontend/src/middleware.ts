@@ -34,7 +34,7 @@ export default function middleware(request: NextRequest) {
     })
     const response = handleI18nRouting(request);
 
-    if (response.headers.getSetCookie() !== null) {
+    if (response.headers.getSetCookie().length > 0) {
         var setCookieHeader = response.headers.getSetCookie()[0].split(";");
         setCookieHeader = setCookieHeader.map((cookie) => {
             const [key, val] = cookie.trim().split("=");
