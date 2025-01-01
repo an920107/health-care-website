@@ -10,6 +10,11 @@
 
 ## 更改 Portal OAuth Client ID
 
+- Portal：
+
+  - sso login: https://health.ncu.edu.tw/login
+  - return to: https://health.ncu.edu.tw/api/auth/return-to
+  
 - 前端：frontend/src/app/[locale]/login/page.tsx
 
 - 後端：backend/config.py
