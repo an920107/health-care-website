@@ -18,7 +18,7 @@
 
 ## 部屬
 
-1. 確保完成 [Frontend 的部屬](frontend/README.md##部屬)。
+1. echo "https://health.ncu.edu.tw" > frontend/.local.env
 
 2. 可修改 [docker-compose.yml](docker-compose.yml) 中，`proxy` service 的 `port`，將 `18080` 改為想要使用的 port。
 
