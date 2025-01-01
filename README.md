@@ -20,6 +20,6 @@
 
 1. `echo "https://health.ncu.edu.tw" > frontend/.local.env`
 
-2. 可修改 [docker-compose.yml](docker-compose.yml) 中，`proxy` service 的 `port`，將 `18080` 改為想要使用的 port。
+2. `docker compose down`
 
-3. 若 subnet `10.0.0.0/24` 與已存在的相衝，除了 [docker-compose.yml](docker-compose.yml) 外，也需要將 [proxy/reverse_proxy.conf](proxy/reverse_proxy.conf) 的 resolver 改為新的 gateway。
+3. `docker compose up --build -d`
