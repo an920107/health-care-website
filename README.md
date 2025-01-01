@@ -14,6 +14,9 @@
 
   - sso login: https://health.ncu.edu.tw/login
   - return to: https://health.ncu.edu.tw/api/auth/return-to
+  - permission required:
+    - 帳號
+    - 中文姓名
   
 - 前端：frontend/src/app/[locale]/login/page.tsx
 
