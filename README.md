@@ -4,7 +4,7 @@
 
 ## 框架
 
-- 前端：Flutter
+- 前端：Next.js
 
 - 後端：Pyhton (Flask)
 
