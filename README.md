@@ -8,6 +8,14 @@
 
 - 後端：Pyhton (Flask)
 
+## 更改 Portal OAuth Client ID
+
+- 前端：frontend/src/app/[locale]/login/page.tsx
+
+- 後端：backend/config.py
+
+  > 要到 <https://www.debugbear.com/basic-auth-header-generator> 生成 basic auth
+
 ## 部屬
 
 1. 確保完成 [Frontend 的部屬](frontend/README.md##部屬)。
